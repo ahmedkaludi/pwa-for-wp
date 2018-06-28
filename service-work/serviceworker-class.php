@@ -49,7 +49,20 @@ class ServiceWorker{
 
 	public function ampforwp_pwa_wp_swjs(){
 		header("Content-Type:text/javascript; charset=UTF-8");
-		$swJsContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."sw.js");
+		$swJsContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."layouts/sw.js");
+
+		$settings = ampforwp_pwa_defaultSettings();
+		$offline_page = './offline_index.html';
+		$page404 = './404.html';
+
+		$offline_page = get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
+		$page404 = get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );
+
+		$offline_page = str_replace( 'http://', 'https://', $offline_page );
+		$page404 = str_replace( 'http://', 'https://', $page404 );
+
+		$swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}"), array($offline_page, $page404 ), $swJsContent);
+
 		echo $swJsContent;
 		wp_die();
 	}

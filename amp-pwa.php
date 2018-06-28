@@ -71,7 +71,7 @@ SKU: PWA
 			  "background_color": "'.$defaults['background_color'].'",
 			  "theme_color": "'.$defaults['theme_color'].'",
 			  "display": "standalone",
-			  "orientation": "portrait",
+			  "orientation": "'.( isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait" ).'",
 			  "start_url": ".",
 			  "scope": "\/"
 			}';

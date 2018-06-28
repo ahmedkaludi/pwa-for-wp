@@ -54,13 +54,16 @@ function ampforwp_pwa_defaultSettings(){
 		'app_blog_name'			=> get_bloginfo( 'name' ),
 		'app_blog_short_name'	=> get_bloginfo( 'name' ),
 		'description'		=> get_bloginfo( 'description' ),
-		'icon'				=> AMPFORWP_SERVICEWORKER_PLUGIN_URL . 'images/logo.png',
-		'splash_icon'		=> AMPFORWP_SERVICEWORKER_PLUGIN_URL . 'images/logo-512x512.png',
+		'icon'				=> 'http://via.placeholder.com/192x192/D5E0EB/ffffff?text='.get_bloginfo( 'name' ),
+		//AMPFORWP_SERVICEWORKER_PLUGIN_URL . 'images/logo.png',
+		'splash_icon'		=> 'http://via.placeholder.com/512x512/D5E0EB/ffffff?text='.get_bloginfo( 'name' ),
+		//AMPFORWP_SERVICEWORKER_PLUGIN_URL . 'images/logo-512x512.png',
 		'background_color' 	=> '#D5E0EB',
 		'theme_color' 		=> '#D5E0EB',
 		'start_url' 		=> 0,
 		'start_url_amp'		=> 0,
 		'offline_page' 		=> 0,
+		'404_page' 			=> 0,
 		'orientation'		=> 1,
 	);
 	$settings = get_option( 'ampforwp_pwa_settings', $defaults );

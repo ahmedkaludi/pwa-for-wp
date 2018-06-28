@@ -165,6 +165,33 @@ function ampforwp_pwa_settings_init(){
 			'amp_pwa_general_section'						// Settings Section ID
 		);
 
+		// Offline Page
+		add_settings_field(
+			'amppwa_offline_page',								// ID
+			__('Offline Page', 'ampforwp-progressive-web-app'),		// Title
+			'amp_pwa_offline_page_callback',								// CB
+			'amp_pwa_general_section',						// Page slug
+			'amp_pwa_general_section'						// Settings Section ID
+		);
+
+		// 404 Page
+		add_settings_field(
+			'amppwa_404_page',								// ID
+			__('404 Page', 'ampforwp-progressive-web-app'),		// Title
+			'amp_pwa_404_page_callback',								// CB
+			'amp_pwa_general_section',						// Page slug
+			'amp_pwa_general_section'						// Settings Section ID
+		);
+		
+		// Orientation
+		add_settings_field(
+			'amppwa_orientation',									// ID
+			__('Orientation', 'ampforwp-progressive-web-app'),		// Title
+			'amp_pwa_orientation_callback',								// CB
+			'amp_pwa_general_section',						// Page slug
+			'amp_pwa_general_section'						// Settings Section ID
+		);
+
 	add_settings_section('amp_pwa_design_section', __return_false(), '__return_false', 'amp_pwa_design_section');
 		// Splash Screen Background Color
 		add_settings_field(
@@ -283,6 +310,73 @@ function amp_pwa_splash_icon_callback(){
 	<?php
 }
 
+function amp_pwa_offline_page_callback(){
+	// Get Settings
+	$settings = ampforwp_pwa_defaultSettings(); ?>
+	<!-- WordPress Pages Dropdown -->
+	<label for="ampforwp_pwa_settings[offline_page]">
+	<?php echo wp_dropdown_pages( array( 
+			'name' => 'ampforwp_pwa_settings[offline_page]', 
+			'echo' => 0, 
+			'show_option_none' => __( '&mdash; Default &mdash;' ), 
+			'option_none_value' => '0', 
+			'selected' =>  isset($settings['offline_page']) ? $settings['offline_page'] : '',
+		)); ?>
+	</label>
+	
+	<p class="description">
+		<?php printf( __( 'Offline page is displayed when the device is offline and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
+	</p>
+
+	<?php
+}
+
+function amp_pwa_404_page_callback(){
+	// Get Settings
+	$settings = ampforwp_pwa_defaultSettings(); ?>
+	<!-- WordPress Pages Dropdown -->
+	<label for="ampforwp_pwa_settings[404_page]">
+	<?php echo wp_dropdown_pages( array( 
+			'name' => 'ampforwp_pwa_settings[404_page]', 
+			'echo' => 0, 
+			'show_option_none' => __( '&mdash; Default &mdash;' ), 
+			'option_none_value' => '0', 
+			'selected' =>  isset($settings['404_page']) ? $settings['404_page'] : '',
+		)); ?>
+	</label>
+	
+	<p class="description">
+		<?php printf( __( '404 page is displayed and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
+	</p>
+
+	<?php
+}
+
+function amp_pwa_orientation_callback(){
+	// Get Settings
+	$settings = ampforwp_pwa_defaultSettings(); ?>
+	
+	<!-- Orientation Dropdown -->
+	<label for="ampforwp_pwa_settings[orientation]">
+		<select name="ampforwp_pwa_settings[orientation]" id="ampforwp_pwa_settings[orientation]">
+			<option value="0" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 0 ); } ?>>
+				<?php _e( 'Follow Device Orientation', 'ampforwp-progressive-web-app' ); ?>
+			</option>
+			<option value="1" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 1 ); } ?>>
+				<?php _e( 'Portrait', 'ampforwp-progressive-web-app' ); ?>
+			</option>
+			<option value="2" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 2 ); } ?>>
+				<?php _e( 'Landscape', 'ampforwp-progressive-web-app' ); ?>
+			</option>
+		</select>
+	</label>
+	
+	<p class="description">
+		<?php _e( 'Set the orientation of your app on devices. When set to <code>Follow Device Orientation</code> your app will rotate as the device is rotated.', 'ampforwp-progressive-web-app' ); ?>
+	</p>
+
+	<?php
+}
 
 
 
