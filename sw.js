@@ -5,15 +5,15 @@ const BASE_CACHE_FILES = [
 ];
 
 const OFFLINE_CACHE_FILES = [
-     '/offline_index.html',
+     './offline_index.html',
 ];
 
 const NOT_FOUND_CACHE_FILES = [
-    '/404.html',
+    './404.html',
 ];
 
-const OFFLINE_PAGE = '/offline_index.html';
-const NOT_FOUND_PAGE = '/404.html';
+const OFFLINE_PAGE = './offline_index.html';
+const NOT_FOUND_PAGE = './404.html';
 
 const CACHE_VERSIONS = {
     content: 'content-v' + CACHE_VERSION,

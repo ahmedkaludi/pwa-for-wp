@@ -1,1 +1,1 @@
-silance is gold
+silence is gold
