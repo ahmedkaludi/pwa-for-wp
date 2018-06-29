@@ -228,7 +228,7 @@ function amp_pwa_background_color_callback(){
 	<input type="text" name="ampforwp_pwa_settings[background_color]" id="ampforwp_pwa_settings[background_color]" class="ampforwp-pwa-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? esc_attr( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
 	<p class="description">
-		<?php _e('Background color of the splash screen.', 'ampforwp-progressive-web-app'); ?>
+		<?php esc_html_e('Background color of the splash screen.', 'ampforwp-progressive-web-app'); ?>
 	</p>
 
 	<?php
@@ -240,7 +240,7 @@ function amp_pwa_theme_color_callback(){
 	<input type="text" name="ampforwp_pwa_settings[theme_color]" id="ampforwp_pwa_settings[theme_color]" class="ampforwp-pwa-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? esc_attr( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
 	<p class="description">
-		<?php _e('Theme color is used on supported devices to tint the UI elements of the browser and app switcher. When in doubt, use the same color as <code>Background Color</code>.', 'ampforwp-pwa-progressive-web-apps'); ?>
+		<?php esc_html_e('Theme color is used on supported devices to tint the UI elements of the browser and app switcher. When in doubt, use the same color as <code>Background Color</code>.', 'ampforwp-pwa-progressive-web-apps'); ?>
 	</p>
 	<?php
 }
@@ -264,7 +264,7 @@ function amp_pwa_app_short_name_callback(){
 	<fieldset>
 		<input type="text" name="ampforwp_pwa_settings[app_blog_short_name]" class="regular-text" value="<?php if ( isset( $settings['app_blog_short_name'] ) && ( ! empty($settings['app_blog_short_name']) ) ) echo esc_attr($settings['app_blog_short_name']); ?>"/>
 		<p class="description">
-			<?php _e('Used space to display the full name of the application. <code>12</code> characters or less.', 'ampforwp-progressive-web-app'); ?>
+			<?php esc_html_e('Used space to display the full name of the application. <code>12</code> characters or less.', 'ampforwp-progressive-web-app'); ?>
 		</p>
 	</fieldset>
 	<?php
@@ -277,7 +277,7 @@ function amp_pwa_description_callback(){
 		<input type="text" name="ampforwp_pwa_settings[description]" class="regular-text" value="<?php if ( isset( $settings['description'] ) && ( ! empty( $settings['description'] ) ) ) echo esc_attr( $settings['description'] ); ?>"/>
 		
 		<p class="description">
-			<?php _e( 'Brief description of your APP.', 'ampforwp-progressive-web-app' ); ?>
+			<?php esc_html_e( 'Brief description of your APP.', 'ampforwp-progressive-web-app' ); ?>
 		</p>
 	</fieldset>
 
@@ -295,7 +295,7 @@ function amp_pwa_app_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php _e('This will be the icon of your app when installed on the phone. Must be a <code>PNG</code> image exactly <code>192x192</code> in size.', 'ampforwp-progressive-web-app'); ?>
+		<?php esc_html_e('This will be the icon of your app when installed on the phone. Must be a <code>PNG</code> image exactly <code>192x192</code> in size.', 'ampforwp-progressive-web-app'); ?>
 	</p>
 	<?php
 }
@@ -311,7 +311,7 @@ function amp_pwa_splash_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php _e('This icon will be displayed on the splash screen of your APP on supported devices. Must be a <code>PNG</code> image exactly <code>512x512</code> in size.', 'ampforwp-progressive-web-app'); ?>
+		<?php esc_html_e('This icon will be displayed on the splash screen of your APP on supported devices. Must be a <code>PNG</code> image exactly <code>512x512</code> in size.', 'ampforwp-progressive-web-app'); ?>
 	</p>
 
 	<?php
@@ -367,19 +367,19 @@ function amp_pwa_orientation_callback(){
 	<label for="ampforwp_pwa_settings[orientation]">
 		<select name="ampforwp_pwa_settings[orientation]" id="ampforwp_pwa_settings[orientation]">
 			<option value="0" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 0 ); } ?>>
-				<?php _e( 'Follow Device Orientation', 'ampforwp-progressive-web-app' ); ?>
+				<?php esc_html_e( 'Follow Device Orientation', 'ampforwp-progressive-web-app' ); ?>
 			</option>
 			<option value="1" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait' ); } ?>>
-				<?php _e( 'Portrait', 'ampforwp-progressive-web-app' ); ?>
+				<?php esc_html_e( 'Portrait', 'ampforwp-progressive-web-app' ); ?>
 			</option>
 			<option value="2" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'Landscape' ); } ?>>
-				<?php _e( 'Landscape', 'ampforwp-progressive-web-app' ); ?>
+				<?php esc_html_e( 'Landscape', 'ampforwp-progressive-web-app' ); ?>
 			</option>
 		</select>
 	</label>
 	
 	<p class="description">
-		<?php _e( 'Set the orientation of your app on devices. When set to <code>Follow Device Orientation</code> your app will rotate as the device is rotated.', 'ampforwp-progressive-web-app' ); ?>
+		<?php esc_html_e( 'Set the orientation of your app on devices. When set to <code>Follow Device Orientation</code> your app will rotate as the device is rotated.', 'ampforwp-progressive-web-app' ); ?>
 	</p>
 
 	<?php
