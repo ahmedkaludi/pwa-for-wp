@@ -1,7 +1,7 @@
 <?php
 /**
-Plugin Name: AMP Service workers
-Description: AMP Service Worker
+Plugin Name: PWA for WordPress
+Description: PWA for WordPress
 Author: AMP For WP
 Version: 0.0.1
 Author URI: https://ampforwp.com
@@ -64,25 +64,25 @@ SKU: PWA
 			$defaults = ampforwp_pwa_defaultSettings();
 			header('Content-Type: application/json');
 			echo '{
-			  "short_name": "'.$defaults['app_blog_short_name'].'",
-			  "name": "'.$defaults['app_blog_name'].'",
-			  "description": "'.$defaults['description'].'",
+			  "short_name": "'.esc_attr($defaults['app_blog_short_name']).'",
+			  "name": "'.esc_attr($defaults['app_blog_name']).'",
+			  "description": "'.esc_attr($defaults['description']).'",
 			  "icons": [
 			    {
-			      "src": "'.$defaults['icon'].'",
+			      "src": "'.esc_url($defaults['icon']).'",
 			      "sizes": "192x192",
 			      "type": "image\/png"
 			    },
 			    {
-			      "src": "'.$defaults['splash_icon'].'",
+			      "src": "'.esc_url($defaults['splash_icon']).'",
 			      "sizes": "512x512",
 			      "type": "image\/png"
 			    }
 			  ],
-			  "background_color": "'.$defaults['background_color'].'",
-			  "theme_color": "'.$defaults['theme_color'].'",
+			  "background_color": "'.esc_html($defaults['background_color']).'",
+			  "theme_color": "'.esc_html($defaults['theme_color']).'",
 			  "display": "standalone",
-			  "orientation": "'.( isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait" ).'",
+			  "orientation": "'.esc_html( isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait" ).'",
 			  "start_url": ".",
 			  "scope": "\/"
 			}';
@@ -91,7 +91,7 @@ SKU: PWA
 
 		function ampforwp_paginated_post_add_homescreen(){
 			$url = str_replace("http:","https:",site_url());	
-			echo '<link rel="manifest" href="'. $url.'/manifest.json">';
+			echo '<link rel="manifest" href="'. esc_url($url.'/manifest.json').'">';
 		}
 
 	}//Class closed

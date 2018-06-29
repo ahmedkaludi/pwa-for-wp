@@ -7,10 +7,10 @@
 function ampforwp_pwa_add_menu_links() {
 	
 	// Main menu page
-	add_menu_page( __( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), __( 'AMPforWP PWA', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa','ampforwppwa_admin_interface_render', '', 100 );
+	add_menu_page( esc_html( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), esc_html( 'AMPforWP PWA', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa','ampforwppwa_admin_interface_render', '', 100 );
 	
 	// Settings page - Same as main menu page
-	add_submenu_page( 'ampforwp-pwa', __( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), __( 'Settings', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa', 'ampforwppwa_admin_interface_render' );
+	add_submenu_page( 'ampforwp-pwa', esc_html( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), esc_html( 'Settings', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa', 'ampforwppwa_admin_interface_render' );
 	
 }
 add_action( 'admin_menu', 'ampforwp_pwa_add_menu_links' );
@@ -20,13 +20,12 @@ function ampforwppwa_admin_interface_render(){
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	global $wpdb;
 
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {
 		
 		// Add settings saved message with the class of "updated"
-		add_settings_error( 'amppwa_setting_dashboard_group', 'amppwa_settings_saved_message', __( 'Settings saved.', 'ampforwp-progressive-web-app' ), 'updated' );
+		add_settings_error( 'amppwa_setting_dashboard_group', 'amppwa_settings_saved_message', esc_html( 'Settings saved.', 'ampforwp-progressive-web-app' ), 'updated' );
 		
 		// Show Settings Saved Message
 		settings_errors( 'amppwa_setting_dashboard_group' );
@@ -38,13 +37,13 @@ function ampforwppwa_admin_interface_render(){
 		<h2 class="nav-tab-wrapper amppwa-tabs">
 			<?php
 
-			echo '<a href="' . ampforwp_pwa_admin_link() . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . __('Dashboard') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link() . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html('Dashboard') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('general') . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('General','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('general') . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html('General','ampforwp-progressive-web-app') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('design') . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Design','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('design') . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html('Design','ampforwp-progressive-web-app') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('help') . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Help','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('help') . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html('Help','ampforwp-progressive-web-app') . '</a>';
 			?>
 		</h2>
 		<?php settings_errors(); ?>
@@ -81,7 +80,7 @@ function ampforwppwa_admin_interface_render(){
 			<div class="button-wrapper">
 				<?php
 				// Output save settings button
-			submit_button( __('Save Settings', 'ampforwp-progressive-web-app') );
+			submit_button( esc_html('Save Settings', 'ampforwp-progressive-web-app') );
 				?>
 			</div>
 		</form>
@@ -98,11 +97,11 @@ add_action('admin_init', 'ampforwp_pwa_settings_init');
 function ampforwp_pwa_settings_init(){
 	register_setting( 'amppwa_setting_dashboard_group', 'ampforwp_pwa_settings' );
 
-	add_settings_section('amp_pwa_dashboard_section', __('Status','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_dashboard_section');
+	add_settings_section('amp_pwa_dashboard_section', esc_html('Status','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_dashboard_section');
 		// Manifest status
 		add_settings_field(
 			'amppwa_manifest_status',								// ID
-			__('Manifest', 'ampforwp-progressive-web-app'),			// Title
+			esc_html('Manifest', 'ampforwp-progressive-web-app'),			// Title
 			'amp_pwa_manifest_status_callback',					// Callback
 			'amp_pwa_dashboard_section',							// Page slug
 			'amp_pwa_dashboard_section'							// Settings Section ID
@@ -110,7 +109,7 @@ function ampforwp_pwa_settings_init(){
 
 		add_settings_field(
 			'amppwa_sw_status',									// ID
-			__('Service Worker', 'ampforwp-progressive-web-app'),		// Title
+			esc_html('Service Worker', 'ampforwp-progressive-web-app'),		// Title
 			'amp_pwa_sw_status_callback',								// Callback
 			'amp_pwa_dashboard_section',							// Page slug
 			'amp_pwa_dashboard_section'							// Settings Section ID
@@ -119,7 +118,7 @@ function ampforwp_pwa_settings_init(){
 		// HTTPS status
 		add_settings_field(
 			'amppwa_https_status',								// ID
-			__('HTTPS', 'ampforwp-progressive-web-app'),				// Title
+			esc_html('HTTPS', 'ampforwp-progressive-web-app'),				// Title
 			'amp_pwa_https_status_callback',								// CB
 			'amp_pwa_dashboard_section',							// Page slug
 			'amp_pwa_dashboard_section'							// Settings Section ID
@@ -130,7 +129,7 @@ function ampforwp_pwa_settings_init(){
 		// Application Name
 		add_settings_field(
 			'amppwa_app_name',									// ID
-			__('Application Name', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Application Name', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_app_name_callback',									// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -139,7 +138,7 @@ function ampforwp_pwa_settings_init(){
 		// Application Short Name
 		add_settings_field(
 			'amppwa_app_short_name',								// ID
-			__('Application Short Name', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Application Short Name', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_app_short_name_callback',							// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -148,7 +147,7 @@ function ampforwp_pwa_settings_init(){
 		// Description
 		add_settings_field(
 			'amppwa_app_description',									// ID
-			__( 'Description', 'ampforwp-progressive-web-app' ),		// Title
+			esc_html( 'Description', 'ampforwp-progressive-web-app' ),		// Title
 			'amp_pwa_description_callback',								// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -157,7 +156,7 @@ function ampforwp_pwa_settings_init(){
 		// Application Icon
 		add_settings_field(
 			'amppwa_app_icons',										// ID
-			__('Application Icon', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Application Icon', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_app_icon_callback',									// Callback function
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -166,7 +165,7 @@ function ampforwp_pwa_settings_init(){
 		// Splash Screen Icon
 		add_settings_field(
 			'amppwa_app_splash_icon',									// ID
-			__('Splash Screen Icon', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Splash Screen Icon', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_splash_icon_callback',								// Callback function
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -175,7 +174,7 @@ function ampforwp_pwa_settings_init(){
 		// Offline Page
 		add_settings_field(
 			'amppwa_offline_page',								// ID
-			__('Offline Page', 'ampforwp-progressive-web-app'),		// Title
+			esc_html('Offline Page', 'ampforwp-progressive-web-app'),		// Title
 			'amp_pwa_offline_page_callback',								// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -184,7 +183,7 @@ function ampforwp_pwa_settings_init(){
 		// 404 Page
 		add_settings_field(
 			'amppwa_404_page',								// ID
-			__('404 Page', 'ampforwp-progressive-web-app'),		// Title
+			esc_html('404 Page', 'ampforwp-progressive-web-app'),		// Title
 			'amp_pwa_404_page_callback',								// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -193,7 +192,7 @@ function ampforwp_pwa_settings_init(){
 		// Orientation
 		add_settings_field(
 			'amppwa_orientation',									// ID
-			__('Orientation', 'ampforwp-progressive-web-app'),		// Title
+			esc_html('Orientation', 'ampforwp-progressive-web-app'),		// Title
 			'amp_pwa_orientation_callback',								// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -203,7 +202,7 @@ function ampforwp_pwa_settings_init(){
 		// Splash Screen Background Color
 		add_settings_field(
 			'amppwa_background_color',							// ID
-			__('Background Color', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Background Color', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_background_color_callback',							// CB
 			'amp_pwa_design_section',						// Page slug
 			'amp_pwa_design_section'						// Settings Section ID
@@ -212,7 +211,7 @@ function ampforwp_pwa_settings_init(){
 		// Theme Color
 		add_settings_field(
 			'amppwa_theme_color',									// ID
-			__('Theme Color', 'ampforwp-progressive-web-app'),		// Title
+			esc_html('Theme Color', 'ampforwp-progressive-web-app'),		// Title
 			'amp_pwa_theme_color_callback',								// CB
 			'amp_pwa_design_section',						// Page slug
 			'amp_pwa_design_section'						// Settings Section ID
@@ -325,14 +324,14 @@ function amp_pwa_offline_page_callback(){
 	<?php echo wp_dropdown_pages( array( 
 			'name' => 'ampforwp_pwa_settings[offline_page]', 
 			'echo' => 0, 
-			'show_option_none' => __( '&mdash; Default &mdash;' ), 
+			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
 			'selected' =>  isset($settings['offline_page']) ? $settings['offline_page'] : '',
 		)); ?>
 	</label>
 	
 	<p class="description">
-		<?php printf( __( 'Offline page is displayed when the device is offline and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
+		<?php printf( esc_html( 'Offline page is displayed when the device is offline and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
 	</p>
 
 	<?php
@@ -346,14 +345,14 @@ function amp_pwa_404_page_callback(){
 	<?php echo wp_dropdown_pages( array( 
 			'name' => 'ampforwp_pwa_settings[404_page]', 
 			'echo' => 0, 
-			'show_option_none' => __( '&mdash; Default &mdash;' ), 
+			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
 			'selected' =>  isset($settings['404_page']) ? $settings['404_page'] : '',
 		)); ?>
 	</label>
 	
 	<p class="description">
-		<?php printf( __( '404 page is displayed and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
+		<?php printf( esc_html( '404 page is displayed and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
 	</p>
 
 	<?php
@@ -390,20 +389,20 @@ function amp_pwa_orientation_callback(){
 
 // Dashboard
 function amp_pwa_manifest_status_callback(){
-	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . __( 'Manifest generated successfully. You can <a href="%s" target="_blank">see it here &rarr;</a>', 'ampforwp-progressive-web-app' ) . '</p>', 'manifest url' );
+	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Manifest generated successfully. You can <a href="%s" target="_blank">see it here &rarr;</a>', 'ampforwp-progressive-web-app' ) . '</p>', 'manifest url' );
 }
 
 function amp_pwa_sw_status_callback(){
-	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . __( 'Service worker generated successfully.', 'ampforwp-progressive-web-app' ) . '</p>' );
+	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Service worker generated successfully.', 'ampforwp-progressive-web-app' ) . '</p>' );
 }
 
 function amp_pwa_https_status_callback(){
 	if ( is_ssl() ) {
 		
-		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . __( 'Your website is served over HTTPS.', 'ampforwp-progressive-web-app' ) . '</p>' );
+		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Your website is served over HTTPS.', 'ampforwp-progressive-web-app' ) . '</p>' );
 	} else {
 		
-		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> ' . __( 'Progressive Web Apps require that your website is served over HTTPS. Please contact your host to add a SSL certificate to your domain.', 'ampforwp-progressive-web-app' ) . '</p>' );
+		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> ' . esc_attr( 'Progressive Web Apps require that your website is served over HTTPS. Please contact your host to add a SSL certificate to your domain.', 'ampforwp-progressive-web-app' ) . '</p>' );
 	}
 }
 
