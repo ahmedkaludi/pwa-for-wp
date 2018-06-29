@@ -38,13 +38,13 @@ function ampforwppwa_admin_interface_render(){
 		<h2 class="nav-tab-wrapper amppwa-tabs">
 			<?php
 
-			echo '<a href="' . ampforwp_pwa_admin_link() . '" class="nav-tab ' . ( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . __('Dashboard') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link() . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . __('Dashboard') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('general') . '" class="nav-tab ' . ( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('General','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('general') . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('General','ampforwp-progressive-web-app') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('design') . '" class="nav-tab ' . ( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Design','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('design') . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Design','ampforwp-progressive-web-app') . '</a>';
 
-			echo '<a href="' . ampforwp_pwa_admin_link('help') . '" class="nav-tab ' . ( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Help','ampforwp-progressive-web-app') . '</a>';
+			echo '<a href="' . ampforwp_pwa_admin_link('help') . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . __('Help','ampforwp-progressive-web-app') . '</a>';
 			?>
 		</h2>
 		<?php settings_errors(); ?>

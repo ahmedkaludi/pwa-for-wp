@@ -34,7 +34,7 @@ function ampforwp_pwa_admin_link($tab = '', $args = array()){
 		}
 	}
 
-	return $link;
+	return esc_url($link);
 }
 
 
