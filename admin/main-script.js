@@ -30,4 +30,28 @@ jQuery(document).ready(function($){
 		})
 		.open();
 	});
+
+	$('.amppwa-tabs a').click(function(e){
+		var href = $(this).attr('href');
+		var currentTab = getParameterByName('tab',href);
+		if(!currentTab){
+			currentTab = 'dashboard';
+		}
+		$(this).siblings().removeClass('nav-tab-active');
+		$(this).addClass('nav-tab-active');
+		$('.form-wrap').find('.amp-pwa-'+currentTab).siblings().hide();
+		$('.form-wrap .amp-pwa-'+currentTab).show();
+		window.history.pushState("", "", href);
+
+		return false;
+	})
 });
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}

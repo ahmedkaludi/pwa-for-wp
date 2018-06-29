@@ -51,10 +51,11 @@ SKU: PWA
 		}
 
 		function ampforwp_pwa_wp_manifest(){
-			$defaults = defaultSettings();
+			$defaults = ampforwp_pwa_defaultSettings();
+			header('Content-Type: application/json');
 			echo '{
-			  "name": "'.$defaults['app_blog_name'].'",
 			  "short_name": "'.$defaults['app_blog_short_name'].'",
+			  "name": "'.$defaults['app_blog_name'].'",
 			  "description": "'.$defaults['description'].'",
 			  "icons": [
 			    {
@@ -79,7 +80,8 @@ SKU: PWA
 		}
 
 		function ampforwp_paginated_post_add_homescreen(){
-			echo '<link rel="manifest" href="./manifest.json">';
+			$url = str_replace("http:","https:",site_url());	
+			echo '<link rel="manifest" href="'. $url.'/manifest.json">';
 		}
 
 	}//Class closed

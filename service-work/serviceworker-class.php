@@ -58,8 +58,8 @@ class ServiceWorker{
 		$offline_page = get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
 		$page404 = get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );
 
-		$offline_page = str_replace( 'http://', 'https://', $offline_page );
-		$page404 = str_replace( 'http://', 'https://', $page404 );
+		$offline_page = str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
+		$page404 = str_replace( 'http://', 'https://', $page404 ).'?amp=1';
 
 		$swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}"), array($offline_page, $page404 ), $swJsContent);
 
@@ -110,7 +110,7 @@ class ServiceWorker{
 
 		$ajaxUrl = str_replace( site_url()."/", '', admin_url( 'admin-ajax.php' ) );
 		
-		$htaccessPwa = "#BEGIN ampforwp pwa\n#Must the First Rewrite Rule\n<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteBase ".$home_root."\nRewriteCond %{REQUEST_METHOD} !POST\n RewriteCond %{QUERY_STRING} !.*=.*\nRewriteRule ^sw.js$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swjs [L]\nRewriteRule ^sw.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swhtml [L]\nRewriteRule ^404.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_404html [L]\nRewriteRule ^offline_index.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_offlinehtml [L]\n</IfModule>\n<IfModule mod_headers.c>\n<FilesMatch \"\.(js)$\">\nHeader set Access-Control-Allow-Origin \"*\"\n</FilesMatch>\n</Ifmodule>\n#End PWA ";
+		$htaccessPwa = "#BEGIN ampforwp pwa\n#Must the First Rewrite Rule\n<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteBase ".$home_root."\nRewriteCond %{REQUEST_METHOD} !POST\n RewriteCond %{QUERY_STRING} !.*=.*\nRewriteRule ^sw.js$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swjs [L]\nRewriteRule ^manifest.json$ ".$ajaxUrl."?action=ampforwp_pwa_wp_manifest [L]\nRewriteRule ^sw.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swhtml [L]\nRewriteRule ^404.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_404html [L]\nRewriteRule ^offline_index.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_offlinehtml [L]\n</IfModule>\n<IfModule mod_headers.c>\n<FilesMatch \"\.(js)$\">\nHeader set Access-Control-Allow-Origin \"*\"\n</FilesMatch>\n</Ifmodule>\n#End PWA ";
 		return $htaccessPwa;
 	}
 	

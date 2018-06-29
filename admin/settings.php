@@ -49,6 +49,7 @@ function ampforwppwa_admin_interface_render(){
 		</h2>
 		<?php settings_errors(); ?>
 		<form action="options.php" method="post" enctype="multipart/form-data">		
+			<div class="form-wrap">
 			<?php
 			// Output nonce, action, and option_page fields for a settings page.
 			settings_fields( 'amppwa_setting_dashboard_group' );
@@ -70,13 +71,19 @@ function ampforwppwa_admin_interface_render(){
 				do_settings_sections( 'amp_pwa_design_section' );	// Page slug
 			echo "</div>";
 			echo "<div class='amp-pwa-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
+				echo "<h3>Help options</h3>";
 				// design Application Settings
 				do_settings_sections( 'amp_pwa_help_section' );	// Page slug
 			echo "</div>";
 
-			// Output save settings button
-			submit_button( __('Save Settings', 'ampforwp-progressive-web-app') );
 			?>
+		</div>
+			<div class="button-wrapper">
+				<?php
+				// Output save settings button
+			submit_button( __('Save Settings', 'ampforwp-progressive-web-app') );
+				?>
+			</div>
 		</form>
 	</div>
 	<?php
