@@ -97,7 +97,7 @@ add_action('admin_init', 'ampforwp_pwa_settings_init');
 function ampforwp_pwa_settings_init(){
 	register_setting( 'amppwa_setting_dashboard_group', 'ampforwp_pwa_settings' );
 
-	add_settings_section('amp_pwa_dashboard_section', esc_html('Status','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_dashboard_section');
+	add_settings_section('amp_pwa_dashboard_section', esc_html('Installation Status','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_dashboard_section');
 		// Manifest status
 		add_settings_field(
 			'amppwa_manifest_status',								// ID
@@ -147,7 +147,7 @@ function ampforwp_pwa_settings_init(){
 		// Description
 		add_settings_field(
 			'amppwa_app_description',									// ID
-			esc_html( 'Description', 'ampforwp-progressive-web-app' ),		// Title
+			esc_html( 'Application Description', 'ampforwp-progressive-web-app' ),		// Title
 			'amp_pwa_description_callback',								// CB
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -165,7 +165,7 @@ function ampforwp_pwa_settings_init(){
 		// Splash Screen Icon
 		add_settings_field(
 			'amppwa_app_splash_icon',									// ID
-			esc_html('Splash Screen Icon', 'ampforwp-progressive-web-app'),	// Title
+			esc_html('Application Splash Screen Icon', 'ampforwp-progressive-web-app'),	// Title
 			'amp_pwa_splash_icon_callback',								// Callback function
 			'amp_pwa_general_section',						// Page slug
 			'amp_pwa_general_section'						// Settings Section ID
@@ -226,10 +226,6 @@ function amp_pwa_background_color_callback(){
 	<!-- Background Color -->
 	<input type="text" name="ampforwp_pwa_settings[background_color]" id="ampforwp_pwa_settings[background_color]" class="ampforwp-pwa-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? esc_attr( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
-	<p class="description">
-		<?php esc_html_e('Background color of the splash screen.', 'ampforwp-progressive-web-app'); ?>
-	</p>
-
 	<?php
 }
 function amp_pwa_theme_color_callback(){
@@ -239,7 +235,7 @@ function amp_pwa_theme_color_callback(){
 	<input type="text" name="ampforwp_pwa_settings[theme_color]" id="ampforwp_pwa_settings[theme_color]" class="ampforwp-pwa-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? esc_attr( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
 	<p class="description">
-		<?php esc_html_e('Theme color is used on supported devices to tint the UI elements of the browser and app switcher. When in doubt, use the same color as <code>Background Color</code>.', 'ampforwp-pwa-progressive-web-apps'); ?>
+		
 	</p>
 	<?php
 }
@@ -262,9 +258,7 @@ function amp_pwa_app_short_name_callback(){
 	
 	<fieldset>
 		<input type="text" name="ampforwp_pwa_settings[app_blog_short_name]" class="regular-text" value="<?php if ( isset( $settings['app_blog_short_name'] ) && ( ! empty($settings['app_blog_short_name']) ) ) echo esc_attr($settings['app_blog_short_name']); ?>"/>
-		<p class="description">
-			<?php esc_html_e('Used space to display the full name of the application. <code>12</code> characters or less.', 'ampforwp-progressive-web-app'); ?>
-		</p>
+		
 	</fieldset>
 	<?php
 }
@@ -275,9 +269,7 @@ function amp_pwa_description_callback(){
 	<fieldset>
 		<input type="text" name="ampforwp_pwa_settings[description]" class="regular-text" value="<?php if ( isset( $settings['description'] ) && ( ! empty( $settings['description'] ) ) ) echo esc_attr( $settings['description'] ); ?>"/>
 		
-		<p class="description">
-			<?php esc_html_e( 'Brief description of your APP.', 'ampforwp-progressive-web-app' ); ?>
-		</p>
+		
 	</fieldset>
 
 	<?php
@@ -294,7 +286,7 @@ function amp_pwa_app_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php esc_html_e('This will be the icon of your app when installed on the phone. Must be a <code>PNG</code> image exactly <code>192x192</code> in size.', 'ampforwp-progressive-web-app'); ?>
+		<?php esc_html_e('Icon of your application when installed on the phone. Must be a PNG image exactly 192x192 in size.', 'ampforwp-progressive-web-app'); ?>
 	</p>
 	<?php
 }
@@ -310,7 +302,7 @@ function amp_pwa_splash_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php esc_html_e('This icon will be displayed on the splash screen of your APP on supported devices. Must be a <code>PNG</code> image exactly <code>512x512</code> in size.', 'ampforwp-progressive-web-app'); ?>
+		<?php esc_html_e('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly 512x512.', 'ampforwp-progressive-web-app'); ?>
 	</p>
 
 	<?php
@@ -331,7 +323,7 @@ function amp_pwa_offline_page_callback(){
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html( 'Offline page is displayed when the device is offline and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
+		<?php printf( esc_html( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'ampforwp-progressive-web-app' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
 	</p>
 
 	<?php
@@ -352,7 +344,7 @@ function amp_pwa_404_page_callback(){
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html( '404 page is displayed and the requested page is not already cached. Current offline page is <code>%s</code>', 'ampforwp-progressive-web-app' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
+		<?php printf( esc_html( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'ampforwp-progressive-web-app' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
 	</p>
 
 	<?php
@@ -378,7 +370,7 @@ function amp_pwa_orientation_callback(){
 	</label>
 	
 	<p class="description">
-		<?php esc_html_e( 'Set the orientation of your app on devices. When set to <code>Follow Device Orientation</code> your app will rotate as the device is rotated.', 'ampforwp-progressive-web-app' ); ?>
+		<?php esc_html_e( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'ampforwp-progressive-web-app' ); ?>
 	</p>
 
 	<?php
@@ -389,20 +381,32 @@ function amp_pwa_orientation_callback(){
 
 // Dashboard
 function amp_pwa_manifest_status_callback(){
-	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Manifest generated successfully. You can <a href="%s" target="_blank">see it here &rarr;</a>', 'ampforwp-progressive-web-app' ) . '</p>', 'manifest url' );
+	$swUrl = site_url()."/manifest.json";
+	$file_headers = @get_headers($swUrl);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found' || $file_headers[0] == 'HTTP/1.0 404 Not Found') {
+	   printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
+	}else{
+		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>', 'manifest url' );
+	}
 }
 
 function amp_pwa_sw_status_callback(){
-	printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Service worker generated successfully.', 'ampforwp-progressive-web-app' ) . '</p>' );
+	$swUrl = site_url()."/sw.js";
+	$file_headers = @get_headers($swUrl);
+	if(!$file_headers || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
+	}else{
+		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>' );
+	}
 }
 
 function amp_pwa_https_status_callback(){
 	if ( is_ssl() ) {
 		
-		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> ' . esc_attr( 'Your website is served over HTTPS.', 'ampforwp-progressive-web-app' ) . '</p>' );
+		printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>' );
 	} else {
 		
-		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> ' . esc_attr( 'Progressive Web Apps require that your website is served over HTTPS. Please contact your host to add a SSL certificate to your domain.', 'ampforwp-progressive-web-app' ) . '</p>' );
+		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
 	}
 }
 
