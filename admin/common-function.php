@@ -62,7 +62,7 @@ function ampforwp_pwa_defaultSettings(){
 		'start_url_amp'		=> 0,
 		'offline_page' 		=> 0,
 		'404_page' 			=> 0,
-		'orientation'		=> 1,
+		'orientation'		=> 'portrait',
 	);
 	$settings = get_option( 'ampforwp_pwa_settings', $defaults );
 	return $settings;

@@ -369,10 +369,10 @@ function amp_pwa_orientation_callback(){
 			<option value="0" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 0 ); } ?>>
 				<?php _e( 'Follow Device Orientation', 'ampforwp-progressive-web-app' ); ?>
 			</option>
-			<option value="1" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 1 ); } ?>>
+			<option value="1" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait' ); } ?>>
 				<?php _e( 'Portrait', 'ampforwp-progressive-web-app' ); ?>
 			</option>
-			<option value="2" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 2 ); } ?>>
+			<option value="2" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'Landscape' ); } ?>>
 				<?php _e( 'Landscape', 'ampforwp-progressive-web-app' ); ?>
 			</option>
 		</select>

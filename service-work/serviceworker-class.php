@@ -12,7 +12,7 @@ class ServiceWorker{
 		//Service worker added
 		add_action('amp_post_template_footer',array($this, 'ampforwp_service_worker'));
 		//Load Script
-		add_filter('amp_post_template_data',array($this, 'ampforwp_pwa_service_worker_script'));
+		add_filter('amp_post_template_data',array($this, 'ampforwp_pwa_service_worker_script'),35);
 
 		//Run time File Generate
 		//sw.Js
