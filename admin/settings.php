@@ -23,7 +23,7 @@ function ampforwppwa_admin_interface_render(){
 	global $wpdb;
 
 	// Handing save settings
-	if ( isset( $_GET['amp-pwa-settings-updated'] ) ) {
+	if ( isset( $_GET['settings-updated'] ) ) {
 		
 		// Add settings saved message with the class of "updated"
 		add_settings_error( 'amppwa_setting_dashboard_group', 'amppwa_settings_saved_message', __( 'Settings saved.', 'ampforwp-progressive-web-app' ), 'updated' );
@@ -96,7 +96,7 @@ function ampforwppwa_admin_interface_render(){
 add_action('admin_init', 'ampforwp_pwa_settings_init');
 
 function ampforwp_pwa_settings_init(){
-	register_setting( 'amppwa_setting_dashboard_group', 'dashboard' );
+	register_setting( 'amppwa_setting_dashboard_group', 'ampforwp_pwa_settings' );
 
 	add_settings_section('amp_pwa_dashboard_section', __('Status','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_dashboard_section');
 		// Manifest status
