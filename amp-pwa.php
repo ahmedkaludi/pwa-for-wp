@@ -1,7 +1,7 @@
 <?php
 /**
-Plugin Name: AMP Service workers
-Description: AMP Service Worker
+Plugin Name: PWA for WordPress
+Description: PWA for WordPress
 Author: AMP For WP
 Version: 0.0.1
 Author URI: https://ampforwp.com
