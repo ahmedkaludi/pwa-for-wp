@@ -29,13 +29,16 @@ SKU: PWA
 		public function init(){
 			require_once AMPFORWP_SERVICEWORKER_PLUGIN_DIR."service-work/serviceworker-class.php";
 
+			$serviceWorker = new ServiceWorker();
+			$serviceWorker->init();
+
 			require_once AMPFORWP_SERVICEWORKER_PLUGIN_DIR."admin/common-function.php";
 			if( ampforwp_pwa_is_admin() ){
+				add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array($this, 'amppwa_add_action_links') );
 				require_once AMPFORWP_SERVICEWORKER_PLUGIN_DIR."admin/settings.php";
 			}
 
-			$serviceWorker = new ServiceWorker();
-			$serviceWorker->init();
+			
 			//On Activate
 			register_activation_hook( __FILE__, array($serviceWorker, 'ampforwp_rewrite_rules_custom_rewrite' ) );
 			//On Deactivate
@@ -48,6 +51,13 @@ SKU: PWA
 			//manifest.json
 			add_action( 'wp_ajax_ampforwp_pwa_wp_manifest', array($this, 'ampforwp_pwa_wp_manifest') );
 			add_action( 'wp_ajax_nopriv_ampforwp_pwa_wp_manifest', array($this, 'ampforwp_pwa_wp_manifest') );
+		}
+
+		function amppwa_add_action_links($links){
+			$mylinks = array(
+			 '<a href="' . admin_url( 'admin.php?page=ampforwp-pwa' ) . '">Settings</a>',
+			 );
+			return array_merge( $links, $mylinks );
 		}
 
 		function ampforwp_pwa_wp_manifest(){
