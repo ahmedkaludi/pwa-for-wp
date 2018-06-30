@@ -35,21 +35,21 @@ class ServiceWorker{
 
 	public function ampforwp_pwa_wp_404html(){
 		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."layouts/404.html");
+		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/404.html");
 		echo $swHtmlContent;
 		wp_die();
 	}
 
 	public function ampforwp_pwa_wp_swhtml(){
 		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."layouts/sw.html");
+		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/sw.html");
 		echo $swHtmlContent;
 		wp_die();
 	}
 
 	public function ampforwp_pwa_wp_swjs(){
 		header("Content-Type:text/javascript; charset=UTF-8");
-		$swJsContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."layouts/sw.js");
+		$swJsContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/sw.js");
 
 		$settings = ampforwp_pwa_defaultSettings();
 		$offline_page = './offline_index.html';
@@ -69,7 +69,7 @@ class ServiceWorker{
 
 	public function ampforwp_pwa_wp_offlinehtml(){
 		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_SERVICEWORKER_PLUGIN_DIR."layouts/offline/index.html");
+		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/offline/index.html");
 		echo $swHtmlContent;
 		wp_die();
 	}
