@@ -166,8 +166,8 @@ $path = plugin_basename( __FILE__ );
 	    $folderName = basename(__DIR__);
             define( 'AMP_PWA_ITEM_FOLDER_NAME', $folderName );
         }
-        $pluginsDetail = $redux_builder_amp['amp-license'][AMP_PWA_ITEM_FOLDER_NAME];
-        $pluginstatus = $pluginsDetail['status'];
+        $pluginsDetail = @$redux_builder_amp['amp-license'][AMP_PWA_ITEM_FOLDER_NAME];
+        $pluginstatus = @$pluginsDetail['status'];
 
         if(empty($redux_builder_amp['amp-license'][AMP_PWA_ITEM_FOLDER_NAME]['license'])){
 			echo "<tr class='active'><td>&nbsp;</td><td colspan='2'><a href='".esc_url(  self_admin_url( 'admin.php?page=amp_options&tabid=opt-go-premium' )  )."'>Please enter the license key</a> to get the <strong>latest features</strong> and <strong>stable updates</strong></td></tr>";

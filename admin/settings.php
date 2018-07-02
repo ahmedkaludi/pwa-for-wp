@@ -7,7 +7,7 @@
 function ampforwp_pwa_add_menu_links() {
 	
 	// Main menu page
-	add_menu_page( esc_html( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), esc_html( 'AMPforWP PWA', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa','ampforwppwa_admin_interface_render', '', 100 );
+	add_menu_page( esc_html( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), esc_html( 'PWA', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa','ampforwppwa_admin_interface_render', '', 100 );
 	
 	// Settings page - Same as main menu page
 	add_submenu_page( 'ampforwp-pwa', esc_html( 'AMPforWP Progressive Web Apps', 'ampforwp-progressive-web-app' ), esc_html( 'Settings', 'ampforwp-progressive-web-app' ), 'manage_options', 'ampforwp-pwa', 'ampforwppwa_admin_interface_render' );
@@ -198,7 +198,7 @@ function ampforwp_pwa_settings_init(){
 			'amp_pwa_general_section'						// Settings Section ID
 		);
 
-	add_settings_section('amp_pwa_design_section', __return_false(), '__return_false', 'amp_pwa_design_section');
+	add_settings_section('amp_pwa_design_section', esc_html('Splash Screen','ampforwp-progressive-web-app'), '__return_false', 'amp_pwa_design_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'amppwa_background_color',							// ID
