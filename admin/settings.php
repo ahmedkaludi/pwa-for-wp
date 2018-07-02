@@ -70,7 +70,7 @@ function ampforwppwa_admin_interface_render(){
 				do_settings_sections( 'amp_pwa_design_section' );	// Page slug
 			echo "</div>";
 			echo "<div class='amp-pwa-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
-				echo "<h3>Help options</h3>";
+				echo "<h3>Help options</h3><p>--------------------------</p><p>Help contents here</p>";
 				// design Application Settings
 				do_settings_sections( 'amp_pwa_help_section' );	// Page slug
 			echo "</div>";
