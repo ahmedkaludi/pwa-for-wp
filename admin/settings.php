@@ -25,10 +25,10 @@ function ampforwppwa_admin_interface_render(){
 	if ( isset( $_GET['settings-updated'] ) ) {
 		
 		// Add settings saved message with the class of "updated"
-		add_settings_error( 'amppwa_setting_dashboard_group', 'amppwa_settings_saved_message', esc_html( 'Settings saved.', 'ampforwp-progressive-web-app' ), 'updated' );
+		//add_settings_error( 'amppwa_setting_dashboard_group', 'amppwa_settings_saved_message', esc_html( 'Settings saved.', 'ampforwp-progressive-web-app' ), 'updated' );
 		
 		// Show Settings Saved Message
-		settings_errors( 'amppwa_setting_dashboard_group' );
+		settings_errors();
 	}
 	$tab = ampforwp_pwa_get_tab('dashboard', array('dashboard','general','design','help'));
 	?>
@@ -46,7 +46,6 @@ function ampforwppwa_admin_interface_render(){
 			echo '<a href="' . ampforwp_pwa_admin_link('help') . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html('Help','ampforwp-progressive-web-app') . '</a>';
 			?>
 		</h2>
-		<?php settings_errors(); ?>
 		<form action="options.php" method="post" enctype="multipart/form-data">		
 			<div class="form-wrap">
 			<?php
@@ -357,13 +356,13 @@ function amp_pwa_orientation_callback(){
 	<!-- Orientation Dropdown -->
 	<label for="ampforwp_pwa_settings[orientation]">
 		<select name="ampforwp_pwa_settings[orientation]" id="ampforwp_pwa_settings[orientation]">
-			<option value="0" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 0 ); } ?>>
+			<option value="" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'],'' ); } ?>>
 				<?php esc_html_e( 'Follow Device Orientation', 'ampforwp-progressive-web-app' ); ?>
 			</option>
-			<option value="1" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait' ); } ?>>
+			<option value="portrait" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait' ); } ?>>
 				<?php esc_html_e( 'Portrait', 'ampforwp-progressive-web-app' ); ?>
 			</option>
-			<option value="2" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'Landscape' ); } ?>>
+			<option value="landscape" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape' ); } ?>>
 				<?php esc_html_e( 'Landscape', 'ampforwp-progressive-web-app' ); ?>
 			</option>
 		</select>

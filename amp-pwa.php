@@ -77,6 +77,14 @@ SKU: PWA
 
 		function ampforwp_pwa_wp_manifest(){
 			$defaults = ampforwp_pwa_defaultSettings();
+			if(function_exists('ampforwp_url_controller')){
+				$homeUrl = esc_url( ampforwp_url_controller( get_home_url() ) );
+			}else{
+				$homeUrl = esc_url(  get_home_url().AMP_QUERY_VAR );
+			}
+
+			$orientation = isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
+			if($orientation==0) { $orientation = "portrait"; }
 			header('Content-Type: application/json');
 			echo '{
 			  "short_name": "'.esc_attr($defaults['app_blog_short_name']).'",
@@ -97,8 +105,8 @@ SKU: PWA
 			  "background_color": "'.esc_html($defaults['background_color']).'",
 			  "theme_color": "'.esc_html($defaults['theme_color']).'",
 			  "display": "standalone",
-			  "orientation": "'.esc_html( isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait" ).'",
-			  "start_url": ".",
+			  "orientation": "'.esc_html( $orientation ).'",
+			  "start_url": '.$homeUrl.',
 			  "scope": "\/"
 			}';
 			wp_die();
