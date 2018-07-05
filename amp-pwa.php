@@ -106,10 +106,11 @@ SKU: PWA
 			  "theme_color": "'.esc_html($defaults['theme_color']).'",
 			  "display": "standalone",
 			  "orientation": "'.esc_html( $orientation ).'",
-			  "start_url": '.$homeUrl.',
-			  "scope": "\/"
+			  "start_url": "'.$homeUrl.'",
+			  "scope": "'.$homeUrl.'"
 			}';
 			wp_die();
+			//"\/"
 		}
 
 		function ampforwp_paginated_post_add_homescreen(){
