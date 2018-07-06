@@ -1,11 +1,11 @@
 <?php
 /**
 Plugin Name: PWA for WordPress
-Description: PWA for WordPress
+Description: PWA for WordPress with AMP Support
 Author: AMP For WP
-Version: 0.0.1
+Version: 1.0
 Author URI: https://ampforwp.com
-Plugin URI: https://ampforwp.com
+Plugin URI: https://ampforwp.com/pwa/
 Text Domain: amp-service-worker
 Domain Path: /languages/
 SKU: PWA
@@ -16,7 +16,7 @@ SKU: PWA
  
 	define('AMPFORWP_PWA_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 	define('AMPFORWP_PWA_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-	define('AMPFORWP_PWA_PLUGIN_VERSION', '0.0.1');
+	define('AMPFORWP_PWA_PLUGIN_VERSION', '1.0');
 
 	// this is the URL our updater / license checker pings. This should be the URL of the site with EDD installed
 	define( 'AMP_PWA_STORE_URL', 'https://accounts.ampforwp.com/' ); // you should use your own CONSTANT name, and be sure to replace it throughout this file
