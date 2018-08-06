@@ -225,7 +225,7 @@ self.addEventListener(
             )
                 .catch(
                     (err) => {
-                        event.skipWaiting();
+                        self.skipWaiting();
                     }
                 )
         );

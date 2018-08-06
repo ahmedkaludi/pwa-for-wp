@@ -1,150 +1,81 @@
 <?php
-
-class ServiceWorker{
-	public $wppath;
-	public function __construct(){
-		$this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-	}
-
-	public function init(){
-		//Admin Work
+               
+class pwaforwpServiceWorker{
 	
-		//Service worker added
-		add_action('amp_post_template_footer',array($this, 'ampforwp_service_worker'));
-		//Load Script
-		add_filter('amp_post_template_data',array($this, 'ampforwp_pwa_service_worker_script'),35);
+        public $is_amp = false;
+        public $is_amp_front = false;
+        public $swjs_path;
+        public $swjs_path_amp;
+        public $swhtml_path;
+        public $minifest_path;
+        public $minifest_path_amp;
+        public $wppath;
 
-		//Run time File Generate
-		//sw.Js
-		add_action( 'wp_ajax_ampforwp_pwa_wp_swjs', array($this, 'ampforwp_pwa_wp_swjs') );
-		add_action( 'wp_ajax_nopriv_ampforwp_pwa_wp_swjs', array($this, 'ampforwp_pwa_wp_swjs') );//sw.Js
-
-		//HTML FILES
-		//sw.html
-		add_action( 'wp_ajax_ampforwp_pwa_wp_swhtml', array($this, 'ampforwp_pwa_wp_swhtml') );
-		add_action( 'wp_ajax_nopriv_ampforwp_pwa_wp_swhtml', array($this, 'ampforwp_pwa_wp_swhtml') );
-
-		//404.html
-		add_action( 'wp_ajax_ampforwp_pwa_wp_404html', array($this, 'ampforwp_pwa_wp_404html') );
-		add_action( 'wp_ajax_nopriv_ampforwp_pwa_wp_404html', array($this, 'ampforwp_pwa_wp_404html') );
-
-		//offline.html
-		add_action( 'wp_ajax_ampforwp_pwa_wp_offlinehtml', array($this, 'ampforwp_pwa_wp_offlinehtml') );
-		add_action( 'wp_ajax_nopriv_ampforwp_pwa_wp_offlinehtml', array($this, 'ampforwp_pwa_wp_offlinehtml') );
-	}
-
-	public function ampforwp_pwa_wp_404html(){
-		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/404.html");
-		echo $swHtmlContent;
-		wp_die();
-	}
-
-	public function ampforwp_pwa_wp_swhtml(){
-		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/sw.html");
-		echo $swHtmlContent;
-		wp_die();
-	}
-
-	public function ampforwp_pwa_wp_swjs(){
-		header("Content-Type:text/javascript; charset=UTF-8");
-		$swJsContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/sw.js");
-
-		$settings = ampforwp_pwa_defaultSettings();
-		$offline_page = './offline_index.html';
-		$page404 = './404.html';
-
-		$offline_page = get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
-		$page404 = get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );
-
-		$offline_page = str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
-		$page404 = str_replace( 'http://', 'https://', $page404 ).'?amp=1';
-
-		$swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}"), array($offline_page, $page404 ), $swJsContent);
-
-		echo $swJsContent;
-		wp_die();
-	}
-
-	public function ampforwp_pwa_wp_offlinehtml(){
-		header("Content-Type:text/html; charset=UTF-8");
-		$swHtmlContent = file_get_contents(AMPFORWP_PWA_PLUGIN_DIR."layouts/offline/index.html");
-		echo $swHtmlContent;
-		wp_die();
-	}
-
-	public static function ampforwp_remove_rewrite_rules_custom_rewrite(){
-		if(strtolower( $this->ampforwp_sw_getwebserver() )=='apache'){
-            $raw_rules = file_get_contents($this->wppath.".htaccess");
-			if(strpos($raw_rules, '#BEGIN ampforwp pwa')!==False){
-				$rules = preg_replace('/#BEGIN ampforwp pwa(.*?)#End PWA /si', "\r", $raw_rules);
-				if(!file_put_contents($this->wppath.".htaccess",$rules,LOCK_EX)) return false;
-			}
+        public function __construct(){
+                add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
+                $this->pwaforwp_is_amp_activated();
+            
+		$url = str_replace("http:","http:",site_url());                              
+                $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
+                $this->swjs_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-sw.js';
+                $this->minifest_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json';
+                
+                $this->swjs_path_amp = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-sw.js';
+                $this->swhtml_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-sw.html';
+                $this->minifest_path_amp = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-manifest.json';
+                                    
+                add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'));    
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),9);                                  
         }
-	}
-
-	public function ampforwp_rewrite_rules_custom_rewrite(){
-		if(strtolower( $this->ampforwp_sw_getwebserver() )=='apache'){
-            $this->ampforwp_insert_htaccess( $this->ampforwp_getrewriterule(false) );
-        }
-	}
-
-	public function ampforwp_insert_htaccess($rule){
-	   $raw_rules = file_get_contents($this->wppath.".htaccess");
-	   if(strpos($raw_rules, '#BEGIN ampforwp pwa')!==False){
-	   	
-	   }else{
-	   	 $rules = $rule."\n\n".trim($raw_rules);
-	   	  if(!file_put_contents($this->wppath.".htaccess",$rules,LOCK_EX)) return false;
-	   }
-	    return true;
-	}
-
-	public function ampforwp_getrewriterule(){
-		$home_root = parse_url(home_url());
-		if ( isset( $home_root['path'] ) )
-			$home_root = trailingslashit($home_root['path']);
-		else
-			$home_root = '/';
-
-		$ajaxUrl = str_replace( site_url()."/", '', admin_url( 'admin-ajax.php' ) );
+        public function pwaforwp_amp_entry_point(){            
+                add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));		
+		add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);  
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),9); 
+              }
+	public function pwaforwp_service_worker(){
 		
-		$htaccessPwa = "#BEGIN ampforwp pwa\n#Must the First Rewrite Rule\n<IfModule mod_rewrite.c>\nRewriteEngine On\nRewriteBase ".$home_root."\nRewriteCond %{REQUEST_METHOD} !POST\n RewriteCond %{QUERY_STRING} !.*=.*\nRewriteRule ^sw.js$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swjs [L]\nRewriteRule ^manifest.json$ ".$ajaxUrl."?action=ampforwp_pwa_wp_manifest [L]\nRewriteRule ^sw.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_swhtml [L]\nRewriteRule ^404.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_404html [L]\nRewriteRule ^offline_index.html$ ".$ajaxUrl."?action=ampforwp_pwa_wp_offlinehtml [L]\n</IfModule>\n<IfModule mod_headers.c>\n<FilesMatch \"\.(js)$\">\nHeader set Access-Control-Allow-Origin \"*\"\n</FilesMatch>\n</Ifmodule>\n#End PWA ";
-		return $htaccessPwa;
-	}
-	
-
-	public function ampforwp_sw_getwebserver(){
-		    $software=strtolower($_SERVER["SERVER_SOFTWARE"]);
-		    switch ($software){
-		    case strstr($software,"nginx"):
-		        return "nginx";
-		        break;
-		    case strstr($software,"apache"):
-		        return "apache";
-		        break;
-		    case strstr($software,"iis"):
-		        return "iis";
-		        break;
-		    default:
-		        return "unknown";
-		    }
-		}
-
-	public function ampforwp_service_worker(){
-		$url = str_replace("http:","https:",site_url());
-		?><amp-install-serviceworker src="<?php echo $url."/sw.js"; ?>" data-iframe-src="<?php echo $url.'/sw.html'; ?>"  layout="nodisplay">
+		?><amp-install-serviceworker src="<?php echo $this->swjs_path_amp; ?>" data-iframe-src="<?php echo $this->swhtml_path; ?>"  layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
 	}
-
 		//Load Script
-	public static function ampforwp_pwa_service_worker_script( $data ){
+	public function pwaforwp_service_worker_script( $data ){
 		if ( empty( $data['amp_component_scripts']['amp-install-serviceworker'] ) ) {
 			$data['amp_component_scripts']['amp-install-serviceworker'] = 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js';
 		}
 		return $data;
 	}
-
+       	
+	public function pwaforwp_service_worker_non_amp(){           
+                $swJsContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
+                echo '<script>';
+                echo $swJsContent;
+                echo '</script>';            		
+	}              
+       public function pwaforwp_paginated_post_add_homescreen_amp(){                        
+		$url = str_replace("http:","http:",site_url());	
+		$settings = pwaforwp_defaultSettings();
+		$manualfileSetup = $settings['manualfileSetup'];
+		if($manualfileSetup){
+		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-manifest.json').'">';
+		}
+		}
+       public function pwaforwp_paginated_post_add_homescreen(){                       
+		$url = str_replace("http:","http:",site_url());	
+		$settings = pwaforwp_defaultSettings();
+		$manualfileSetup = $settings['manualfileSetup'];
+		if($manualfileSetup){
+		echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json').'">';
+		}
+		} 
+       public function pwaforwp_is_amp_activated() {    
+                if(function_exists('is_plugin_active')){
+                if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
+                $this->is_amp = true;
+                 }
+                }    
+               }                                 
 }
+if (class_exists('pwaforwpServiceWorker')) {
+	new pwaforwpServiceWorker;
+};

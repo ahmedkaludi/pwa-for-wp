@@ -1,0 +1,19 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 4, 2018, 7:47:47 PM
+    Author     : Magazine3
+*/
+
+.pwaforwp-dashboard table th{
+    width: 0px;
+    padding: 0px;
+    padding-top: 10px;
+    
+}
+.pwaforwp-files-table th td{
+    width: 300px;
+}

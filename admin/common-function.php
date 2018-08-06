@@ -1,21 +1,18 @@
 <?php
-if(!function_exists('ampforwp_pwa_is_admin')){
-	function ampforwp_pwa_is_admin(){
+            
+if(!function_exists('pwaforwp_is_admin')){
+	function pwaforwp_is_admin(){
 		if ( is_admin() ) {
 			return true;
-		}
-		if ( isset( $_GET['page'] ) && false !== strpos( $_GET['page'], 'ampforwp-pwa' ) ) {
+		}                
+		if ( isset( $_GET['page'] ) && false !== strpos( sanitize_text_field($_GET['page']), 'pwaforwp' ) ) {
 			return true;
 		}
 		return false;
 	}
 }
-
-
-function ampforwp_pwa_admin_link($tab = '', $args = array()){
-	//return add_query_arg(array('record_id'=>$record_id,'mode'=>'view_record'),admin_url('admin.php?page=storage'));
-
-	$page = 'ampforwp-pwa';// Menu Slug name "While change please, Change in ampforwp_pwa_add_menu_links also"
+function pwaforwp_admin_link($tab = '', $args = array()){	
+	$page = 'pwaforwp';
 
 	if ( ! is_multisite() ) {
 		$link = admin_url( 'admin.php?page=' . $page );
@@ -38,10 +35,10 @@ function ampforwp_pwa_admin_link($tab = '', $args = array()){
 }
 
 
-function ampforwp_pwa_get_tab( $default = '', $available = array() ) {
+function pwaforwp_get_tab( $default = '', $available = array() ) {
 
-	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $default;
-
+	$tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : $default;
+        
 	if ( ! in_array( $tab, $available ) ) {
 		$tab = $default;
 	}
@@ -49,21 +46,23 @@ function ampforwp_pwa_get_tab( $default = '', $available = array() ) {
 	return $tab;
 }
 
-function ampforwp_pwa_defaultSettings(){
+function pwaforwp_defaultSettings(){
 	$defaults = array(
-		'app_blog_name'			=> get_bloginfo( 'name' ),
+		'app_blog_name'		=> get_bloginfo( 'name' ),
 		'app_blog_short_name'	=> get_bloginfo( 'name' ),
 		'description'		=> get_bloginfo( 'description' ),
-		'icon'				=> AMPFORWP_PWA_PLUGIN_URL . 'images/logo.png',
-		'splash_icon'		=> AMPFORWP_PWA_PLUGIN_URL . 'images/logo-512x512.png',
+		'icon'			=> PWAFORWP_PLUGIN_URL . 'images/logo.png',
+		'splash_icon'		=> PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
 		'background_color' 	=> '#D5E0EB',
 		'theme_color' 		=> '#D5E0EB',
 		'start_url' 		=> 0,
 		'start_url_amp'		=> 0,
 		'offline_page' 		=> 0,
-		'404_page' 			=> 0,
+		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
+                'manualfileSetup'	=> 0,
 	);
-	$settings = get_option( 'ampforwp_pwa_settings', $defaults );
+        
+	$settings = get_option( 'pwaforwp_settings', $defaults );       
 	return $settings;
 }
