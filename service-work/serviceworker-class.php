@@ -30,7 +30,7 @@ class pwaforwpServiceWorker{
         public function pwaforwp_amp_entry_point(){            
                 add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));		
 		add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);  
-                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),9); 
+                add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),9); 
               }
 	public function pwaforwp_service_worker(){
 		
@@ -52,7 +52,7 @@ class pwaforwpServiceWorker{
                 echo $swJsContent;
                 echo '</script>';            		
 	}              
-       public function pwaforwp_paginated_post_add_homescreen_amp(){                        
+       public function pwaforwp_paginated_post_add_homescreen_amp(){             
 		$url = str_replace("http:","http:",site_url());	
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
