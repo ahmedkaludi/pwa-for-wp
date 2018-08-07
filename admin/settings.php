@@ -47,7 +47,7 @@ function pwaforwp_admin_interface_render(){
 		}		
 		settings_errors();
 	}
-	$tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','help'));
         
                 $swJsonNonAmp = site_url()."/pwa-manifest.json";               
 				$file_json_headers = @checkStatus($swJsonNonAmp);                 
@@ -59,9 +59,7 @@ function pwaforwp_admin_interface_render(){
                  echo '<div class="wrap" style="display: none;">';      
                 }
 	?>
-		
-            
-                
+		                            
 		<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper pwaforwp-tabs">
 			<?php
@@ -79,9 +77,7 @@ function pwaforwp_admin_interface_render(){
 			<div class="form-wrap">
 			<?php
 			// Output nonce, action, and option_page fields for a settings page.
-			settings_fields( 'pwaforwp_setting_dashboard_group' );
-			
-			
+			settings_fields( 'pwaforwp_setting_dashboard_group' );						
 			
 			echo "<div class='pwaforwp-dashboard' ".( $tab != 'dashboard' ? 'style="display:none;"' : '').">";
 			// Status
@@ -291,9 +287,7 @@ function pwaforwp_description_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); ?>
 	<fieldset>
-		<input type="text" name="pwaforwp_settings[description]" class="regular-text" value="<?php if ( isset( $settings['description'] ) && ( ! empty( $settings['description'] ) ) ) echo esc_attr( $settings['description'] ); ?>"/>
-		
-		
+		<input type="text" name="pwaforwp_settings[description]" class="regular-text" value="<?php if ( isset( $settings['description'] ) && ( ! empty( $settings['description'] ) ) ) echo esc_attr( $settings['description'] ); ?>"/>				
 	</fieldset>
 
 	<?php
@@ -337,17 +331,19 @@ function pwaforwp_offline_page_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[offline_page]">
-	<?php echo wp_dropdown_pages( array( 
+	<?php 
+        $allowed_html = pwaforwp_expanded_allowed_tags();
+        echo wp_kses(wp_dropdown_pages( array( 
 			'name' => esc_attr('pwaforwp_settings[offline_page]'), 
 			'echo' => 0, 
 			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
 			'selected' =>  isset($settings['offline_page']) ? $settings['offline_page'] : '',
-		)); ?>
+		)), $allowed_html); ?>
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) ); ?>
+		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) )); ?>
 	</p>
 
 	<?php
@@ -358,17 +354,19 @@ function pwaforwp_404_page_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[404_page]">
-	<?php echo wp_dropdown_pages( array( 
+	<?php 
+        $allowed_html = pwaforwp_expanded_allowed_tags();        
+        echo wp_kses(wp_dropdown_pages( array( 
 			'name' => esc_attr('pwaforwp_settings[404_page]'), 
 			'echo' => 0, 
 			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
 			'selected' =>  isset($settings['404_page']) ? $settings['404_page'] : '',
-		)); ?>
+		)), $allowed_html); ?>
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' ); ?>
+		<?php printf( esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' )); ?>
 	</p>
 
 	<?php

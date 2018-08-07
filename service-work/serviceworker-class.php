@@ -14,7 +14,7 @@ class pwaforwpServiceWorker{
                 add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
                 $this->pwaforwp_is_amp_activated();
             
-		$url = str_replace("http:","http:",site_url());                              
+		$url = str_replace("http:","https:",site_url());                              
                 $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
                 $this->swjs_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-sw.js';
                 $this->minifest_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json';
@@ -52,7 +52,7 @@ class pwaforwpServiceWorker{
                 echo '</script>';            		
 	}              
        public function pwaforwp_paginated_post_add_homescreen_amp(){             
-		$url = str_replace("http:","http:",site_url());	
+		$url = str_replace("http:","https:",site_url());	
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
@@ -60,7 +60,7 @@ class pwaforwpServiceWorker{
 		}
 		}
        public function pwaforwp_paginated_post_add_homescreen(){                       
-		$url = str_replace("http:","http:",site_url());	
+		$url = str_replace("http:","https:",site_url());	
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
