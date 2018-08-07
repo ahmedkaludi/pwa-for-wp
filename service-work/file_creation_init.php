@@ -1,5 +1,4 @@
 <?php 
-
 /**
  * 
  * Class file_creation_init
@@ -18,9 +17,7 @@ class file_creation_init {
      public function __construct(){
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/"); 
         $this->fileCreation = new pwaforwpFileCreation(); 
-        
-        
-                        
+                                        
         $this->swjs_init = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-sw.js";       
         $this->minifest_init = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-manifest.json";
         

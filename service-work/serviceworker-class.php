@@ -1,5 +1,4 @@
-<?php
-               
+<?php               
 class pwaforwpServiceWorker{
 	
         public $is_amp = false;
@@ -34,7 +33,7 @@ class pwaforwpServiceWorker{
               }
 	public function pwaforwp_service_worker(){
 		
-		?><amp-install-serviceworker src="<?php echo $this->swjs_path_amp; ?>" data-iframe-src="<?php echo $this->swhtml_path; ?>"  layout="nodisplay">
+		?><amp-install-serviceworker src="<?php echo esc_url($this->swjs_path_amp); ?>" data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
 	}

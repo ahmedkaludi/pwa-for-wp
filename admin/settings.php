@@ -66,13 +66,13 @@ function pwaforwp_admin_interface_render(){
 		<h2 class="nav-tab-wrapper pwaforwp-tabs">
 			<?php
 
-			echo '<a href="' . pwaforwp_admin_link('dashboard') . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
 
-			echo '<a href="' . pwaforwp_admin_link('general') . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . pwaforwp_admin_link('design') . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . pwaforwp_admin_link('help') . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
 		</h2>
                 <form action="options.php" method="post" enctype="multipart/form-data" class="pwaforwp-settings-form">		
@@ -338,7 +338,7 @@ function pwaforwp_offline_page_callback(){
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[offline_page]">
 	<?php echo wp_dropdown_pages( array( 
-			'name' => 'pwaforwp_settings[offline_page]', 
+			'name' => esc_attr('pwaforwp_settings[offline_page]'), 
 			'echo' => 0, 
 			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
@@ -359,7 +359,7 @@ function pwaforwp_404_page_callback(){
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[404_page]">
 	<?php echo wp_dropdown_pages( array( 
-			'name' => 'pwaforwp_settings[404_page]', 
+			'name' => esc_attr('pwaforwp_settings[404_page]'), 
 			'echo' => 0, 
 			'show_option_none' => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
@@ -595,19 +595,19 @@ function adsforwp_print_footer_scripts() {
           
    jQuery(document).ready( function($) {       
     $(".pwaforwp-service-activate").on("click", function(){       
-        var filetype = $(this).attr('data-id');                
+        var filetype = $(this).attr("data-id");                
                 $.ajax({
                     url:ajaxurl,
                     dataType: "json",
-                    data:{filetype:filetype, action:'download_setup_files'},
+                    data:{filetype:filetype, action:"download_setup_files"},
                     success:function(response){
-                    if(response['status']=='t'){
+                    if(response["status"]=="t"){
                         $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass('dashicons-no-alt');
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass('dashicons-yes');
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css('color', '#46b450');
+                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
+                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
+                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
                     }else{
-                        alert('Permission is denied. Please download file manually');
+                        alert("Permission is denied. Please download file manually");
                     }  
                     }                
                 });

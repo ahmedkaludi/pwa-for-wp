@@ -1,5 +1,4 @@
-<?php
-            
+<?php            
 if(!function_exists('pwaforwp_is_admin')){
 	function pwaforwp_is_admin(){
 		if ( is_admin() ) {
