@@ -586,7 +586,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_style( 'wp-color-picker' );	
 	// Everything needed for media upload
 		wp_enqueue_media();
-        add_action('admin_print_footer_scripts', 'adsforwp_print_footer_scripts' );
+        add_action('admin_print_footer_scripts', 'pwaforwp_print_footer_scripts' );
 	// Main JS
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/main-css.css',PWAFORWP_PLUGIN_VERSION,true );    
         wp_enqueue_script( 'pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/main-script.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true );      
@@ -594,7 +594,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
 add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
 
 
-function adsforwp_print_footer_scripts() {                       
+function pwaforwp_print_footer_scripts() {                       
 ?>
    <script type="text/javascript">
           
