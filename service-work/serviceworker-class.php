@@ -16,12 +16,12 @@ class pwaforwpServiceWorker{
             
 		$url = str_replace("http:","https:",site_url());                              
                 $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-                $this->swjs_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-sw.js';
-                $this->minifest_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json';
+                $this->swjs_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-sw.js';
+                $this->minifest_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json';
                 
-                $this->swjs_path_amp = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-sw.js';
-                $this->swhtml_path = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-sw.html';
-                $this->minifest_path_amp = $url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-manifest.json';
+                $this->swjs_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js';
+                $this->swhtml_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.html';
+                $this->minifest_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json';
                                     
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'));    
                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),9);                                  
@@ -50,7 +50,7 @@ class pwaforwpServiceWorker{
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-                echo '<script src="'.esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-register-sw.js').'"></script>';    		
+                echo '<script src="'.esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js').'"></script>';    		
 		}           		
 	}              
        public function pwaforwp_paginated_post_add_homescreen_amp(){             
@@ -58,7 +58,7 @@ class pwaforwpServiceWorker{
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-amp-manifest.json').'">';
+		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json').'">';
 		}
 		}
        public function pwaforwp_paginated_post_add_homescreen(){                       
@@ -66,7 +66,7 @@ class pwaforwpServiceWorker{
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-		echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json').'"/>';
+		echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json').'"/>';
 		}
 		} 
        public function pwaforwp_is_amp_activated() {    

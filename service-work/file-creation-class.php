@@ -15,9 +15,7 @@ class pwaforwpFileCreation{
 				$swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
                                 $swHtmlContent = str_replace("{{swfile}}", $ServiceWorkerfileName, $swHtmlContent);
 				return $swHtmlContent;		    
-                }		
-	
-        
+                }			        
         public function pwaforwp_swjs($is_amp = false){
             
 		$swJsContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
@@ -41,13 +39,13 @@ class pwaforwpFileCreation{
     					$defaults = pwaforwp_defaultSettings();                                                                                                    
                         if($is_amp){  
                         if(function_exists('ampforwp_url_controller')){
-							$homeUrl = esc_url( ampforwp_url_controller( get_home_url() ) );
+							$homeUrl = ampforwp_url_controller( get_home_url() ) ;
 					}else{
-							$homeUrl = esc_url(  get_home_url().AMP_QUERY_VAR );
+							$homeUrl = get_home_url().AMP_QUERY_VAR;
 					}    
                         $homeUrl = str_replace("http://", "https://", $homeUrl);    
                         }else{
-                        $homeUrl = esc_url(  get_home_url()); 
+                        $homeUrl = get_home_url(); 
                         $homeUrl = str_replace("http://", "https://", $homeUrl);        
                         }                                             
 			$orientation = isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
@@ -68,12 +66,12 @@ class pwaforwpFileCreation{
 			      "type": "image\/png"
 			    }
 			  ],
-			  "background_color": "'.esc_html($defaults['background_color']).'",
-			  "theme_color": "'.esc_html($defaults['theme_color']).'",
+			  "background_color": "'.sanitize_hex_color($defaults['background_color']).'",
+			  "theme_color": "'.sanitize_hex_color($defaults['theme_color']).'",
 			  "display": "standalone",
 			  "orientation": "'.esc_html( $orientation ).'",
-			  "start_url": "'.$homeUrl.'/",
-			  "scope": "'.$homeUrl.'/"
+			  "start_url": "'.esc_url($homeUrl).'/",
+			  "scope": "'.esc_url($homeUrl).'/"
 			}';
 			
 				return $manifest;

@@ -1,6 +1,5 @@
 <?php
-function pwaforpw_add_menu_links() {
-	
+function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
                 esc_html__( 'PWA', 'pwa-for-wp' ), 
@@ -34,25 +33,28 @@ function pwaforwp_admin_interface_render(){
                 if(array_key_exists('manualfileSetup', $settings)){
                 $manualfileSetup = $settings['manualfileSetup'];      
                 }		              
-		if($manualfileSetup){                    			                        						                                                 
-				$fileCreationInit = new file_creation_init();
-                $fileCreationInit->pwaforwp_swjs_init();
-                $fileCreationInit->pwaforwp_manifest_init();
-                $fileCreationInit->pwaforwp_swr_init();
+		if($manualfileSetup){
+                $status = '';    
+                $fileCreationInit = new file_creation_init();
+                $status = $fileCreationInit->pwaforwp_swjs_init();
+                $status = $fileCreationInit->pwaforwp_manifest_init();
+                $status = $fileCreationInit->pwaforwp_swr_init();
                 if($is_amp){
-                $fileCreationInit->pwaforwp_swjs_init_amp();
-                $fileCreationInit->pwaforwp_manifest_init_amp();
-                $fileCreationInit->pwaforwp_swhtml_init_amp();
+                $status = $fileCreationInit->pwaforwp_swjs_init_amp();
+                $status = $fileCreationInit->pwaforwp_manifest_init_amp();
+                $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
+                }                 
+                if(!$status){
+                 echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
                 }
-                
 		}		
 		settings_errors();
 	}
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','help'));
         
-                $swJsonNonAmp = site_url()."/pwa-manifest.json";               
+                $swJsonNonAmp = esc_url(site_url()."/pwa-manifest.json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);                 
-				$swJsNonAmp = site_url()."/pwa-sw.js";
+				$swJsNonAmp = esc_url(site_url()."/pwa-sw.js");
 				$file_js_headers = @checkStatus($swJsNonAmp);
                 if($file_json_headers || $file_js_headers){
                  echo '<div class="wrap">';   
@@ -245,7 +247,7 @@ function pwaforwp_background_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-	<input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? esc_attr( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+	<input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
 	<?php
 }
@@ -253,7 +255,7 @@ function pwaforwp_theme_color_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); ?>
 	<!-- Theme Color -->
-	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? esc_attr( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	
 	<p class="description">
 		
@@ -344,7 +346,7 @@ function pwaforwp_offline_page_callback(){
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : get_bloginfo( 'wpurl' ) )); ?>
+		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : esc_url(get_bloginfo( 'wpurl' )) ); ?>
 	</p>
 
 	<?php
@@ -419,7 +421,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                  $swUrl = site_url()."/pwa-manifest.json";
+                  $swUrl = esc_url(site_url()."/pwa-manifest.json");
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                     printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -431,7 +433,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = site_url()."/pwa-amp-manifest.json";
+                    $swUrl = esc_url(site_url()."/pwa-amp-manifest.json");
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -450,7 +452,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = site_url()."/pwa-sw.js";
+                      $swUrl = esc_url(site_url()."/pwa-sw.js");
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -462,7 +464,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = site_url()."/pwa-amp-sw.js";
+                    $swUrl = esc_url(site_url()."/pwa-amp-sw.js");
                     $file_headers = @checkStatus($swUrl);                   
                     if(!$file_headers) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -482,12 +484,9 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if ( is_ssl() ) {
-
-                            printf( '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' );
+                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' ;
                     } else {
-
-                            printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>
-                                    <p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>' );
+                            echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
                   ?>  
                 </td>
@@ -503,7 +502,7 @@ function pwaforwp_files_status_callback(){
 }
 
 function pwaforwp_amp_status_callback(){
-        $swUrl = site_url()."/sw.js";
+        $swUrl = esc_url(site_url()."/sw.js");
 	$file_headers = @checkStatus($swUrl);	
 	if(!$file_headers) {
 		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
@@ -520,13 +519,13 @@ function checkStatus($swUrl){
         }	
 	if($manualfileSetup){
 		$wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-		$swjsFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-sw.js";
-		$swHtmlFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-sw.html";
-                $swrFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-pwa-register-sw.js";
-		$swmanifestFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-manifest.json";
+		$swjsFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw.js";
+		$swHtmlFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw.html";
+                $swrFile = $wppath.PWAFORWP_FILE_PREFIX."-pwa-register-sw.js";
+		$swmanifestFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-manifest.json";
                 
-                $swjsFileNonAmp = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-sw.js";
-                $swmanifestFileNonAmp = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-manifest.json";                
+                $swjsFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-sw.js";
+                $swmanifestFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-manifest.json";                
 		switch ($swUrl) {
 			case site_url()."/pwa-amp-manifest.json":
 				if(file_exists($swmanifestFile)){
@@ -585,40 +584,18 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
         wp_enqueue_style( 'wp-color-picker' );	
 	// Everything needed for media upload
-		wp_enqueue_media();
-        add_action('admin_print_footer_scripts', 'pwaforwp_print_footer_scripts' );
-	// Main JS
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/main-css.css',PWAFORWP_PLUGIN_VERSION,true );    
-        wp_enqueue_script( 'pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/main-script.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true );      
+        wp_enqueue_media();        
+	
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/main-css.css',PWAFORWP_PLUGIN_VERSION,true );            
+        // Main JS
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/main-script.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
+        $object_name = array(
+            'uploader_title' => esc_html('Application Icon', 'pwa-for-wp'),
+            'splash_uploader_title' => esc_html('Splash Screen Icon', 'pwa-for-wp'),
+            'uploader_button' => esc_html('Select Icon', 'pwa-for-wp'),
+            'file_status' => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+        );
+        wp_localize_script('pwaforwp-main-js', 'pwaforwp_obj', $object_name);
+        wp_enqueue_script('pwaforwp-main-js');
 }
 add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
-
-
-function pwaforwp_print_footer_scripts() {                       
-?>
-   <script type="text/javascript">
-          
-   jQuery(document).ready( function($) {       
-    $(".pwaforwp-service-activate").on("click", function(){       
-        var filetype = $(this).attr("data-id");                
-                $.ajax({
-                    url:ajaxurl,
-                    dataType: "json",
-                    data:{filetype:filetype, action:"download_setup_files"},
-                    success:function(response){
-                    if(response["status"]=="t"){
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
-                    }else{
-                        alert("Permission is denied. Please download file manually");
-                    }  
-                    }                
-                });
-        return false;
-    });           
-   });   
-   </script>
-<?php
-}

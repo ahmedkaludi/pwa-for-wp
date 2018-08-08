@@ -1,10 +1,5 @@
-
                                 var swsource = "{{swfile}}.js";
 			         if("serviceWorker" in navigator) {
-//			                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
-//			                 for(let registration of registrations) {
-//			                  registration.unregister();
-//			                } });
 			                navigator.serviceWorker.register(swsource).then(function(reg){
 			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
 			                }).catch(function(err) {

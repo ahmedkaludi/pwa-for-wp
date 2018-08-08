@@ -30,11 +30,8 @@ const MAX_TTL = {
     css: 86400,
 };
 
-const CACHE_BLACKLIST = [
-    //(str) => {
-    //    return !str.startsWith('http://localhost') && !str.startsWith('https://magazine3.com');
-    //},
-];
+const CACHE_BLACKLIST = [ ];
+
 
 const SUPPORTED_METHODS = [
     'GET',
