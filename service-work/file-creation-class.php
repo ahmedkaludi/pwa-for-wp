@@ -72,8 +72,8 @@ class pwaforwpFileCreation{
 			  "theme_color": "'.esc_html($defaults['theme_color']).'",
 			  "display": "standalone",
 			  "orientation": "'.esc_html( $orientation ).'",
-			  "start_url": "'.$homeUrl.'",
-			  "scope": "'.$homeUrl.'"
+			  "start_url": "'.$homeUrl.'/",
+			  "scope": "'.$homeUrl.'/"
 			}';
 			
 				return $manifest;
