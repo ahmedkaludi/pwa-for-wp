@@ -1,4 +1,4 @@
-const CACHE_VERSION = 0.1;
+const CACHE_VERSION = '{{CACHE_VERSION}}';
 
 const BASE_CACHE_FILES = [
     

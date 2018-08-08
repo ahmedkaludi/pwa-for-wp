@@ -46,10 +46,12 @@ class pwaforwpServiceWorker{
 	}
        	
 	public function pwaforwp_service_worker_non_amp(){           
-                $swJsContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
-                echo '<script>';
-                echo $swJsContent;
-                echo '</script>';            		
+                $url = str_replace("http:","https:",site_url());	
+		$settings = pwaforwp_defaultSettings();
+		$manualfileSetup = $settings['manualfileSetup'];
+		if($manualfileSetup){
+                echo '<script src="'.esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-register-sw.js').'"></script>';    		
+		}           		
 	}              
        public function pwaforwp_paginated_post_add_homescreen_amp(){             
 		$url = str_replace("http:","https:",site_url());	
@@ -64,7 +66,7 @@ class pwaforwpServiceWorker{
 		$settings = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-		echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json').'">';
+		echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FRONT_FILE_PREFIX.'-manifest.json').'"/>';
 		}
 		} 
        public function pwaforwp_is_amp_activated() {    

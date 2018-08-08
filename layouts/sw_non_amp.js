@@ -1,7 +1,7 @@
 
-                                var swsource = "pwa-sw.js";
+                                var swsource = "{{swfile}}.js";
 			         if("serviceWorker" in navigator) {
-//			                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+//			                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
 //			                 for(let registration of registrations) {
 //			                  registration.unregister();
 //			                } });

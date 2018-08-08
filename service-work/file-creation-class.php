@@ -3,12 +3,20 @@ class pwaforwpFileCreation{
                 
         public function pwaforwp_swhtml($is_amp = false){	            
                 if($is_amp){
-                $ServiceWorkerfileName = 'pwa-amp-sw';		
+                                $ServiceWorkerfileName = 'pwa-amp-sw';		
 				$swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
 				$swHtmlContent = str_replace("{{serviceWorkerFile}}", $ServiceWorkerfileName, $swHtmlContent);		                         
 				return $swHtmlContent;		    
                 }		
 	}
+        public function pwaforwp_swr($is_amp = false){	            
+                                $url = str_replace("http:","https:",site_url());
+                                $ServiceWorkerfileName = $url.'/pwa-sw';		
+				$swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
+                                $swHtmlContent = str_replace("{{swfile}}", $ServiceWorkerfileName, $swHtmlContent);
+				return $swHtmlContent;		    
+                }		
+	
         
         public function pwaforwp_swjs($is_amp = false){
             
@@ -17,13 +25,14 @@ class pwaforwpFileCreation{
 		$offline_page = get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
 		$page404 = get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );                
                 if($is_amp){
-                $offline_page = str_replace( 'http://', 'http://', $offline_page ).'?amp=1';
-		$page404 = str_replace( 'http://', 'http://', $page404 ).'?amp=1';                       		    
+                $offline_page = str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
+		$page404 = str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
+                $swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}"), array($offline_page, $page404, '0.1' ), $swJsContent);                		
                 }else{
-                $offline_page = str_replace( 'http://', 'http://', $offline_page );
-		$page404 = str_replace( 'http://', 'http://', $page404 );                       		    
-                }                
-		$swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}"), array($offline_page, $page404 ), $swJsContent);                		
+                $offline_page = str_replace( 'http://', 'https://', $offline_page );
+		$page404 = str_replace( 'http://', 'https://', $page404 );    
+                $swJsContent = str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}"), array($offline_page, $page404, '0.2' ), $swJsContent);                		
+                }                		
 	        return $swJsContent;
 		
 	}
@@ -36,16 +45,16 @@ class pwaforwpFileCreation{
 					}else{
 							$homeUrl = esc_url(  get_home_url().AMP_QUERY_VAR );
 					}    
-                        $homeUrl = str_replace("http://", "http://", $homeUrl);    
+                        $homeUrl = str_replace("http://", "https://", $homeUrl);    
                         }else{
                         $homeUrl = esc_url(  get_home_url()); 
-                        $homeUrl = str_replace("http://", "http://", $homeUrl);        
+                        $homeUrl = str_replace("http://", "https://", $homeUrl);        
                         }                                             
 			$orientation = isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 			if($orientation==0) { $orientation = "portrait"; }
-			$manifest = '{
-			  "short_name": "'.esc_attr($defaults['app_blog_short_name']).'",
+			$manifest = '{			  
 			  "name": "'.esc_attr($defaults['app_blog_name']).'",
+                          "short_name": "'.esc_attr($defaults['app_blog_short_name']).'",    
 			  "description": "'.esc_attr($defaults['description']).'",
 			  "icons": [
 			    {

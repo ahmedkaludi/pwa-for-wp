@@ -38,6 +38,7 @@ function pwaforwp_admin_interface_render(){
 				$fileCreationInit = new file_creation_init();
                 $fileCreationInit->pwaforwp_swjs_init();
                 $fileCreationInit->pwaforwp_manifest_init();
+                $fileCreationInit->pwaforwp_swr_init();
                 if($is_amp){
                 $fileCreationInit->pwaforwp_swjs_init_amp();
                 $fileCreationInit->pwaforwp_manifest_init_amp();
@@ -521,6 +522,7 @@ function checkStatus($swUrl){
 		$wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
 		$swjsFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-sw.js";
 		$swHtmlFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-sw.html";
+                $swrFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-pwa-register-sw.js";
 		$swmanifestFile = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-manifest.json";
                 
                 $swjsFileNonAmp = $wppath.PWAFORWP_FRONT_FILE_PREFIX."-sw.js";
@@ -550,7 +552,12 @@ function checkStatus($swUrl){
 				if(file_exists($swHtmlFile)){
 					return true;
 				}
-				break;        
+				break;  
+                        case site_url()."/pwa-register-sw.js":
+				if(file_exists($swrFile)){
+					return true;
+				}
+				break;          
                                 
 			default:
 				# code...

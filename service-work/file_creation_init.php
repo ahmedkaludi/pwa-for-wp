@@ -9,6 +9,7 @@ class file_creation_init {
      public $fileCreation;
      public $swjs_init;
      public $minifest_init;
+     public $swr_init;
      
      public $swjs_init_amp;
      public $minifest_init_amp;
@@ -20,6 +21,7 @@ class file_creation_init {
                                         
         $this->swjs_init = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-sw.js";       
         $this->minifest_init = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-manifest.json";
+        $this->swr_init = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-register-sw.js";
         
         $this->swjs_init_amp = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-sw.js";       
         $this->minifest_init_amp = $this->wppath.PWAFORWP_FRONT_FILE_PREFIX."-amp-manifest.json";
@@ -51,13 +53,25 @@ class file_creation_init {
 			}
                         return true;
      }
+     public function pwaforwp_swr_init(){                                 
+			if(file_exists($this->swr_init)){
+				unlink($this->swr_init);
+			}
+			if(!file_exists($this->swr_init)){
+				$swjsContent = $this->fileCreation->pwaforwp_swr();                                 
+				$handle = fopen($this->swr_init, 'w');
+				fwrite($handle, $swjsContent);
+				fclose($handle);
+			}
+                        return true;
+     }
      public function pwaforwp_swjs_init_amp(){                                 
 			if(file_exists($this->swjs_init_amp)){
 				unlink($this->swjs_init_amp);
 			}
 			if(!file_exists($this->swjs_init_amp)){
 				$swjsContent = $this->fileCreation->pwaforwp_swjs(true);                                 
-				$handle = fopen($this->swjs_init_amp, 'w');
+				$handle = fopen($this->swjs_init_amp, 'w');                              
 				fwrite($handle, $swjsContent);
 				fclose($handle);
 			}
@@ -98,11 +112,12 @@ function download_setup_files(){
     switch($file_type){
             case 'pwa-sw':
                 $file_creation_init_obj = new file_creation_init(); 
-                $result = $file_creation_init_obj->pwaforwp_swjs_init();               
+                $result = $file_creation_init_obj->pwaforwp_swjs_init(); 
+                $result = $file_creation_init_obj->pwaforwp_swr_init(); 
                 break;
             case 'pwa-manifest':
                 $file_creation_init_obj = new file_creation_init(); 
-              $result = $file_creation_init_obj->pwaforwp_manifest_init();  
+                $result = $file_creation_init_obj->pwaforwp_manifest_init();  
                 break;
             case 'pwa-amp-sw':
                 $file_creation_init_obj = new file_creation_init(); 
