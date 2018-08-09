@@ -1,14 +1,12 @@
 <?php
 /**
-Plugin Name: PWA for WordPress
+Plugin Name: PWA for WP
 Description: PWA for WordPress with AMP Support
-Author: PWA For WP
+Author: Ahmed Kaludi, Mohammed Kaludi
 Version: 1.0
 Author URI: https://ampforwp.com
-Plugin URI: https://ampforwp.com/pwa/
 Text Domain: pwa-for-wp
 Domain Path: /languages/
-SKU: PWA
  *
  * The main plugin file
  *
@@ -30,4 +28,4 @@ SKU: PWA
                 function pwaforwp_add_action_links($links){
                         $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
                         return array_merge( $links, $mylinks );
-                }                                 
+                }

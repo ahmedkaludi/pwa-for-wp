@@ -117,11 +117,11 @@ function pwaforwp_admin_interface_render(){
 	<?php
             if($file_json_headers || $file_js_headers){
                 echo' <div class="manual-setup-button" style="padding: 20px; display:none;">';
-                echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Activate Service Worker', 'pwa-for-wp' ).'</button>';
+                echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
                 echo '</div>';
                 }else{
                 echo' <div class="manual-setup-button" style="padding: 20px;">';
-                echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Activate Service Worker', 'pwa-for-wp' ).'</button>';
+                echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
                 echo '</div>';
                 }
 }
