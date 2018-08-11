@@ -65,14 +65,14 @@ jQuery(document).ready(function($){
                     dataType: "json",
                     data:{filetype:filetype, action:"pwaforwp_download_setup_files"},
                     success:function(response){
-                    if(response["status"]=="t"){
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
-                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
-                    }else{
-                        alert(pwaforwp_obj.file_status);
-                    }  
+	                    if(response["status"]=="t"){
+	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
+	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
+	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
+	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
+	                    }else{
+	                        alert(pwaforwp_obj.file_status);
+	                    }  
                     }                
                 });
         return false;

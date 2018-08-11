@@ -24,7 +24,7 @@ function pwaforwp_admin_interface_render(){
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-     	        $serviceWorkerObj = new pwaforwpServiceWorker();
+     	        $serviceWorkerObj = new PWAFORWP_Service_Worker();
         	    $is_amp = $serviceWorkerObj->is_amp;
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {		
@@ -35,7 +35,7 @@ function pwaforwp_admin_interface_render(){
                 }		              
 		if($manualfileSetup){
                 $status = '';    
-                $fileCreationInit = new file_creation_init();
+                $fileCreationInit = new PWAFORWP_File_Creation_Init();
                 $status = $fileCreationInit->pwaforwp_swjs_init();
                 $status = $fileCreationInit->pwaforwp_manifest_init();
                 $status = $fileCreationInit->pwaforwp_swr_init();
@@ -404,7 +404,7 @@ function pwaforpw_orientation_callback(){
 
 // Dashboard
 function pwaforwp_files_status_callback(){
-       $serviceWorkerObj = new pwaforwpServiceWorker();
+       $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
         
         ?>
