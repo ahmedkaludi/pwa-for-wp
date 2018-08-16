@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin Name: PWA for WP
-Description: PWA for WordPress with AMP Support
+Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Ahmed Kaludi, Mohammed Kaludi
 Version: 1.0
 Author URI: https://ampforwp.com

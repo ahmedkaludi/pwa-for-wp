@@ -1,4 +1,4 @@
-=== PWA for WP ===
+=== PWA for WP & AMP ===
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 4.9.8
@@ -8,7 +8,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Description ==
-We are bringing the power of the Progressive Web Apps to the AMP to take the user experience to the next level!
+We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 
 You can give the APP-like experience to your audience which will get your website to their home screen and works instantly like an APP with offline support.
 
@@ -32,5 +32,5 @@ You can give the APP-like experience to your audience which will get your websit
 
 == Changelog ==
 
-= 1.0 (9 August 2018) =
+= 1.0 (16 August 2018) =
 * Version 1.0 Released
