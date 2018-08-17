@@ -1,21 +1,10 @@
-<!doctype html>
-			<html>
-			    <head>
-			        <title>Installing service worker</title>
-			        <script type="text/javascript">
-			            var swsource = "{{serviceWorkerFile}}.js";
-			            if("serviceWorker" in navigator) {
-			                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-			                 for(let registration of registrations) {
-			                  registration.unregister()
-			                } })
+                                var swsource = "{{swfile}}.js";
+			         if("serviceWorker" in navigator) {
 			                navigator.serviceWorker.register(swsource).then(function(reg){
 			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
 			                }).catch(function(err) {
 			                    console.log('ServiceWorker registration failed: ', err);
-			                });
-			                //window.addEventListener('beforeinstallprompt', (e) => { e.prompt(); });
-
+			                });			               
 			                let deferredPrompt;
 			                window.addEventListener('beforeinstallprompt', (e) => {
 							  e.preventDefault();
@@ -23,9 +12,7 @@
 							  // Update UI notify the user they can add to home screen
 							  //e.prompt();
 							  btnAdd.style.display = 'block';
-							});
-
-			                btnAdd.addEventListener('click', (e) => {
+                                                          btnAdd.addEventListener('click', (e) => {
 							  // hide our user interface that shows our A2HS button
 							  btnAdd.style.display = 'none';
 							  // Show the prompt
@@ -41,16 +28,8 @@
 							      deferredPrompt = null;
 							    });
 							});
-
-
+							});			              
 							window.addEventListener('appinstalled', (evt) => {
-							  app.logEvent('APP installed', 'installed');
+							  app.logEvent('APP not installed', 'installed');
 							});
-
-
-			            };
-			        </script>
-			    </head>
-			    <body>
-			    </body>
-			</html>
+			                             }                 

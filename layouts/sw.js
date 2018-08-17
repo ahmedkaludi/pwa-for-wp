@@ -1,4 +1,4 @@
-const CACHE_VERSION = 0.1;
+const CACHE_VERSION = '{{CACHE_VERSION}}';
 
 const BASE_CACHE_FILES = [
     
@@ -30,11 +30,8 @@ const MAX_TTL = {
     css: 86400,
 };
 
-const CACHE_BLACKLIST = [
-    //(str) => {
-    //    return !str.startsWith('http://localhost') && !str.startsWith('https://magazine3.com');
-    //},
-];
+const CACHE_BLACKLIST = [ ];
+
 
 const SUPPORTED_METHODS = [
     'GET',
@@ -225,7 +222,7 @@ self.addEventListener(
             )
                 .catch(
                     (err) => {
-                        event.skipWaiting();
+                        self.skipWaiting();
                     }
                 )
         );
