@@ -17,7 +17,8 @@ define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('PWAFORWP_PLUGIN_VERSION', '1.0');
 define('PWAFORWP_FILE_PREFIX', 'pwa');
         
-require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php";        
+require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
