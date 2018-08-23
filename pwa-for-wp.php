@@ -32,3 +32,26 @@ function pwaforwp_add_action_links($links){
     $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
     return array_merge( $links, $mylinks );
 }
+
+
+//For CDN CODES
+if ( !is_admin() ) { 
+	$settings = pwaforwp_defaultSettings(); 
+		if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
+			ob_start('pwaforwp_revert_src');
+		}
+	}
+function pwaforwp_revert_src($content){
+
+	$url = str_replace("http:","https:",site_url()); 
+	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
+	return $content;
+}
+function pwaforwp_cdn_replace_urls_revert($src){
+	$url = str_replace("http:","https:",site_url());    
+	if($src[1]==$url){
+		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+	}else{
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+	}
+}

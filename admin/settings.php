@@ -50,7 +50,7 @@ function pwaforwp_admin_interface_render(){
 		}		
 		settings_errors();
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design', 'other_setting','help'));
         
                 $swJsonNonAmp = esc_url(site_url()."/pwa-manifest.json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);                 
@@ -72,6 +72,8 @@ function pwaforwp_admin_interface_render(){
 			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
+
+			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Other Settings','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
@@ -95,6 +97,10 @@ function pwaforwp_admin_interface_render(){
 			echo "<div class='pwaforwp-design' ".( $tab != 'design' ? 'style="display:none;"' : '').">";
 				// design Application Settings
 				do_settings_sections( 'pwaforwp_design_section' );	// Page slug
+			echo "</div>";
+			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
 			echo "</div>";
 			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
@@ -239,6 +245,24 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);
+
+		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
+		// Splash Screen Background Color
+		add_settings_field(
+			'pwaforwp_cdn_setting',							// ID
+			esc_html__('Is CDN Enabled', 'pwa-for-wp'),	// Title
+			'pwaforwp_cdn_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+}
+
+function pwaforwp_cdn_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?>" value="1">
+	<?php
 }
 
 //Design Settings

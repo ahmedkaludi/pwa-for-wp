@@ -59,7 +59,8 @@ function pwaforwp_defaultSettings(){
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
-                'manualfileSetup'	=> 0,
+        'manualfileSetup'	=> 0,
+        'cdn_setting'       => 0,
 	);
         
 	$settings = get_option( 'pwaforwp_settings', $defaults );       
