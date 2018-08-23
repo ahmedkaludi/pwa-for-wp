@@ -34,6 +34,7 @@ function pwaforwp_add_action_links($links){
 }
 
 
+
 //For CDN CODES
 if ( !is_admin() ) { 
 	$settings = pwaforwp_defaultSettings(); 
@@ -45,6 +46,7 @@ function pwaforwp_revert_src($content){
 
 	$url = str_replace("http:","https:",site_url()); 
 	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
 	return $content;
 }
 function pwaforwp_cdn_replace_urls_revert($src){
@@ -53,5 +55,13 @@ function pwaforwp_cdn_replace_urls_revert($src){
 		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}else{
 		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+	}
+}
+function pwaforwp_cdn_replace_urls_revert_manifest($src){
+    $url = str_replace("http:","https:",site_url());    
+	if($src[1]==$url){
+		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+	}else{
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}
 }
