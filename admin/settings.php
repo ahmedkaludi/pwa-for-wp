@@ -261,7 +261,7 @@ function pwaforwp_cdn_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?>" value="1">
+	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 	<?php
 }
 
@@ -430,7 +430,7 @@ function pwaforpw_orientation_callback(){
 function pwaforwp_files_status_callback(){
        $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
-        
+       $settings = pwaforwp_defaultSettings();
         ?>
         <table class="pwaforwp-files-table">
             <tbody>
@@ -439,6 +439,11 @@ function pwaforwp_files_status_callback(){
                     <th><?php echo esc_html__( 'Normal', 'pwa-for-wp' ) ?></th>
                     <th><?php if($is_amp){ echo esc_html__( 'AMP', 'pwa-for-wp' );} ?></th>
                 </tr>    
+                <tr>
+                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>    
+                    <td><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?> </td>    
+                    <td><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?></td>    
+                </tr>
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 

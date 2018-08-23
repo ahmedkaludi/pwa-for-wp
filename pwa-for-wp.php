@@ -65,3 +65,24 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
 		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}
 }
+/**
+ * set user defined message on plugin activate
+ */
+register_activation_hook( __FILE__, 'pwaforwp_admin_notice_activation_hook' );
+function pwaforwp_admin_notice_activation_hook() {
+    set_transient( 'pwaforwp_admin_notice_transient', true, 5 );
+}
+add_action( 'admin_notices', 'pwaforwp_admin_notice' );
+
+function pwaforwp_admin_notice(){
+    /* Check transient, if available display notice */
+    if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
+        ?>
+        <div class="updated notice is-dismissible">
+            <p><?php echo esc_html__('Thank you for using this plugin! Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
+        </div>
+        <?php
+        /* Delete transient, only display this notice once. */
+        delete_transient( 'pwaforwp_admin_notice_transient' );
+    }
+}
