@@ -35,7 +35,6 @@
 			$content .= __('<p>Do you want the latest on <b>PWA update</b> before others and some best resources on monetization in a single email? - Free just for users of PWA!</p>', 'pwa-for-wp');
                         $content .= __('
                         <style type="text/css">
-                        #wp-pointer-0 {top:350px !important; left:183px !important;}
                         .wp-pointer-buttons{ padding:0; overflow: hidden; }
                         .wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 10px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}	#pwaforwp_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
                         </style>
@@ -63,7 +62,7 @@
                         </div>','pwa-for-wp');
                                     $options = array (
                                             'content' => $content,
-                                            'position' => array ('edge' => 'top', 'align' => 'left')
+                                            'position' => array ('edge' => 'left', 'align' => 'left')
                                             );
 		}
 		if ($show_pointer) {
@@ -98,8 +97,8 @@
 							action: 'dismiss-wp-pointer'
 						});
 					},
-                                        show: function(event, t){
-                                         t.pointer.css({'left':'170px', 'top':'160px'});
+                                        show: function(event, t){                                           
+                                         t.pointer.css({'left':'170px', 'top':'400px', 'position':'fixed'});
                                       }                                               
 				});
 				setup = function () {
