@@ -60,8 +60,8 @@ function pwaforwp_cdn_replace_urls_revert($src){
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
     $url = str_replace("http:","https:",site_url());    
 	if($src[1]==$url){
-		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+		return 'href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}else{
-		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}
 }
