@@ -83,7 +83,7 @@ class PWAFORWP_Service_Worker{
 
 	public function pwaforwp_is_amp_activated() {    
 		if(function_exists('is_plugin_active')){
-			if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
+			if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') || is_plugin_active('amp/amp.php')) {
 				$this->is_amp = true;
 			}
 		}    
