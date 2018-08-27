@@ -9,13 +9,17 @@ class PWAFORWP_Service_Worker{
     public $minifest_path;
     public $minifest_path_amp;
     public $wppath;
+    
 
     public function __construct() {
-        add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
+        $settings = pwaforwp_defaultSettings();
         
+        if(isset($settings['amp_enable'])){
+        add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));      
+        }                      
         $this->pwaforwp_is_amp_activated();
             
-		$url = str_replace("http:","https:",site_url());                              
+	$url = str_replace("http:","https:",site_url());                              
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
         $this->swjs_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-sw.js';
         $this->minifest_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json';
@@ -23,14 +27,17 @@ class PWAFORWP_Service_Worker{
         $this->swjs_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js';
         $this->swhtml_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.html';
         $this->minifest_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json';
-                            
-        add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'));    
-        add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),9);                                  
+        
+        
+        if(isset($settings['normal_enable'])){
+        add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+        add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);   
+        }        
     }
     public function pwaforwp_amp_entry_point(){            
         add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
         add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-        add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),9); 
+        add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
     }
 	
 	public function pwaforwp_service_worker(){ ?>
@@ -69,13 +76,14 @@ class PWAFORWP_Service_Worker{
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
+                        echo '<meta name="pwaforwp" content="wordpress-plugin"/>';
 			echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json').'"/>';
 		}
 	}
 
 	public function pwaforwp_is_amp_activated() {    
 		if(function_exists('is_plugin_active')){
-			if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') ) {
+			if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php') || is_plugin_active('amp/amp.php')) {
 				$this->is_amp = true;
 			}
 		}    

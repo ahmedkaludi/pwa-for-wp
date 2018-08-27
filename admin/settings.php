@@ -25,7 +25,7 @@ function pwaforwp_admin_interface_render(){
 		return;
 	}
      	        $serviceWorkerObj = new PWAFORWP_Service_Worker();
-        	    $is_amp = $serviceWorkerObj->is_amp;
+        	$is_amp = $serviceWorkerObj->is_amp;
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {		
                 $settings = pwaforwp_defaultSettings(); 
@@ -50,7 +50,7 @@ function pwaforwp_admin_interface_render(){
 		}		
 		settings_errors();
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design', 'other_setting','help'));
         
                 $swJsonNonAmp = esc_url(site_url()."/pwa-manifest.json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);                 
@@ -72,6 +72,8 @@ function pwaforwp_admin_interface_render(){
 			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
+
+			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Misc','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
@@ -95,6 +97,10 @@ function pwaforwp_admin_interface_render(){
 			echo "<div class='pwaforwp-design' ".( $tab != 'design' ? 'style="display:none;"' : '').">";
 				// design Application Settings
 				do_settings_sections( 'pwaforwp_design_section' );	// Page slug
+			echo "</div>";
+			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
 			echo "</div>";
 			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
@@ -239,6 +245,24 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);
+
+		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
+		// Splash Screen Background Color
+		add_settings_field(
+			'pwaforwp_cdn_setting',							// ID
+			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
+			'pwaforwp_cdn_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+}
+
+function pwaforwp_cdn_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<?php
 }
 
 //Design Settings
@@ -406,15 +430,28 @@ function pwaforpw_orientation_callback(){
 function pwaforwp_files_status_callback(){
        $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
-        
+       $settings = pwaforwp_defaultSettings();
         ?>
         <table class="pwaforwp-files-table">
             <tbody>
+                <?php if($is_amp) { ?>
                 <tr>
-                    <th><?php echo esc_html__( 'File', 'pwa-for-wp' ) ?></th>
-                    <th><?php echo esc_html__( 'Normal', 'pwa-for-wp' ) ?></th>
-                    <th><?php if($is_amp){ echo esc_html__( 'AMP', 'pwa-for-wp' );} ?></th>
+                    <th></th>
+                    <th><?php echo esc_html__( 'Wordpress (Non-AMP)', 'pwa-for-wp' ) ?></th>
+                    <th><?php echo esc_html__( 'AMP', 'pwa-for-wp' ); ?></th>
                 </tr>    
+                <?php } ?>
+                
+                <tr>
+                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>    
+                    <td><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?> </td>    
+                    <td>
+                        <?php if($is_amp) { ?>
+                        <input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?>
+                         <?php } ?>
+                    </td>    
+                    
+                </tr>
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 

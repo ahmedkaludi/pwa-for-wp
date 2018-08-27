@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 4.9.8
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -55,6 +55,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.1 (27 August 2018) =
+* You can choose to enable PWA compatibility either on AMP or Non-AMP or both.
+* CDN Compatibility Added - Service Worker Works perfectly, even with the CDN. https://github.com/ahmedkaludi/pwa-for-wp/issues/9
+* Optin added - Service Worker Works perfectly, https://github.com/ahmedkaludi/pwa-for-wp/issues/7
+* Manifest of PWA was getting override when there is onesignal Manifest in the bottom of the Code: https://github.com/ahmedkaludi/pwa-for-wp/issues/4
+* Minor bugs fixed
 
 = 1.0 (16 August 2018) =
 * Version 1.0 Released

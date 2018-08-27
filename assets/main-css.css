@@ -9,10 +9,12 @@ and open the template in the editor.
 */
 .pwaforwp-dashboard table th{
     width: 0px;
-    padding: 0px;
-    padding-top: 10px;
+    padding: 0px;   
     
 }
 .pwaforwp-files-table th td{
     width: 300px;
+}
+.pwaforwp-files-table th{
+    vertical-align: inherit;
 }

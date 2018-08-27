@@ -60,6 +60,9 @@ function pwaforwp_defaultSettings(){
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
                 'manualfileSetup'	=> 0,
+                'cdn_setting'       => 0,
+                'normal_enable'       => 1,
+                'amp_enable'       => 1,
 	);
         
 	$settings = get_option( 'pwaforwp_settings', $defaults );       
