@@ -67,7 +67,9 @@ class PWAFORWP_Service_Worker{
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json').'">';
+		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json').'">
+		    	<meta name="pwaforwp" content="wordpress-plugin"/>
+		    	<meta name="theme-color" content="'.$settings['theme_color'].'">';
 		}
 	}
 
@@ -76,7 +78,8 @@ class PWAFORWP_Service_Worker{
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if($manualfileSetup){
-                        echo '<meta name="pwaforwp" content="wordpress-plugin"/>';
+                        echo '<meta name="pwaforwp" content="wordpress-plugin"/>
+                        <meta name="theme-color" content="'.$settings['theme_color'].'">';
 			echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json').'"/>';
 		}
 	}
