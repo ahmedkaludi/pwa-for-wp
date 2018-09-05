@@ -40,8 +40,35 @@ if ( !is_admin() ) {
 	$settings = pwaforwp_defaultSettings(); 
 		if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
 			ob_start('pwaforwp_revert_src');
+			add_filter('ampforwp_the_content_last_filter','pwaforwp_amp_revert_src');
 		}
 	}
+//AMP
+function pwaforwp_amp_revert_src($content){
+
+	$url = str_replace("http:","https:",site_url()); 
+	$content = preg_replace_callback("/amp-install-serviceworker src/\s*=/\s*\"(.*?)pwa-amp-sw.js\"/i",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);
+	return $content;
+}
+function pwaforwp_amp_cdn_replace_urls_revert($src){
+	$url = str_replace("http:","https:",site_url());    
+	if($src[1]==$url){
+		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
+	}else{
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
+	}
+}
+function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
+    $url = str_replace("http:","https:",site_url());    
+	if($src[1]==$url){
+		return 'href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+	}else{
+		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+	}
+}
+
+//NON AMP
 function pwaforwp_revert_src($content){
 
 	$url = str_replace("http:","https:",site_url()); 
