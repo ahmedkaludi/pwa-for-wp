@@ -47,14 +47,14 @@ if ( !is_admin() ) {
 function pwaforwp_amp_revert_src($content){
 
 	$url = str_replace("http:","https:",site_url()); 
-	$content = preg_replace_callback("/amp-install-serviceworker src/\s*=/\s*\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-sw.js\"/i",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw.js)\"/i",  'pwaforwp_cdn_replace_urls_amp', $content);
 	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);
 	return $content;
 }
 function pwaforwp_amp_cdn_replace_urls_revert($src){
 	$url = str_replace("http:","https:",site_url());    
 	if($src[1]==$url){
-		return 'amp-install-serviceworker src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
+		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
 	}else{
 		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
 	}
