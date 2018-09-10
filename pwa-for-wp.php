@@ -3,7 +3,7 @@
 Plugin Name: PWA for WP
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Ahmed Kaludi, Mohammed Kaludi
-Version: 1.0
+Version: 1.0.1
 Author URI: https://ampforwp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages/
@@ -36,21 +36,16 @@ function pwaforwp_add_action_links($links){
 
 
 //For CDN CODES
-if ( !is_admin() ) { 
-	$settings = pwaforwp_defaultSettings(); 
-		if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
-			ob_start('pwaforwp_revert_src');
-			add_filter('ampforwp_the_content_last_filter','pwaforwp_amp_revert_src');
+//add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
+//function pwaforwp_allow_cdn(){
+	if ( !is_admin() ) { 
+		$settings = pwaforwp_defaultSettings(); 
+			if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
+				ob_start('pwaforwp_revert_src');
 		}
 	}
-//AMP
-function pwaforwp_amp_revert_src($content){
+//}
 
-	$url = str_replace("http:","https:",site_url()); 
-	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw.js)\"/i",  'pwaforwp_cdn_replace_urls_amp', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);
-	return $content;
-}
 function pwaforwp_amp_cdn_replace_urls_revert($src){
 	$url = str_replace("http:","https:",site_url());    
 	if($src[1]==$url){
@@ -67,13 +62,27 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
 		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
 	}
 }
+function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
+    $url = str_replace("http:","https:",site_url());    
+	if($src[1]==$url){
+		return ' rel="manifest" href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+	}else{
+		return ' rel="manifest" href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+	}
+}
 
-//NON AMP
+
 function pwaforwp_revert_src($content){
-
+	//NON AMP
 	$url = str_replace("http:","https:",site_url()); 
 	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
 	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
+
+	//AMP
+	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw.js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content.=' ';
+	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
+	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);
 	return $content;
 }
 function pwaforwp_cdn_replace_urls_revert($src){
