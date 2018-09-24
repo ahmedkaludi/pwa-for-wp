@@ -43,7 +43,9 @@ function pwaforwp_admin_interface_render(){
                 $status = $fileCreationInit->pwaforwp_swjs_init_amp();
                 $status = $fileCreationInit->pwaforwp_manifest_init_amp();
                 $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
-                }                 
+                }
+                /* Delete transient, only display this notice once. */
+        		delete_transient( 'pwaforwp_admin_notice_transient' );   
                 if(!$status){
                  echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
                 }
@@ -158,7 +160,7 @@ function pwaforwp_settings_init(){
 		// Application Name
 		add_settings_field(
 			'pwaforwp_app_name',									// ID
-			esc_html__('Application Name', 'pwa-for-wp'),	// Title
+			esc_html__('App Name', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_name_callback',									// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -167,7 +169,7 @@ function pwaforwp_settings_init(){
 		// Application Short Name
 		add_settings_field(
 			'pwaforwp_app_short_name',								// ID
-			esc_html__('Application Short Name', 'pwa-for-wp'),	// Title
+			esc_html__('App Short Name', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_short_name_callback',							// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -176,7 +178,7 @@ function pwaforwp_settings_init(){
 		// Description
 		add_settings_field(
 			'pwaforwp_app_description',									// ID
-			esc_html__('Application Description', 'pwa-for-wp' ),		// Title
+			esc_html__('App Description', 'pwa-for-wp' ),		// Title
 			'pwaforwp_description_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -185,7 +187,7 @@ function pwaforwp_settings_init(){
 		// Application Icon
 		add_settings_field(
 			'pwaforwp_app_icons',										// ID
-			esc_html__('Application Icon', 'pwa-for-wp'),	// Title
+			esc_html__('App Icon', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_icon_callback',									// Callback function
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -194,7 +196,7 @@ function pwaforwp_settings_init(){
 		// Splash Screen Icon
 		add_settings_field(
 			'pwaforwp_app_splash_icon',									// ID
-			esc_html__('Application Splash Screen Icon', 'pwa-for-wp'),	// Title
+			esc_html__('App Splash Screen Icon', 'pwa-for-wp'),	// Title
 			'pwaforwp_splash_icon_callback',								// Callback function
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -262,6 +264,7 @@ function pwaforwp_cdn_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p>This helps you remove conflict with the CDN</p>
 	<?php
 }
 
@@ -518,7 +521,7 @@ function pwaforwp_files_status_callback(){
                 <th>                 
               <?php echo esc_html__( 'HTTPS', 'pwa-for-wp' ) ?> 
                 </th>
-                <td>
+                <td colspan="2">
                   <?php
                   if ( is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' ;
@@ -526,9 +529,6 @@ function pwaforwp_files_status_callback(){
                             echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
                   ?>  
-                </td>
-                <td>
-                    
                 </td>
             </tr>
             

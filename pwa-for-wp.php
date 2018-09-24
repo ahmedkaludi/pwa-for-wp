@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.0');
+define('PWAFORWP_PLUGIN_VERSION', '1.0.1');
 define('PWAFORWP_FILE_PREFIX', 'pwa');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
@@ -106,7 +106,7 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
  */
 register_activation_hook( __FILE__, 'pwaforwp_admin_notice_activation_hook' );
 function pwaforwp_admin_notice_activation_hook() {
-    set_transient( 'pwaforwp_admin_notice_transient', true, 5 );
+    set_transient( 'pwaforwp_admin_notice_transient', true );
 }
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
@@ -114,11 +114,11 @@ function pwaforwp_admin_notice(){
     /* Check transient, if available display notice */
     if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
         ?>
-        <div class="updated notice is-dismissible">
-            <p><?php echo esc_html__('Thank you for using this plugin! Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
+        <div class="updated notice">
+            <p><?php echo esc_html__('Thank you for using this','pwa-for-wp'); echo "<strong>".esc_html__(' PWA for WP plugin! ','pwa-for-wp')."</strong>"; echo esc_html__('Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
         </div>
         <?php
         /* Delete transient, only display this notice once. */
-        delete_transient( 'pwaforwp_admin_notice_transient' );
+        //delete_transient( 'pwaforwp_admin_notice_transient' );   
     }
 }
