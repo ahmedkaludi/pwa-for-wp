@@ -447,10 +447,10 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>    
-                    <td><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?> </td>    
+                    <td> <label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?></label> </td>    
                     <td>
                         <?php if($is_amp) { ?>
-                        <input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?>
+                        <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?></label>
                          <?php } ?>
                     </td>    
                     
