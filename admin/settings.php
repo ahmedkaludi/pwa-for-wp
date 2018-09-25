@@ -106,6 +106,23 @@ function pwaforwp_admin_interface_render(){
 			echo "</div>";
 			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
+				?>	
+				<hr />	
+        	 <div class="pwa_contact_us_div">
+			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
+			       		<hr />	
+			            <ul>
+			                <li><label for="pwaforwp_query_message">Message</label>
+			                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
+			                    <br>
+			                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
+			                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
+			                </li> 
+			                <li><button class="button pwa-send-query"><?php echo esc_html('Send Message', 'pwa-for-wp'); ?></button></li>
+			            </ul>            
+			                   
+			        </div>
+				<?php
 				// design Application Settings
 				do_settings_sections( 'amp_pwa_help_section' );	// Page slug
 			echo "</div>";
@@ -256,6 +273,16 @@ function pwaforwp_settings_init(){
 			'pwaforwp_cdn_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+
+		add_settings_section('amp_pwa_help_section', esc_html__('','pwa-for-wp'), '__return_false', 'amp_pwa_help_section');
+		// Splash Screen Background Color
+		add_settings_field(
+			'pwaforwp_help_setting',							// ID
+			esc_html__('', 'pwa-for-wp'),	// Title
+			'pwaforwp_help_setting_callback',							// CB
+			'amp_pwa_help_section',						// Page slug
+			'amp_pwa_help_section'						// Settings Section ID
 		);
 }
 
@@ -636,3 +663,34 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_script('pwaforwp-main-js');
 }
 add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
+
+
+/**
+ * This is a ajax handler function for sending email from user admin panel to us. 
+ * @return type json string
+ */
+function pwaforwp_send_query_message(){                  
+        $message    = sanitize_text_field($_POST['message']); 
+        $message .= "<table>
+        				<tr><td>Plugin</td><td>PWA for wp</td></tr>
+        				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>
+        			</table>";
+        $user       = wp_get_current_user();
+        $user_data  = $user->data;        
+        $user_email = $user_data->user_email;       
+        //php mailer variables
+        $to = 'team@magazine3.com';
+        $subject = "Customer Query";
+        $headers = 'From: '. $user_email . "\r\n" .
+        'Reply-To: ' . $user_email . "\r\n";
+        // Load WP components, no themes.                      
+        $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
+        if($sent){
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message');

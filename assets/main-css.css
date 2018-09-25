@@ -24,3 +24,12 @@ and open the template in the editor.
 .pwaforwp-files-table th{
     vertical-align: inherit;
 }
+.pwa-query-success{
+    color: #028a00;
+}
+.pwa-query-error{
+    color: #f73434;
+}
+.pwa_hide{
+    display: none;
+}
