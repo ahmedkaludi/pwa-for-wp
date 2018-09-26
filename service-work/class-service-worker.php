@@ -69,7 +69,14 @@ class PWAFORWP_Service_Worker{
 		if($manualfileSetup){
 		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json').'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
-		    	<meta name="theme-color" content="'.$settings['theme_color'].'">';
+		    	<meta name="theme-color" content="'.$settings['theme_color'].'">'.PHP_EOL;
+		    if(isset($settings['icon']) && !empty($settings['icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
+		    }
+		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . $settings['splash_icon'] . '">'.PHP_EOL;
+		    }
+
 		}
 	}
 
