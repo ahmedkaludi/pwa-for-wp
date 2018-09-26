@@ -111,4 +111,18 @@ jQuery(document).ready(function($){
 	                    });
 	    
 	});
+
+	$("#pwaforwp_settings_utm_setting").click(function(){
+		console.log($(this).prop("checked"));
+		if($(this).prop("checked")){
+			$('.pwawp_utm_values_class').fadeIn();
+		}else{
+			$('.pwawp_utm_values_class').fadeOut(200);
+		}
+	});
+	$('.pwawp_utm_values_class').find('input').focusout(function(){
+		if($(this).attr('data-val')!==$(this).val()){
+			$("#pwa-utm_change_track").val('1');
+		}
+	});
 });

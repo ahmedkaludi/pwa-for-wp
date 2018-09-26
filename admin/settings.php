@@ -265,8 +265,8 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section'						// Settings Section ID
 		);
 
+		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
-		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_cdn_setting',							// ID
 			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
@@ -274,16 +274,73 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-
-		add_settings_section('amp_pwa_help_section', esc_html__('','pwa-for-wp'), '__return_false', 'amp_pwa_help_section');
-		// Splash Screen Background Color
 		add_settings_field(
-			'pwaforwp_help_setting',							// ID
-			esc_html__('', 'pwa-for-wp'),	// Title
-			'pwaforwp_help_setting_callback',							// CB
-			'amp_pwa_help_section',						// Page slug
-			'amp_pwa_help_section'						// Settings Section ID
+			'pwaforwp_utm_setting',							// ID
+			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
+			'pwaforwp_utm_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+
+		
+}
+
+function pwaforwp_utm_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	$style="style='display:none;'";
+	if(isset($settings['utm_setting']) && $settings['utm_setting']){
+		$style="style='display:block;'";
+	}
+	$utm_source = $utm_medium = $utm_term = $utm_content = ''; 
+	$utm_url = site_url();
+	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(site_url()) : trailingslashit(site_url())."amp");
+	if(isset($settings['utm_details'])){
+		$utm_source = $settings['utm_details']['utm_source'];
+		$utm_medium = $settings['utm_details']['utm_medium'];
+		$utm_term = $settings['utm_details']['utm_term'];
+		$utm_content = $settings['utm_details']['utm_content'];
+		$queryArg['utm_source'] = $utm_source;
+		$queryArg['utm_medium'] = $utm_medium;
+		$queryArg['utm_term'] = $utm_term;
+		$queryArg['utm_content'] = $utm_content;
+		$queryArg = array_filter($queryArg);
+		$utm_url = $utm_url."?".http_build_query($queryArg);
+		$utm_url_amp = $utm_url_amp."?".http_build_query($queryArg);
+
+	}
+	$queryArg = 'utm_source=&utm_medium=&utm_term=&utm_content'
+	?>
+	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">Enable UTM Tracking</label>
+	<p> To identify users are coming from your App.</p>
+	<table class="form-table">
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Source</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo $utm_source; ?>" data-val="<?php echo $utm_source; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Medium</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo $utm_medium; ?>" data-val="<?php echo $utm_medium; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Term</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo $utm_term; ?>" data-val="<?php echo $utm_term; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Content</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo $utm_content; ?>" data-val="<?php echo $utm_content; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+			<td>UTM Non-amp Url</td>
+			<td><code><?php echo $utm_url; ?></code></td>
+		</tr>
+		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+			<td>UTM amp Url</td>
+			<td><code><?php echo $utm_url_amp; ?></code></td>
+		</tr>
+	</table>
+	<input type="hidden" name="pwaforwp_settings[utm_details][pwa_utm_change_track]" id="pwa-utm_change_track" value="0">
+	<?php
 }
 
 function pwaforwp_cdn_setting_callback(){
@@ -458,7 +515,7 @@ function pwaforpw_orientation_callback(){
 
 // Dashboard
 function pwaforwp_files_status_callback(){
-       $serviceWorkerObj = new PWAFORWP_Service_Worker();
+           $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
        $settings = pwaforwp_defaultSettings();
         ?>

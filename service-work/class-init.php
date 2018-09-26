@@ -51,7 +51,8 @@ class PWAFORWP_File_Creation_Init {
         if(!file_exists($this->minifest_init)){				
             $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
             $handleHtml     = fopen($this->minifest_init, 'w');
-            $writestatus    = fwrite($handleHtml, $swHtmlContent);
+            $swHtmlContent = str_replace("&#038;", '&', $swHtmlContent);
+            $writestatus    = fwrite($handleHtml, $swHtmlContent );
             fclose($handleHtml);
         }
         if($writestatus){

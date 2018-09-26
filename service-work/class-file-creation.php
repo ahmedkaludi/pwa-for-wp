@@ -44,11 +44,14 @@ class pwaforwpFileCreation{
         if($is_amp){ 
             if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
+				$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
 			} else {
 				$homeUrl = get_home_url().AMP_QUERY_VAR;
+				$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
 			}
         } else {
             $homeUrl = get_home_url(); 
+            $homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
         }                                            
         $homeUrl 		= str_replace("http://", "https://", $homeUrl);
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
@@ -74,10 +77,9 @@ class pwaforwpFileCreation{
 			"theme_color": "'.sanitize_hex_color($defaults['theme_color']).'",
 			"display": "standalone",
 			"orientation": "'.esc_html( $orientation ).'",
-			"start_url": "'.esc_url($homeUrl).'/",
-			"scope": "'.esc_url($homeUrl).'/"
+			"start_url": "'.esc_url($homeUrl).'",
+			"scope": "'.esc_url($homeUrl).'"
 		}';
-			
 		return $manifest;				
 	}        
 }
