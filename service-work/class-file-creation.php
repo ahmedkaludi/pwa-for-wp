@@ -44,14 +44,20 @@ class pwaforwpFileCreation{
         if($is_amp){ 
             if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
-				$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+				if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+					$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+				}
 			} else {
 				$homeUrl = get_home_url().AMP_QUERY_VAR;
-				$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+				if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+					$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+				}
 			}
         } else {
             $homeUrl = get_home_url(); 
-            $homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+            if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+	            $homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
+	        }
         }                                            
         $homeUrl 		= str_replace("http://", "https://", $homeUrl);
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
