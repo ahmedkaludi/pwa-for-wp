@@ -23,11 +23,11 @@ const CACHE_VERSIONS = {
 
 // Define MAX_TTL's in SECONDS for specific file extensions
 const MAX_TTL = {
-    '/': 3600,
-    html: 3600,
-    json: 86400,
-    js: 86400,
-    css: 86400,
+    '/': {{HTML_CACHE_TIME}},
+    html: {{HTML_CACHE_TIME}},
+    json: {{CSS_CACHE_TIME}},
+    js: {{CSS_CACHE_TIME}},
+    css: {{CSS_CACHE_TIME}},
 };
 
 const CACHE_BLACKLIST =  [

@@ -59,10 +59,11 @@ function pwaforwp_defaultSettings(){
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
-                'manualfileSetup'	=> 0,
-                'cdn_setting'       => 0,
-                'normal_enable'       => 1,
-                'amp_enable'       => 1,
+        'manualfileSetup'	=> 0,
+        'cdn_setting'       => 0,
+        'normal_enable'       => 1,
+        'amp_enable'       => 1,
+        'cached_timer'      => array('html'=>3600,'css'=>86400),
 	);
         
 	$settings = get_option( 'pwaforwp_settings', $defaults );       
