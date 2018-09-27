@@ -24,15 +24,16 @@ class pwaforwpFileCreation{
 		$settings 			= pwaforwp_defaultSettings();		
 		$offline_page 		= get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
 		$page404 			= get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );  
-
+		$site_url 		= str_replace( 'http://', 'https://', site_url() );  
+		
 		if( $is_amp ){
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
 			$page404 		= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
-			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}"), array($offline_page, $page404, '0.1' ), $swJsContent);                		
+			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}"), array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url), $swJsContent);                		
 		} else {
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page );
 			$page404 		= str_replace( 'http://', 'https://', $page404 );    
-			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}"), array($offline_page, $page404, '0.2' ), $swJsContent);                		
+			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}"), array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url ), $swJsContent);                		
 		}                		
 	    return $swJsContent;
 		

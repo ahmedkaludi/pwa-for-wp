@@ -30,12 +30,24 @@ const MAX_TTL = {
     css: 86400,
 };
 
-const CACHE_BLACKLIST = [ ];
+const CACHE_BLACKLIST =  [
+    (str) => {
+        return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
+    },
+];
+const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/];
 
 
 const SUPPORTED_METHODS = [
     'GET',
 ];
+// Check if current url is in the neverCacheUrls list
+function checkNeverCacheList(url) {
+    if ( this.match(url) ) {
+        return false;
+    }
+    return true;
+}
 
 /**
  * isBlackListed
@@ -231,6 +243,19 @@ self.addEventListener(
 
 self.addEventListener(
     'fetch', event => {
+        // Return if the current request url is in the never cache list
+        if ( ! neverCacheUrls.every(checkNeverCacheList, event.request.url) ) {
+          console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' );
+          return;
+        }
+        
+        // Return if request url protocal isn't http or https
+        if ( ! event.request.url.match(/^(http|https):\/\//i) )
+            return;
+        
+        // Return if request url is from an external domain.
+        if ( new URL(event.request.url).origin !== location.origin )
+            return;
 
         event.respondWith(
             caches.open(CACHE_VERSIONS.content)
@@ -370,3 +395,7 @@ self.addEventListener('message', (event) => {
     }
 
 });
+
+self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
+
+workbox.googleAnalytics.initialize();  
