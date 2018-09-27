@@ -104,6 +104,13 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
 /**
  * set user defined message on plugin activate
  */
+function pwaforwp_after_activation_redirect( $plugin ) {
+    if( $plugin == plugin_basename( __FILE__ ) ) {
+        exit( wp_redirect( admin_url( 'admin.php?page=pwaforwp' ) ) );
+    }
+}
+add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
+
 register_activation_hook( __FILE__, 'pwaforwp_admin_notice_activation_hook' );
 function pwaforwp_admin_notice_activation_hook() {
     set_transient( 'pwaforwp_admin_notice_transient', true );
