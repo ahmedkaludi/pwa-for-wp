@@ -64,9 +64,13 @@ function pwaforwp_defaultSettings(){
         'normal_enable'       => 1,
         'amp_enable'       => 1,
         'cached_timer'      => array('html'=>3600,'css'=>86400),
+        'default_caching'   => 'cacheFirst',
+        'default_caching_js_css'   => 'cacheFirst',
+        'default_caching_images'   => 'cacheFirst',
+        'default_caching_fonts'   => 'cacheFirst',
 	);
         
-	$settings = get_option( 'pwaforwp_settings', $defaults );       
+	$settings = get_option( 'pwaforwp_settings', $defaults ); 
 	return $settings;
 }
 
