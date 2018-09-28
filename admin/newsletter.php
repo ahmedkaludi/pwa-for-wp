@@ -39,7 +39,7 @@
                         .wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 10px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}	#pwaforwp_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }
                         </style>
                         <div id="pwaforwp_mc_embed_signup">  
-                            <form action="//app.mailerlite.com/webforms/submit/o1s7u3" data-id="258182" data-code="o1s7u3" method="POST" target="_blank">
+                        <form class="ml-block-form" action="https://app.mailerlite.com/webforms/submit/v5p5a5" data-code="v5p5a5" method="post" target="_blank">
                                     <div id="pwaforwp_mc_embed_signup_scroll">
                                     <div class="pwaforwp-mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">
                                                     <input type="text" name="fields[name]" class="form-control" placeholder="Name" hidden value="' . esc_attr( $current_user->display_name ) . '" style="display:none">
