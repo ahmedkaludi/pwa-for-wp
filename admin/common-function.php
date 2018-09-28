@@ -140,5 +140,5 @@ function pwaforwp_front_url(){
     
 
     $link = str_replace("http:","https:", $link);
-    return esc_url($link);
+    return esc_url(trailingslashit($link));
 }

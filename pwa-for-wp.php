@@ -47,7 +47,7 @@ function pwaforwp_add_action_links($links){
 //}
 
 function pwaforwp_amp_cdn_replace_urls_revert($src){
-	$url = str_replace("http:","https:",site_url());    
+	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
 		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js"';
 	}else{
@@ -55,7 +55,7 @@ function pwaforwp_amp_cdn_replace_urls_revert($src){
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
-    $url = str_replace("http:","https:",site_url());    
+    $url = pwaforwp_front_url();    
 	if($src[1]==$url){
 		return 'href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
 	}else{
@@ -65,9 +65,9 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
     $url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return ' rel="manifest" href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+		return ' rel="manifest" href="'.$src.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
 	}else{
-		return ' rel="manifest" href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
+		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
 	}
 }
 
@@ -86,7 +86,7 @@ function pwaforwp_revert_src($content){
 	return $content;
 }
 function pwaforwp_cdn_replace_urls_revert($src){
-	$url = str_replace("http:","https:",site_url());    
+	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
 		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}else{
@@ -94,7 +94,7 @@ function pwaforwp_cdn_replace_urls_revert($src){
 	}
 }
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
-    $url = str_replace("http:","https:",site_url());    
+    $url = pwaforwp_front_url();    
 	if($src[1]==$url){
 		return 'href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}else{

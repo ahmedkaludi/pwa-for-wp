@@ -23,14 +23,14 @@ class PWAFORWP_Service_Worker{
         }                      
         $this->pwaforwp_is_amp_activated();
             
-	$url = pwaforwp_front_url();                              
+			$url = pwaforwp_front_url();                              
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-        $this->swjs_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js';
-        $this->minifest_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json';
+        $this->swjs_path = $url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js';
+        $this->minifest_path = $url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json';
         
-        $this->swjs_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js';
-        $this->swhtml_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
-        $this->minifest_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
+        $this->swjs_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js';
+        $this->swhtml_path = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
+        $this->minifest_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
         
         
         if(isset($settings['normal_enable'])){
@@ -66,7 +66,7 @@ class PWAFORWP_Service_Worker{
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if( $manualfileSetup ){
-            echo '<script src="'.esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js').'"></script>';    		
+            echo '<script src="'.esc_url($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js').'"></script>';    		
 		}           		
 	}              
     
@@ -79,7 +79,7 @@ class PWAFORWP_Service_Worker{
 			$multisite_filename_postfix = '-' . get_current_blog_id();
 		}
 		if($manualfileSetup){
-		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json').'">
+		    echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json').'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
 		    	<meta name="theme-color" content="'.$settings['theme_color'].'">'.PHP_EOL;
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
