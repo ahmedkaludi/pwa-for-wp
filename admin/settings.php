@@ -48,8 +48,6 @@ function pwaforwp_admin_interface_render(){
                 $status = $fileCreationInit->pwaforwp_manifest_init_amp();
                 $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
                 }
-                /* Delete transient, only display this notice once. */
-        		delete_transient( 'pwaforwp_admin_notice_transient' );   
                 if(!$status){
                  echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
                 }
@@ -63,8 +61,11 @@ function pwaforwp_admin_interface_render(){
 				$swJsNonAmp = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");
 				$file_js_headers = @checkStatus($swJsNonAmp);
                 if($file_json_headers || $file_js_headers){
+                	/* Delete transient, only display this notice once. */
+        			delete_transient( 'pwaforwp_admin_notice_transient' );   
                  echo '<div class="wrap">';   
                 }else{
+                	set_transient( 'pwaforwp_admin_notice_transient', true );
                  echo '<div class="wrap" style="display: none;">';      
                 }
 	?>
