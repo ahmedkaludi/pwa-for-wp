@@ -63,7 +63,7 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
-    $url = str_replace("http:","https:",site_url());    
+    $url = pwaforwp_front_url();    
 	if($src[1]==$url){
 		return ' rel="manifest" href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json"';
 	}else{
@@ -74,7 +74,7 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
 
 function pwaforwp_revert_src($content){
 	//NON AMP
-	$url = str_replace("http:","https:",site_url()); 
+	$url = pwaforwp_front_url(); 
 	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
 	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
 

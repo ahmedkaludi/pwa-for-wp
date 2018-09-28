@@ -56,18 +56,18 @@ class pwaforwpFileCreation{
         if($is_amp){ 
             if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
-				if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
 				}
 			} else {
 				$homeUrl = get_home_url().AMP_QUERY_VAR;
-				if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
 				}
 			}
         } else {
             $homeUrl = get_home_url(); 
-            if($defaults['utm_setting'] && $defaults['utm_setting']==1){
+            if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query($defaults['utm_details']);
 	        }
         }                                            

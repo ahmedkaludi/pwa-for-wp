@@ -17,7 +17,7 @@ function pwaforwp_admin_link($tab = '', $args = array()){
 		$link = admin_url( 'admin.php?page=' . $page );
 	}
 	else {
-		$link = network_admin_url( 'admin.php?page=' . $page );
+		$link = admin_url( 'admin.php?page=' . $page );
 	}
 
 	if ( $tab ) {
@@ -129,3 +129,16 @@ function pwaforwp_expanded_allowed_tags() {
     );
     return $my_allowed;
 }  
+
+function pwaforwp_front_url(){
+    if ( ! is_multisite() ) {
+            $link = site_url();
+        }
+        else {
+            $link = network_site_url();
+        }
+    
+
+    $link = str_replace("http:","https:", $link);
+    return esc_url($link);
+}
