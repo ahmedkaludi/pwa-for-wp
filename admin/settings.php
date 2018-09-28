@@ -24,8 +24,12 @@ function pwaforwp_admin_interface_render(){
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-     	        $serviceWorkerObj = new PWAFORWP_Service_Worker();
-        	$is_amp = $serviceWorkerObj->is_amp;
+	$serviceWorkerObj = new PWAFORWP_Service_Worker();
+	$is_amp = $serviceWorkerObj->is_amp;
+	$multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {		
                 $settings = pwaforwp_defaultSettings(); 
@@ -43,7 +47,7 @@ function pwaforwp_admin_interface_render(){
                 $status = $fileCreationInit->pwaforwp_swjs_init_amp();
                 $status = $fileCreationInit->pwaforwp_manifest_init_amp();
                 $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
-                }                 
+                }
                 if(!$status){
                  echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
                 }
@@ -52,13 +56,16 @@ function pwaforwp_admin_interface_render(){
 	}
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design', 'other_setting','help'));
         
-                $swJsonNonAmp = esc_url(site_url()."/pwa-manifest.json");               
-				$file_json_headers = @checkStatus($swJsonNonAmp);                 
-				$swJsNonAmp = esc_url(site_url()."/pwa-sw.js");
+                $swJsonNonAmp = esc_url(pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json");               
+				$file_json_headers = @checkStatus($swJsonNonAmp);
+				$swJsNonAmp = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");
 				$file_js_headers = @checkStatus($swJsNonAmp);
                 if($file_json_headers || $file_js_headers){
+                	/* Delete transient, only display this notice once. */
+        			delete_transient( 'pwaforwp_admin_notice_transient' );   
                  echo '<div class="wrap">';   
                 }else{
+                	set_transient( 'pwaforwp_admin_notice_transient', true );
                  echo '<div class="wrap" style="display: none;">';      
                 }
 	?>
@@ -71,11 +78,11 @@ function pwaforwp_admin_interface_render(){
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Misc','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
+			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
 		</h2>
                 <form action="options.php" method="post" enctype="multipart/form-data" class="pwaforwp-settings-form">		
@@ -104,6 +111,23 @@ function pwaforwp_admin_interface_render(){
 			echo "</div>";
 			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
+				?>	
+				<hr />	
+        	 <div class="pwa_contact_us_div">
+			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
+			       		<hr />	
+			            <ul>
+			                <li><label for="pwaforwp_query_message">Message</label>
+			                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
+			                    <br>
+			                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
+			                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
+			                </li> 
+			                <li><button class="button pwa-send-query"><?php echo esc_html('Send Message', 'pwa-for-wp'); ?></button></li>
+			            </ul>            
+			                   
+			        </div>
+				<?php
 				// design Application Settings
 				do_settings_sections( 'amp_pwa_help_section' );	// Page slug
 			echo "</div>";
@@ -158,7 +182,7 @@ function pwaforwp_settings_init(){
 		// Application Name
 		add_settings_field(
 			'pwaforwp_app_name',									// ID
-			esc_html__('Application Name', 'pwa-for-wp'),	// Title
+			esc_html__('App Name', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_name_callback',									// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -167,7 +191,7 @@ function pwaforwp_settings_init(){
 		// Application Short Name
 		add_settings_field(
 			'pwaforwp_app_short_name',								// ID
-			esc_html__('Application Short Name', 'pwa-for-wp'),	// Title
+			esc_html__('App Short Name', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_short_name_callback',							// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -176,7 +200,7 @@ function pwaforwp_settings_init(){
 		// Description
 		add_settings_field(
 			'pwaforwp_app_description',									// ID
-			esc_html__('Application Description', 'pwa-for-wp' ),		// Title
+			esc_html__('App Description', 'pwa-for-wp' ),		// Title
 			'pwaforwp_description_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -185,7 +209,7 @@ function pwaforwp_settings_init(){
 		// Application Icon
 		add_settings_field(
 			'pwaforwp_app_icons',										// ID
-			esc_html__('Application Icon', 'pwa-for-wp'),	// Title
+			esc_html__('App Icon', 'pwa-for-wp'),	// Title
 			'pwaforwp_app_icon_callback',									// Callback function
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -194,7 +218,7 @@ function pwaforwp_settings_init(){
 		// Splash Screen Icon
 		add_settings_field(
 			'pwaforwp_app_splash_icon',									// ID
-			esc_html__('Application Splash Screen Icon', 'pwa-for-wp'),	// Title
+			esc_html__('App Splash Screen Icon', 'pwa-for-wp'),	// Title
 			'pwaforwp_splash_icon_callback',								// Callback function
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
@@ -246,8 +270,8 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section'						// Settings Section ID
 		);
 
+		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
-		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_cdn_setting',							// ID
 			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
@@ -255,6 +279,164 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_utm_setting',							// ID
+			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
+			'pwaforwp_utm_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
+			'pwaforwp_cache_time_setting',							// ID
+			esc_html__('Cached time', 'pwa-for-wp'),	// Title
+			'pwaforwp_cache_time_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+
+		add_settings_field(
+			'pwaforwp_caching_strategies_setting',							// ID
+			esc_html__('Caching Strategies', 'pwa-for-wp'),	// Title
+			'pwaforwp_caching_strategies_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+
+		
+}
+
+function pwaforwp_caching_strategies_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	$arrayOPT = array('staleWhileRevalidate'=>'Stale While Revalidate',
+						'networkFirst'=>'Network First',
+						'cacheFirst'=>'Cache First',
+						'networkOnly'=> 'Network Only');
+
+	?>
+	<tr>
+		<td><label>Default caching strategy</label></td>
+		<td><select name="pwaforwp_settings[default_caching]">
+			<?php if($arrayOPT){
+				foreach ($arrayOPT as $key => $opval) {
+					$sel = "";
+					if($settings['default_caching']==$key){$sel = "selected"; }
+					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+				}
+			}
+			 ?>
+
+		</select></td>
+	</tr>
+	<tr>
+		<td><label>Caching strategy for CSS and JS Files</label></td>
+		<td><select name="pwaforwp_settings[default_caching_js_css]">
+			<?php if($arrayOPT){
+				foreach ($arrayOPT as $key => $opval) {
+					$sel = "";
+					if($settings['default_caching_js_css']==$key){$sel = "selected"; }
+					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+				}
+			}
+			 ?>
+		</select></td>
+	</tr>
+	<tr>
+		<td><label>Caching strategy for images</label></td>
+		<td><select name="pwaforwp_settings[default_caching_images]">
+			<?php if($arrayOPT){
+				foreach ($arrayOPT as $key => $opval) {
+					$sel = "";
+					if($settings['default_caching_images']==$key){$sel = "selected"; }
+					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+				}
+			}
+			 ?>
+		</select></td>
+	</tr>
+	<tr>
+		<td><label>Caching strategy for fonts</label></td>
+		<td><select name="pwaforwp_settings[default_caching_fonts]">
+			<?php if($arrayOPT){
+				foreach ($arrayOPT as $key => $opval) {
+					$sel = "";
+					if($settings['default_caching_fonts']==$key){$sel = "selected"; }
+					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+				}
+			}
+			 ?>
+		</select></td>
+	</tr>
+	<?php
+}
+
+function pwaforwp_cache_time_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<p>Set max cache time for Html Default: <code>3600</code> in seconds; You need to enter time in seconds</p>
+	<input type="text" name="pwaforwp_settings[cached_timer][html]" id="pwaforwp_settings[cached_timer][html]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['html'] : '3600'); ?>">
+	<p>Set max cache time for JS, CSS, JSON Default: <code>86400</code> in seconds; You need to enter time in seconds</p>
+	<input type="text" name="pwaforwp_settings[cached_timer][css]" id="pwaforwp_settings[cached_timer][css]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['css'] : '86400'); ?>">
+	<?php
+}
+
+function pwaforwp_utm_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	$style="style='display:none;'";
+	if(isset($settings['utm_setting']) && $settings['utm_setting']){
+		$style="style='display:block;'";
+	}
+	$utm_source = $utm_medium = $utm_term = $utm_content = ''; 
+	$utm_url = site_url();
+	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(site_url()) : trailingslashit(site_url())."amp");
+	if(isset($settings['utm_details'])){
+		$utm_source = $settings['utm_details']['utm_source'];
+		$utm_medium = $settings['utm_details']['utm_medium'];
+		$utm_term = $settings['utm_details']['utm_term'];
+		$utm_content = $settings['utm_details']['utm_content'];
+		$queryArg['utm_source'] = $utm_source;
+		$queryArg['utm_medium'] = $utm_medium;
+		$queryArg['utm_term'] = $utm_term;
+		$queryArg['utm_content'] = $utm_content;
+		$queryArg = array_filter($queryArg);
+		$utm_url = $utm_url."?".http_build_query($queryArg);
+		$utm_url_amp = $utm_url_amp."?".http_build_query($queryArg);
+
+	}
+	$queryArg = 'utm_source=&utm_medium=&utm_term=&utm_content'
+	?>
+	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">Enable UTM Tracking</label>
+	<p> To identify users are coming from your App.</p>
+	<table class="form-table">
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Source</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo $utm_source; ?>" data-val="<?php echo $utm_source; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Medium</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo $utm_medium; ?>" data-val="<?php echo $utm_medium; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Term</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo $utm_term; ?>" data-val="<?php echo $utm_term; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td>UTM Content</td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo $utm_content; ?>" data-val="<?php echo $utm_content; ?>"/></td>
+		</tr>
+		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+			<td>UTM Non-amp Url</td>
+			<td><code><?php echo $utm_url; ?></code></td>
+		</tr>
+		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+			<td>UTM amp Url</td>
+			<td><code><?php echo $utm_url_amp; ?></code></td>
+		</tr>
+	</table>
+	<input type="hidden" name="pwaforwp_settings[utm_details][pwa_utm_change_track]" id="pwa-utm_change_track" value="0">
+	<?php
 }
 
 function pwaforwp_cdn_setting_callback(){
@@ -262,6 +444,7 @@ function pwaforwp_cdn_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p>This helps you remove conflict with the CDN</p>
 	<?php
 }
 
@@ -428,9 +611,13 @@ function pwaforpw_orientation_callback(){
 
 // Dashboard
 function pwaforwp_files_status_callback(){
-       $serviceWorkerObj = new PWAFORWP_Service_Worker();
+           $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
        $settings = pwaforwp_defaultSettings();
+       $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
         ?>
         <table class="pwaforwp-files-table">
             <tbody>
@@ -444,10 +631,10 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>    
-                    <td><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?> </td>    
+                    <td> <label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?></label> </td>    
                     <td>
                         <?php if($is_amp) { ?>
-                        <input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?>
+                        <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? esc_html__( 'Disable', 'pwa-for-wp' ) : esc_html__( 'Enable', 'pwa-for-wp' )); ?></label>
                          <?php } ?>
                     </td>    
                     
@@ -458,7 +645,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                  $swUrl = esc_url(site_url()."/pwa-manifest.json");
+                  $swUrl = esc_url(pwaforwp_front_url()."/pwa-manifest". $multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                     printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -470,7 +657,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(site_url()."/pwa-amp-manifest.json");
+                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -489,7 +676,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = esc_url(site_url()."/pwa-sw.js");
+                      $swUrl = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -501,7 +688,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(site_url()."/pwa-amp-sw.js");
+                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js");
                     $file_headers = @checkStatus($swUrl);                   
                     if(!$file_headers) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -518,7 +705,7 @@ function pwaforwp_files_status_callback(){
                 <th>                 
               <?php echo esc_html__( 'HTTPS', 'pwa-for-wp' ) ?> 
                 </th>
-                <td>
+                <td colspan="2">
                   <?php
                   if ( is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' ;
@@ -526,9 +713,6 @@ function pwaforwp_files_status_callback(){
                             echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
                   ?>  
-                </td>
-                <td>
-                    
                 </td>
             </tr>
             
@@ -539,7 +723,11 @@ function pwaforwp_files_status_callback(){
 }
 
 function pwaforwp_amp_status_callback(){
-        $swUrl = esc_url(site_url()."/sw.js");
+	$multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }
+        $swUrl = esc_url(site_url()."/sw".$multisite_filename_postfix.".js");
 	$file_headers = @checkStatus($swUrl);	
 	if(!$file_headers) {
 		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
@@ -550,46 +738,50 @@ function pwaforwp_amp_status_callback(){
 
 function checkStatus($swUrl){
 	$settings = pwaforwp_defaultSettings();
-        $manualfileSetup ="";
-        if(array_key_exists('manualfileSetup', $settings)){
-        $manualfileSetup = $settings['manualfileSetup'];    
-        }	
+    $manualfileSetup ="";
+    if(array_key_exists('manualfileSetup', $settings)){
+    $manualfileSetup = $settings['manualfileSetup'];    
+    }	
 	if($manualfileSetup){
+		$multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
 		$wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-		$swjsFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw.js";
-		$swHtmlFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw.html";
-                $swrFile = $wppath.PWAFORWP_FILE_PREFIX."-pwa-register-sw.js";
-		$swmanifestFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-manifest.json";
+		$swjsFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".js";
+		$swHtmlFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".html";
+        $swrFile = $wppath.PWAFORWP_FILE_PREFIX."-register-sw".$multisite_filename_postfix.".js";
+		$swmanifestFile = $wppath.PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix.".json";
                 
-                $swjsFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-sw.js";
-                $swmanifestFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-manifest.json";                
+        $swjsFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-sw".$multisite_filename_postfix.".js";
+        $swmanifestFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix.".json";
 		switch ($swUrl) {
-			case site_url()."/pwa-amp-manifest.json":
+			case pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json":
 				if(file_exists($swmanifestFile)){
 					return true;
 				}
 				break;
-			case site_url()."/pwa-amp-sw.js":
+			case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFile)){
 					return true;
 				}
 				break;
-                        case site_url()."/pwa-sw.js":
+            case pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFileNonAmp)){
 					return true;
 				}
 				break;
-                        case site_url()."/pwa-manifest.json":
+            case pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json":
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}
 				break;
-                        case site_url()."/pwa-amp-sw.html":
+            case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".html":
 				if(file_exists($swHtmlFile)){
 					return true;
 				}
 				break;  
-                        case site_url()."/pwa-register-sw.js":
+            case pwaforwp_front_url()."/pwa-register-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swrFile)){
 					return true;
 				}
@@ -636,3 +828,34 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_script('pwaforwp-main-js');
 }
 add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
+
+
+/**
+ * This is a ajax handler function for sending email from user admin panel to us. 
+ * @return type json string
+ */
+function pwaforwp_send_query_message(){                  
+        $message    = sanitize_text_field($_POST['message']); 
+        $message .= "<table>
+        				<tr><td>Plugin</td><td>PWA for wp</td></tr>
+        				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>
+        			</table>";
+        $user       = wp_get_current_user();
+        $user_data  = $user->data;        
+        $user_email = $user_data->user_email;       
+        //php mailer variables
+        $to = 'team@magazine3.com';
+        $subject = "Customer Query";
+        $headers = 'From: '. $user_email . "\r\n" .
+        'Reply-To: ' . $user_email . "\r\n";
+        // Load WP components, no themes.                      
+        $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
+        if($sent){
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+           wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message');

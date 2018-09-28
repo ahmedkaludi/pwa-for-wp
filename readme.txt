@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 4.9.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -15,6 +15,10 @@ You can give the APP-like experience to your audience which will get your websit
 
 = Features: =
 
+* NEW: Multi site support
+* NEW: UTM Tracking
+* NEW: Caching Strategy for PWA enabled assets
+* NEW: Cache Expire option added
 * <strong>Service Worker </strong>: We have developed a service worker which automatically gets installed in the background and performs the necessary actions such as caching the external objects to reduce the requests and more.
 * <strong>APP Banners in Home-screen</strong>: Automatically notifies your visitor to get the APP version of the website which directly gets added with the list of Apps and Home-screen. You can customize the icons for this as well.
 * <strong>AMP Support</strong>: Full PWA compatibility for AMP. Works well with AMPforWP plugin.
@@ -28,6 +32,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Add your own Application and short name.
 * Easily set the start page from options.
 * Set Device Orientation easily.
+* Tested with Google Lighthouse
 * More PWA Features Coming soon.
 
 **We Act Fast on Feedback!**
@@ -55,6 +60,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.2 (28 September 2018) =
+* Apple touch Icons Support #25
+* UTM Tracking feature 
+* Contact form added so we can help people faster
+* Cache Expire time option added 
+* Caching Strategy option added
+* Improved Add to homescreen option with proper Mini info bar support.
+* and Minor bugs fixed
 
 = 1.0.1 (27 August 2018) =
 * You can choose to enable PWA compatibility either on AMP or Non-AMP or both.

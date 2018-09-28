@@ -13,20 +13,24 @@ class PWAFORWP_Service_Worker{
 
     public function __construct() {
         $settings = pwaforwp_defaultSettings();
+        $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
         
         if(isset($settings['amp_enable'])){
         add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));      
         }                      
         $this->pwaforwp_is_amp_activated();
             
-	$url = str_replace("http:","https:",site_url());                              
+			$url = pwaforwp_front_url();                              
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-        $this->swjs_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-sw.js';
-        $this->minifest_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json';
+        $this->swjs_path = $url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js';
+        $this->minifest_path = $url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json';
         
-        $this->swjs_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.js';
-        $this->swhtml_path = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw.html';
-        $this->minifest_path_amp = $url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json';
+        $this->swjs_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js';
+        $this->swhtml_path = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
+        $this->minifest_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
         
         
         if(isset($settings['normal_enable'])){
@@ -53,31 +57,60 @@ class PWAFORWP_Service_Worker{
 		return $data;
 	}
        	
-	public function pwaforwp_service_worker_non_amp(){           
-        $url 			 = str_replace("http:","https:",site_url());	
+	public function pwaforwp_service_worker_non_amp(){
+		$multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
+        $url 			 = pwaforwp_front_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if( $manualfileSetup ){
-            echo '<script src="'.esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js').'"></script>';    		
+            echo '<script src="'.esc_url($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js').'"></script>';    		
 		}           		
 	}              
     
     public function pwaforwp_paginated_post_add_homescreen_amp(){           
-		$url 			 = str_replace("http:","https:",site_url());	
+		$url 			 = pwaforwp_front_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
+		$multisite_filename_postfix = '';
+		if ( is_multisite() ) {
+			$multisite_filename_postfix = '-' . get_current_blog_id();
+		}
 		if($manualfileSetup){
-		    echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest.json').'">';
+		    echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json').'">
+		    	<meta name="pwaforwp" content="wordpress-plugin"/>
+		    	<meta name="theme-color" content="'.$settings['theme_color'].'">'.PHP_EOL;
+		    if(isset($settings['icon']) && !empty($settings['icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
+		    }
+		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . $settings['splash_icon'] . '">'.PHP_EOL;
+		    }
+
 		}
 	}
 
 	public function pwaforwp_paginated_post_add_homescreen(){                       
-		$url 			 = str_replace("http:","https:",site_url());	
+		$url 			 = pwaforwp_front_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
+		$multisite_filename_postfix = '';
+		if ( is_multisite() ) {
+			$url =  trailingslashit(str_replace("http:","https:",network_site_url()));
+			$multisite_filename_postfix = '-' . get_current_blog_id();
+		}
 		if($manualfileSetup){
-                        echo '<meta name="pwaforwp" content="wordpress-plugin"/>';
-			echo '<link rel="manifest" href="'. esc_url($url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json').'"/>';
+           	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
+                <meta name="theme-color" content="'.$settings['theme_color'].'">';
+			echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json').'"/>';
+			if(isset($settings['icon']) && !empty($settings['icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
+		    }
+		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
+		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . $settings['splash_icon'] . '">'.PHP_EOL;
+		    }
 		}
 	}
 

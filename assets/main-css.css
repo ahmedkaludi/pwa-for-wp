@@ -7,14 +7,29 @@ and open the template in the editor.
     Created on : Aug 4, 2018, 7:47:47 PM
     Author     : Magazine3
 */
+.pwaforwp-dashboard h2{
+	margin-bottom: 5px;
+}
 .pwaforwp-dashboard table th{
     width: 0px;
     padding: 0px;   
     
+}
+.pwaforwp-files-table{
+	width:70%;
 }
 .pwaforwp-files-table th td{
     width: 300px;
 }
 .pwaforwp-files-table th{
     vertical-align: inherit;
+}
+.pwa-query-success{
+    color: #028a00;
+}
+.pwa-query-error{
+    color: #f73434;
+}
+.pwa_hide{
+    display: none;
 }

@@ -3,8 +3,8 @@
 Plugin Name: PWA for WP
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Ahmed Kaludi, Mohammed Kaludi
-Version: 1.0.1
-Author URI: https://ampforwp.com
+Version: 1.0.2
+Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages/
 */
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.0.1');
+define('PWAFORWP_PLUGIN_VERSION', '1.0.2');
 define('PWAFORWP_FILE_PREFIX', 'pwa');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
@@ -36,31 +36,83 @@ function pwaforwp_add_action_links($links){
 
 
 //For CDN CODES
-if ( !is_admin() ) { 
-	$settings = pwaforwp_defaultSettings(); 
-		if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
-			ob_start('pwaforwp_revert_src');
+//add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
+//function pwaforwp_allow_cdn(){
+	if ( !is_admin() ) { 
+		$settings = pwaforwp_defaultSettings(); 
+			if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
+				ob_start('pwaforwp_revert_src');
 		}
 	}
-function pwaforwp_revert_src($content){
+//}
 
-	$url = str_replace("http:","https:",site_url()); 
-	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
+function pwaforwp_amp_cdn_replace_urls_revert($src){
+	$url = pwaforwp_front_url();
+	$multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }
+	if($src[1]==$url){
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+	}else{
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+	}
+}
+function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
+    $url = pwaforwp_front_url();    
+    $multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }
+	if($src[1]==$url){
+		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+	}else{
+		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+	}
+}
+function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
+    $url = pwaforwp_front_url(); 
+    $multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }   
+	if($src[1]==$url){
+		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+	}else{
+		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+	}
+}
+
+
+function pwaforwp_revert_src($content){
+	$multisite_filename_postfix = '';
+    if ( is_multisite() ) {
+       $multisite_filename_postfix = '-' . get_current_blog_id();
+    }
+	//NON AMP
+	$url = pwaforwp_front_url(); 
+	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw".$multisite_filename_postfix."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
+
+	//AMP
+	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content.=' ';
+	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
+	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);
 	return $content;
 }
 function pwaforwp_cdn_replace_urls_revert($src){
-	$url = str_replace("http:","https:",site_url());    
+	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'src="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}else{
 		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}
 }
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
-    $url = str_replace("http:","https:",site_url());    
+    $url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'href="'.$src.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}else{
 		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}
@@ -68,9 +120,16 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
 /**
  * set user defined message on plugin activate
  */
+function pwaforwp_after_activation_redirect( $plugin ) {
+    if( $plugin == plugin_basename( __FILE__ ) ) {
+        exit( wp_redirect( admin_url( 'admin.php?page=pwaforwp' ) ) );
+    }
+}
+add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
+
 register_activation_hook( __FILE__, 'pwaforwp_admin_notice_activation_hook' );
 function pwaforwp_admin_notice_activation_hook() {
-    set_transient( 'pwaforwp_admin_notice_transient', true, 5 );
+    set_transient( 'pwaforwp_admin_notice_transient', true );
 }
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
@@ -78,11 +137,11 @@ function pwaforwp_admin_notice(){
     /* Check transient, if available display notice */
     if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
         ?>
-        <div class="updated notice is-dismissible">
-            <p><?php echo esc_html__('Thank you for using this plugin! Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
+        <div class="updated notice">
+            <p><?php echo esc_html__('Thank you for using this','pwa-for-wp'); echo "<strong>".esc_html__(' PWA for WP plugin! ','pwa-for-wp')."</strong>"; echo esc_html__('Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
         </div>
         <?php
         /* Delete transient, only display this notice once. */
-        delete_transient( 'pwaforwp_admin_notice_transient' );
+        //delete_transient( 'pwaforwp_admin_notice_transient' );   
     }
 }

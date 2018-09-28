@@ -50,15 +50,24 @@ jQuery(document).ready(function($){
 		$(this).addClass("nav-tab-active");
 		$(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
 		$(".form-wrap .pwaforwp-"+currentTab).show();
+		if(currentTab=='help'){
+			$('.pwaforwp-settings-form').find('p.submit').hide();
+		}
 		window.history.pushState("", "", href);
 		return false;
 	});
+	var url      = window.location.href;     // Returns full URL
+	var currentTab = pwaforwpGetParamByName("tab",url);
+	if(currentTab=='help'){
+		$('.pwaforwp-help').find("tr th:first").hide()
+		$('.pwaforwp-settings-form').find('p.submit').hide();
+	}
         
         $(".pwaforwp-activate-service").on("click", function(e){
             $(".pwaforwp-settings-form #submit").click();
             $(this).hide();
         });
-        $(".pwaforwp-service-activate").on("click", function(){       
+    $(".pwaforwp-service-activate").on("click", function(){       
         var filetype = $(this).attr("data-id");                
                 $.ajax({
                     url:ajaxurl,
@@ -78,4 +87,42 @@ jQuery(document).ready(function($){
         return false;
     });
         
+    //Help Query
+    $(".pwa-send-query").on("click", function(e){
+	    e.preventDefault();   
+	    var message = $("#pwaforwp_query_message").val();           
+	                $.ajax({
+	                    type: "POST",    
+	                    url: ajaxurl,                    
+	                    dataType: "json",
+	                    data:{action:"pwaforwp_send_query_message", message:message},
+	                    success:function(response){                       
+	                      if(response['status'] =='t'){
+	                        $(".pwa-query-success").show();
+	                        $(".pwa-query-error").hide();
+	                      }else{
+	                        $(".pwa-query-success").hide();  
+	                        $(".pwa-query-error").show();
+	                      }
+	                    },
+	                    error: function(response){                    
+	                    console.log(response);
+	                    }
+	                    });
+	    
+	});
+
+	$("#pwaforwp_settings_utm_setting").click(function(){
+		console.log($(this).prop("checked"));
+		if($(this).prop("checked")){
+			$('.pwawp_utm_values_class').fadeIn();
+		}else{
+			$('.pwawp_utm_values_class').fadeOut(200);
+		}
+	});
+	$('.pwawp_utm_values_class').find('input').focusout(function(){
+		if($(this).attr('data-val')!==$(this).val()){
+			$("#pwa-utm_change_track").val('1');
+		}
+	});
 });

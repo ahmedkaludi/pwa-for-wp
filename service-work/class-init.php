@@ -15,14 +15,19 @@ class PWAFORWP_File_Creation_Init {
     public $swhtml_init_amp;   
              
     public function __construct(){
+        $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
+
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/"); 
         $this->fileCreation = new pwaforwpFileCreation();
-        $this->swjs_init = $this->wppath.PWAFORWP_FILE_PREFIX."-sw.js";
-        $this->minifest_init = $this->wppath.PWAFORWP_FILE_PREFIX."-manifest.json";
-        $this->swr_init = $this->wppath.PWAFORWP_FILE_PREFIX."-register-sw.js";
-        $this->swjs_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-sw.js";
-        $this->minifest_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-manifest.json";
-        $this->swhtml_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-sw.html";
+        $this->swjs_init = $this->wppath.PWAFORWP_FILE_PREFIX."-sw".$multisite_filename_postfix.".js";
+        $this->minifest_init = $this->wppath.PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix.".json";
+        $this->swr_init = $this->wppath.PWAFORWP_FILE_PREFIX."-register-sw".$multisite_filename_postfix.".js";
+        $this->swjs_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".js";
+        $this->minifest_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix.".json";
+        $this->swhtml_init_amp = $this->wppath.PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".html";
     }
 
     public function pwaforwp_swjs_init(){
@@ -51,7 +56,8 @@ class PWAFORWP_File_Creation_Init {
         if(!file_exists($this->minifest_init)){				
             $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
             $handleHtml     = fopen($this->minifest_init, 'w');
-            $writestatus    = fwrite($handleHtml, $swHtmlContent);
+            $swHtmlContent = str_replace("&#038;", '&', $swHtmlContent);
+            $writestatus    = fwrite($handleHtml, $swHtmlContent );
             fclose($handleHtml);
         }
         if($writestatus){

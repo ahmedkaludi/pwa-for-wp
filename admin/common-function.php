@@ -17,7 +17,7 @@ function pwaforwp_admin_link($tab = '', $args = array()){
 		$link = admin_url( 'admin.php?page=' . $page );
 	}
 	else {
-		$link = network_admin_url( 'admin.php?page=' . $page );
+		$link = admin_url( 'admin.php?page=' . $page );
 	}
 
 	if ( $tab ) {
@@ -59,13 +59,18 @@ function pwaforwp_defaultSettings(){
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
-                'manualfileSetup'	=> 0,
-                'cdn_setting'       => 0,
-                'normal_enable'       => 1,
-                'amp_enable'       => 1,
+        'manualfileSetup'	=> 0,
+        'cdn_setting'       => 0,
+        'normal_enable'       => 1,
+        'amp_enable'       => 1,
+        'cached_timer'      => array('html'=>3600,'css'=>86400),
+        'default_caching'   => 'cacheFirst',
+        'default_caching_js_css'   => 'cacheFirst',
+        'default_caching_images'   => 'cacheFirst',
+        'default_caching_fonts'   => 'cacheFirst',
 	);
         
-	$settings = get_option( 'pwaforwp_settings', $defaults );       
+	$settings = get_option( 'pwaforwp_settings', $defaults ); 
 	return $settings;
 }
 
@@ -128,3 +133,16 @@ function pwaforwp_expanded_allowed_tags() {
     );
     return $my_allowed;
 }  
+
+function pwaforwp_front_url(){
+    if ( ! is_multisite() ) {
+            $link = site_url();
+        }
+        else {
+            $link = network_site_url();
+        }
+    
+
+    $link = str_replace("http:","https:", $link);
+    return esc_url(trailingslashit($link));
+}
