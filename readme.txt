@@ -65,9 +65,10 @@ You can contact us from [here](https://ampforwp.com/contact/)
 * Apple touch Icons Support #25
 * UTM Tracking feature 
 * Contact form added so we can help people faster
-* Cache Expire time option added
+* Cache Expire time option added 
 * Caching Strategy option added
 * Improved Add to homescreen option with proper Mini info bar support.
+* and Minor bugs fixed
 
 = 1.0.1 (27 August 2018) =
 * You can choose to enable PWA compatibility either on AMP or Non-AMP or both.
