@@ -22,6 +22,7 @@ require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
 
       
 if( pwaforwp_is_admin() ){

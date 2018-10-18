@@ -49,10 +49,7 @@ jQuery(document).ready(function($){
 		$(this).siblings().removeClass("nav-tab-active");
 		$(this).addClass("nav-tab-active");
 		$(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
-		$(".form-wrap .pwaforwp-"+currentTab).show();
-		if(currentTab=='help'){
-			$('.pwaforwp-settings-form').find('p.submit').hide();
-		}
+		$(".form-wrap .pwaforwp-"+currentTab).show();		
 		window.history.pushState("", "", href);
 		return false;
 	});
@@ -67,7 +64,7 @@ jQuery(document).ready(function($){
             $(".pwaforwp-settings-form #submit").click();
             $(this).hide();
         });
-    $(".pwaforwp-service-activate").on("click", function(){       
+        $(".pwaforwp-service-activate").on("click", function(){       
         var filetype = $(this).attr("data-id");                
                 $.ajax({
                     url:ajaxurl,
@@ -111,6 +108,34 @@ jQuery(document).ready(function($){
 	                    });
 	    
 	});
+        
+        $(".pwaforwp-manual-notification").on("click", function(e){
+	    e.preventDefault();   
+	    var message = $("#pwaforwp_notification_message").val();           
+	                $.ajax({
+	                    type: "POST",    
+	                    url: ajaxurl,                    
+	                    dataType: "json",
+	                    data:{action:"pwaforwp_send_notification_manually", message:message},
+	                    success:function(response){                                 
+	                      if(response['status'] =='t'){
+                                var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
+                                    html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
+	                        $(".pwaforwp-notification-success").show();
+                                $(".pwaforwp-notification-success").html(html);
+	                        $(".pwaforwp-notification-error").hide();
+	                      }else{
+	                        $(".pwaforwp-notification-success").hide();  
+	                        $(".pwaforwp-notification-error").show();
+	                      }
+	                    },
+	                    error: function(response){                    
+	                    console.log(response);
+	                    }
+	                    });
+	    
+	});
+        
 
 	$("#pwaforwp_settings_utm_setting").click(function(){
 		console.log($(this).prop("checked"));

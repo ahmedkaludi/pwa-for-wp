@@ -1,4 +1,33 @@
-<?php            
+<?php      
+/*
+ *	 REGISTER ALL NON-ADMIN SCRIPTS
+ */
+function pwaforwp_frontend_enqueue(){
+        
+        $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }          
+        $settings = pwaforwp_defaultSettings();
+        $server_key = $settings['fcm_server_key'];
+        $config = $settings['fcm_config'];
+         if($server_key !='' && $config !=''){             
+          $swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
+          $firebase_config = 'var config='.$config.';';
+          $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
+          $file_creating_obj = new PWAFORWP_File_Creation_Init();
+          $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
+          
+          wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.$multisite_filename_postfix.'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+          $object_name = array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),           
+         );
+         wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
+         wp_enqueue_script('pwaforwp-push-js');            
+         }                        
+}
+add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
+
 if(!function_exists('pwaforwp_is_admin')){
 	function pwaforwp_is_admin(){
 		if ( is_admin() ) {
@@ -136,7 +165,7 @@ function pwaforwp_expanded_allowed_tags() {
 
 function pwaforwp_front_url(){
     if ( ! is_multisite() ) {
-            $link = site_url();
+            $link = home_url();
         }
         else {
             $link = network_site_url();

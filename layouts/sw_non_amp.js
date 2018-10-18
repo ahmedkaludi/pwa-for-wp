@@ -1,4 +1,5 @@
-                                var swsource = "{{swfile}}.js";
+                                 var swsource = "{{swfile}}.js";                                          
+                                 {{config}}                                 
 			         if("serviceWorker" in navigator) {
 			         		/*navigator.serviceWorker.getRegistrations().then(function(registrations) {
 			                 	for(let registration of registrations) {
@@ -9,6 +10,7 @@
 			            	})*/
 			                navigator.serviceWorker.register(swsource).then(function(reg){
 			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
+                                            {{userserviceworker}}                                                                        
 			                }).catch(function(err) {
 			                    console.log('ServiceWorker registration failed: ', err);
 			                });			               
