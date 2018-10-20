@@ -35,16 +35,17 @@ class PWAFORWP_Service_Worker{
         
         if(isset($settings['normal_enable'])){
         add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
-        add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);   
-        }        
-    }
-    public function pwaforwp_amp_entry_point(){            
-        add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
-        add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-        add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
-    }
-	
-	public function pwaforwp_service_worker(){ ?>
+        add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
+         }        
+        }
+        public function pwaforwp_amp_entry_point(){            
+            add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
+            add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
+            add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+        }
+	        
+	public function pwaforwp_service_worker(){ 
+                ?>
 		<amp-install-serviceworker src="<?php echo esc_url($this->swjs_path_amp); ?>" data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
@@ -70,7 +71,7 @@ class PWAFORWP_Service_Worker{
 		}           		
 	}              
     
-    public function pwaforwp_paginated_post_add_homescreen_amp(){           
+        public function pwaforwp_paginated_post_add_homescreen_amp(){           
 		$url 			 = pwaforwp_front_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];

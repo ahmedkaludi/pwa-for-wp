@@ -1,11 +1,30 @@
 <?php
 class pwaforwpFileCreation{
                 
-	public function pwaforwp_swhtml($is_amp = false){	            
-	    if( $is_amp ){
-		    $ServiceWorkerfileName 	= 'pwa-amp-sw';		
+	public function pwaforwp_swhtml($is_amp = false){
+            $settings                       = pwaforwp_defaultSettings();
+	    if( $is_amp ){                
+                        if(isset($settings['add_to_home_selector'])){
+                  
+                        if(strchr($settings['add_to_home_selector'], '#')){
+                         $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");		
+                                                            a2hsBtn.addEventListener("click", (e) => {
+                                                               addToHome();	
+                                                            });';   
+                        }
+                        if(strchr($settings['add_to_home_selector'], '.')){
+                           $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");		
+                                                            a2hsBtn.addEventListener("click", (e) => {
+                                                               addToHome();	
+                                                            });';  
+                        }                                     
+                       }else{
+                        $addtohomemanually ='';
+                       }                                        
+                                                    
+		        $ServiceWorkerfileName          = 'pwa-amp-sw';		
 			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
-			$swHtmlContent 			= str_replace("{{serviceWorkerFile}}", $ServiceWorkerfileName, $swHtmlContent);
+			$swHtmlContent 			= str_replace(array("{{serviceWorkerFile}}", "{{addtohomemanually}}"), array($ServiceWorkerfileName, $addtohomemanually), $swHtmlContent);
 			return $swHtmlContent;		    
 	    }	
 	}
@@ -15,6 +34,24 @@ class pwaforwpFileCreation{
                 $server_key                     = $settings['fcm_server_key'];
                 $config                         = $settings['fcm_config'];
                 
+                if(isset($settings['add_to_home_selector'])){
+                  
+                 if(strchr($settings['add_to_home_selector'], '#')){
+                  $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");		
+                                                     a2hsBtn.addEventListener("click", (e) => {
+							addToHome();	
+						     });';   
+                 }
+                 if(strchr($settings['add_to_home_selector'], '.')){
+                    $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");		
+                                                     a2hsBtn.addEventListener("click", (e) => {
+							addToHome();	
+						     });';  
+                 }                                     
+                }else{
+                 $addtohomemanually ='';
+                }
+                                                
 		$url 	                        = str_replace("http:","https:",site_url());
 		$ServiceWorkerfileName 	        = $url.'/pwa-sw';		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
@@ -27,7 +64,7 @@ class pwaforwpFileCreation{
                  $firebaseconfig = '';  
                  $useserviceworker = '';
                 }                                
-		$swHtmlContent 			= str_replace(array("{{swfile}}", "{{config}}", "{{userserviceworker}}"), array($ServiceWorkerfileName, $firebaseconfig, $useserviceworker), $swHtmlContent);
+		$swHtmlContent 			= str_replace(array("{{swfile}}", "{{config}}", "{{userserviceworker}}", "{{addtohomemanually}}"), array($ServiceWorkerfileName, $firebaseconfig, $useserviceworker, $addtohomemanually), $swHtmlContent);
 		return $swHtmlContent;		    
     }
     
@@ -85,7 +122,7 @@ class pwaforwpFileCreation{
                 if(isset($settings['excluded_urls'])){
                   $exclude_from_cache     = $settings['excluded_urls']; 
                   $exclude_from_cache     = str_replace('/', '\/', $exclude_from_cache);     
-                  $exclude_from_cache     = '/'.str_replace(',', '/,/', $exclude_from_cache); 
+                  $exclude_from_cache     = '/'.str_replace(',', '/,/', $exclude_from_cache).'/'; 
                 }else{
                   $exclude_from_cache     = '';   
                 }

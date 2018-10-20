@@ -263,6 +263,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		);
+                
+                // Orientation
+		add_settings_field(
+			'pwaforwp_add_to_home',									// ID
+			esc_html__('Add To Home On Element Click', 'pwa-for-wp'),		// Title
+			'pwaforpw_add_to_home_callback',								// CB
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
 
 	add_settings_section('pwaforwp_design_section', esc_html__('Splash Screen','pwa-for-wp'), '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
@@ -715,6 +724,15 @@ function pwaforpw_orientation_callback(){
 		<?php esc_html__( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
 	</p>
 
+	<?php
+}
+function pwaforpw_add_to_home_callback(){
+	
+	$settings = pwaforwp_defaultSettings();         
+        ?>		
+        <input type="text" name="pwaforwp_settings[add_to_home_selector]" id="pwaforwp_settings[add_to_home_selector]" class="pwaforwp-add-to-home-selector regular-text" size="50" value="<?php echo isset( $settings['add_to_home_selector'] ) ? esc_attr( $settings['add_to_home_selector']) : ''; ?>">
+	<p><?php echo esc_html__('jQuery selector (.element) or (#element)', 'pwa-for-wp'); ?></p>	
+        <p><?php echo esc_html__('Note: It is currently available in non AMP', 'pwa-for-wp'); ?></p>	
 	<?php
 }
 
