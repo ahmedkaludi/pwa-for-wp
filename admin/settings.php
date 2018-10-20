@@ -130,13 +130,13 @@ function pwaforwp_admin_interface_render(){
 			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
 			       		<hr />	
 			            <ul>
-			                <li><label for="pwaforwp_query_message">Message</label>
+			                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
 			                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
 			                    <br>
 			                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
 			                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
 			                </li> 
-			                <li><button class="button pwa-send-query"><?php echo esc_html('Send Message', 'pwa-for-wp'); ?></button></li>
+			                <li><button class="button pwa-send-query"><?php echo esc_html__('Send Message', 'pwa-for-wp'); ?></button></li>
 			            </ul>            
 			                   
 			        </div>
@@ -299,6 +299,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+                add_settings_field(
+			'pwaforwp_exclude_url_setting',							// ID
+			esc_html__('Urls Exclude From Cache List', 'pwa-for-wp'),	// Title
+			'pwaforwp_url_exclude_from_cache_list_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_field(
 			'pwaforwp_cache_time_setting',							// ID
 			esc_html__('Cached time', 'pwa-for-wp'),	// Title
@@ -340,7 +347,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 
 	?>
 	<tr>
-		<td><label>Default caching strategy</label></td>
+		<td><label><?php echo esc_html__('Default caching strategy', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching]">
 			<?php if($arrayOPT){
 				foreach ($arrayOPT as $key => $opval) {
@@ -354,7 +361,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select></td>
 	</tr>
 	<tr>
-		<td><label>Caching strategy for CSS and JS Files</label></td>
+		<td><label><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_js_css]">
 			<?php if($arrayOPT){
 				foreach ($arrayOPT as $key => $opval) {
@@ -367,7 +374,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select></td>
 	</tr>
 	<tr>
-		<td><label>Caching strategy for images</label></td>
+		<td><label><?php echo esc_html__('Caching strategy for images', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_images]">
 			<?php if($arrayOPT){
 				foreach ($arrayOPT as $key => $opval) {
@@ -380,7 +387,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select></td>
 	</tr>
 	<tr>
-		<td><label>Caching strategy for fonts</label></td>
+		<td><label><?php echo esc_html__('Caching strategy for fonts', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_fonts]">
 			<?php if($arrayOPT){
 				foreach ($arrayOPT as $key => $opval) {
@@ -399,12 +406,24 @@ function pwaforwp_cache_time_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<p>Set max cache time for Html Default: <code>3600</code> in seconds; You need to enter time in seconds</p>
+	<p><?php echo esc_html__('Set max cache time for Html Default:', 'pwa-for-wp'); ?> <code>3600</code> <?php echo esc_html__('in seconds;', 'pwa-for-wp'); ?> <?php echo esc_html__('You need to enter time in seconds', 'pwa-for-wp'); ?></p>
 	<input type="text" name="pwaforwp_settings[cached_timer][html]" id="pwaforwp_settings[cached_timer][html]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['html'] : '3600'); ?>">
-	<p>Set max cache time for JS, CSS, JSON Default: <code>86400</code> in seconds; You need to enter time in seconds</p>
+	<p><?php echo esc_html__('Set max cache time for JS, CSS, JSON Default:', 'pwa-for-wp'); ?> <code>86400</code> <?php echo esc_html__('in seconds;', 'pwa-for-wp'); ?> <?php echo esc_html__('You need to enter time in seconds', 'pwa-for-wp'); ?></p>
 	<input type="text" name="pwaforwp_settings[cached_timer][css]" id="pwaforwp_settings[cached_timer][css]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['css'] : '86400'); ?>">
 	<?php
 }
+
+function pwaforwp_url_exclude_from_cache_list_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo $settings['excluded_urls']; ?></textarea></label>
+        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
+	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
+	
+	<?php
+}
+
 
 function pwaforwp_utm_setting_callback(){
 	// Get Settings
@@ -432,31 +451,31 @@ function pwaforwp_utm_setting_callback(){
 	}
 	$queryArg = 'utm_source=&utm_medium=&utm_term=&utm_content'
 	?>
-	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">Enable UTM Tracking</label>
-	<p> To identify users are coming from your App.</p>
+	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><?php echo esc_html__('Enable UTM Tracking', 'pwa-for-wp'); ?></label>
+	<p> <?php echo esc_html__('To identify users are coming from your App', 'pwa-for-wp'); ?></p>
 	<table class="form-table">
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
-			<td>UTM Source</td>
+			<td><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo $utm_source; ?>" data-val="<?php echo $utm_source; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
-			<td>UTM Medium</td>
+			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo $utm_medium; ?>" data-val="<?php echo $utm_medium; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
-			<td>UTM Term</td>
+			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo $utm_term; ?>" data-val="<?php echo $utm_term; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
-			<td>UTM Content</td>
+			<td><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo $utm_content; ?>" data-val="<?php echo $utm_content; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
-			<td>UTM Non-amp Url</td>
+			<td><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></td>
 			<td><code><?php echo $utm_url; ?></code></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
-			<td>UTM amp Url</td>
+			<td><?php echo esc_html__('UTM amp Url', 'pwa-for-wp'); ?></td>
 			<td><code><?php echo $utm_url_amp; ?></code></td>
 		</tr>
 	</table>
@@ -469,7 +488,7 @@ function pwaforwp_cdn_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
-	<p>This helps you remove conflict with the CDN</p>
+	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
