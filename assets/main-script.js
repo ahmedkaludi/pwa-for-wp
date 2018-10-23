@@ -16,7 +16,8 @@ jQuery(document).ready(function($){
 			button: {
 				text: pwaforwp_obj.uploader_button
 			},
-			multiple: false  // Set this to true to allow multiple files to be selected
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
 		})
 		.on("select", function() {
 			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
@@ -31,7 +32,8 @@ jQuery(document).ready(function($){
 			button: {
 				text: pwaforwp_obj.uploader_button
 			},
-			multiple: false  // Set this to true to allow multiple files to be selected
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
 		})
 		.on("select", function() {
 			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
