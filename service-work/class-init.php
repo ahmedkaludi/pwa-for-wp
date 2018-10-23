@@ -199,8 +199,15 @@ class PWAFORWP_File_Creation_Init {
 
 add_action('wp_ajax_pwaforwp_download_setup_files', 'pwaforwp_download_setup_files');
 
-function pwaforwp_download_setup_files(){           
-    $file_type = sanitize_text_field($_GET['filetype']);
+function pwaforwp_download_setup_files(){   
+    
+    if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
+    return; 
+    }
+    if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    }    
+    $file_type = sanitize_text_field($_GET['filetype']);    
     $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
     $result = '';        
     switch($file_type){

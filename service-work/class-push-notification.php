@@ -14,8 +14,14 @@ class pushNotification{
                            
      }
 
-     public function pwaforwp_send_notification_manually(){
-            $body    = sanitize_text_field($_POST['message']);          
+     public function pwaforwp_send_notification_manually(){                  
+            if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+            return; 
+            }
+            if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+               return;  
+            }         
+            $body    = sanitize_text_field($_POST['message']);                        
             $message['title'] = 'Manual';
             $message['body'] = $body;
             $message['url'] = site_url();

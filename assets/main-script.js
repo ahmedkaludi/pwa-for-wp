@@ -69,7 +69,7 @@ jQuery(document).ready(function($){
                 $.ajax({
                     url:ajaxurl,
                     dataType: "json",
-                    data:{filetype:filetype, action:"pwaforwp_download_setup_files"},
+                    data:{filetype:filetype, action:"pwaforwp_download_setup_files", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){
 	                    if(response["status"]=="t"){
 	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
@@ -92,7 +92,7 @@ jQuery(document).ready(function($){
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
-	                    data:{action:"pwaforwp_send_query_message", message:message},
+	                    data:{action:"pwaforwp_send_query_message", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
 	                    success:function(response){                       
 	                      if(response['status'] =='t'){
 	                        $(".pwa-query-success").show();
@@ -116,7 +116,7 @@ jQuery(document).ready(function($){
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
-	                    data:{action:"pwaforwp_send_notification_manually", message:message},
+	                    data:{action:"pwaforwp_send_notification_manually", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
 	                    success:function(response){                                 
 	                      if(response['status'] =='t'){
                                 var html = '<span style="color:green">Success: '+response['success']+'</span><br>';

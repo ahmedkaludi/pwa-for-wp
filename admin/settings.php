@@ -948,9 +948,10 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/main-script.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
         $object_name = array(
             'uploader_title' => esc_html('Application Icon', 'pwa-for-wp'),
-            'splash_uploader_title' => esc_html('Splash Screen Icon', 'pwa-for-wp'),
-            'uploader_button' => esc_html('Select Icon', 'pwa-for-wp'),
-            'file_status' => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+            'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
+            'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
+            'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+            'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')
         );
         wp_localize_script('pwaforwp-main-js', 'pwaforwp_obj', $object_name);
         wp_enqueue_script('pwaforwp-main-js');
@@ -963,8 +964,16 @@ add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
  * This is a ajax handler function for sending email from user admin panel to us. 
  * @return type json string
  */
-function pwaforwp_send_query_message(){                  
-        $message    = sanitize_text_field($_POST['message']); 
+function pwaforwp_send_query_message(){   
+    
+        if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+        }
+        if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           return;  
+        }
+        
+        $message    = sanitize_text_field($_POST['message']);        
         $message .= "<table>
         				<tr><td>Plugin</td><td>PWA for wp</td></tr>
         				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>
