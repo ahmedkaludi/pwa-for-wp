@@ -1,4 +1,22 @@
 <?php      
+function pwaforwp_review_notice_close(){            
+        if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           return;  
+        }    
+       
+        $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+        wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close');
 /*
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */

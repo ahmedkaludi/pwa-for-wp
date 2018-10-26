@@ -61,6 +61,13 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.0.3 (26 October 2018) =
+* New Feature: Push Notification using firebase
+* Added notifcations to review on day interval
+* Custom Trigger for "Add to Homescreen"
+* Exclude the urls from Cache list
+* And Minor bugs fixed
+
 = 1.0.2 (28 September 2018) =
 * Apple touch Icons Support #25
 * UTM Tracking feature 

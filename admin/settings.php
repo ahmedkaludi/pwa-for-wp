@@ -527,7 +527,8 @@ function pwaforwp_push_notification_callback(){
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
                             <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo $settings['fcm_config']; ?></textarea>
-                            <p><?php echo esc_html__('This is the json inside config variable on firebase', 'pwa-for-wp') ?></p>
+                            <p><?php echo esc_html__('Note: Create a firebase project on firebase console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('Firebase', 'pwa-for-wp') ?></a></p>
+                            <p><?php echo esc_html__('Note: Supported on only Non AMP', 'pwa-for-wp') ?> </p>
                         </td>
                     </tr>                                                            
                 </tbody>   
@@ -934,7 +935,7 @@ function checkStatus($swUrl){
  */
 function pwaforwp_enqueue_style_js( $hook ) {
     // Load only on pwaforwp plugin pages
-	if ( strpos( $hook, 'pwaforwp' ) === false ) {
+	if ( !is_admin() ) {
 		return;
 	}	
 	// Color picker CSS

@@ -155,17 +155,17 @@ function pwaforwp_admin_notice(){
         $sixty_days = date('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
         $six_month  = date('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
         $one_year   = date('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
-
+                     
         $current_date = date("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
-    
-    if(in_array($current_date,$list_of_date)){
+        $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
+    if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date){
         echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
             <p><span class="dashicons dashicons-thumbs-up"></span> 
             '.esc_html__('You have been using the PWA For WP plugin for some time now, do you like it?, If so,', 'pwa-for-wp').'						
             <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews">				
 	    '.esc_html__('please write us a review', 'pwa-for-wp').'
-	    </a></p> </div>';                       
+	    </a><button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-close">'.esc_html__('No Thanks', 'ads-for-wp').'</button></p> </div>';                       
     } 
     
 }

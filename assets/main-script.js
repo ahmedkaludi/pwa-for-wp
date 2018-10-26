@@ -110,6 +110,24 @@ jQuery(document).ready(function($){
 	                    });
 	    
 	});
+         $(".pwaforwp-feedback-notice-close").on("click", function(e){
+          e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:ajaxurl,                    
+                    dataType: "json",
+                    data:{action:"pwaforwp_review_notice_close", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".pwaforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+        });
         
         $(".pwaforwp-manual-notification").on("click", function(e){
 	    e.preventDefault();   
