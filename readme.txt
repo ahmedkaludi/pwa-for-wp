@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 4.9.8
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -60,6 +60,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.3 (26 October 2018) =
+* New Feature: Push Notification using firebase
+* Added notifcations to review on day interval
+* Custom Trigger for "Add to Homescreen"
+* Exclude the urls from Cache list
+* And Minor bugs fixed
 
 = 1.0.2 (28 September 2018) =
 * Apple touch Icons Support #25

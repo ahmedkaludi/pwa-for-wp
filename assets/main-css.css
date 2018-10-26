@@ -33,3 +33,28 @@ and open the template in the editor.
 .pwa_hide{
     display: none;
 }
+.pwaforwp-push_notification th{
+    padding: 0px;
+    width: 0px;
+}
+.pwaforwp-push_notification td{
+    padding: 0px;    
+}
+.pwaforwp-push-notificatoin-table{
+    width: 100%;
+    
+}
+.pwaforwp-push-notificatoin-table th{
+    width: 20%;
+    padding: 10px;
+    
+}
+.pwaforwp-push-notificatoin-table input[type="text"]{
+    width: 30%;   
+}
+.pwaforwp-notification-success{
+    color: #028a00;
+}
+.pwaforwp-notification-error{
+    color: #f73434;
+}

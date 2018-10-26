@@ -16,7 +16,8 @@ jQuery(document).ready(function($){
 			button: {
 				text: pwaforwp_obj.uploader_button
 			},
-			multiple: false  // Set this to true to allow multiple files to be selected
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
 		})
 		.on("select", function() {
 			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
@@ -31,7 +32,8 @@ jQuery(document).ready(function($){
 			button: {
 				text: pwaforwp_obj.uploader_button
 			},
-			multiple: false  // Set this to true to allow multiple files to be selected
+			multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
 		})
 		.on("select", function() {
 			var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
@@ -49,10 +51,7 @@ jQuery(document).ready(function($){
 		$(this).siblings().removeClass("nav-tab-active");
 		$(this).addClass("nav-tab-active");
 		$(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
-		$(".form-wrap .pwaforwp-"+currentTab).show();
-		if(currentTab=='help'){
-			$('.pwaforwp-settings-form').find('p.submit').hide();
-		}
+		$(".form-wrap .pwaforwp-"+currentTab).show();		
 		window.history.pushState("", "", href);
 		return false;
 	});
@@ -67,12 +66,12 @@ jQuery(document).ready(function($){
             $(".pwaforwp-settings-form #submit").click();
             $(this).hide();
         });
-    $(".pwaforwp-service-activate").on("click", function(){       
+        $(".pwaforwp-service-activate").on("click", function(){       
         var filetype = $(this).attr("data-id");                
                 $.ajax({
                     url:ajaxurl,
                     dataType: "json",
-                    data:{filetype:filetype, action:"pwaforwp_download_setup_files"},
+                    data:{filetype:filetype, action:"pwaforwp_download_setup_files", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){
 	                    if(response["status"]=="t"){
 	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
@@ -95,7 +94,7 @@ jQuery(document).ready(function($){
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
-	                    data:{action:"pwaforwp_send_query_message", message:message},
+	                    data:{action:"pwaforwp_send_query_message", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
 	                    success:function(response){                       
 	                      if(response['status'] =='t'){
 	                        $(".pwa-query-success").show();
@@ -111,6 +110,52 @@ jQuery(document).ready(function($){
 	                    });
 	    
 	});
+         $(".pwaforwp-feedback-notice-close").on("click", function(e){
+          e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:ajaxurl,                    
+                    dataType: "json",
+                    data:{action:"pwaforwp_review_notice_close", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".pwaforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });
+    
+        });
+        
+        $(".pwaforwp-manual-notification").on("click", function(e){
+	    e.preventDefault();   
+	    var message = $("#pwaforwp_notification_message").val();           
+	                $.ajax({
+	                    type: "POST",    
+	                    url: ajaxurl,                    
+	                    dataType: "json",
+	                    data:{action:"pwaforwp_send_notification_manually", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+	                    success:function(response){                                 
+	                      if(response['status'] =='t'){
+                                var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
+                                    html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
+	                        $(".pwaforwp-notification-success").show();
+                                $(".pwaforwp-notification-success").html(html);
+	                        $(".pwaforwp-notification-error").hide();
+	                      }else{
+	                        $(".pwaforwp-notification-success").hide();  
+	                        $(".pwaforwp-notification-error").show();
+	                      }
+	                    },
+	                    error: function(response){                    
+	                    console.log(response);
+	                    }
+	                    });
+	    
+	});
+        
 
 	$("#pwaforwp_settings_utm_setting").click(function(){
 		console.log($(this).prop("checked"));

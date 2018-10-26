@@ -35,7 +35,7 @@ const CACHE_BLACKLIST =  [
         return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
     },
 ];
-const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/];
+const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/,{{EXCLUDE_FROM_CACHE}}];
 
 
 const SUPPORTED_METHODS = [
@@ -397,5 +397,6 @@ self.addEventListener('message', (event) => {
 });
 
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js');
-
 workbox.googleAnalytics.initialize();  
+
+{{FIREBASEJS}}
