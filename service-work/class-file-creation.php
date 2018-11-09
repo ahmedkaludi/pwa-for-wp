@@ -21,8 +21,13 @@ class pwaforwpFileCreation{
                        }else{
                         $addtohomemanually ='';
                        }                                        
-                                                    
-		        $ServiceWorkerfileName          = 'pwa-amp-sw';		
+                                            
+                       $multisite_filename_postfix = '';
+                        if ( is_multisite() ) {
+                           $multisite_filename_postfix = '-' . get_current_blog_id();
+                        }
+                        $url 	                        = pwaforwp_front_url();
+		        $ServiceWorkerfileName          = $url.'/pwa-amp-sw'.$multisite_filename_postfix;		
 			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
 			$swHtmlContent 			= str_replace(array("{{serviceWorkerFile}}", "{{addtohomemanually}}"), array($ServiceWorkerfileName, $addtohomemanually), $swHtmlContent);
 			return $swHtmlContent;		    
@@ -44,16 +49,20 @@ class pwaforwpFileCreation{
                  }
                  if(strchr($settings['add_to_home_selector'], '.')){
                     $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");		
-                                                     a2hsBtn.addEventListener("click", (e) => {
-							addToHome();	
-						     });';  
+                                                     for (var i = 0; i < a2hsBtn.length; i++) {
+                                                          a2hsBtn[i].addEventListener("click", addToHome); 
+                                                        }';  
                  }                                     
                 }else{
                  $addtohomemanually ='';
                 }
                                                 
-		$url 	                        = str_replace("http:","https:",site_url());
-		$ServiceWorkerfileName 	        = $url.'/pwa-sw';		
+		$url 	                        = pwaforwp_front_url();
+                $multisite_filename_postfix = '';
+                if ( is_multisite() ) {
+                   $multisite_filename_postfix = '-' . get_current_blog_id();
+                }
+		$ServiceWorkerfileName 	        = $url.'/pwa-sw'.$multisite_filename_postfix;		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
                 if($server_key !='' && $config !=''){
                  $firebaseconfig = 'var config ='.$config.'; '
@@ -119,7 +128,7 @@ class pwaforwpFileCreation{
             
 		$swJsContent 		= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
 		$settings 		= pwaforwp_defaultSettings();
-                if(isset($settings['excluded_urls'])){
+                if($settings['excluded_urls'] !=''){                   
                   $exclude_from_cache     = $settings['excluded_urls']; 
                   $exclude_from_cache     = str_replace('/', '\/', $exclude_from_cache);     
                   $exclude_from_cache     = '/'.str_replace(',', '/,/', $exclude_from_cache).'/'; 
@@ -136,9 +145,9 @@ class pwaforwpFileCreation{
                  $firebasejs = '';    
                 }
                 
-		$offline_page 		= get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' );
-		$page404 			= get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' );  
-		$site_url 		= str_replace( 'http://', 'https://', site_url() );  
+		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' ));
+		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' ));  
+		$site_url 		= user_trailingslashit(str_replace( 'http://', 'https://', site_url() ));  
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
 		if(isset($settings['cached_timer']) && is_numeric($settings['cached_timer']['html'])){
@@ -186,7 +195,7 @@ class pwaforwpFileCreation{
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
         }                                            
-        $homeUrl = str_replace("http://", "https://", $homeUrl);
+                $homeUrl = user_trailingslashit(str_replace("http://", "https://", $homeUrl));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
 		if($orientation==0) { $orientation = "portrait"; }
