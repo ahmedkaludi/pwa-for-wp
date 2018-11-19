@@ -135,6 +135,12 @@ class pwaforwpFileCreation{
                 }else{
                   $exclude_from_cache     = '';   
                 }
+                $offline_google = '';
+                if(isset($settings['offline_google_setting'])){
+                $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
+                                    workbox.googleAnalytics.initialize();';    
+                }
+                
                 
                 
                 $server_key = $settings['fcm_server_key'];
@@ -162,13 +168,14 @@ class pwaforwpFileCreation{
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
 			$page404 		= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
 			$swJsContent 	= str_replace(array(
-							"{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}" , "{{EXCLUDE_FROM_CACHE}}"), 
-							array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache),
+							"{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}" , "{{EXCLUDE_FROM_CACHE}}", "{{OFFLINE_GOOGLE}}"), 
+							array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache, $offline_google),
 							 $swJsContent);                		
 		} else {
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page );
 			$page404 		= str_replace( 'http://', 'https://', $page404 );    
-			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}", "{{EXCLUDE_FROM_CACHE}}"), array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache), $swJsContent);                		
+			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}", "{{EXCLUDE_FROM_CACHE}}", "{{OFFLINE_GOOGLE}}"),
+                                                      array($offline_page, $page404, PWAFORWP_PLUGIN_VERSION, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache, $offline_google), $swJsContent);                		
 		}                		
 	    return $swJsContent;
 		

@@ -301,6 +301,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+                add_settings_field(
+			'pwaforwp_offline_google_setting',							// ID
+			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
+			'pwaforwp_offline_google_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_field(
 			'pwaforwp_utm_setting',							// ID
 			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
@@ -489,6 +496,15 @@ function pwaforwp_utm_setting_callback(){
 		</tr>
 	</table>
 	<input type="hidden" name="pwaforwp_settings[utm_details][pwa_utm_change_track]" id="pwa-utm_change_track" value="0">
+	<?php
+}
+
+function pwaforwp_offline_google_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
