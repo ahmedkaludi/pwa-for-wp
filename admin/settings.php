@@ -308,6 +308,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+                add_settings_field(
+			'pwaforwp_force_update_sw_setting_setting',							// ID
+			esc_html__('Force Update Service Worker', 'pwa-for-wp'),	// Title
+			'pwaforwp_force_update_sw_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_field(
 			'pwaforwp_utm_setting',							// ID
 			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
@@ -505,6 +512,14 @@ function pwaforwp_offline_google_setting_callback(){
 	?>
 	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_force_update_sw_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ echo $settings['force_update_sw_setting'];}else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>        
+	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
