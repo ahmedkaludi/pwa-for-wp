@@ -1,6 +1,7 @@
                                  var swsource = "{{swfile}}.js";                                          
                                  {{config}}                                 
 			         if("serviceWorker" in navigator) {
+                                     window.addEventListener('load', function() {
 			         		/*navigator.serviceWorker.getRegistrations().then(function(registrations) {
 			                 	for(let registration of registrations) {
 			                 		if (registration.active) {// && registration.active.scriptURL.includes("dexecure")
@@ -46,7 +47,8 @@
 							      }
 							      deferredPrompt = null;
 							  });
-                                                     }                                                                                                          
+                                                     } 
+                                                     });
 			                             }  
                                                      
                                                      

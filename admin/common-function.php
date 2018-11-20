@@ -182,7 +182,7 @@ function pwaforwp_expanded_allowed_tags() {
 }  
 
 function pwaforwp_front_url(){
-    if ( ! is_multisite() ) {
+        if ( ! is_multisite() ) {
             $link = home_url();
         }
         else {

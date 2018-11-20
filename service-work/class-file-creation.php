@@ -62,7 +62,7 @@ class pwaforwpFileCreation{
                 if ( is_multisite() ) {
                    $multisite_filename_postfix = '-' . get_current_blog_id();
                 }
-		$ServiceWorkerfileName 	        = $url.'/pwa-sw'.$multisite_filename_postfix;		
+		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix;		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
                 if($server_key !='' && $config !=''){
                  $firebaseconfig = 'var config ='.$config.'; '
