@@ -12,6 +12,8 @@ class PWAFORWP_Service_Worker{
     
 
     public function __construct() {
+        
+        add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));
         $settings = pwaforwp_defaultSettings();
         $multisite_filename_postfix = '';
         if ( is_multisite() ) {
@@ -38,6 +40,13 @@ class PWAFORWP_Service_Worker{
         add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
          }        
         }
+        public function pwaforwp_custom_add_to_home_screen(){
+            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
+            }else{                             
+               echo '<div id="pwaforwp-add-to-home-click" class="pwaforwp-footer-prompt pwaforwp-bounceInUp pwaforwp-animated"><h3>Add '.get_bloginfo().' to your Homescreen!</h3><div class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html__( 'Add', 'pwa-for-wp' ).'</div></div>'; 
+            }
+        }
+
         public function pwaforwp_amp_entry_point(){            
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);

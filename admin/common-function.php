@@ -42,7 +42,8 @@ function pwaforwp_frontend_enqueue(){
          );
          wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
          wp_enqueue_script('pwaforwp-push-js');            
-         }                        
+         }  
+        wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp-main.css', false , PWAFORWP_PLUGIN_VERSION );       
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
 
@@ -187,9 +188,7 @@ function pwaforwp_front_url(){
         }
         else {
             $link = network_site_url();
-        }
-    
-
+        }    
     $link = str_replace("http:","https:", $link);
-    return esc_url(trailingslashit($link));
+    return trailingslashit($link);
 }
