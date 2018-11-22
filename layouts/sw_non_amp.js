@@ -26,23 +26,8 @@
 							  app.logEvent('APP not installed', 'installed');
 							});
                                                                                                                                                                                                                       
-                                                     var lastScrollTop = 0;                                        
-                                                        window.addEventListener('scroll', (evt) => {
-							var st = document.documentElement.scrollTop;                                                                                                                
-                                                        if (st > lastScrollTop){
-                                                            if(deferredPrompt !=null){
-                                                            document.getElementById("pwaforwp-add-to-home-click").style.display = "block";                                                                 
-                                                            }                                              
-                                                        } else {
-                                                          document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
-                                                        }
-                                                        lastScrollTop = st;  
-							});                                                      
-                                                     {{addtohomemanually}} 
-                                                     var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");		
-                                                     addtohomeBtn.addEventListener("click", (e) => {
-							addToHome();	
-						     });                                                                                                          
+                                                     {{addtohomebanner}}                                                         
+                                                     {{addtohomemanually}}                                                                                                                                                               
                                                      function addToHome(){
                                                          deferredPrompt.prompt();
 							  // Wait for the user to respond to the prompt

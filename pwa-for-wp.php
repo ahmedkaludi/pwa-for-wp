@@ -34,8 +34,6 @@ function pwaforwp_add_action_links($links){
     return array_merge( $links, $mylinks );
 }
 
-
-
 //For CDN CODES
 //add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
 //function pwaforwp_allow_cdn(){

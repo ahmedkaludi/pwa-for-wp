@@ -262,16 +262,7 @@ function pwaforwp_settings_init(){
 			'pwaforpw_orientation_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
-		);
-                
-                // Orientation
-		add_settings_field(
-			'pwaforwp_add_to_home',									// ID
-			esc_html__('Add To Home On Element Click', 'pwa-for-wp'),		// Title
-			'pwaforpw_add_to_home_callback',								// CB
-			'pwaforwp_general_section',						// Page slug
-			'pwaforwp_general_section'						// Settings Section ID
-		);
+		);                                
 
 	add_settings_section('pwaforwp_design_section', esc_html__('Splash Screen','pwa-for-wp'), '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
@@ -312,6 +303,20 @@ function pwaforwp_settings_init(){
 			'pwaforwp_force_update_sw_setting_setting',							// ID
 			esc_html__('Force Update Service Worker', 'pwa-for-wp'),	// Title
 			'pwaforwp_force_update_sw_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);                
+		add_settings_field(
+			'pwaforwp_add_to_home',									// ID
+			esc_html__('Add To Home On Element Click', 'pwa-for-wp'),		// Title
+			'pwaforwp_add_to_home_callback',								// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_custom_add_to_home',									// ID
+			esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),		// Title
+			'pwaforwp_custom_add_to_home_callback',								// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -758,7 +763,15 @@ function pwaforpw_orientation_callback(){
 
 	<?php
 }
-function pwaforpw_add_to_home_callback(){
+function pwaforwp_custom_add_to_home_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[custom_add_to_home_setting]" id="pwaforwp_settings[custom_add_to_home_setting]" class="" <?php echo (isset( $settings['custom_add_to_home_setting'] ) &&  $settings['custom_add_to_home_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Show custom responsive add to home banner popup', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_add_to_home_callback(){
 	
 	$settings = pwaforwp_defaultSettings();         
         ?>		
@@ -770,7 +783,7 @@ function pwaforpw_add_to_home_callback(){
 
 // Dashboard
 function pwaforwp_files_status_callback(){
-           $serviceWorkerObj = new PWAFORWP_Service_Worker();
+       $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
        $settings = pwaforwp_defaultSettings();
        $multisite_filename_postfix = '';
@@ -1005,7 +1018,7 @@ function pwaforwp_send_query_message(){
            return;  
         }
         
-        $message    = sanitize_text_field($_POST['message']);        
+        $message    = sanitize_textarea_field($_POST['message']);        
         $message .= "<table>
         				<tr><td>Plugin</td><td>PWA for wp</td></tr>
         				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>

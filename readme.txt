@@ -61,6 +61,11 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.0.4 (24 November 2018) =
+* New Feature: Custom add to home banner.
+* Exclude the urls from Cache list bug fixed
+* And Minor bugs fixed
+
 = 1.0.3.1 (12 November 2018) =
 * Custom Trigger for "Add to Homescreen" bug fixed
 * Exclude the urls from Cache list bug fixed

@@ -13,9 +13,12 @@ class PWAFORWP_Service_Worker{
 
     public function __construct() {
         
-        add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));
+        
         $settings = pwaforwp_defaultSettings();
-        $multisite_filename_postfix = '';
+        $multisite_filename_postfix = '';       
+        if(isset($settings['custom_add_to_home_setting'])){
+         add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
+        }        
         if ( is_multisite() ) {
            $multisite_filename_postfix = '-' . get_current_blog_id();
         }
