@@ -126,7 +126,7 @@ function pwaforwp_admin_interface_render(){
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
 				?>	
 				<hr />	
-        	 <div class="pwa_contact_us_div">
+        	                   <div class="pwa_contact_us_div">
 			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
 			       		<hr />	
 			            <ul>
@@ -317,6 +317,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_custom_add_to_home',									// ID
 			esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),		// Title
 			'pwaforwp_custom_add_to_home_callback',								// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_one_signal_support',									// ID
+			esc_html__('OneSignal Compatibility', 'pwa-for-wp'),		// Title
+			'pwaforwp_one_signal_support_callback',								// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -761,6 +768,25 @@ function pwaforpw_orientation_callback(){
 		<?php esc_html__( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
 	</p>
 
+	<?php
+}
+function pwaforwp_one_signal_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[one_signal_support_setting]" id="pwaforwp_settings[one_signal_support_setting]" class="pwaforwp-onesignal-support" <?php echo (isset( $settings['one_signal_support_setting'] ) &&  $settings['one_signal_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+        <?php if($settings['one_signal_support_setting'] == 1) { ?>
+        <div class="pwaforwp-onesignal-instruction">
+         <?php } else { ?>   
+            <div class="pwaforwp-onesignal-instruction" style="display: none;">
+         <?php } ?>          
+            <p><?php echo esc_html__( 'Note: To work PWA For WP with OneSignal you need to enable settings given below', 'pwa-for-wp' ); ?></p>
+            <ul>
+                <li><strong><?php echo esc_html__( '1.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Go to OneSignal Settings', 'pwa-for-wp' ); ?></li>
+                <li><strong><?php echo esc_html__( '2.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'See', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( 'Advanced Settings', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'at the bottom of the page.', 'pwa-for-wp' ); ?></li>
+                <li><strong><?php echo esc_html__( '3.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Enable', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( '"Use my own manifest.json"', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'and add PWA For WP manifest URL into the field and Save Settings.', 'pwa-for-wp' ); ?> (Example : https://example.com/pwa-manifest.json)</li>
+            </ul>    
+        </div>        
 	<?php
 }
 function pwaforwp_custom_add_to_home_callback(){
