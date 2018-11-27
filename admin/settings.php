@@ -126,7 +126,7 @@ function pwaforwp_admin_interface_render(){
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
 				?>	
 				<hr />	
-        	 <div class="pwa_contact_us_div">
+        	                   <div class="pwa_contact_us_div">
 			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
 			       		<hr />	
 			            <ul>
@@ -262,16 +262,7 @@ function pwaforwp_settings_init(){
 			'pwaforpw_orientation_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
-		);
-                
-                // Orientation
-		add_settings_field(
-			'pwaforwp_add_to_home',									// ID
-			esc_html__('Add To Home On Element Click', 'pwa-for-wp'),		// Title
-			'pwaforpw_add_to_home_callback',								// CB
-			'pwaforwp_general_section',						// Page slug
-			'pwaforwp_general_section'						// Settings Section ID
-		);
+		);                                
 
 	add_settings_section('pwaforwp_design_section', esc_html__('Splash Screen','pwa-for-wp'), '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
@@ -298,6 +289,41 @@ function pwaforwp_settings_init(){
 			'pwaforwp_cdn_setting',							// ID
 			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
 			'pwaforwp_cdn_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_offline_google_setting',							// ID
+			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
+			'pwaforwp_offline_google_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_force_update_sw_setting_setting',							// ID
+			esc_html__('Force Update Service Worker', 'pwa-for-wp'),	// Title
+			'pwaforwp_force_update_sw_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);                
+		add_settings_field(
+			'pwaforwp_add_to_home',									// ID
+			esc_html__('Add To Home On Element Click', 'pwa-for-wp'),		// Title
+			'pwaforwp_add_to_home_callback',								// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_custom_add_to_home',									// ID
+			esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),		// Title
+			'pwaforwp_custom_add_to_home_callback',								// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_one_signal_support',									// ID
+			esc_html__('OneSignal Compatibility', 'pwa-for-wp'),		// Title
+			'pwaforwp_one_signal_support_callback',								// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -489,6 +515,23 @@ function pwaforwp_utm_setting_callback(){
 		</tr>
 	</table>
 	<input type="hidden" name="pwaforwp_settings[utm_details][pwa_utm_change_track]" id="pwa-utm_change_track" value="0">
+	<?php
+}
+
+function pwaforwp_offline_google_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_force_update_sw_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ echo $settings['force_update_sw_setting'];}else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>        
+	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
@@ -727,7 +770,34 @@ function pwaforpw_orientation_callback(){
 
 	<?php
 }
-function pwaforpw_add_to_home_callback(){
+function pwaforwp_one_signal_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[one_signal_support_setting]" id="pwaforwp_settings[one_signal_support_setting]" class="pwaforwp-onesignal-support" <?php echo (isset( $settings['one_signal_support_setting'] ) &&  $settings['one_signal_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+        <?php if($settings['one_signal_support_setting'] == 1) { ?>
+        <div class="pwaforwp-onesignal-instruction">
+         <?php } else { ?>   
+            <div class="pwaforwp-onesignal-instruction" style="display: none;">
+         <?php } ?>          
+            <p><?php echo esc_html__( 'Note: To work PWA For WP with OneSignal you need to enable settings given below', 'pwa-for-wp' ); ?></p>
+            <ul>
+                <li><strong><?php echo esc_html__( '1.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Go to OneSignal Settings', 'pwa-for-wp' ); ?></li>
+                <li><strong><?php echo esc_html__( '2.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'See', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( 'Advanced Settings', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'at the bottom of the page.', 'pwa-for-wp' ); ?></li>
+                <li><strong><?php echo esc_html__( '3.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Enable', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( '"Use my own manifest.json"', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'and add PWA For WP manifest URL into the field and Save Settings.', 'pwa-for-wp' ); ?> (Example : https://example.com/pwa-manifest.json)</li>
+            </ul>    
+        </div>        
+	<?php
+}
+function pwaforwp_custom_add_to_home_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[custom_add_to_home_setting]" id="pwaforwp_settings[custom_add_to_home_setting]" class="" <?php echo (isset( $settings['custom_add_to_home_setting'] ) &&  $settings['custom_add_to_home_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Show custom responsive add to home banner popup', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_add_to_home_callback(){
 	
 	$settings = pwaforwp_defaultSettings();         
         ?>		
@@ -739,7 +809,7 @@ function pwaforpw_add_to_home_callback(){
 
 // Dashboard
 function pwaforwp_files_status_callback(){
-           $serviceWorkerObj = new PWAFORWP_Service_Worker();
+       $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp = $serviceWorkerObj->is_amp;             
        $settings = pwaforwp_defaultSettings();
        $multisite_filename_postfix = '';
@@ -974,7 +1044,7 @@ function pwaforwp_send_query_message(){
            return;  
         }
         
-        $message    = sanitize_text_field($_POST['message']);        
+        $message    = sanitize_textarea_field($_POST['message']);        
         $message .= "<table>
         				<tr><td>Plugin</td><td>PWA for wp</td></tr>
         				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>

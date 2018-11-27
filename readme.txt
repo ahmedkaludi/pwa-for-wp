@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 4.9.8
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -60,6 +60,19 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.4 (27 November 2018) =
+* New Feature: Custom responsive add to home banner.
+* New Feature: Force update service worker option (This option updates service worker for all users who have installed at once)
+* Offline Google Analytics options
+* Improvements in CDN compatibility
+
+
+= 1.0.3.1 (12 November 2018) =
+* Custom Trigger for "Add to Homescreen" bug fixed
+* Exclude the urls from Cache list bug fixed
+* And Minor bugs fixed
+
 
 = 1.0.3 (26 October 2018) =
 * New Feature: Push Notification using firebase

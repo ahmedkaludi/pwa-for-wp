@@ -12,8 +12,13 @@ class PWAFORWP_Service_Worker{
     
 
     public function __construct() {
+        
+        
         $settings = pwaforwp_defaultSettings();
-        $multisite_filename_postfix = '';
+        $multisite_filename_postfix = '';       
+        if(isset($settings['custom_add_to_home_setting'])){
+         add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
+        }        
         if ( is_multisite() ) {
            $multisite_filename_postfix = '-' . get_current_blog_id();
         }
@@ -23,7 +28,7 @@ class PWAFORWP_Service_Worker{
         }                      
         $this->pwaforwp_is_amp_activated();
             
-			$url = pwaforwp_front_url();                              
+	$url = pwaforwp_front_url();                              
         $this->wppath = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
         $this->swjs_path = $url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js';
         $this->minifest_path = $url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json';
@@ -38,6 +43,13 @@ class PWAFORWP_Service_Worker{
         add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
          }        
         }
+        public function pwaforwp_custom_add_to_home_screen(){
+            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
+            }else{                             
+               echo '<div id="pwaforwp-add-to-home-click" class="pwaforwp-footer-prompt pwaforwp-bounceInUp pwaforwp-animated"><h3>Add '.get_bloginfo().' to your Homescreen!</h3><div class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html__( 'Add', 'pwa-for-wp' ).'</div></div>'; 
+            }
+        }
+
         public function pwaforwp_amp_entry_point(){            
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
@@ -105,7 +117,7 @@ class PWAFORWP_Service_Worker{
 		if($manualfileSetup){
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                 <meta name="theme-color" content="'.$settings['theme_color'].'">';
-			echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json').'"/>';
+			echo '<link rel="manifest" href="'. parse_url(pwaforwp_front_url().PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json', PHP_URL_PATH).'"/>';
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
 		    }
