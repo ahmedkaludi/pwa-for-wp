@@ -61,10 +61,12 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
-= 1.0.4 (24 November 2018) =
-* New Feature: Custom add to home banner.
-* Exclude the urls from Cache list bug fixed
-* And Minor bugs fixed
+= 1.0.4 (27 November 2018) =
+* New Feature: Custom responsive add to home banner.
+* New Feature: Force update service worker option (This option updates service worker for all users who have installed at once)
+* Offline Google Analytics options
+* Improvements in CDN compatibility
+
 
 = 1.0.3.1 (12 November 2018) =
 * Custom Trigger for "Add to Homescreen" bug fixed
