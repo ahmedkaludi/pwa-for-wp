@@ -157,11 +157,21 @@ jQuery(document).ready(function($){
 	});
         
 	$("#pwaforwp_settings_utm_setting").click(function(){
-		console.log($(this).prop("checked"));
+		
 		if($(this).prop("checked")){
 			$('.pwawp_utm_values_class').fadeIn();
 		}else{
 			$('.pwawp_utm_values_class').fadeOut(200);
+		}
+	});
+        $(".pwaforwp-add-to-home-banner-settings").click(function(){
+		
+		if($(this).prop("checked")){
+			$('.pwaforwp-enable-on-desktop').removeClass('afw_hide');
+		}else{
+			$('.pwaforwp-enable-on-desktop').addClass('afw_hide');
+                        $('#enable_add_to_home_desktop_setting').prop('checked', false); // Checks it
+
 		}
 	});
         $(".pwaforwp-onesignal-support").click(function(){		

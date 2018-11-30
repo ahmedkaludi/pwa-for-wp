@@ -39,12 +39,20 @@ class pwaforwpFileCreation{
                 }
                 
                 if(isset($settings['custom_add_to_home_setting'])){
+                  
+                    if(isset($settings['enable_add_to_home_desktop_setting'])){
+                        $banner_on_desktop ='document.getElementById("pwaforwp-add-to-home-click").style.display = "block";';   
+                    }else{
+                        $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){
+                                                    document.getElementById("pwaforwp-add-to-home-click").style.display = "block";   
+                                                }';     
+                    }                                                        
                    $addtohomebanner ='var lastScrollTop = 0;                                        
                                       window.addEventListener("scroll", (evt) => {
                                         var st = document.documentElement.scrollTop;                                                                                                                
                                             if (st > lastScrollTop){
                                                if(deferredPrompt !=null){
-                                               document.getElementById("pwaforwp-add-to-home-click").style.display = "block";                                                                 
+                                               '.$banner_on_desktop.'                                                                 
                                                }                                              
                                             } else {
                                               document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
