@@ -335,6 +335,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
                 add_settings_field(
+			'pwaforwp_precaching_setting',							// ID
+			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
+			'pwaforwp_precaching_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
 			'pwaforwp_exclude_url_setting',							// ID
 			esc_html__('Urls Exclude From Cache List', 'pwa-for-wp'),	// Title
 			'pwaforwp_url_exclude_from_cache_list_callback',							// CB
@@ -460,6 +467,52 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 }
 
 
+
+function pwaforwp_precaching_setting_callback(){
+	
+	$settings = pwaforwp_defaultSettings(); 
+        
+        $arrayOPT = array(                    
+            'automatic'=>'Automatic',
+            'manual'=>'Manual',            
+            );
+	?>
+	<label><input type="checkbox" name="pwaforwp_settings[precaching_setting]" id="pwaforwp_settings_precaching_setting" class="" <?php echo (isset( $settings['precaching_setting'] ) &&  $settings['precaching_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"></label>
+	<p> <?php echo esc_html__('Cache the list of posts and pages for users on their first visit to your website', 'pwa-for-wp'); ?></p>
+	<table class="form-table pwaforwp_precaching_table">
+		<tr>
+			<td><?php echo esc_html__('Method', 'pwa-for-wp'); ?></td>
+                        <td>
+                            <select name="pwaforwp_settings[precaching_method]" id="pwaforwp_precaching_method_selector">
+                               <?php if($arrayOPT){
+				foreach ($arrayOPT as $key => $opval) {
+					$sel = "";
+					if($settings['precaching_method']==$key){$sel = "selected"; }
+					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_attr($opval).'</option>';
+				}
+                            }
+			 ?>
+                            </select>   
+                        </td>
+		</tr>	
+                <tr>
+                   <td><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></td>
+                   <td>
+                       <input name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
+                   </td>
+                </tr>
+                <tr>
+                    <td><?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?></td>
+                   <td>
+                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[precaching_urls]" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
+                       <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
+                       <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
+                   </td>
+                </tr>
+		
+	</table>	
+	<?php
+}
 function pwaforwp_utm_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -775,7 +828,7 @@ function pwaforwp_one_signal_support_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[one_signal_support_setting]" id="pwaforwp_settings[one_signal_support_setting]" class="pwaforwp-onesignal-support" <?php echo (isset( $settings['one_signal_support_setting'] ) &&  $settings['one_signal_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
-        <?php if($settings['one_signal_support_setting'] == 1) { ?>
+        <?php if(isset($settings['one_signal_support_setting']) && $settings['one_signal_support_setting'] == 1) { ?>
         <div class="pwaforwp-onesignal-instruction">
          <?php } else { ?>   
             <div class="pwaforwp-onesignal-instruction" style="display: none;">

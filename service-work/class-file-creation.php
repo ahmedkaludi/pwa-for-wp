@@ -137,7 +137,22 @@ class pwaforwpFileCreation{
     public function pwaforwp_swjs($is_amp = false){
             
 		$swJsContent 		= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
-		$settings 		= pwaforwp_defaultSettings();               
+		$settings 		= pwaforwp_defaultSettings();   
+                $pre_cache_urls ='';
+                if(isset($settings['precaching_setting']) && $settings['precaching_method'] =='manual' && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
+                 $explod_urls = explode(',', $settings['precaching_urls']);
+                 foreach ($explod_urls as $url){
+                  $pre_cache_urls .= "'".$url."',";  
+                 }                
+                }
+                $store_post_id = array();
+                $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
+                if(!empty($store_post_id) && $settings['precaching_method'] =='automatic'){
+                    foreach ($store_post_id as $post_id){
+                       $pre_cache_urls .= "'".get_permalink($post_id)."',";  
+                    }
+                }
+                
                 if($settings['excluded_urls'] !=''){                   
                   $exclude_from_cache     = $settings['excluded_urls']; 
                   $exclude_from_cache     = str_replace('/', '\/', $exclude_from_cache);     
@@ -183,14 +198,57 @@ class pwaforwpFileCreation{
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
 			$page404 		= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
 			$swJsContent 	= str_replace(array(
-							"{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}" , "{{EXCLUDE_FROM_CACHE}}", "{{OFFLINE_GOOGLE}}"), 
-							array($offline_page, $page404, $cache_version, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache, $offline_google),
-							 $swJsContent);                		
+                                                        "{{PRE_CACHE_URLS}}", 
+							"{{OFFLINE_PAGE}}", 
+                                                        "{{404_PAGE}}", 
+                                                        "{{CACHE_VERSION}}",
+                                                        "{{SITE_URL}}", 
+                                                        "{{HTML_CACHE_TIME}}",
+                                                        "{{CSS_CACHE_TIME}}", 
+                                                        "{{FIREBASEJS}}" , 
+                                                        "{{EXCLUDE_FROM_CACHE}}", 
+                                                        "{{OFFLINE_GOOGLE}}"), 
+                                                     array(
+                                                         $pre_cache_urls,
+                                                         $offline_page, 
+                                                         $page404, 
+                                                         $cache_version,
+                                                         $site_url, 
+                                                         $cacheTimerHtml, 
+                                                         $cacheTimerCss, 
+                                                         $firebasejs, 
+                                                         $exclude_from_cache, 
+                                                         $offline_google
+                                                        ),
+							 $swJsContent
+                                                        );                		
 		} else {
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page );
 			$page404 		= str_replace( 'http://', 'https://', $page404 );    
-			$swJsContent 	= str_replace(array("{{OFFLINE_PAGE}}", "{{404_PAGE}}", "{{CACHE_VERSION}}","{{SITE_URL}}", "{{HTML_CACHE_TIME}}","{{CSS_CACHE_TIME}}", "{{FIREBASEJS}}", "{{EXCLUDE_FROM_CACHE}}", "{{OFFLINE_GOOGLE}}"),
-                                                      array($offline_page, $page404, $cache_version, $site_url, $cacheTimerHtml, $cacheTimerCss, $firebasejs, $exclude_from_cache, $offline_google), $swJsContent);                		
+			$swJsContent 	= str_replace(array(
+                                                            "{{PRE_CACHE_URLS}}",     
+                                                            "{{OFFLINE_PAGE}}", 
+                                                            "{{404_PAGE}}", 
+                                                            "{{CACHE_VERSION}}",
+                                                            "{{SITE_URL}}", 
+                                                            "{{HTML_CACHE_TIME}}",
+                                                            "{{CSS_CACHE_TIME}}", 
+                                                            "{{FIREBASEJS}}", 
+                                                            "{{EXCLUDE_FROM_CACHE}}", 
+                                                            "{{OFFLINE_GOOGLE}}"),
+                                                      array(
+                                                            $pre_cache_urls,
+                                                            $offline_page, 
+                                                            $page404, 
+                                                            $cache_version, 
+                                                            $site_url, 
+                                                            $cacheTimerHtml, 
+                                                            $cacheTimerCss, 
+                                                            $firebasejs, 
+                                                            $exclude_from_cache, 
+                                                            $offline_google
+                                                            ), 
+                                                            $swJsContent);                		
 		}                		
 	    return $swJsContent;
 		

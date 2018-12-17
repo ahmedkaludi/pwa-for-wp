@@ -58,3 +58,9 @@ and open the template in the editor.
 .pwaforwp-notification-error{
     color: #f73434;
 }
+.pwaforwp_precaching_table input, select {
+    width: 200px;
+}
+.pwaforwp_precaching_table td {
+    vertical-align: top;
+}

@@ -33,11 +33,11 @@ function pwaforwp_add_action_links($links){
     $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
     return array_merge( $links, $mylinks );
 }
-
 //For CDN CODES
 //add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
 //function pwaforwp_allow_cdn(){
 	if ( !is_admin() ) { 
+            
 		$settings = pwaforwp_defaultSettings(); 
 			if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
 				ob_start('pwaforwp_revert_src');
@@ -137,6 +137,16 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
     /* Check transient, if available display notice */
+    
+    if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
+         ?>
+        <div class="updated notice">
+            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click', 'pwa-for-wp') ?></a></p>
+        </div>
+        <?php
+        
+    }
+    
     if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
         ?>
         <div class="updated notice">

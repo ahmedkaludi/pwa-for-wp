@@ -1,7 +1,7 @@
 const CACHE_VERSION = '{{CACHE_VERSION}}';
 
 const BASE_CACHE_FILES = [
-    
+    {{PRE_CACHE_URLS}}
 ];
 
 const OFFLINE_CACHE_FILES = [
@@ -31,9 +31,9 @@ const MAX_TTL = {
 };
 
 const CACHE_BLACKLIST =  [
-    (str) => {
-        return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
-    },
+//    (str) => {
+//        return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
+//    },
 ];
 const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/,{{EXCLUDE_FROM_CACHE}}];
 
@@ -98,7 +98,7 @@ function getTTL(url) {
 function installServiceWorker() {
     return Promise.all(
         [
-            caches.open(CACHE_VERSIONS.assets)
+            caches.open(CACHE_VERSIONS.content)
                 .then(
                     (cache) => {
                         return cache.addAll(BASE_CACHE_FILES);
@@ -385,7 +385,7 @@ self.addEventListener('message', (event) => {
         typeof event.data.action === 'string'
     ) {
         switch(event.data.action) {
-            case 'cache' :
+            case 'cache' :               
                 precacheUrl(event.data.url);
                 break;
             default :
