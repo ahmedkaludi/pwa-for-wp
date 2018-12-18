@@ -194,7 +194,7 @@ jQuery(document).ready(function($){
                     data:{action:"pwaforwp_update_pre_caching_urls", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){
 	                    if(response["status"]=="t"){
-                                current.parent().hide();
+                                current.parent().parent().hide();
 	                    }else{
                                 alert('Something went wrong');
 	                    }   

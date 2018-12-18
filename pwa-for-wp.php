@@ -6,7 +6,7 @@ Author: Ahmed Kaludi, Mohammed Kaludi
 Version: 1.0.4
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
-Domain Path: /languages/
+Domain Path: /languages
 */
 
 // Exit if accessed directly.
