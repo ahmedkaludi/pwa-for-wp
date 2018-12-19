@@ -13,6 +13,8 @@ class PWAFORWP_Service_Worker{
 
     public function __construct() {
         
+        add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
+        
         
         $settings = pwaforwp_defaultSettings();
         $multisite_filename_postfix = '';       
@@ -37,17 +39,28 @@ class PWAFORWP_Service_Worker{
         $this->swhtml_path = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
         $this->minifest_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
         
-        
-        if(isset($settings['normal_enable'])){
-            add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
-            add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
-        }
-                             
+                                             
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );  
         add_action('wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
         
          
                   
+        }
+        public function pwaforwp_service_worker_init(){
+            $settings = pwaforwp_defaultSettings();
+            
+            if(isset($settings['amp_enable']) && (is_front_page()||is_home()) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()){
+                
+                add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
+                add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1);                
+                
+            }else{
+               if(isset($settings['normal_enable'])){
+                 add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
+               } 
+            }
         }
         public function pwaforwp_update_pre_caching_urls(){
                         

@@ -27,13 +27,19 @@ function pwaforwp_admin_interface_render(){
 	$serviceWorkerObj = new PWAFORWP_Service_Worker();
 	$is_amp = $serviceWorkerObj->is_amp;
 	$multisite_filename_postfix = '';
-    if ( is_multisite() ) {
-       $multisite_filename_postfix = '-' . get_current_blog_id();
-    }
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
 	// Handing save settings
-	if ( isset( $_GET['settings-updated'] ) ) {		
+	if ( isset( $_GET['settings-updated'] ) ) {	
+                                            
                 $settings = pwaforwp_defaultSettings(); 
-                $manualfileSetup ="";
+                $manualfileSetup ="";                
+                
+                $service_worker = new PWAFORWP_Service_Worker();
+                $service_worker->pwaforwp_store_latest_post_ids();
+                update_option('pwaforwp_update_pre_cache_list', 'disable');
+                                                
                 if(array_key_exists('manualfileSetup', $settings)){
                 $manualfileSetup = $settings['manualfileSetup'];      
                 }
