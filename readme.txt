@@ -61,6 +61,13 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.0.5 (20 December 2018) =
+* New Feature: Compatible with AMP for WordPress ( https://wordpress.org/plugins/amp ) 
+* New Feature: Pre Caching - Now the latest number of posts can be pre cached on users end on their first visit. 
+* Option to hide and show custom add to home banner on desktop
+* Properly prepared for localization to make plugin translatable
+* Bug Fixed : This page does not respond with offline #58
+
 = 1.0.4 (27 November 2018) =
 * New Feature: Custom responsive add to home banner.
 * New Feature: Force update service worker option (This option updates service worker for all users who have installed at once)
