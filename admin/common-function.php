@@ -1,4 +1,9 @@
-<?php      
+<?php    
+function pwaforwp_load_plugin_textdomain() {
+    load_plugin_textdomain( 'pwa-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
+
 function pwaforwp_review_notice_close(){            
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 

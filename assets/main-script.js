@@ -157,11 +157,72 @@ jQuery(document).ready(function($){
 	});
         
 	$("#pwaforwp_settings_utm_setting").click(function(){
-		console.log($(this).prop("checked"));
+		
 		if($(this).prop("checked")){
 			$('.pwawp_utm_values_class').fadeIn();
 		}else{
 			$('.pwawp_utm_values_class').fadeOut(200);
+		}
+	});
+        
+        
+        $("#pwaforwp_settings_precaching_setting").change(function(){
+	
+		if($(this).prop("checked")){
+			$(".pwaforwp_precaching_table tr:first").fadeIn();
+                        
+                        if($("#pwaforwp_precaching_method_selector").val() === 'automatic'){
+			$('.pwaforwp_precaching_table tr').eq(1).fadeIn();
+                        $('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
+                        }else{
+                                $('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
+                                $('.pwaforwp_precaching_table tr').eq(2).fadeIn();
+
+                        }
+                        
+		}else{
+			$(".pwaforwp_precaching_table tr").fadeOut(200);
+		}
+	}).change();
+        
+        $(document).on("click", ".pwaforwp-update-pre-caching-urls", function(e){
+            e.preventDefault();
+            var current = $(this);
+             $.ajax({
+                    url:ajaxurl,
+                    dataType: "json",
+                    data:{action:"pwaforwp_update_pre_caching_urls", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                    success:function(response){
+	                    if(response["status"]=="t"){
+                                current.parent().parent().hide();
+	                    }else{
+                                alert('Something went wrong');
+	                    }   
+                    }                
+                });
+            
+        })
+        
+        $("#pwaforwp_precaching_method_selector").change(function(){
+	
+		if($(this).val() === 'automatic'){
+			$('.pwaforwp_precaching_table tr').eq(1).fadeIn();
+                        $('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
+		}else{
+                        $('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
+                        $('.pwaforwp_precaching_table tr').eq(2).fadeIn();
+			
+		}
+	});
+        
+        $(".pwaforwp-add-to-home-banner-settings").click(function(){
+		
+		if($(this).prop("checked")){
+			$('.pwaforwp-enable-on-desktop').removeClass('afw_hide');
+		}else{
+			$('.pwaforwp-enable-on-desktop').addClass('afw_hide');
+                        $('#enable_add_to_home_desktop_setting').prop('checked', false); // Checks it
+
 		}
 	});
         $(".pwaforwp-onesignal-support").click(function(){		

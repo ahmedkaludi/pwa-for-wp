@@ -3,10 +3,10 @@
 Plugin Name: PWA for WP
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Ahmed Kaludi, Mohammed Kaludi
-Version: 1.0.4
+Version: 1.0.5
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
-Domain Path: /languages/
+Domain Path: /languages
 */
 
 // Exit if accessed directly.
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.0.4');
+define('PWAFORWP_PLUGIN_VERSION', '1.0.5');
 define('PWAFORWP_FILE_PREFIX', 'pwa');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
@@ -33,11 +33,11 @@ function pwaforwp_add_action_links($links){
     $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
     return array_merge( $links, $mylinks );
 }
-
 //For CDN CODES
 //add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
 //function pwaforwp_allow_cdn(){
 	if ( !is_admin() ) { 
+            
 		$settings = pwaforwp_defaultSettings(); 
 			if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
 				ob_start('pwaforwp_revert_src');
@@ -137,6 +137,16 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
     /* Check transient, if available display notice */
+    
+    if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
+         ?>
+        <div class="updated notice">
+            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click', 'pwa-for-wp') ?></a></p>
+        </div>
+        <?php
+        
+    }
+    
     if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
         ?>
         <div class="updated notice">
@@ -169,3 +179,28 @@ function pwaforwp_admin_notice(){
     } 
     
 }
+
+add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
+
+function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
+    if ( plugin_basename(__FILE__) == $file ) {
+      $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";      
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'ads-for-wp') . "</a>";
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'ads-for-wp') . "'>
+            <i class='pwaforwp-wdi-rate-stars'>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
+        . "</i></a>";      
+      echo "<style>"
+        . ".pwaforwp-wdi-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
+        . ".pwaforwp-wdi-rate-stars svg{fill:#ffb900;}"
+        . ".pwaforwp-wdi-rate-stars svg:hover{fill:#ffb900}"
+        . ".pwaforwp-wdi-rate-stars svg:hover ~ svg{fill:none;}"
+        . "</style>";
+    }
+
+    return $meta_fields;
+  }

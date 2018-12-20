@@ -13,6 +13,8 @@ class PWAFORWP_Service_Worker{
 
     public function __construct() {
         
+        add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
+        
         
         $settings = pwaforwp_defaultSettings();
         $multisite_filename_postfix = '';       
@@ -37,11 +39,71 @@ class PWAFORWP_Service_Worker{
         $this->swhtml_path = $url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
         $this->minifest_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
         
+                                             
+        add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );  
+        add_action('wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
         
-        if(isset($settings['normal_enable'])){
-        add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
-        add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
-         }        
+         
+                  
+        }
+        public function pwaforwp_service_worker_init(){
+            $settings = pwaforwp_defaultSettings();
+            
+            if(isset($settings['amp_enable']) && (is_front_page()||is_home()) && function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()){
+                
+                add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
+                add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1);                
+                
+            }else{
+               if(isset($settings['normal_enable'])){
+                 add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);         
+               } 
+            }
+        }
+        public function pwaforwp_update_pre_caching_urls(){
+                        
+            if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
+                return; 
+            }       
+            if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+               return;  
+            } 
+            $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
+            $result = $file_creation_init_obj->pwaforwp_swjs_init();
+            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+            update_option('pwaforwp_update_pre_cache_list', 'disable'); 
+            delete_transient( 'pwaforwp_pre_cache_post_ids' );
+            echo json_encode(array('status' => 't'));
+            
+            wp_die();
+        }
+        public function pwaforwp_store_latest_post_ids(){
+           
+           $post_ids = array();
+           $settings = pwaforwp_defaultSettings();
+           
+           if(isset($settings['precaching_setting']) && $settings['precaching_method'] == 'automatic'){
+           
+                $post_count =10;
+                
+                if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
+                   $post_count =$settings['precaching_post_count']; 
+                }
+                
+                $args = array( 'numberposts' => $post_count, 'order'=> 'ASC', 'orderby' => 'title' );
+                $postslist = get_posts( $args );
+                if($postslist){
+                     foreach ($postslist as $post){
+                         $post_ids[] = $post->ID;
+                     }           
+                     set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));    
+                     update_option('pwaforwp_update_pre_cache_list', 'enable');
+                }
+               
+           }
+                                  
         }
         public function pwaforwp_custom_add_to_home_screen(){
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
