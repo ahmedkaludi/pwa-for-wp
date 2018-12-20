@@ -14,14 +14,13 @@ PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to 
 You can give the APP-like experience to your audience which will get your website to their home screen and works instantly like an APP with offline support.
 
 = Features: =
-
+* <strong>AMP Support</strong>: Full PWA compatibility for AMP.  It works well with AMPforWP & AMP for WordPress by Automattic.
 * NEW: Multi site support
 * NEW: UTM Tracking
 * NEW: Caching Strategy for PWA enabled assets
 * NEW: Cache Expire option added
 * <strong>Service Worker </strong>: We have developed a service worker which automatically gets installed in the background and performs the necessary actions such as caching the external objects to reduce the requests and more.
 * <strong>APP Banners in Home-screen</strong>: Automatically notifies your visitor to get the APP version of the website which directly gets added with the list of Apps and Home-screen. You can customize the icons for this as well.
-* <strong>AMP Support</strong>: Full PWA compatibility for AMP. Works well with AMPforWP plugin.
 * <strong>Web App Manifest</strong>: The Manifest file is necessary to get this functionality rolled out and we have made this automatic and connected with the PWA options.
 * <strong>Offline Support</strong>: The PWA version of your site will load blazing fast even when the user is offline. Once the user is online, it will update the content again. It will also count the analytics as well and updates it when the user goes online again.
 * <strong>Full Screen & Splash Screen</strong>: When you open the PWA version from the mobile, it will load in full screen without any browser toolbar, which gives it a native app like feel in PWA version. There’s also a welcome splash screen which is totally customizable.
