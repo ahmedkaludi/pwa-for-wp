@@ -28,6 +28,8 @@ const MAX_TTL = {
     json: {{CSS_CACHE_TIME}},
     js: {{CSS_CACHE_TIME}},
     css: {{CSS_CACHE_TIME}},
+    png: {{CSS_CACHE_TIME}},
+    jpg: {{CSS_CACHE_TIME}},
 };
 
 const CACHE_BLACKLIST =  [
@@ -101,7 +103,18 @@ function installServiceWorker() {
             caches.open(CACHE_VERSIONS.content)
                 .then(
                     (cache) => {
-                        return cache.addAll(BASE_CACHE_FILES);
+                        
+                        if(BASE_CACHE_FILES.length >0){
+                        
+                            for (var i = 0; i < BASE_CACHE_FILES.length; i++) {
+                            
+                             precacheUrl(BASE_CACHE_FILES[i]) 
+                       
+                            }
+                            
+                        }
+                        
+                        //return cache.addAll(BASE_CACHE_FILES);
                     }
                 ),
             caches.open(CACHE_VERSIONS.offline)
@@ -254,8 +267,8 @@ self.addEventListener(
             return;
         
         // Return if request url is from an external domain.
-        if ( new URL(event.request.url).origin !== location.origin )
-            return;
+//        if ( new URL(event.request.url).origin !== location.origin )
+//            return;
 
         event.respondWith(
             caches.open(CACHE_VERSIONS.content)

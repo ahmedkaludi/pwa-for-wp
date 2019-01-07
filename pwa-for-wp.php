@@ -184,8 +184,10 @@ add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 
 function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     if ( plugin_basename(__FILE__) == $file ) {
-      $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";      
+      $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
+      $hire_url = "https://ampforwp.com/hire/";
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'ads-for-wp') . "</a>";
+      $meta_fields[] = "<a href='" . esc_url($hire_url) . "' target='_blank'>" . esc_html__('Hire Us', 'ads-for-wp') . "</a>";
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'ads-for-wp') . "'>
             <i class='pwaforwp-wdi-rate-stars'>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"

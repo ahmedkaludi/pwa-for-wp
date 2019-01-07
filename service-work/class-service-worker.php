@@ -40,7 +40,8 @@ class PWAFORWP_Service_Worker{
         $this->minifest_path_amp = $url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
         
                                              
-        add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );  
+        add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
+        add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action('wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
         
          
@@ -81,29 +82,41 @@ class PWAFORWP_Service_Worker{
         }
         public function pwaforwp_store_latest_post_ids(){
            
-           $post_ids = array();
+           $post_ids = array();           
            $settings = pwaforwp_defaultSettings();
            
-           if(isset($settings['precaching_setting']) && $settings['precaching_method'] == 'automatic'){
+           if(isset($settings['precaching_automatic'])){
            
                 $post_count =10;
                 
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
-                }
-                
-                $args = array( 'numberposts' => $post_count, 'order'=> 'ASC', 'orderby' => 'title' );
-                $postslist = get_posts( $args );
-                if($postslist){
-                     foreach ($postslist as $post){
+                }                
+                $post_args = array( 'numberposts' => $post_count  );                                                          
+                $page_args = array( 'number'       => $post_count );                                                                                        
+                $postslist = get_posts( $post_args );
+                $pageslist = get_pages( $page_args );
+                if($postslist || $pageslist){
+                    
+                    
+                    if($postslist && isset($settings['precaching_automatic_post'])){
+                     
+                        foreach ($postslist as $post){
                          $post_ids[] = $post->ID;
-                     }           
+                       }
+                        
+                    }
+                    
+                    if($pageslist && isset($settings['precaching_automatic_page'])){
+                     
+                        foreach ($pageslist as $post){
+                         $post_ids[] = $post->ID;
+                       }                        
+                    }                                           
                      set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));    
                      update_option('pwaforwp_update_pre_cache_list', 'enable');
-                }
-               
-           }
-                                  
+                }               
+           }                                  
         }
         public function pwaforwp_custom_add_to_home_screen(){
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  

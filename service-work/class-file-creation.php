@@ -19,7 +19,7 @@ class pwaforwpFileCreation{
                 $settings                       = pwaforwp_defaultSettings();
                 $server_key                     = $settings['fcm_server_key'];
                 $config                         = $settings['fcm_config'];
-                
+                $addtohomemanually              ='';
                 if(isset($settings['add_to_home_selector'])){
                   
                  if(strchr($settings['add_to_home_selector'], '#')){
@@ -139,17 +139,18 @@ class pwaforwpFileCreation{
 		$swJsContent 		= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
 		$settings 		= pwaforwp_defaultSettings();   
                 $pre_cache_urls ='';
-                if(isset($settings['precaching_setting']) && $settings['precaching_method'] =='manual' && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
+                if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                  $explod_urls = explode(',', $settings['precaching_urls']);
                  foreach ($explod_urls as $url){
-                  $pre_cache_urls .= "'".$url."',";  
+                  $pre_cache_urls .= "'".trim($url)."',\n";  
                  }                
                 }
+               
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
-                if(!empty($store_post_id) && $settings['precaching_method'] =='automatic'){
+                if(!empty($store_post_id) && isset($settings['precaching_automatic'])){
                     foreach ($store_post_id as $post_id){
-                       $pre_cache_urls .= "'".get_permalink($post_id)."',";  
+                       $pre_cache_urls .= "'".trim(get_permalink($post_id))."',\n";  
                     }
                 }
                 

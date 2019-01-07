@@ -339,14 +339,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_utm_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
-                add_settings_field(
-			'pwaforwp_precaching_setting',							// ID
-			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
-			'pwaforwp_precaching_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
+		);                
                 add_settings_field(
 			'pwaforwp_exclude_url_setting',							// ID
 			esc_html__('Urls Exclude From Cache List', 'pwa-for-wp'),	// Title
@@ -362,6 +355,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 
+                add_settings_field(
+			'pwaforwp_precaching_setting',							// ID
+			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
+			'pwaforwp_precaching_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);    
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
 			esc_html__('Caching Strategies', 'pwa-for-wp'),	// Title
@@ -483,40 +483,63 @@ function pwaforwp_precaching_setting_callback(){
             'manual'=>'Manual',            
             );
 	?>
-	<label><input type="checkbox" name="pwaforwp_settings[precaching_setting]" id="pwaforwp_settings_precaching_setting" class="" <?php echo (isset( $settings['precaching_setting'] ) &&  $settings['precaching_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"></label>
-	<p> <?php echo esc_html__('Cache the list of posts and pages for users on their first visit to your website', 'pwa-for-wp'); ?></p>
-	<table class="form-table pwaforwp_precaching_table">
+			
 		<tr>
-			<td><?php echo esc_html__('Method', 'pwa-for-wp'); ?></td>
+			<td><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></td>
                         <td>
-                            <select name="pwaforwp_settings[precaching_method]" id="pwaforwp_precaching_method_selector">
-                               <?php if($arrayOPT){
-				foreach ($arrayOPT as $key => $opval) {
-					$sel = "";
-					if($settings['precaching_method']==$key){$sel = "selected"; }
-					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_attr($opval).'</option>';
-				}
-                            }
-			 ?>
-                            </select>   
+                          <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
                         </td>
-		</tr>	
+		</tr>
+                <tr>
+                <td></td>
+                <td> 
+                    <table class="pwaforwp-pre-cache-table">
+                     <tr>
+                         <td>
+                          Post
+                         </td>
+                         <td>                         
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_post]" id="pwaforwp_settings_precaching_automatic_post" class="" <?php echo (isset( $settings['precaching_automatic_post'] ) &&  $settings['precaching_automatic_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">     
+                         </td>
+                         <td>
+                         Page 
+                         </td>
+                         <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_page]" id="pwaforwp_settings_precaching_automatic_page" class="" <?php echo (isset( $settings['precaching_automatic_page'] ) &&  $settings['precaching_automatic_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         </td>
+                         <td>
+                         Custom Post 
+                         </td>
+                         <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_custom_post]" id="pwaforwp_settings_precaching_automatic_custom_post" class="" <?php echo (isset( $settings['precaching_automatic_custom_post'] ) &&  $settings['precaching_automatic_custom_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         </td>                     
+                     </tr>
+                     
+                    </table>
+                </td>    
+                </tr>
                 <tr>
                    <td><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></td>
                    <td>
-                       <input name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
+                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
                    </td>
                 </tr>
                 <tr>
+			<td><?php echo esc_html__('Manual', 'pwa-for-wp'); ?></td>
+                        <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
+                        </td>
+		</tr>                
+                <tr>
                     <td><?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?></td>
                    <td>
-                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[precaching_urls]" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
+                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
                 </tr>
 		
-	</table>	
+	
 	<?php
 }
 function pwaforwp_utm_setting_callback(){

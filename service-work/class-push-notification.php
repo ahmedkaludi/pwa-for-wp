@@ -46,7 +46,7 @@ class pushNotification{
                     
                       if(isset($settings['on_add_post'])){
                         $message['title'] = esc_html__('New Post', 'pwa-for-wp');
-                        $message['body']  = esc_html__('Check out our new post', 'pwa-for-wp');
+                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
                         $message['url']   = the_permalink ($post);
                         $this->pwaforwp_send_push_notification($message);	           
                         }                        
@@ -54,7 +54,7 @@ class pushNotification{
                         
                        if(isset($settings['on_update_post'])){
                         $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
-                        $message['body']  = esc_html__('Check out our updated post', 'pwa-for-wp');
+                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
                         $message['url']   = the_permalink ($post);
                         $this->pwaforwp_send_push_notification($message);	           
                         }
@@ -67,7 +67,7 @@ class pushNotification{
                     
                       if(isset($settings['on_add_page'])){
                         $message['title'] = esc_html__('New Page', 'pwa-for-wp');
-                        $message['body']  = esc_html__('Check out our new page', 'pwa-for-wp');
+                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
                         $message['url']   = the_permalink ($post);
                         $this->pwaforwp_send_push_notification($message);	           
                         }                        
@@ -75,7 +75,7 @@ class pushNotification{
                         
                        if(isset($settings['on_update_page'])){
                         $message['title'] = esc_html__('Page Updated', 'pwa-for-wp');
-                        $message['body']  = esc_html__('Check out our updated page', 'pwa-for-wp');
+                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
                         $message['url']   = the_permalink ($post);
                         $this->pwaforwp_send_push_notification($message);	           
                         }

@@ -166,22 +166,19 @@ jQuery(document).ready(function($){
 	});
         
         
-        $("#pwaforwp_settings_precaching_setting").change(function(){
-	
+        $("#pwaforwp_settings_precaching_automatic").change(function(){	
 		if($(this).prop("checked")){
-			$(".pwaforwp_precaching_table tr:first").fadeIn();
-                        
-                        if($("#pwaforwp_precaching_method_selector").val() === 'automatic'){
-			$('.pwaforwp_precaching_table tr').eq(1).fadeIn();
-                        $('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
-                        }else{
-                                $('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
-                                $('.pwaforwp_precaching_table tr').eq(2).fadeIn();
-
-                        }
-                        
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn();                                                
 		}else{
-			$(".pwaforwp_precaching_table tr").fadeOut(200);
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);;
+		}
+	}).change();
+        
+        $("#pwaforwp_settings_precaching_manual").change(function(){	
+		if($(this).prop("checked")){
+			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeIn();                                                
+		}else{
+			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeOut(200);;
 		}
 	}).change();
         
