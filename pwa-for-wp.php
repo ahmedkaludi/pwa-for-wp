@@ -3,7 +3,7 @@
 Plugin Name: PWA for WP
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Ahmed Kaludi, Mohammed Kaludi
-Version: 1.0.5
+Version: 1.0.6
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.0.5');
+define('PWAFORWP_PLUGIN_VERSION', '1.0.6');
 define('PWAFORWP_FILE_PREFIX', 'pwa');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
@@ -169,14 +169,20 @@ function pwaforwp_admin_notice(){
         $current_date = date("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
         $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
-    if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date){
-        echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
-            <p><span class="dashicons dashicons-thumbs-up"></span> 
-            '.esc_html__('You have been using the PWA For WP plugin for some time now, do you like it?, If so,', 'pwa-for-wp').'						
-            <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews">				
-	    '.esc_html__('please write us a review', 'pwa-for-wp').'
-	    </a><button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-close">'.esc_html__('No Thanks', 'ads-for-wp').'</button></p> </div>';                       
-    } 
+        $review_notice_bar_never = get_option( "pwaforwp_review_never");
+        
+        if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
+            echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
+                <p><span class="dashicons dashicons-thumbs-up"></span> 
+                '.esc_html__('You have been using the PWA For WP plugin for some time now, do you like it?, If so,', 'pwa-for-wp').'						
+                <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews">				
+                '.esc_html__('please write us a review', 'pwa-for-wp').'
+                </a>
+                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-remindme">'.esc_html__('Remind Me Later', 'pwa-for-wp').'</button>
+                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-close">'.esc_html__('No Thanks', 'pwa-for-wp').'</button>'
+                .'</p> '
+                .'</div>';                       
+        } 
     
 }
 
@@ -186,9 +192,9 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     if ( plugin_basename(__FILE__) == $file ) {
       $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
       $hire_url = "https://ampforwp.com/hire/";
-      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'ads-for-wp') . "</a>";
-      $meta_fields[] = "<a href='" . esc_url($hire_url) . "' target='_blank'>" . esc_html__('Hire Us', 'ads-for-wp') . "</a>";
-      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'ads-for-wp') . "'>
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
+      $meta_fields[] = "<a href='" . esc_url($hire_url) . "' target='_blank'>" . esc_html__('Hire Us', 'pwa-for-wp') . "</a>";
+      $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'pwa-for-wp') . "'>
             <i class='pwaforwp-wdi-rate-stars'>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
