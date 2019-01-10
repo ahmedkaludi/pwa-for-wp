@@ -67,9 +67,9 @@ function pwaforwp_admin_interface_render(){
 	}
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','help'));
         
-                $swJsonNonAmp = esc_url(pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json");               
+                $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);
-				$swJsNonAmp = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");                               
+				$swJsNonAmp = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
 				$file_js_headers = @checkStatus($swJsNonAmp);
                 if($file_json_headers || $file_js_headers){
                 	/* Delete transient, only display this notice once. */
@@ -551,7 +551,7 @@ function pwaforwp_utm_setting_callback(){
 	}
 	$utm_source = $utm_medium = $utm_term = $utm_content = ''; 
 	$utm_url = pwaforwp_front_url();
-	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_front_url()) : trailingslashit(pwaforwp_front_url())."amp");
+	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_front_url()) : pwaforwp_front_url()."amp");
 	if(isset($settings['utm_details'])){
 		$utm_source = $settings['utm_details']['utm_source'];
 		$utm_medium = $settings['utm_details']['utm_medium'];
@@ -936,7 +936,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                  $swUrl = esc_url(pwaforwp_front_url()."/pwa-manifest". $multisite_filename_postfix.".json");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-manifest". $multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                     printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -948,7 +948,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-manifest".$multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -967,7 +967,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");
+                      $swUrl = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -979,7 +979,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".js");
                     $file_headers = @checkStatus($swUrl);                   
                     if(!$file_headers) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -1046,33 +1046,34 @@ function checkStatus($swUrl){
                 
         $swjsFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-sw".$multisite_filename_postfix.".js";
         $swmanifestFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix.".json";
-		switch ($swUrl) {
-			case pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json":
-				if(file_exists($swmanifestFile)){
-					return true;
-				}
-				break;
-			case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js":
+        
+        switch ($swUrl) {
+            case pwaforwp_front_url()."pwa-amp-manifest".$multisite_filename_postfix.".json":
+                    if(file_exists($swmanifestFile)){
+                            return true;
+                    }
+                    break;
+            case pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFile)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js":
+            case pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json":
+            case pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json":
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".html":
+            case pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".html":
 				if(file_exists($swHtmlFile)){
 					return true;
 				}
 				break;  
-            case pwaforwp_front_url()."/pwa-register-sw".$multisite_filename_postfix.".js":
+            case pwaforwp_front_url()."pwa-register-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swrFile)){
 					return true;
 				}

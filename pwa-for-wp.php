@@ -52,9 +52,9 @@ function pwaforwp_amp_cdn_replace_urls_revert($src){
        $multisite_filename_postfix = '-' . get_current_blog_id();
     }
 	if($src[1]==$url){
-		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
 	}else{
-		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
@@ -64,9 +64,9 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
        $multisite_filename_postfix = '-' . get_current_blog_id();
     }
 	if($src[1]==$url){
-		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
 	}else{
-		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
@@ -104,18 +104,18 @@ function pwaforwp_revert_src($content){
 function pwaforwp_cdn_replace_urls_revert($src){
 	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}else{
-		return 'src="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
+		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw.js"';
 	}
 }
 
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
     $url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}else{
-		return 'href="'.$url.'/'.PWAFORWP_FILE_PREFIX.'-manifest.json"';
+		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest.json"';
 	}
 }
 /**

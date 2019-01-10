@@ -191,7 +191,7 @@ class PWAFORWP_Service_Worker{
 		}
 		if($manualfileSetup){
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
-                <meta name="theme-color" content="'.$settings['theme_color'].'">';
+                      <meta name="theme-color" content="'.$settings['theme_color'].'">';
 			echo '<link rel="manifest" href="'. parse_url(pwaforwp_front_url().PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json', PHP_URL_PATH).'"/>';
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;

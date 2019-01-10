@@ -23,16 +23,22 @@ class pwaforwpFileCreation{
                 if(isset($settings['add_to_home_selector'])){
                   
                  if(strchr($settings['add_to_home_selector'], '#')){
-                  $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");		
-                                                     a2hsBtn.addEventListener("click", (e) => {
-							addToHome();	
-						     });';   
+                  $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");
+                                                    if(a2hsBtn !==null){
+                                                        a2hsBtn.addEventListener("click", (e) => {
+                                                            addToHome();	
+                                                         });
+                                                    }';    
+                                                       
                  }
                  if(strchr($settings['add_to_home_selector'], '.')){
-                    $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");		
-                                                     for (var i = 0; i < a2hsBtn.length; i++) {
-                                                          a2hsBtn[i].addEventListener("click", addToHome); 
-                                                        }';  
+                    $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");
+                                                        if(a2hsBtn !==null){
+                                                            for (var i = 0; i < a2hsBtn.length; i++) {
+                                                              a2hsBtn[i].addEventListener("click", addToHome); 
+                                                          }
+                                                        }';
+                                                       
                  }                                     
                 }else{
                  $addtohomemanually ='';
@@ -41,10 +47,18 @@ class pwaforwpFileCreation{
                 if(isset($settings['custom_add_to_home_setting'])){
                   
                     if(isset($settings['enable_add_to_home_desktop_setting'])){
-                        $banner_on_desktop ='document.getElementById("pwaforwp-add-to-home-click").style.display = "block";';   
+                        $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
+                                            if(a2hsdesk !== null){
+                                                a2hsdesk.style.display = "block";
+                                            }'; 
+                                
+                                  
                     }else{
-                        $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){
-                                                    document.getElementById("pwaforwp-add-to-home-click").style.display = "block";   
+                        $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){                                                    
+                                                    var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
+                                                            if(a2hsdesk !== null){
+                                                                a2hsdesk.style.display = "block";
+                                                            }   
                                                 }';     
                     }                                                        
                    $addtohomebanner ='var lastScrollTop = 0;                                        
@@ -55,14 +69,21 @@ class pwaforwpFileCreation{
                                                '.$banner_on_desktop.'                                                                 
                                                }                                              
                                             } else {
-                                              document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
+                                            var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
+                                            if(bhidescroll !== null){
+                                            bhidescroll.style.display = "none";
+                                            }                                              
                                             }
                                          lastScrollTop = st;  
                                         });
-                                      var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");		
-                                        addtohomeBtn.addEventListener("click", (e) => {
+                                        
+                                      var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");	
+                                        if(addtohomeBtn !==null){
+                                            addtohomeBtn.addEventListener("click", (e) => {
                                             addToHome();	
-                                        });'; 
+                                        });
+                                        }';                                         
+                                        
                 }else{
                    $addtohomebanner =''; 
                 }
