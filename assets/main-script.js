@@ -186,9 +186,11 @@ jQuery(document).ready(function($){
         
         $("#pwaforwp_settings_precaching_automatic").change(function(){	
 		if($(this).prop("checked")){
-			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn();                                                
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn(); 
+                        $(".pwaforwp-pre-cache-table").parent().parent().fadeIn(); 
 		}else{
-			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);;
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);
+                        $(".pwaforwp-pre-cache-table").parent().parent().fadeOut(200);
 		}
 	}).change();
         

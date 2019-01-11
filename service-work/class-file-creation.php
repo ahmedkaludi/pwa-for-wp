@@ -159,6 +159,15 @@ class pwaforwpFileCreation{
             
 		$swJsContent 		= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
 		$settings 		= pwaforwp_defaultSettings();   
+                
+                $external_links ='';
+                
+                if(!isset($settings['external_links_setting'])){                    
+                    $external_links = 'if ( new URL(event.request.url).origin !== location.origin )
+                            return;';
+                                                                    
+                }
+                
                 $pre_cache_urls ='';
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                  $explod_urls = explode(',', $settings['precaching_urls']);
@@ -229,7 +238,9 @@ class pwaforwpFileCreation{
                                                         "{{CSS_CACHE_TIME}}", 
                                                         "{{FIREBASEJS}}" , 
                                                         "{{EXCLUDE_FROM_CACHE}}", 
-                                                        "{{OFFLINE_GOOGLE}}"), 
+                                                        "{{OFFLINE_GOOGLE}}",
+                                                        "{{EXTERNAL_LINKS}}"
+                                                            ), 
                                                      array(
                                                          $pre_cache_urls,
                                                          $offline_page, 
@@ -240,7 +251,8 @@ class pwaforwpFileCreation{
                                                          $cacheTimerCss, 
                                                          $firebasejs, 
                                                          $exclude_from_cache, 
-                                                         $offline_google
+                                                         $offline_google,
+                                                         $external_links
                                                         ),
 							 $swJsContent
                                                         );                		
@@ -257,7 +269,9 @@ class pwaforwpFileCreation{
                                                             "{{CSS_CACHE_TIME}}", 
                                                             "{{FIREBASEJS}}", 
                                                             "{{EXCLUDE_FROM_CACHE}}", 
-                                                            "{{OFFLINE_GOOGLE}}"),
+                                                            "{{OFFLINE_GOOGLE}}",
+                                                            "{{EXTERNAL_LINKS}}"
+                                                            ),
                                                       array(
                                                             $pre_cache_urls,
                                                             $offline_page, 
@@ -268,7 +282,8 @@ class pwaforwpFileCreation{
                                                             $cacheTimerCss, 
                                                             $firebasejs, 
                                                             $exclude_from_cache, 
-                                                            $offline_google
+                                                            $offline_google,
+                                                            $external_links
                                                             ), 
                                                             $swJsContent);                		
 		}                		

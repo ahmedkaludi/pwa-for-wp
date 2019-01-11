@@ -265,11 +265,10 @@ self.addEventListener(
         // Return if request url protocal isn't http or https
         if ( ! event.request.url.match(/^(http|https):\/\//i) )
             return;
+                
+        {{EXTERNAL_LINKS}}
         
-        // Return if request url is from an external domain.
-//        if ( new URL(event.request.url).origin !== location.origin )
-//            return;
-
+        
         event.respondWith(
             caches.open(CACHE_VERSIONS.content)
                 .then(

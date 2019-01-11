@@ -297,7 +297,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_cdn_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
+		);                
                 add_settings_field(
 			'pwaforwp_offline_google_setting',							// ID
 			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
@@ -330,6 +330,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_one_signal_support',									// ID
 			esc_html__('OneSignal Compatibility', 'pwa-for-wp'),		// Title
 			'pwaforwp_one_signal_support_callback',								// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_cache_external_links_setting',							// ID
+			esc_html__('Cache External Links', 'pwa-for-wp'),	// Title
+			'pwaforwp_cache_external_links_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -621,8 +628,17 @@ function pwaforwp_cdn_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings_cdn_setting" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
+	<?php
+}
+
+function pwaforwp_cache_external_links_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[external_links_setting]" id="pwaforwp_settings_external_links_setting" class="" <?php echo (isset( $settings['external_links_setting'] ) &&  $settings['external_links_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Caches external link\'s resource which are in html', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
