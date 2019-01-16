@@ -212,9 +212,11 @@ class pwaforwpFileCreation{
                  $firebasejs = '';    
                 }
                 
-		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_bloginfo( 'wpurl' ));
-		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_bloginfo( 'wpurl' ));  
-		$site_url 		= user_trailingslashit(str_replace( 'http://', 'https://', site_url() ));  
+                
+                $site_url 		= user_trailingslashit(str_replace( 'http://', 'https://', site_url() ));  
+		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  pwaforwp_front_url());
+		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : pwaforwp_front_url());  
+		
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
 		if(isset($settings['cached_timer']) && is_numeric($settings['cached_timer']['html'])){
@@ -227,7 +229,7 @@ class pwaforwpFileCreation{
 		if( $is_amp ){
                         $firebasejs ='';
 			$offline_page 	= str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
-			$page404 		= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
+			$page404 	= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
 			$swJsContent 	= str_replace(array(
                                                         "{{PRE_CACHE_URLS}}", 
 							"{{OFFLINE_PAGE}}", 
@@ -312,7 +314,7 @@ class pwaforwpFileCreation{
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
         }                                            
-                $homeUrl = user_trailingslashit(str_replace("http://", "https://", $homeUrl));
+                $homeUrl = trailingslashit(str_replace("http://", "https://", $homeUrl));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
 		if($orientation==0) { $orientation = "portrait"; }

@@ -133,7 +133,7 @@ jQuery(document).ready(function($){
                   e.preventDefault();               
                 $.ajax({
                     type: "POST",    
-                    url:adsforwp_localize_data.ajax_url,                    
+                    url:pwaforwp_obj.ajax_url,                    
                     dataType: "json",
                     data:{action:"pwaforwp_review_notice_remindme", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){                       

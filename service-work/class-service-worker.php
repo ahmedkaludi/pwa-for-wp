@@ -1,4 +1,5 @@
-<?php               
+<?php  
+
 class PWAFORWP_Service_Worker{
 	
     public $is_amp = false;
@@ -44,8 +45,16 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action('wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
         
+        add_action( 'plugins_loaded', array($this, 'pwafowp_setup_hooks'));
+       
          
                   
+        }
+        
+        public function pwafowp_setup_hooks(){                                    
+            
+              add_action( 'init', array($this, 'pwaforwp_add_rewrite_rules'));   
+              add_action( 'parse_request', array($this, 'pwaforwp_change_files_url_on_fly'));                                                                              
         }
         public function pwaforwp_service_worker_init(){
             $settings = pwaforwp_defaultSettings();
@@ -133,11 +142,11 @@ class PWAFORWP_Service_Worker{
 	        
 	public function pwaforwp_service_worker(){ 
                 ?>
-		<amp-install-serviceworker src="<?php echo esc_url($this->swjs_path_amp); ?>" data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  layout="nodisplay">
+                        <amp-install-serviceworker data-scope="<?php echo pwaforwp_front_url(); ?>" src="<?php echo esc_url($this->swjs_path_amp); ?>" data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
 	}
-	//Load Script
+	
 	public function pwaforwp_service_worker_script( $data ){
 		if ( empty( $data['amp_component_scripts']['amp-install-serviceworker'] ) ) {
 			$data['amp_component_scripts']['amp-install-serviceworker'] = 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js';
@@ -147,14 +156,14 @@ class PWAFORWP_Service_Worker{
        	
 	public function pwaforwp_service_worker_non_amp(){
 		$multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
-        $url 			 = pwaforwp_front_url();	
+                if ( is_multisite() ) {
+                   $multisite_filename_postfix = '-' . get_current_blog_id();
+                }
+                $url 			 = pwaforwp_front_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup = $settings['manualfileSetup'];
 		if( $manualfileSetup ){
-            echo '<script src="'.esc_url($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js').'"></script>';    		
+                echo '<script src="'.esc_url($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js').'"></script>';    		
 		}           		
 	}              
     
@@ -208,7 +217,112 @@ class PWAFORWP_Service_Worker{
 				$this->is_amp = true;
 			}
 		}    
-    }                                 
+    }      
+    
+    public function pwaforwp_add_rewrite_rules(){
+        
+//        $sw_filename = 'pwa-register-sw.js';
+//	add_rewrite_rule( "^/{$sw_filename}$",
+//		"index.php?{$sw_filename}=1"
+//	);
+//	       
+    }
+    
+    public function pwaforwp_change_files_url_on_fly( $query ) {
+        
+        $site_url = get_site_url();        
+        $site_url = str_replace("http:","https:", $site_url);
+        
+        if((trailingslashit($site_url)  != pwaforwp_front_url() ) && !is_admin() ){                              
+            $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
+        $url 			 = trailingslashit(site_url());
+       
+        $settings 		 = pwaforwp_defaultSettings();
+        $manualfileSetup         = $settings['manualfileSetup'];                                
+        
+	if ( ! property_exists( $query, 'query_vars' ) || ! is_array( $query->query_vars ) ) {
+		return;
+	}
+        
+	$query_vars_as_string = implode( ',', $query->query_vars );	
+	$sw_filename          = PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js';
+        $manifest_file        = PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json';
+        $register_file        = PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js';
+        
+        $sw_filename_amp      = PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js';
+        $html_filename_amp    = PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html';
+        $manifest_filename_amp= PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json';
+        
+        
+        if ( strpos( $query_vars_as_string, $manifest_filename_amp ) !== false ) {		
+		header( 'Content-type: application/json' );
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json');   
+                }
+		
+		exit();
+	}
+        
+        if ( strpos( $query_vars_as_string, $html_filename_amp ) !== false ) {		
+		header( 'Content-type: text/html' );               
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html');   
+                }
+		
+		exit();
+	}
+        
+        if ( strpos( $query_vars_as_string, $sw_filename_amp ) !== false ) {		
+		header( 'Content-type: text/javascript' );
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js');   
+                }
+		
+		exit();
+	}
+        
+        if ( strpos( $query_vars_as_string, $sw_filename ) !== false ) {		
+		header( 'Content-type: text/javascript' );
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js');   
+                }
+		
+		exit();
+	}
+
+	if ( strpos( $query_vars_as_string, $manifest_file ) !== false ) {		
+		header( 'Content-Type: application/json' );
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json');   
+                }
+		
+		exit();
+	}
+        
+        if ( strpos( $query_vars_as_string, $register_file ) !== false ) {		
+		header( 'Content-type: text/javascript' );
+                
+                if( $manualfileSetup ){
+                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js');   
+                }
+		
+		exit();
+	}
+            
+            
+        }                
+	
+    }
+    
+    
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
 	new PWAFORWP_Service_Worker;
