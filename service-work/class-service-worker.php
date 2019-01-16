@@ -222,7 +222,7 @@ class PWAFORWP_Service_Worker{
     public function pwaforwp_add_rewrite_rules(){
         
 //        $sw_filename = 'pwa-register-sw.js';
-//	add_rewrite_rule( "^/{$sw_filename}$",
+//	   add_rewrite_rule( "^/{$sw_filename}$",
 //		"index.php?{$sw_filename}=1"
 //	);
 //	       

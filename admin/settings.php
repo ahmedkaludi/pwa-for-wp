@@ -65,7 +65,7 @@ function pwaforwp_admin_interface_render(){
                 }
 		settings_errors();
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','tools','help'));
         
                 $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);
@@ -94,6 +94,8 @@ function pwaforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(pwaforwp_admin_link('push_notification')) . '" class="nav-tab ' . esc_attr( $tab == 'push_notification' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Push Notification','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+                        
+                        echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
@@ -122,6 +124,11 @@ function pwaforwp_admin_interface_render(){
                         echo "<div class='pwaforwp-push_notification' ".( $tab != 'push_notification' ? 'style="display:none;"' : '').">";
 				// design Application Settings
 				do_settings_sections( 'pwaforwp_push_notification_section' );	// Page slug
+			echo "</div>";
+                        
+                        echo "<div class='pwaforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
 			echo "</div>";
                         
 			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
@@ -287,6 +294,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_theme_color_callback',								// CB
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
+		);
+                
+                add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+		add_settings_field(
+			'pwaforwp_reset_setting',							// ID
+			esc_html__('Reset', 'pwa-for-wp'),	// Title
+			'pwaforwp_reset_setting_callback',							// CB
+			'pwaforwp_tools_section',						// Page slug
+			'pwaforwp_tools_section'						// Settings Section ID
 		);
 
 		//Misc tabs
@@ -630,6 +646,14 @@ function pwaforwp_cdn_setting_callback(){
 	?>
 	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings_cdn_setting" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_reset_setting_callback(){		
+	?>              
+        <button class="button pwaforwp-reset-settings">
+            <?php echo esc_html__('Reset','schema-and-structured-data-for-wp'); ?>
+        </button>
+        
 	<?php
 }
 

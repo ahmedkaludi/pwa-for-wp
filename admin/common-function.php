@@ -1,4 +1,32 @@
 <?php    
+function pwaforwp_reset_all_settings(){ 
+    
+        if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           return;  
+        }    
+       
+        $default = pwaforwp_get_default_settings_array();                        
+        $result = update_option('pwaforwp_settings', $default);   
+        
+        if($result){    
+            
+        echo json_encode(array('status'=>'t'));            
+        
+        }else{
+            
+        echo json_encode(array('status'=>'f'));            
+        
+        }        
+        wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_reset_all_settings', 'pwaforwp_reset_all_settings');
+
+
+
 function pwaforwp_load_plugin_textdomain() {
     load_plugin_textdomain( 'pwa-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
@@ -118,8 +146,9 @@ function pwaforwp_get_tab( $default = '', $available = array() ) {
 	return $tab;
 }
 
-function pwaforwp_defaultSettings(){
-	$defaults = array(
+function pwaforwp_get_default_settings_array(){
+    
+    $defaults = array(
 		'app_blog_name'		=> get_bloginfo( 'name' ),
 		'app_blog_short_name'	=> get_bloginfo( 'name' ),
 		'description'		=> get_bloginfo( 'description' ),
@@ -132,17 +161,22 @@ function pwaforwp_defaultSettings(){
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
-        'manualfileSetup'	=> 0,
-        'cdn_setting'       => 0,
-        'normal_enable'       => 1,
-        'amp_enable'       => 1,
-        'cached_timer'      => array('html'=>3600,'css'=>86400),
-        'default_caching'   => 'cacheFirst',
-        'default_caching_js_css'   => 'cacheFirst',
-        'default_caching_images'   => 'cacheFirst',
-        'default_caching_fonts'   => 'cacheFirst',
+                'manualfileSetup'	=> 0,
+                'cdn_setting'           => 0,
+                'normal_enable'         => 1,
+                'amp_enable'            => 1,
+                'cached_timer'          => array('html'=>3600,'css'=>86400),
+                'default_caching'       => 'cacheFirst',
+                'default_caching_js_css'=> 'cacheFirst',
+                'default_caching_images'=> 'cacheFirst',
+                'default_caching_fonts' => 'cacheFirst',
 	);
-        
+    return $defaults;    
+}
+
+function pwaforwp_defaultSettings(){
+	
+        $defaults = pwaforwp_get_default_settings_array();
 	$settings = get_option( 'pwaforwp_settings', $defaults ); 
 	return $settings;
 }
