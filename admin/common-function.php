@@ -1,4 +1,17 @@
 <?php    
+function pwaforwp_loading_icon() {
+    $settings = pwaforwp_defaultSettings();
+    
+    if(isset($settings['loading_icon'])){
+        
+        echo '<div id="pwaforwp_loading_div"></div>'
+          . '<div id="pwaforwp_loading_icon"></div>';
+        
+    }
+        
+}
+add_action('wp_footer', 'pwaforwp_loading_icon');
+
 function pwaforwp_reset_all_settings(){ 
     
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
@@ -96,6 +109,16 @@ function pwaforwp_frontend_enqueue(){
          wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
          wp_enqueue_script('pwaforwp-push-js');            
          }  
+         
+         
+        if(isset($settings['loading_icon'])){
+            
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+         
+            wp_enqueue_script('pwaforwp-js'); 
+        }
+        
+        
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp-main.css', false , PWAFORWP_PLUGIN_VERSION );       
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );

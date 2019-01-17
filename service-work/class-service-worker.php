@@ -142,7 +142,10 @@ class PWAFORWP_Service_Worker{
 	        
 	public function pwaforwp_service_worker(){ 
                 ?>
-                        <amp-install-serviceworker data-scope="<?php echo pwaforwp_front_url(); ?>" src="<?php echo esc_url($this->swjs_path_amp); ?>" data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  layout="nodisplay">
+                        <amp-install-serviceworker data-scope="<?php echo pwaforwp_front_url(); ?>" 
+                        src="<?php echo esc_url($this->swjs_path_amp); ?>" 
+                        data-iframe-src="<?php echo esc_url($this->swhtml_path); ?>"  
+                        layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
 	}

@@ -304,6 +304,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_tools_section',						// Page slug
 			'pwaforwp_tools_section'						// Settings Section ID
 		);
+                add_settings_field(
+			'pwaforwp_loading_setting',							// ID
+			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_setting_callback',							// CB
+			'pwaforwp_tools_section',						// Page slug
+			'pwaforwp_tools_section'						// Settings Section ID
+		);
 
 		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
@@ -653,6 +660,15 @@ function pwaforwp_reset_setting_callback(){
         <button class="button pwaforwp-reset-settings">
             <?php echo esc_html__('Reset','schema-and-structured-data-for-wp'); ?>
         </button>
+        
+	<?php
+}
+
+function pwaforwp_loading_setting_callback(){	
+       $settings = pwaforwp_defaultSettings(); 
+	?>              
+        <input type="checkbox" name="pwaforwp_settings[loading_icon]" id="pwaforwp_settings_loading_icon_setting" class="" <?php echo (isset( $settings['loading_icon'] ) &&  $settings['loading_icon'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('This helps show loading icon on page or post load', 'pwa-for-wp'); ?></p>
         
 	<?php
 }
