@@ -60,6 +60,17 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.0.6 (18 January 2019) =
+* Added: Loading icon option has been added inside tools tab.
+* Added: Reset option has been added inside tools tab.
+* Added: Option added inside Advanced tab to cache the request url from an external domain.
+* Improvements: Notice box to ask for review in day interval will not be shown again, if users click no thanks button 
+* Bug Fixed : Js console error ( Uncaught ReferenceError: btnAdd is not defined ) #65
+* Bug Fixed : PWA jumps to the browser in amp ( Now PWA in amp will redirect its link to native PWA app nor browser) #57
+* Bug Fixed : If site and wordpress url is different, PWA can not be installed #63
+
+
+
 = 1.0.5 (20 December 2018) =
 * New Feature: Compatible with AMP for WordPress ( https://wordpress.org/plugins/amp ) 
 * New Feature: Pre Caching - Now the latest number of posts can be pre cached on users end on their first visit. 
