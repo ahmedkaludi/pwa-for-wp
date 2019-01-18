@@ -20,6 +20,7 @@ class pwaforwpFileCreation{
                 $server_key                     = $settings['fcm_server_key'];
                 $config                         = $settings['fcm_config'];
                 $addtohomemanually              ='';
+                
                 if(isset($settings['add_to_home_selector'])){
                   
                  if(strchr($settings['add_to_home_selector'], '#')){
@@ -82,12 +83,36 @@ class pwaforwpFileCreation{
                                             addtohomeBtn.addEventListener("click", (e) => {
                                             addToHome();	
                                         });
-                                        }';                                         
+                                        }';  
+                   
                                         
                 }else{
-                   $addtohomebanner =''; 
+                   $addtohomebanner ='';                   
                 }
-                                
+                
+                if(isset($settings['add_to_home_selector']) || isset($settings['custom_add_to_home_setting'])){
+                    
+                    $addtohomefunction ='function addToHome(){
+                                                         deferredPrompt.prompt();							  
+							  deferredPrompt.userChoice
+							    .then((choiceResult) => {
+							      if (choiceResult.outcome === "accepted") {
+							        console.log("User accepted the prompt");
+                                                                document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
+							      } else {
+							        console.log("User dismissed the prompt");
+							      }
+							      deferredPrompt = null;
+							  });
+                                                     }';
+                    
+                }else{
+                    
+                    $addtohomefunction ='';
+                    
+                }
+               
+                
 		$url 	                        = pwaforwp_front_url();
                 $multisite_filename_postfix = '';
                 if ( is_multisite() ) {
@@ -104,7 +129,23 @@ class pwaforwpFileCreation{
                  $firebaseconfig = '';  
                  $useserviceworker = '';
                 }                                
-		$swHtmlContent 			= str_replace(array("{{swfile}}", "{{config}}", "{{userserviceworker}}", "{{addtohomemanually}}", "{{addtohomebanner}}"), array($ServiceWorkerfileName, $firebaseconfig, $useserviceworker, $addtohomemanually, $addtohomebanner), $swHtmlContent);
+		$swHtmlContent 			= str_replace(array(
+                                                                    "{{swfile}}", 
+                                                                    "{{config}}", 
+                                                                    "{{userserviceworker}}", 
+                                                                    "{{addtohomemanually}}", 
+                                                                    "{{addtohomebanner}}",
+                                                                    "{{addtohomefunction}}"
+                                                                    ), 
+                                                              array(
+                                                                    $ServiceWorkerfileName, 
+                                                                    $firebaseconfig, 
+                                                                    $useserviceworker,
+                                                                    $addtohomemanually,
+                                                                    $addtohomebanner,
+                                                                    $addtohomefunction
+                                                                    ), 
+                                                                                     $swHtmlContent);
 		return $swHtmlContent;		    
     }
     
