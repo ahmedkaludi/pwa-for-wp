@@ -294,10 +294,9 @@ class pwaforwpFileCreation{
 	}
       
     public function pwaforwp_manifest($is_amp = false){                        
-    	$defaults = pwaforwp_defaultSettings();
-
+    	$defaults = pwaforwp_defaultSettings();        
         if($is_amp){ 
-            if(function_exists('ampforwp_url_controller')){
+                        if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
@@ -307,14 +306,18 @@ class pwaforwpFileCreation{
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
-			}
+			}                       
+                        $scope_url    = chop($homeUrl,"amp");
         } else {
             $homeUrl = get_home_url(); 
             if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
+            $scope_url = $homeUrl;    
+                
         }                                            
-                $homeUrl = trailingslashit(str_replace("http://", "https://", $homeUrl));
+                $homeUrl    = trailingslashit(str_replace("http://", "https://", $homeUrl));
+                $scope_url  = trailingslashit(str_replace("http://", "https://", $scope_url));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
 		if($orientation==0) { $orientation = "portrait"; }
@@ -339,7 +342,7 @@ class pwaforwpFileCreation{
 			"display": "standalone",
 			"orientation": "'.esc_html( $orientation ).'",
 			"start_url": "'.esc_url($homeUrl).'",
-			"scope": "'.esc_url($homeUrl).'"
+			"scope": "'.esc_url($scope_url).'"
 		}';
 		return $manifest;				
 	}        
