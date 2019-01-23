@@ -65,11 +65,11 @@ function pwaforwp_admin_interface_render(){
                 }
 		settings_errors();
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','tools','help'));
         
-                $swJsonNonAmp = esc_url(pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json");               
+                $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);
-				$swJsNonAmp = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");                               
+				$swJsNonAmp = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
 				$file_js_headers = @checkStatus($swJsNonAmp);
                 if($file_json_headers || $file_js_headers){
                 	/* Delete transient, only display this notice once. */
@@ -94,6 +94,8 @@ function pwaforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(pwaforwp_admin_link('push_notification')) . '" class="nav-tab ' . esc_attr( $tab == 'push_notification' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Push Notification','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+                        
+                        echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
@@ -122,6 +124,11 @@ function pwaforwp_admin_interface_render(){
                         echo "<div class='pwaforwp-push_notification' ".( $tab != 'push_notification' ? 'style="display:none;"' : '').">";
 				// design Application Settings
 				do_settings_sections( 'pwaforwp_push_notification_section' );	// Page slug
+			echo "</div>";
+                        
+                        echo "<div class='pwaforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
 			echo "</div>";
                         
 			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
@@ -288,6 +295,22 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);
+                
+                add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+		add_settings_field(
+			'pwaforwp_reset_setting',							// ID
+			esc_html__('Reset', 'pwa-for-wp'),	// Title
+			'pwaforwp_reset_setting_callback',							// CB
+			'pwaforwp_tools_section',						// Page slug
+			'pwaforwp_tools_section'						// Settings Section ID
+		);
+                add_settings_field(
+			'pwaforwp_loading_setting',							// ID
+			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_setting_callback',							// CB
+			'pwaforwp_tools_section',						// Page slug
+			'pwaforwp_tools_section'						// Settings Section ID
+		);
 
 		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
@@ -297,7 +320,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_cdn_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
+		);                
                 add_settings_field(
 			'pwaforwp_offline_google_setting',							// ID
 			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
@@ -333,20 +356,20 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+                add_settings_field(
+			'pwaforwp_cache_external_links_setting',							// ID
+			esc_html__('Cache External Links', 'pwa-for-wp'),	// Title
+			'pwaforwp_cache_external_links_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_field(
 			'pwaforwp_utm_setting',							// ID
 			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
 			'pwaforwp_utm_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
-                add_settings_field(
-			'pwaforwp_precaching_setting',							// ID
-			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
-			'pwaforwp_precaching_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
+		);                
                 add_settings_field(
 			'pwaforwp_exclude_url_setting',							// ID
 			esc_html__('Urls Exclude From Cache List', 'pwa-for-wp'),	// Title
@@ -362,6 +385,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 
+                add_settings_field(
+			'pwaforwp_precaching_setting',							// ID
+			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
+			'pwaforwp_precaching_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);    
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
 			esc_html__('Caching Strategies', 'pwa-for-wp'),	// Title
@@ -483,40 +513,63 @@ function pwaforwp_precaching_setting_callback(){
             'manual'=>'Manual',            
             );
 	?>
-	<label><input type="checkbox" name="pwaforwp_settings[precaching_setting]" id="pwaforwp_settings_precaching_setting" class="" <?php echo (isset( $settings['precaching_setting'] ) &&  $settings['precaching_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"></label>
-	<p> <?php echo esc_html__('Cache the list of posts and pages for users on their first visit to your website', 'pwa-for-wp'); ?></p>
-	<table class="form-table pwaforwp_precaching_table">
+			
 		<tr>
-			<td><?php echo esc_html__('Method', 'pwa-for-wp'); ?></td>
+			<td><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></td>
                         <td>
-                            <select name="pwaforwp_settings[precaching_method]" id="pwaforwp_precaching_method_selector">
-                               <?php if($arrayOPT){
-				foreach ($arrayOPT as $key => $opval) {
-					$sel = "";
-					if($settings['precaching_method']==$key){$sel = "selected"; }
-					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_attr($opval).'</option>';
-				}
-                            }
-			 ?>
-                            </select>   
+                          <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
                         </td>
-		</tr>	
+		</tr>
+                <tr>
+                <td></td>
+                <td> 
+                    <table class="pwaforwp-pre-cache-table">
+                     <tr>
+                         <td>
+                          Post
+                         </td>
+                         <td>                         
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_post]" id="pwaforwp_settings_precaching_automatic_post" class="" <?php echo (isset( $settings['precaching_automatic_post'] ) &&  $settings['precaching_automatic_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">     
+                         </td>
+                         <td>
+                         Page 
+                         </td>
+                         <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_page]" id="pwaforwp_settings_precaching_automatic_page" class="" <?php echo (isset( $settings['precaching_automatic_page'] ) &&  $settings['precaching_automatic_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         </td>
+                         <td>
+                         Custom Post 
+                         </td>
+                         <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_custom_post]" id="pwaforwp_settings_precaching_automatic_custom_post" class="" <?php echo (isset( $settings['precaching_automatic_custom_post'] ) &&  $settings['precaching_automatic_custom_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         </td>                     
+                     </tr>
+                     
+                    </table>
+                </td>    
+                </tr>
                 <tr>
                    <td><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></td>
                    <td>
-                       <input name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
+                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
                    </td>
                 </tr>
                 <tr>
+			<td><?php echo esc_html__('Manual', 'pwa-for-wp'); ?></td>
+                        <td>
+                         <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
+                        </td>
+		</tr>                
+                <tr>
                     <td><?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?></td>
                    <td>
-                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[precaching_urls]" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
+                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
                 </tr>
 		
-	</table>	
+	
 	<?php
 }
 function pwaforwp_utm_setting_callback(){
@@ -528,7 +581,7 @@ function pwaforwp_utm_setting_callback(){
 	}
 	$utm_source = $utm_medium = $utm_term = $utm_content = ''; 
 	$utm_url = pwaforwp_front_url();
-	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_front_url()) : trailingslashit(pwaforwp_front_url())."amp");
+	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_front_url()) : pwaforwp_front_url()."amp");
 	if(isset($settings['utm_details'])){
 		$utm_source = $settings['utm_details']['utm_source'];
 		$utm_medium = $settings['utm_details']['utm_medium'];
@@ -598,8 +651,34 @@ function pwaforwp_cdn_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings[cdn_setting]" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<input type="checkbox" name="pwaforwp_settings[cdn_setting]" id="pwaforwp_settings_cdn_setting" class="" <?php echo (isset( $settings['cdn_setting'] ) &&  $settings['cdn_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_reset_setting_callback(){		
+	?>              
+        <button class="button pwaforwp-reset-settings">
+            <?php echo esc_html__('Reset','schema-and-structured-data-for-wp'); ?>
+        </button>
+        
+	<?php
+}
+
+function pwaforwp_loading_setting_callback(){	
+       $settings = pwaforwp_defaultSettings(); 
+	?>              
+        <input type="checkbox" name="pwaforwp_settings[loading_icon]" id="pwaforwp_settings_loading_icon_setting" class="" <?php echo (isset( $settings['loading_icon'] ) &&  $settings['loading_icon'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('This helps show loading icon on page or post load', 'pwa-for-wp'); ?></p>
+        
+	<?php
+}
+
+function pwaforwp_cache_external_links_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[external_links_setting]" id="pwaforwp_settings_external_links_setting" class="" <?php echo (isset( $settings['external_links_setting'] ) &&  $settings['external_links_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<p><?php echo esc_html__('Caches external link\'s resource which are in html', 'pwa-for-wp'); ?></p>
 	<?php
 }
 
@@ -913,7 +992,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                  $swUrl = esc_url(pwaforwp_front_url()."/pwa-manifest". $multisite_filename_postfix.".json");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-manifest". $multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                     printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -925,7 +1004,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-manifest".$multisite_filename_postfix.".json");
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -944,7 +1023,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = esc_url(pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js");
+                      $swUrl = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -956,7 +1035,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js");
+                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".js");
                     $file_headers = @checkStatus($swUrl);                   
                     if(!$file_headers) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -1023,33 +1102,34 @@ function checkStatus($swUrl){
                 
         $swjsFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-sw".$multisite_filename_postfix.".js";
         $swmanifestFileNonAmp = $wppath.PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix.".json";
-		switch ($swUrl) {
-			case pwaforwp_front_url()."/pwa-amp-manifest".$multisite_filename_postfix.".json":
-				if(file_exists($swmanifestFile)){
-					return true;
-				}
-				break;
-			case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".js":
+        
+        switch ($swUrl) {
+            case pwaforwp_front_url()."pwa-amp-manifest".$multisite_filename_postfix.".json":
+                    if(file_exists($swmanifestFile)){
+                            return true;
+                    }
+                    break;
+            case pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFile)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-sw".$multisite_filename_postfix.".js":
+            case pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swjsFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-manifest".$multisite_filename_postfix.".json":
+            case pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json":
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."/pwa-amp-sw".$multisite_filename_postfix.".html":
+            case pwaforwp_front_url()."pwa-amp-sw".$multisite_filename_postfix.".html":
 				if(file_exists($swHtmlFile)){
 					return true;
 				}
 				break;  
-            case pwaforwp_front_url()."/pwa-register-sw".$multisite_filename_postfix.".js":
+            case pwaforwp_front_url()."pwa-register-sw".$multisite_filename_postfix.".js":
 				if(file_exists($swrFile)){
 					return true;
 				}

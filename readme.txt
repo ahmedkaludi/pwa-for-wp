@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
-Tested up to: 5.0.1
-Stable tag: 1.0.5
+Tested up to: 5.0.2
+Stable tag: 1.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -59,6 +59,17 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.6 (18 January 2019) =
+* Added: Loading icon option has been added inside tools tab.
+* Added: Reset option has been added inside tools tab.
+* Added: Option added inside Advanced tab to cache the request url from an external domain.
+* Improvements: Notice box to ask for review in day interval will not be shown again, if users click no thanks button 
+* Bug Fixed : Js console error ( Uncaught ReferenceError: btnAdd is not defined ) #65
+* Bug Fixed : PWA jumps to the browser in amp ( Now PWA in amp will redirect its link to native PWA app nor browser) #57
+* Bug Fixed : If site and wordpress url is different, PWA can not be installed #63
+
+
 
 = 1.0.5 (20 December 2018) =
 * New Feature: Compatible with AMP for WordPress ( https://wordpress.org/plugins/amp ) 

@@ -110,6 +110,33 @@ jQuery(document).ready(function($){
 	                    });
 	    
 	});
+        
+        $(document).on("click",".pwaforwp-reset-settings", function(e){
+                e.preventDefault();
+             
+                var reset_confirm = confirm("Are you sure?");
+             
+                if(reset_confirm == true){
+                    
+                $.ajax({
+                            type: "POST",    
+                            url:ajaxurl,                    
+                            dataType: "json",
+                            data:{action:"pwaforwp_reset_all_settings", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                            success:function(response){                               
+                                setTimeout(function(){ location.reload(); }, 1000);
+                            },
+                            error: function(response){                    
+                            console.log(response);
+                            }
+                            }); 
+                
+                }
+                                                                 
+
+        });
+        
+        
          $(".pwaforwp-feedback-notice-close").on("click", function(e){
           e.preventDefault();               
                 $.ajax({
@@ -127,6 +154,24 @@ jQuery(document).ready(function($){
                     }
                     });
     
+        });
+        
+        $(".pwaforwp-feedback-notice-remindme").on("click", function(e){
+                  e.preventDefault();               
+                $.ajax({
+                    type: "POST",    
+                    url:pwaforwp_obj.ajax_url,                    
+                    dataType: "json",
+                    data:{action:"pwaforwp_review_notice_remindme", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                    success:function(response){                       
+                      if(response['status'] =='t'){
+                       $(".pwaforwp-feedback-notice").hide();
+                      }
+                    },
+                    error: function(response){                    
+                    console.log(response);
+                    }
+                    });    
         });
         
         $(".pwaforwp-manual-notification").on("click", function(e){
@@ -166,22 +211,21 @@ jQuery(document).ready(function($){
 	});
         
         
-        $("#pwaforwp_settings_precaching_setting").change(function(){
-	
+        $("#pwaforwp_settings_precaching_automatic").change(function(){	
 		if($(this).prop("checked")){
-			$(".pwaforwp_precaching_table tr:first").fadeIn();
-                        
-                        if($("#pwaforwp_precaching_method_selector").val() === 'automatic'){
-			$('.pwaforwp_precaching_table tr').eq(1).fadeIn();
-                        $('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
-                        }else{
-                                $('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
-                                $('.pwaforwp_precaching_table tr').eq(2).fadeIn();
-
-                        }
-                        
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn(); 
+                        $(".pwaforwp-pre-cache-table").parent().parent().fadeIn(); 
 		}else{
-			$(".pwaforwp_precaching_table tr").fadeOut(200);
+			$("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);
+                        $(".pwaforwp-pre-cache-table").parent().parent().fadeOut(200);
+		}
+	}).change();
+        
+        $("#pwaforwp_settings_precaching_manual").change(function(){	
+		if($(this).prop("checked")){
+			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeIn();                                                
+		}else{
+			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeOut(200);;
 		}
 	}).change();
         

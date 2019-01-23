@@ -1,10 +1,71 @@
 <?php    
+function pwaforwp_loading_icon() {
+    $settings = pwaforwp_defaultSettings();
+    
+    if(isset($settings['loading_icon'])){
+        
+        echo '<div id="pwaforwp_loading_div"></div>'
+          . '<div id="pwaforwp_loading_icon"></div>';
+        
+    }
+        
+}
+add_action('wp_footer', 'pwaforwp_loading_icon');
+
+function pwaforwp_reset_all_settings(){ 
+    
+        if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           return;  
+        }    
+       
+        $default = pwaforwp_get_default_settings_array();                        
+        $result = update_option('pwaforwp_settings', $default);   
+        
+        if($result){    
+            
+        echo json_encode(array('status'=>'t'));            
+        
+        }else{
+            
+        echo json_encode(array('status'=>'f'));            
+        
+        }        
+        wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_reset_all_settings', 'pwaforwp_reset_all_settings');
+
+
+
 function pwaforwp_load_plugin_textdomain() {
     load_plugin_textdomain( 'pwa-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
 function pwaforwp_review_notice_close(){            
+        if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+           return; 
+        }
+        if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           return;  
+        }    
+       
+        $result =  update_option( "pwaforwp_review_never", 'never');               
+        if($result){           
+        echo json_encode(array('status'=>'t'));            
+        }else{
+        echo json_encode(array('status'=>'f'));            
+        }        
+        wp_die();           
+}
+
+add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close');
+
+
+function pwaforwp_review_notice_remindme(){            
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -21,7 +82,7 @@ function pwaforwp_review_notice_close(){
         wp_die();           
 }
 
-add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close');
+add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 /*
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
@@ -48,6 +109,16 @@ function pwaforwp_frontend_enqueue(){
          wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
          wp_enqueue_script('pwaforwp-push-js');            
          }  
+         
+         
+        if(isset($settings['loading_icon'])){
+            
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+         
+            wp_enqueue_script('pwaforwp-js'); 
+        }
+        
+        
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp-main.css', false , PWAFORWP_PLUGIN_VERSION );       
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
@@ -98,8 +169,9 @@ function pwaforwp_get_tab( $default = '', $available = array() ) {
 	return $tab;
 }
 
-function pwaforwp_defaultSettings(){
-	$defaults = array(
+function pwaforwp_get_default_settings_array(){
+    
+    $defaults = array(
 		'app_blog_name'		=> get_bloginfo( 'name' ),
 		'app_blog_short_name'	=> get_bloginfo( 'name' ),
 		'description'		=> get_bloginfo( 'description' ),
@@ -112,17 +184,22 @@ function pwaforwp_defaultSettings(){
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
 		'orientation'		=> 'portrait',
-        'manualfileSetup'	=> 0,
-        'cdn_setting'       => 0,
-        'normal_enable'       => 1,
-        'amp_enable'       => 1,
-        'cached_timer'      => array('html'=>3600,'css'=>86400),
-        'default_caching'   => 'cacheFirst',
-        'default_caching_js_css'   => 'cacheFirst',
-        'default_caching_images'   => 'cacheFirst',
-        'default_caching_fonts'   => 'cacheFirst',
+                'manualfileSetup'	=> 0,
+                'cdn_setting'           => 0,
+                'normal_enable'         => 1,
+                'amp_enable'            => 1,
+                'cached_timer'          => array('html'=>3600,'css'=>86400),
+                'default_caching'       => 'cacheFirst',
+                'default_caching_js_css'=> 'cacheFirst',
+                'default_caching_images'=> 'cacheFirst',
+                'default_caching_fonts' => 'cacheFirst',
 	);
-        
+    return $defaults;    
+}
+
+function pwaforwp_defaultSettings(){
+	
+        $defaults = pwaforwp_get_default_settings_array();
 	$settings = get_option( 'pwaforwp_settings', $defaults ); 
 	return $settings;
 }

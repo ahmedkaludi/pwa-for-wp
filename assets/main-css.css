@@ -64,3 +64,10 @@ and open the template in the editor.
 .pwaforwp_precaching_table td {
     vertical-align: top;
 }
+.pwaforwp-pre-cache-table td{
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+
