@@ -189,6 +189,7 @@ function pwaforwp_admin_notice(){
 add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 
 function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
+    
     if ( plugin_basename(__FILE__) == $file ) {
       $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
       $hire_url = "https://ampforwp.com/hire/";
@@ -211,4 +212,5 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     }
 
     return $meta_fields;
+    
   }

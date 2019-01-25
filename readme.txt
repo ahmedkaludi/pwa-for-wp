@@ -60,7 +60,7 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
-= 1.0.6 (18 January 2019) =
+= 1.0.6 (23 January 2019) =
 * Added: Loading icon option has been added inside tools tab.
 * Added: Reset option has been added inside tools tab.
 * Added: Option added inside Advanced tab to cache the request url from an external domain.
