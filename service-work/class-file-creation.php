@@ -7,7 +7,7 @@ class pwaforwpFileCreation{
                         if ( is_multisite() ) {
                            $multisite_filename_postfix = '-' . get_current_blog_id();
                         }
-                        $url 	                        = pwaforwp_front_url();
+                        $url 	                        = trailingslashit(get_home_url());
 		        $ServiceWorkerfileName          = $url.'pwa-amp-sw'.$multisite_filename_postfix;		
 			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
 			$swHtmlContent 			= str_replace(array("{{serviceWorkerFile}}"), array($ServiceWorkerfileName), $swHtmlContent);
@@ -113,10 +113,10 @@ class pwaforwpFileCreation{
                 }
                
                 
-		$url 	                        = pwaforwp_front_url();
+		$url 	                        = trailingslashit(get_home_url());
                 $multisite_filename_postfix = '';
                 if ( is_multisite() ) {
-                   $multisite_filename_postfix = '-' . get_current_blog_id();
+                   $multisite_filename_postfix  = '-' . get_current_blog_id();
                 }
 		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix;		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
@@ -255,8 +255,8 @@ class pwaforwpFileCreation{
                 
                 
                 $site_url 		= user_trailingslashit(str_replace( 'http://', 'https://', site_url() ));  
-		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  pwaforwp_front_url());
-		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : pwaforwp_front_url());  
+		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_home_url());
+		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_home_url());  
 		
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
