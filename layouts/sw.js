@@ -50,7 +50,6 @@ function checkNeverCacheList(url) {
     }
     return true;
 }
-
 /**
  * isBlackListed
  * @param {string} url
@@ -72,10 +71,19 @@ function isBlacklisted(url) {
  * @returns {string}
  */
 function getFileExtension(url) {
-    let extension = url.split('.').reverse()[0].split('?')[0];
-    return (extension.endsWith('/')) ? '/' : extension;
-}
+    
+    if (typeof url === 'string') {
+     
+        let split_two = url.split('?');
+        let split_url = split_two[0];
 
+        let extension = split_url.split('.').reverse()[0].split('?')[0];		
+        return (extension.endsWith('/')) ? '/' : extension;
+        
+    }else{
+        return null;
+    }            
+}
 /**
  * getTTL
  * @param {string} url
@@ -222,7 +230,6 @@ function precacheUrl(url) {
 }
 
 
-
 self.addEventListener(
     'install', event => {
         event.waitUntil(
@@ -267,8 +274,7 @@ self.addEventListener(
             return;
                 
         {{EXTERNAL_LINKS}}
-        
-        
+                
         event.respondWith(
             caches.open(CACHE_VERSIONS.content)
                 .then(
@@ -290,10 +296,10 @@ self.addEventListener(
                                         }
 
                                         if (date) {
-                                            let age = parseInt((new Date().getTime() - date.getTime()) / 1000);
+                                            let age = parseInt((new Date().getTime() - date.getTime()));
                                             let ttl = getTTL(event.request.url);
 
-                                            if (ttl && age > ttl) {
+                                            if (age > ttl) {
 
                                                 return new Promise(
                                                     (resolve) => {
