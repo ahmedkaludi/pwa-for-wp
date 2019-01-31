@@ -348,7 +348,8 @@ class pwaforwpFileCreation{
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			}                       
-                        $scope_url    = chop($homeUrl,"amp");
+                        $scope_url    = get_home_url();
+                        
         } else {
             $homeUrl = get_home_url(); 
             if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
