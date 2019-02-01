@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 5.0.2
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -59,6 +59,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.7 (01 February 2019) =
+
+* Bug Fixed : CDN Compatibility is not working on multisite #71
+* Bug Fixed : Cache only for visitors but not logged in users? #68
+* Bug Fixed : After updating post/page, the service worker still loads the stale post/page from old cache. #75
+* Bug Fixed : Url issue with multisite ( service worker is getting main domain path for all subdomain path ) #72
+
+
 
 = 1.0.6 (23 January 2019) =
 * Added: Loading icon option has been added inside tools tab.
