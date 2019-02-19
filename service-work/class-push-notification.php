@@ -96,12 +96,11 @@ class pushNotification{
             $config = $settings['fcm_config'];
             $multisite_filename_postfix = '';
                     if ( is_multisite() ) {
-            $multisite_filename_postfix = '-' . get_current_blog_id();
+                     $multisite_filename_postfix = '-' . get_current_blog_id();
                     }        
             if($server_key !='' && $config !=''){
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js"></script>';	
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>';
+             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	             
              echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-push-notification-manifest'.$multisite_filename_postfix.'.json').'">';	
             }                    
      }         
