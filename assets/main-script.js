@@ -281,4 +281,15 @@ jQuery(document).ready(function($){
 			$("#pwa-utm_change_track").val('1');
 		}
 	});
+        
+        $(".pwaforwp-fcm-checkbox").click(function(){
+            
+                if($(this).prop("checked")){
+                    $(this).parent().find('p').removeClass('pwaforwp-hide');
+		}else{
+                    $(this).parent().find('p').Class('pwaforwp-hide');
+		}
+            
+        });
+        
 });

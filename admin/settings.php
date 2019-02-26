@@ -722,19 +722,55 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('Add New Post', 'pwa-for-wp') ?></th>  
-                        <td><input type="checkbox" name="pwaforwp_settings[on_add_post]" id="pwaforwp_settings[on_add_post]" class="" <?php echo (isset( $settings['on_add_post'] ) &&  $settings['on_add_post'] == 1 ? 'checked="checked"' : ''); ?> value="1"></td>
+                        <td>
+                            <input  type="checkbox" name="pwaforwp_settings[on_add_post]" id="pwaforwp_settings[on_add_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_add_post'] ) &&  $settings['on_add_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+                            <?php
+                            if(isset($settings['on_add_post']) == 1){
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.$settings['on_add_post_notification_title'].'"></p>';   
+                            }else{
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.$settings['on_add_post_notification_title'].'"></p>';  
+                            }
+                            ?>
+                            
+                        </td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Update Post', 'pwa-for-wp') ?></th>  
-                        <td><input type="checkbox" name="pwaforwp_settings[on_update_post]" id="pwaforwp_settings[on_update_post]" class="" <?php echo (isset( $settings['on_update_post'] ) &&  $settings['on_update_post'] == 1 ? 'checked="checked"' : ''); ?> value="1"></td>
+                        <td><input type="checkbox" name="pwaforwp_settings[on_update_post]" id="pwaforwp_settings[on_update_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_post'] ) &&  $settings['on_update_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+                            <?php
+                            if(isset($settings['on_update_post']) == 1){
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.$settings['on_update_post_notification_title'].'"></p>';   
+                            }else{
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.$settings['on_update_post_notification_title'].'"></p>';  
+                            }
+                            ?>
+                        </td>
                     </tr>
                      <tr>
                         <th><?php echo esc_html__('Add New Page', 'pwa-for-wp') ?></th>  
-                        <td><input type="checkbox" name="pwaforwp_settings[on_add_page]" id="pwaforwp_settings[on_add_page]" class="" <?php echo (isset( $settings['on_add_page'] ) &&  $settings['on_add_page'] == 1 ? 'checked="checked"' : ''); ?> value="1"></td>
+                        <td><input type="checkbox" name="pwaforwp_settings[on_add_page]" id="pwaforwp_settings[on_add_page]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_add_page'] ) &&  $settings['on_add_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+                            
+                            <?php
+                            if(isset($settings['on_add_page']) == 1){
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.$settings['on_add_page_notification_title'].'"></p>';   
+                            }else{
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.$settings['on_add_page_notification_title'].'"></p>';  
+                            }
+                            ?>
+                            
+                        </td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Update Page', 'pwa-for-wp') ?></th>  
-                        <td><input type="checkbox" name="pwaforwp_settings[on_update_page]" id="pwaforwp_settings[on_update_page]" class="" <?php echo (isset( $settings['on_update_page'] ) &&  $settings['on_update_page'] == 1 ? 'checked="checked"' : ''); ?> value="1"></td>
+                        <td><input type="checkbox" name="pwaforwp_settings[on_update_page]" id="pwaforwp_settings[on_update_page]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_page'] ) &&  $settings['on_update_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+                            <?php
+                            if(isset($settings['on_update_page']) == 1){
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.$settings['on_update_page_notification_title'].'"></p>';   
+                            }else{
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.$settings['on_update_page_notification_title'].'"></p>';  
+                            }
+                            ?>
+                        </td>
                     </tr>                                                            
                 </tbody>   
             </table>                   
