@@ -282,7 +282,8 @@ class pwaforwpFileCreation{
                                                         "{{FIREBASEJS}}" , 
                                                         "{{EXCLUDE_FROM_CACHE}}", 
                                                         "{{OFFLINE_GOOGLE}}",
-                                                        "{{EXTERNAL_LINKS}}"
+                                                        "{{EXTERNAL_LINKS}}",
+                                                        "{{REGEX}}"
                                                             ), 
                                                      array(
                                                          $pre_cache_urls,
@@ -295,7 +296,8 @@ class pwaforwpFileCreation{
                                                          $firebasejs, 
                                                          $exclude_from_cache, 
                                                          $offline_google,
-                                                         $external_links
+                                                         $external_links,
+                                                         '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g'
                                                         ),
 							 $swJsContent
                                                         );                		
@@ -313,7 +315,8 @@ class pwaforwpFileCreation{
                                                             "{{FIREBASEJS}}", 
                                                             "{{EXCLUDE_FROM_CACHE}}", 
                                                             "{{OFFLINE_GOOGLE}}",
-                                                            "{{EXTERNAL_LINKS}}"
+                                                            "{{EXTERNAL_LINKS}}",
+                                                            "{{REGEX}}"
                                                             ),
                                                       array(
                                                             $pre_cache_urls,
@@ -326,7 +329,8 @@ class pwaforwpFileCreation{
                                                             $firebasejs, 
                                                             $exclude_from_cache, 
                                                             $offline_google,
-                                                            $external_links
+                                                            $external_links,
+                                                            '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g'
                                                             ), 
                                                             $swJsContent);                		
 		}                		
