@@ -206,7 +206,7 @@ function cleanupLegacyCache() {
 }
 
 function precacheUrl(url) {
-console.log(url);
+
     if(!isBlacklisted(url)) {
         caches.open(CACHE_VERSIONS.content)
             .then((cache) => {
