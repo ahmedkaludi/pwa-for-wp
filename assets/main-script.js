@@ -223,9 +223,9 @@ jQuery(document).ready(function($){
         
         $("#pwaforwp_settings_precaching_manual").change(function(){	
 		if($(this).prop("checked")){
-			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeIn();                                                
+			$("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeIn();                                                
 		}else{
-			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeOut(200);;
+			$("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeOut(200);;
 		}
 	}).change();
         

@@ -221,8 +221,10 @@ console.log(url);
                     })
                     .then((response) => {
                         if(response) {
-														
-			fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
+						
+                         if(new URL(url).origin == location.origin){
+                             
+                             fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
                                                     .then(data => {
 												
 							if(data){
@@ -258,7 +260,10 @@ console.log(url);
 
 
 					});
-														
+											
+                             
+                         }                               
+						
                             return cache.put(url, response.clone());
                         } else {
                             return null;

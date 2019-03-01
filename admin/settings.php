@@ -65,7 +65,7 @@ function pwaforwp_admin_interface_render(){
                 }
 		settings_errors();
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting','tools','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting', 'precaching_setting', 'tools','help'));
         
                 $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
 				$file_json_headers = @checkStatus($swJsonNonAmp);
@@ -94,6 +94,8 @@ function pwaforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(pwaforwp_admin_link('push_notification')) . '" class="nav-tab ' . esc_attr( $tab == 'push_notification' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Push Notification','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+                        
+                        echo '<a href="' . esc_url(pwaforwp_admin_link('precaching_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'precaching_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Pre Caching','pwa-for-wp') . '</a>';
                         
                         echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
@@ -135,6 +137,12 @@ function pwaforwp_admin_interface_render(){
 				// other_setting Application Settings
 				do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
 			echo "</div>";
+                        
+                        echo "<div class='pwaforwp-precaching_setting' ".( $tab != 'precaching_setting' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_precaching_setting_section' );	// Page slug
+			echo "</div>";
+                        
 			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 				echo "<h3>Help Section</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">View Setup Documentation</a>";
 				?>	
@@ -384,14 +392,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-
-                add_settings_field(
-			'pwaforwp_precaching_setting',							// ID
-			esc_html__('Pre Caching', 'pwa-for-wp'),	// Title
-			'pwaforwp_precaching_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
-		);    
+                
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
 			esc_html__('Caching Strategies', 'pwa-for-wp'),	// Title
@@ -399,6 +400,16 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+                
+                add_settings_section('pwaforwp_precaching_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
+		add_settings_field(
+			'pwaforwp_precaching_setting',							// ID
+			'',	
+			'pwaforwp_precaching_setting_callback',							// CB
+			'pwaforwp_precaching_setting_section',						// Page slug
+			'pwaforwp_precaching_setting_section'						// Settings Section ID
+		);  
+                
                 
                 add_settings_section('pwaforwp_push_notification_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_push_notification_section');
 		// Splash Screen Background Color
@@ -509,13 +520,13 @@ function pwaforwp_precaching_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
         
         $arrayOPT = array(                    
-            'automatic'=>'Automatic',
-            'manual'=>'Manual',            
-            );
+                        'automatic'=>'Automatic',
+                        'manual'=>'Manual',            
+                     );
 	?>
 			
 		<tr>
-			<td><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></td>
+                    <td><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong></td>
                         <td>
                           <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
                         </td>
@@ -549,19 +560,19 @@ function pwaforwp_precaching_setting_callback(){
                 </td>    
                 </tr>
                 <tr>
-                   <td><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></td>
+                    <td><strong><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></strong></td>
                    <td>
                        <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
                    </td>
                 </tr>
                 <tr>
-			<td><?php echo esc_html__('Manual', 'pwa-for-wp'); ?></td>
+                    <td><strong> <?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong></td>
                         <td>
                          <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
                         </td>
 		</tr>                
                 <tr>
-                    <td><?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?></td>
+                    <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
                       <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
