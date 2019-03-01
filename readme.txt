@@ -2,7 +2,7 @@
 Contributors: mohammed_kaludi, ahmedkaludi, ampforwp
 Requires at least: 3.0
 Tested up to: 5.0.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -59,6 +59,16 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.0.8 (01 March 2019) =
+* Added     : Option to customize push notification title.
+* Bug Fixed : PWA plugin using Firebase’s Development SDK? #78
+* Bug Fixed : Un-visited images are not getting pre-cached when pre-cache option is enabled #80
+
+= 1.0.7.1 (04 February 2019) =
+
+* Bug Fixed : On post update – Push notification shows post link but takes to blog home page #77
+
 
 = 1.0.7 (01 February 2019) =
 

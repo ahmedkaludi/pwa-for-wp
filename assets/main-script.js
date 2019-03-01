@@ -223,9 +223,9 @@ jQuery(document).ready(function($){
         
         $("#pwaforwp_settings_precaching_manual").change(function(){	
 		if($(this).prop("checked")){
-			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeIn();                                                
+			$("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeIn();                                                
 		}else{
-			$("#pwaforwp_settings_precaching_urls").parent().parent().fadeOut(200);;
+			$("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeOut(200);;
 		}
 	}).change();
         
@@ -281,4 +281,15 @@ jQuery(document).ready(function($){
 			$("#pwa-utm_change_track").val('1');
 		}
 	});
+        
+        $(".pwaforwp-fcm-checkbox").click(function(){
+            
+                if($(this).prop("checked")){
+                    $(this).parent().find('p').removeClass('pwaforwp-hide');
+		}else{
+                    $(this).parent().find('p').Class('pwaforwp-hide');
+		}
+            
+        });
+        
 });

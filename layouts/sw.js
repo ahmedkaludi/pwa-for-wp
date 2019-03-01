@@ -206,6 +206,7 @@ function cleanupLegacyCache() {
 }
 
 function precacheUrl(url) {
+
     if(!isBlacklisted(url)) {
         caches.open(CACHE_VERSIONS.content)
             .then((cache) => {
@@ -220,6 +221,47 @@ function precacheUrl(url) {
                     })
                     .then((response) => {
                         if(response) {
+						
+                        
+                             
+                             fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
+                                                    .then(data => {
+												
+							if(data){
+
+                                                                const regex = {{REGEX}};
+
+                                                                let m;
+
+                                                                        while ((m = regex.exec(data)) !== null) {
+
+                                                                                if (m.index === regex.lastIndex) {
+                                                                                        regex.lastIndex++;
+                                                                                }
+
+                                                                                m.forEach((match, groupIndex) => {
+                                                                                        if(groupIndex == 1){
+                                                                                                 if(new URL(match).origin == location.origin){
+                                                                                                        fetch(match).
+                                                                                                                then((imagedata) => {
+                                                                                                                        console.log(imagedata);
+                                                                                                                        cache.put(match, imagedata.clone());
+
+                                                                                                        });
+                                                                                                    }
+
+                                                                                        }
+
+
+                                                                                });
+                                                                        }
+
+
+                                                        }
+
+
+					});
+											                                                                                						
                             return cache.put(url, response.clone());
                         } else {
                             return null;

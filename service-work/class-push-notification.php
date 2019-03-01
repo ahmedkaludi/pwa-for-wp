@@ -36,29 +36,41 @@ class pushNotification{
      }
      
      public function pwaforwp_send_notification_on_post_save(){
+         
             global $post;              
             $settings = pwaforwp_defaultSettings();  
-            
+            $message  = array();
             switch ($post->post_type) {
                 case 'post':
                     
                     if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
                     
                       if(isset($settings['on_add_post'])){
-                        $message['title'] = esc_html__('New Post', 'pwa-for-wp');
-                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                        $message['url']   = the_permalink ($post);
-                        $this->pwaforwp_send_push_notification($message);	           
+                          
+                       if(isset($settings['on_add_post_notification_title'])){
+                            $message['title'] = $settings['on_add_post_notification_title']; 
+                         }else{
+                            $message['title'] = esc_html__('New Post', 'pwa-for-wp');
+                         } 
+                                                                  	           
                         }                        
                     }else{
                         
                        if(isset($settings['on_update_post'])){
-                        $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
-                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                        $message['url']   = the_permalink ($post);
-                        $this->pwaforwp_send_push_notification($message);	           
+                           
+                         if(isset($settings['on_update_post_notification_title'])){
+                            $message['title'] = $settings['on_update_post_notification_title']; 
+                         }else{
+                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
+                         }  
+                                                                        	           
                         }
                     }
+                    
+                    $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                    $message['url']   = get_permalink ($post);
+                    
+                    $this->pwaforwp_send_push_notification($message);
                     
                     break;
                 case 'page':
@@ -66,20 +78,31 @@ class pushNotification{
                     if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
                     
                       if(isset($settings['on_add_page'])){
-                        $message['title'] = esc_html__('New Page', 'pwa-for-wp');
-                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                        $message['url']   = the_permalink ($post);
-                        $this->pwaforwp_send_push_notification($message);	           
+                          
+                         if(isset($settings['on_add_page_notification_title'])){
+                            $message['title'] = $settings['on_add_page_notification_title']; 
+                         }else{
+                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
+                         }  
+                        
+                        	           
                         }                        
                     }else{
                         
                        if(isset($settings['on_update_page'])){
-                        $message['title'] = esc_html__('Page Updated', 'pwa-for-wp');
-                        $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                        $message['url']   = the_permalink ($post);
-                        $this->pwaforwp_send_push_notification($message);	           
+                           
+                         if(isset($settings['on_update_page_notification_title'])){
+                            $message['title'] = $settings['on_update_page_notification_title']; 
+                         }else{
+                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
+                         }  
+                                                	           
                         }
                     }
+                    
+                    $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                    $message['url']   = get_permalink ($post);
+                    $this->pwaforwp_send_push_notification($message);
 
                     break;
 
@@ -96,12 +119,11 @@ class pushNotification{
             $config = $settings['fcm_config'];
             $multisite_filename_postfix = '';
                     if ( is_multisite() ) {
-            $multisite_filename_postfix = '-' . get_current_blog_id();
+                     $multisite_filename_postfix = '-' . get_current_blog_id();
                     }        
             if($server_key !='' && $config !=''){
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js"></script>';	
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>';
+             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	             
              echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-push-notification-manifest'.$multisite_filename_postfix.'.json').'">';	
             }                    
      }         
