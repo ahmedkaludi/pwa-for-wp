@@ -209,7 +209,8 @@ class pwaforwpFileCreation{
                                                                     
                 }
                 
-                $pre_cache_urls ='';
+                $pre_cache_urls     = '';
+                $pre_cache_urls_amp = '';
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                  $explod_urls = explode(',', $settings['precaching_urls']);
                  foreach ($explod_urls as $url){
@@ -221,7 +222,19 @@ class pwaforwpFileCreation{
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
                 if(!empty($store_post_id) && isset($settings['precaching_automatic'])){
                     foreach ($store_post_id as $post_id){
-                       $pre_cache_urls .= "'".trim(get_permalink($post_id))."',\n";  
+                       $pre_cache_urls .= "'".trim(get_permalink($post_id))."',\n"; 
+                       
+                       
+                       if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {
+				
+                           $pre_cache_urls_amp .= "'".trim(get_permalink($post_id)).'/amp'. "',\n"; 
+			}
+                        
+                        if (is_plugin_active('amp/amp.php')) {
+				
+                           $pre_cache_urls_amp .= "'".trim(get_permalink($post_id)). "',\n"; 
+			}
+                                                                                                                   
                     }
                 }
                 
@@ -286,7 +299,7 @@ class pwaforwpFileCreation{
                                                         "{{REGEX}}"
                                                             ), 
                                                      array(
-                                                         $pre_cache_urls,
+                                                         $pre_cache_urls_amp,
                                                          $offline_page, 
                                                          $page404, 
                                                          $cache_version,

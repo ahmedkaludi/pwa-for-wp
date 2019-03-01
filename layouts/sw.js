@@ -261,10 +261,7 @@ console.log(url);
 
 
 					});
-											
-                             
-                                                   
-						
+											                                                                                						
                             return cache.put(url, response.clone());
                         } else {
                             return null;
