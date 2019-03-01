@@ -60,6 +60,11 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.0.8 (01 March 2019) =
+* Added     : Option to customize push notification title.
+* Bug Fixed : PWA plugin using Firebase’s Development SDK? #78
+* Bug Fixed : Un-visited images are not getting pre-cached when pre-cache option is enabled #80
+
 = 1.0.7.1 (04 February 2019) =
 
 * Bug Fixed : On post update – Push notification shows post link but takes to blog home page #77
