@@ -330,7 +330,7 @@ class pwaforwpFileCreation{
                                                             $exclude_from_cache, 
                                                             $offline_google,
                                                             $external_links,
-                                                            '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g'
+                                                            '/<img[^>]+src="(https:\/\/[^">]+)"/g'
                                                             ), 
                                                             $swJsContent);                		
 		}                		

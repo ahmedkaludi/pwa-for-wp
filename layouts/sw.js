@@ -222,7 +222,7 @@ console.log(url);
                     .then((response) => {
                         if(response) {
 						
-                         if(new URL(url).origin == location.origin){
+                        
                              
                              fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
                                                     .then(data => {
@@ -241,13 +241,14 @@ console.log(url);
 
                                                                                 m.forEach((match, groupIndex) => {
                                                                                         if(groupIndex == 1){
-
+                                                                                                 if(new URL(match).origin == location.origin){
                                                                                                         fetch(match).
                                                                                                                 then((imagedata) => {
                                                                                                                         console.log(imagedata);
                                                                                                                         cache.put(match, imagedata.clone());
 
                                                                                                         });
+                                                                                                    }
 
                                                                                         }
 
@@ -262,7 +263,7 @@ console.log(url);
 					});
 											
                              
-                         }                               
+                                                   
 						
                             return cache.put(url, response.clone());
                         } else {
