@@ -95,8 +95,18 @@ function pwaforwp_frontend_enqueue(){
         $settings = pwaforwp_defaultSettings();
         $server_key = $settings['fcm_server_key'];
         $config = $settings['fcm_config'];
-         if($server_key !='' && $config !=''){             
-          $swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
+         if($server_key !='' && $config !=''){   
+          
+          $swHtmlContent = '';   
+             
+          $HtmlContent =   wp_remote_get(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js"); 
+          
+          if(!empty($HtmlContent)){
+              
+              $swHtmlContent = $HtmlContent['body'];   
+              
+          }                       
+                              
           $firebase_config = 'var config='.$config.';';
           $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
           $file_creating_obj = new PWAFORWP_File_Creation_Init();

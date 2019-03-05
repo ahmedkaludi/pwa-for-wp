@@ -264,7 +264,16 @@ class PWAFORWP_Service_Worker{
 		header( 'Content-type: application/json' );
                 
                 if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json');   
+                    
+                $file_content =  wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json'); 
+                
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                    
+                    
                 }
 		
 		exit();
@@ -274,7 +283,15 @@ class PWAFORWP_Service_Worker{
 		header( 'Content-type: text/html' );               
                 
                 if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html');   
+                  
+                $file_content = wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.html');       
+                 
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                 
                 }
 		
 		exit();
@@ -284,7 +301,15 @@ class PWAFORWP_Service_Worker{
 		header( 'Content-type: text/javascript' );
                 
                 if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js');   
+                                 
+                $file_content = wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js');       
+                 
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                 
                 }
 		
 		exit();
@@ -293,8 +318,16 @@ class PWAFORWP_Service_Worker{
         if ( strpos( $query_vars_as_string, $sw_filename ) !== false ) {		
 		header( 'Content-type: text/javascript' );
                 
-                if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js');   
+                if( $manualfileSetup ){                                   
+                 
+                $file_content = wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-sw'.$multisite_filename_postfix.'.js');       
+                 
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                 
                 }
 		
 		exit();
@@ -304,7 +337,15 @@ class PWAFORWP_Service_Worker{
 		header( 'Content-Type: application/json' );
                 
                 if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json');   
+                                 
+                $file_content = wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json');       
+                 
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                 
                 }
 		
 		exit();
@@ -314,7 +355,15 @@ class PWAFORWP_Service_Worker{
 		header( 'Content-type: text/javascript' );
                 
                 if( $manualfileSetup ){
-                 echo file_get_contents($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js');   
+                                
+                $file_content = wp_remote_get($url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js');       
+                 
+                if(!empty($file_content)){
+                    
+                    echo $file_content['body'];
+                    
+                }
+                 
                 }
 		
 		exit();
