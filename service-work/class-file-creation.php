@@ -16,136 +16,135 @@ class pwaforwpFileCreation{
 	}
     
     public function pwaforwp_swr($is_amp = false){	
-                $settings                       = pwaforwp_defaultSettings();
-                $server_key                     = $settings['fcm_server_key'];
-                $config                         = $settings['fcm_config'];
-                $addtohomemanually              ='';
-                
-                if(isset($settings['add_to_home_selector'])){
-                  
-                 if(strchr($settings['add_to_home_selector'], '#')){
-                  $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");
-                                                    if(a2hsBtn !==null){
-                                                        a2hsBtn.addEventListener("click", (e) => {
-                                                            addToHome();	
-                                                         });
-                                                    }';    
-                                                       
-                 }
-                 if(strchr($settings['add_to_home_selector'], '.')){
-                    $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");
-                                                        if(a2hsBtn !==null){
-                                                            for (var i = 0; i < a2hsBtn.length; i++) {
-                                                              a2hsBtn[i].addEventListener("click", addToHome); 
-                                                          }
-                                                        }';
-                                                       
-                 }                                     
-                }else{
-                 $addtohomemanually ='';
-                }
-                
-                if(isset($settings['custom_add_to_home_setting'])){
-                  
-                    if(isset($settings['enable_add_to_home_desktop_setting'])){
-                        $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
-                                            if(a2hsdesk !== null){
-                                                a2hsdesk.style.display = "block";
-                                            }'; 
+        $settings                       = pwaforwp_defaultSettings();
+        $server_key                     = $settings['fcm_server_key'];
+        $config                         = $settings['fcm_config'];
+        $addtohomemanually              ='';
+        
+        if(isset($settings['add_to_home_selector'])){
+          
+         if(strchr($settings['add_to_home_selector'], '#')){
+          $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");
+                                            if(a2hsBtn !==null){
+                                                a2hsBtn.addEventListener("click", (e) => {
+                                                    addToHome();	
+                                                 });
+                                            }';    
+                                               
+         }
+         if(strchr($settings['add_to_home_selector'], '.')){
+            $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");
+                                                if(a2hsBtn !==null){
+                                                    for (var i = 0; i < a2hsBtn.length; i++) {
+                                                      a2hsBtn[i].addEventListener("click", addToHome); 
+                                                  }
+                                                }';
+                                               
+         }                                     
+        }else{
+         $addtohomemanually ='';
+        }
+        
+        if(isset($settings['custom_add_to_home_setting'])){
+          
+            if(isset($settings['enable_add_to_home_desktop_setting'])){
+                $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
+                                    if(a2hsdesk !== null){
+                                        a2hsdesk.style.display = "block";
+                                    }'; 
+                        
+                          
+            }else{
+                $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){                                                    
+                                            var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
+                                                    if(a2hsdesk !== null){
+                                                        a2hsdesk.style.display = "block";
+                                                    }   
+                                        }';     
+            }                                                        
+           $addtohomebanner ='var lastScrollTop = 0;                                        
+                              window.addEventListener("scroll", (evt) => {
+                                var st = document.documentElement.scrollTop;                                                                                                                
+                                    if (st > lastScrollTop){
+                                       if(deferredPrompt !=null){
+                                       '.$banner_on_desktop.'                                                                 
+                                       }                                              
+                                    } else {
+                                    var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
+                                    if(bhidescroll !== null){
+                                    bhidescroll.style.display = "none";
+                                    }                                              
+                                    }
+                                 lastScrollTop = st;  
+                                });
                                 
-                                  
-                    }else{
-                        $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){                                                    
-                                                    var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
-                                                            if(a2hsdesk !== null){
-                                                                a2hsdesk.style.display = "block";
-                                                            }   
-                                                }';     
-                    }                                                        
-                   $addtohomebanner ='var lastScrollTop = 0;                                        
-                                      window.addEventListener("scroll", (evt) => {
-                                        var st = document.documentElement.scrollTop;                                                                                                                
-                                            if (st > lastScrollTop){
-                                               if(deferredPrompt !=null){
-                                               '.$banner_on_desktop.'                                                                 
-                                               }                                              
-                                            } else {
-                                            var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
-                                            if(bhidescroll !== null){
-                                            bhidescroll.style.display = "none";
-                                            }                                              
-                                            }
-                                         lastScrollTop = st;  
-                                        });
-                                        
-                                      var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");	
-                                        if(addtohomeBtn !==null){
-                                            addtohomeBtn.addEventListener("click", (e) => {
-                                            addToHome();	
-                                        });
-                                        }';  
-                   
-                                        
-                }else{
-                   $addtohomebanner ='';                   
-                }
-                
-                if(isset($settings['add_to_home_selector']) || isset($settings['custom_add_to_home_setting'])){
-                    
-                    $addtohomefunction ='function addToHome(){
-                                                         deferredPrompt.prompt();							  
-							  deferredPrompt.userChoice
-							    .then((choiceResult) => {
-							      if (choiceResult.outcome === "accepted") {
-							        console.log("User accepted the prompt");
-                                                                document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
-							      } else {
-							        console.log("User dismissed the prompt");
-							      }
-							      deferredPrompt = null;
-							  });
-                                                     }';
-                    
-                }else{
-                    
-                    $addtohomefunction ='';
-                    
-                }
-               
-                
-		$url 	                        = trailingslashit(get_home_url());
-                $multisite_filename_postfix = '';
-                if ( is_multisite() ) {
-                   $multisite_filename_postfix  = '-' . get_current_blog_id();
-                }
+                              var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");	
+                                if(addtohomeBtn !==null){
+                                    addtohomeBtn.addEventListener("click", (e) => {
+                                    addToHome();	
+                                });
+                                }';  
+           
+                                
+        }else{
+           $addtohomebanner ='';                   
+        }
+        
+        if(isset($settings['add_to_home_selector']) || isset($settings['custom_add_to_home_setting'])){
+            
+            $addtohomefunction ='function addToHome(){
+                                                 deferredPrompt.prompt();							  
+					  deferredPrompt.userChoice
+					    .then((choiceResult) => {
+					      if (choiceResult.outcome === "accepted") {
+					        console.log("User accepted the prompt");
+                                                        document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
+					      } else {
+					        console.log("User dismissed the prompt");
+					      }
+					      deferredPrompt = null;
+					  });
+                                             }';
+            
+        }else{
+            
+            $addtohomefunction ='';
+            
+        }
+
+		$url = trailingslashit(get_home_url());
+        $multisite_filename_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_filename_postfix  = '-' . get_current_blog_id();
+        }
 		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix;		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
-                if($server_key !='' && $config !=''){
-                 $firebaseconfig = 'var config ='.$config.'; '
-                                                 .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
-					          const firebaseMessaging = firebase.messaging();';
-                 $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
-                }else{
-                 $firebaseconfig = '';  
-                 $useserviceworker = '';
-                }                                
+        if($server_key !='' && $config !=''){
+         $firebaseconfig = 'var config ='.$config.'; '
+                                         .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
+			          const firebaseMessaging = firebase.messaging();';
+         $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
+        }else{
+         $firebaseconfig = '';  
+         $useserviceworker = '';
+        }                                
 		$swHtmlContent 			= str_replace(array(
-                                                                    "{{swfile}}", 
-                                                                    "{{config}}", 
-                                                                    "{{userserviceworker}}", 
-                                                                    "{{addtohomemanually}}", 
-                                                                    "{{addtohomebanner}}",
-                                                                    "{{addtohomefunction}}"
-                                                                    ), 
-                                                              array(
-                                                                    $ServiceWorkerfileName, 
-                                                                    $firebaseconfig, 
-                                                                    $useserviceworker,
-                                                                    $addtohomemanually,
-                                                                    $addtohomebanner,
-                                                                    $addtohomefunction
-                                                                    ), 
-                                                                                     $swHtmlContent);
+                                                "{{swfile}}", 
+                                                "{{config}}", 
+                                                "{{userserviceworker}}", 
+                                                "{{addtohomemanually}}", 
+                                                "{{addtohomebanner}}",
+                                                "{{addtohomefunction}}"
+                                            ), 
+                                            array(
+                                                $ServiceWorkerfileName, 
+                                                $firebaseconfig, 
+                                                $useserviceworker,
+                                                $addtohomemanually,
+                                                $addtohomebanner,
+                                                $addtohomefunction
+                                            ), 
+                                    $swHtmlContent);
 		return $swHtmlContent;		    
     }
     

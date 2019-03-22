@@ -7,41 +7,41 @@
                     
                     messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
-                    if(isTokenSentToServer()){
+                    if(pwaForWpisTokenSentToServer()){
                         console.log('Token already saved');
                     }else{
-                        getRegToken();
+                        pwaForWpgetRegToken();
                     }                                   
 		 
                     }).catch(function(err) {
                       console.log("Unable to get permission to notify.", err);
                     });
                 
-                function getRegToken(argument){
+                function pwaForWpgetRegToken(argument){
                      
                     messaging.getToken().then(function(currentToken) {
                       if (currentToken) {                      
-                       saveToken(currentToken);
+                       pwaForWpsaveToken(currentToken);
                        console.log(currentToken);
-                        setTokenSentToServer(true);
+                        pwaForWpsetTokenSentToServer(true);
                       } else {                       
                         console.log('No Instance ID token available. Request permission to generate one.');                       
-                        setTokenSentToServer(false);
+                        pwaForWpsetTokenSentToServer(false);
                       }
                     }).catch(function(err) {
                       console.log('An error occurred while retrieving token. ', err);                      
-                      setTokenSentToServer(false);
+                      pwaForWpsetTokenSentToServer(false);
                     });
                 }
-                function setTokenSentToServer(sent) {
+                function pwaForWpsetTokenSentToServer(sent) {
                  window.localStorage.setItem('sentToServer', sent ? '1' : '0');
                 }
                 
-                function isTokenSentToServer() {
+                function pwaForWpisTokenSentToServer() {
                 return window.localStorage.getItem('sentToServer') === '1';
                 }
                 
-                function saveToken(currentToken){
+                function pwaForWpsaveToken(currentToken){
                   var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                       if (this.readyState == 4 && this.status == 200) {

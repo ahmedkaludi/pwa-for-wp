@@ -44,18 +44,18 @@ const SUPPORTED_METHODS = [
     'GET',
 ];
 // Check if current url is in the neverCacheUrls list
-function checkNeverCacheList(url) {
+function pwaForWpcheckNeverCacheList(url) {
     if ( this.match(url) ) {
         return false;
     }
     return true;
 }
 /**
- * isBlackListed
+ * pwaForWpisBlackListed
  * @param {string} url
  * @returns {boolean}
  */
-function isBlacklisted(url) {
+function pwaForWpisBlackListed(url) {
     return (CACHE_BLACKLIST.length > 0) ? !CACHE_BLACKLIST.filter((rule) => {
         if(typeof rule === 'function') {
             return !rule(url);
@@ -66,11 +66,11 @@ function isBlacklisted(url) {
 }
 
 /**
- * getFileExtension
+ * pwaForWpgetFileExtension
  * @param {string} url
  * @returns {string}
  */
-function getFileExtension(url) {
+function pwaForWpgetFileExtension(url) {
     
     if (typeof url === 'string') {
      
@@ -85,12 +85,12 @@ function getFileExtension(url) {
     }            
 }
 /**
- * getTTL
+ * pwaForWpgetTTL
  * @param {string} url
  */
-function getTTL(url) {
+function pwaForWpgetTTL(url) {
     if (typeof url === 'string') {
-        let extension = getFileExtension(url);
+        let extension = pwaForWpgetFileExtension(url);
         if (typeof MAX_TTL[extension] === 'number') {
             return MAX_TTL[extension];
         } else {
@@ -102,10 +102,10 @@ function getTTL(url) {
 }
 
 /**
- * installServiceWorker
+ * pwaForWpinstallServiceWorker
  * @returns {Promise}
  */
-function installServiceWorker() {
+function pwaForWpinstallServiceWorker() {
     return Promise.all(
         [
             caches.open(CACHE_VERSIONS.content)
@@ -116,7 +116,7 @@ function installServiceWorker() {
                         
                             for (var i = 0; i < BASE_CACHE_FILES.length; i++) {
                             
-                             precacheUrl(BASE_CACHE_FILES[i]) 
+                             pwaForWpprecacheUrl(BASE_CACHE_FILES[i]) 
                        
                             }
                             
@@ -145,10 +145,10 @@ function installServiceWorker() {
 }
 
 /**
- * cleanupLegacyCache
+ * pwaForWpcleanupLegacyCache
  * @returns {Promise}
  */
-function cleanupLegacyCache() {
+function pwaForWpcleanupLegacyCache() {
 
     let currentCaches = Object.keys(CACHE_VERSIONS)
         .map(
@@ -205,9 +205,9 @@ function cleanupLegacyCache() {
     );
 }
 
-function precacheUrl(url) {
+function pwaForWpprecacheUrl(url) {
 
-    if(!isBlacklisted(url)) {
+    if(!pwaForWpisBlackListed(url)) {
         caches.open(CACHE_VERSIONS.content)
             .then((cache) => {
                 cache.match(url)
@@ -276,7 +276,7 @@ self.addEventListener(
     'install', event => {
         event.waitUntil(
             Promise.all([
-                installServiceWorker(),
+                pwaForWpinstallServiceWorker(),
                 self.skipWaiting(),
             ])
         );
@@ -289,7 +289,7 @@ self.addEventListener(
         event.waitUntil(
             Promise.all(
                 [
-                    cleanupLegacyCache(),
+                    pwaForWpcleanupLegacyCache(),
                     self.clients.claim(),
                     self.skipWaiting(),
                 ]
@@ -306,7 +306,7 @@ self.addEventListener(
 self.addEventListener(
     'fetch', event => {
         // Return if the current request url is in the never cache list
-        if ( ! neverCacheUrls.every(checkNeverCacheList, event.request.url) ) {
+        if ( ! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.url) ) {
           console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' );
           return;
         }
@@ -339,7 +339,7 @@ self.addEventListener(
 
                                         if (date) {
                                             let age = parseInt((new Date().getTime() - date.getTime()));
-                                            let ttl = getTTL(event.request.url);
+                                            let ttl = pwaForWpgetTTL(event.request.url);
 
                                             if (age > ttl) {
 
@@ -393,7 +393,7 @@ self.addEventListener(
                                                 (response) => {
 
                                                     if(response.status < 400) {
-                                                        if (~SUPPORTED_METHODS.indexOf(event.request.method) && !isBlacklisted(event.request.url)) {
+                                                        if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
                                                             cache.put(event.request, response.clone());
                                                         }
                                                         return response;
@@ -446,7 +446,7 @@ self.addEventListener('message', (event) => {
     ) {
         switch(event.data.action) {
             case 'cache' :               
-                precacheUrl(event.data.url);
+                pwaForWpprecacheUrl(event.data.url);
                 break;
             default :
                 console.log('Unknown action: ' + event.data.action);

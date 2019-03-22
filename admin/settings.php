@@ -669,7 +669,7 @@ function pwaforwp_cdn_setting_callback(){
 function pwaforwp_reset_setting_callback(){		
 	?>              
         <button class="button pwaforwp-reset-settings">
-            <?php echo esc_html__('Reset','schema-and-structured-data-for-wp'); ?>
+            <?php echo esc_html__('Reset','pwa-for-wp'); ?>
         </button>
         
 	<?php

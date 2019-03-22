@@ -22,7 +22,7 @@
 		global $pagenow;                                
 		global $current_user;                
 		$tour = array ();
-                $tab = isset($_GET['tab']) ? $_GET['tab'] : '';                   
+        $tab = isset($_GET['tab']) ? $_GET['tab'] : '';                   
 		$function = '';
 		$button2 = '';
 		$options = array ();
@@ -31,8 +31,8 @@
          if (!array_key_exists($tab, $tour)) {                
 			$show_pointer = true;                                            
 			$displayID = '#toplevel_page_pwaforwp';  // Define ID used on page html element where we want to display pointer
-			$content = '<h3>' . sprintf (__('You are awesome for using PWA for WP!', 'pwa-for-wp'), self::DISPLAY_VERSION) . '</h3>';
-			$content .= __('<p>Do you want the latest on <b>PWA update</b> before others and some best resources on monetization in a single email? - Free just for users of PWA!</p>', 'pwa-for-wp');
+			$content = '<h3>' . sprintf (esc_html__('You are awesome for using PWA for WP!', 'pwa-for-wp'), self::DISPLAY_VERSION) . '</h3>';
+			$content .= sprintf('<p>%s <b>%s</b> %s</p>', esc_html__('Do you want the latest on','pwa-for-wp'),esc_html__('PWA update', 'pwa-for-wp'), esc_html__('before others and some best resources on monetization in a single email? - Free just for users of PWA!','pwa-for-wp'));
                         $content .= __('
                         <style type="text/css">
                         .wp-pointer-buttons{ padding:0; overflow: hidden; }
