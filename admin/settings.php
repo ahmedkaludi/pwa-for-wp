@@ -614,27 +614,27 @@ function pwaforwp_utm_setting_callback(){
 	<table class="form-table">
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo $utm_source; ?>" data-val="<?php echo $utm_source; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo esc_attr($utm_source); ?>" data-val="<?php echo $utm_source; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo $utm_medium; ?>" data-val="<?php echo $utm_medium; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo $utm_medium; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo $utm_term; ?>" data-val="<?php echo $utm_term; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo esc_attr($utm_term); ?>" data-val="<?php echo $utm_term; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo $utm_content; ?>" data-val="<?php echo $utm_content; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo esc_attr($utm_content); ?>" data-val="<?php echo $utm_content; ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></td>
-			<td><code><?php echo $utm_url; ?></code></td>
+			<td><code><?php echo esc_url($utm_url); ?></code></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM amp Url', 'pwa-for-wp'); ?></td>
-			<td><code><?php echo $utm_url_amp; ?></code></td>
+			<td><code><?php echo esc_url($utm_url_amp); ?></code></td>
 		</tr>
 	</table>
 	<input type="hidden" name="pwaforwp_settings[utm_details][pwa_utm_change_track]" id="pwa-utm_change_track" value="0">
@@ -737,9 +737,9 @@ function pwaforwp_push_notification_callback(){
                             <input  type="checkbox" name="pwaforwp_settings[on_add_post]" id="pwaforwp_settings[on_add_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_add_post'] ) &&  $settings['on_add_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_add_post']) == 1){
-                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.$settings['on_add_post_notification_title'].'"></p>';   
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.$settings['on_add_post_notification_title'].'"></p>';  
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';  
                             }
                             ?>
                             
@@ -750,9 +750,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_post]" id="pwaforwp_settings[on_update_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_post'] ) &&  $settings['on_update_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_post']) == 1){
-                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.$settings['on_update_post_notification_title'].'"></p>';   
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_post_notification_title']).'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.$settings['on_update_post_notification_title'].'"></p>';  
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_post_notification_title']).'"></p>';  
                             }
                             ?>
                         </td>
@@ -763,9 +763,9 @@ function pwaforwp_push_notification_callback(){
                             
                             <?php
                             if(isset($settings['on_add_page']) == 1){
-                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.$settings['on_add_page_notification_title'].'"></p>';   
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.esc_attr($settings['on_add_page_notification_title']).'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.$settings['on_add_page_notification_title'].'"></p>';  
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.esc_attr($settings['on_add_page_notification_title']).'"></p>';  
                             }
                             ?>
                             
@@ -776,9 +776,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_page]" id="pwaforwp_settings[on_update_page]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_page'] ) &&  $settings['on_update_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_page']) == 1){
-                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.$settings['on_update_page_notification_title'].'"></p>';   
+                             echo '<p>Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_page_notification_title']).'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.$settings['on_update_page_notification_title'].'"></p>';  
+                             echo  '<p class="pwaforwp-hide">Notification Title <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_page_notification_title']).'"></p>';  
                             }
                             ?>
                         </td>

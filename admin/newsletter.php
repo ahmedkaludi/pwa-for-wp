@@ -46,7 +46,7 @@
 
                                                     <input type="text" value="' . esc_attr( $current_user->user_email ) . '" name="fields[email]" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">
 
-                                                    <input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="' . esc_attr( get_home_url() ) . '">
+                                                    <input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="' . esc_url( get_home_url() ) . '">
                                                         
                                                     <input type="hidden" name="ml-submit" value="1" />
                                     </div>
