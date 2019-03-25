@@ -1,8 +1,11 @@
 <?php class pwaforwp_ads_newsletter {
+    
 	const DISPLAY_VERSION = 'v1.0';
+        
 	function __construct () {
 		add_action('admin_enqueue_scripts', array($this, 'pwaforwp_admin_enqueue_scripts'));
 	}
+        
 	function pwaforwp_admin_enqueue_scripts () {           
 		$dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                
 		$do_tour = !in_array ('pwaforwp_subscribe_pointer', $dismissed);                   
@@ -13,6 +16,7 @@
 			add_action('admin_head', array($this, 'pwaforwp_admin_head'));  // Hook to admin head
 		}
 	}
+        
 	function pwaforwp_admin_head () {           
 		?>
 		<style type="text/css" media="screen"> #pointer-primary { margin: 0 5px 0 0; } </style>

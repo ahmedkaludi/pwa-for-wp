@@ -231,7 +231,8 @@ class PWAFORWP_Service_Worker{
         if ( is_multisite() ) {
            $multisite_filename_postfix = '-' . get_current_blog_id();
         }
-        $url 			 = trailingslashit(site_url());
+        
+        $url 			 = trailingslashit('https://'.$_SERVER['HTTP_HOST']);
        
         $settings 		 = pwaforwp_defaultSettings();
         $manualfileSetup         = $settings['manualfileSetup'];                                
@@ -314,8 +315,7 @@ class PWAFORWP_Service_Worker{
         }                
 	
     }
-    
-    
+        
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
 	new PWAFORWP_Service_Worker;

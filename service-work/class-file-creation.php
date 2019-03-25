@@ -1,8 +1,10 @@
 <?php
 class pwaforwpFileCreation{
                 
-	public function pwaforwp_swhtml($is_amp = false){           
-	    if( $is_amp ){                                                                                                                           
+	public function pwaforwp_swhtml($is_amp = false){      
+            
+	    if( $is_amp ){  
+                
                        $multisite_filename_postfix = '';
                         if ( is_multisite() ) {
                            $multisite_filename_postfix = '-' . get_current_blog_id();

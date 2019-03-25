@@ -1,5 +1,6 @@
 <?php    
 function pwaforwp_loading_icon() {
+    
     $settings = pwaforwp_defaultSettings();
     
     if(isset($settings['loading_icon'])){
@@ -10,6 +11,7 @@ function pwaforwp_loading_icon() {
     }
         
 }
+
 add_action('wp_footer', 'pwaforwp_loading_icon');
 
 function pwaforwp_reset_all_settings(){ 
@@ -22,15 +24,15 @@ function pwaforwp_reset_all_settings(){
         }    
        
         $default = pwaforwp_get_default_settings_array();                        
-        $result = update_option('pwaforwp_settings', $default);   
+        $result  = update_option('pwaforwp_settings', $default);   
         
         if($result){    
             
-        echo json_encode(array('status'=>'t'));            
+            echo json_encode(array('status'=>'t'));            
         
         }else{
             
-        echo json_encode(array('status'=>'f'));            
+            echo json_encode(array('status'=>'f'));            
         
         }        
         wp_die();           
@@ -45,7 +47,8 @@ function pwaforwp_load_plugin_textdomain() {
 }
 add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
-function pwaforwp_review_notice_close(){            
+function pwaforwp_review_notice_close(){    
+    
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -65,7 +68,8 @@ function pwaforwp_review_notice_close(){
 add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close');
 
 
-function pwaforwp_review_notice_remindme(){            
+function pwaforwp_review_notice_remindme(){   
+    
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -92,22 +96,28 @@ function pwaforwp_frontend_enqueue(){
         if ( is_multisite() ) {
            $multisite_filename_postfix = '-' . get_current_blog_id();
         }          
-        $settings = pwaforwp_defaultSettings();
+        $settings   = pwaforwp_defaultSettings();
         $server_key = $settings['fcm_server_key'];
-        $config = $settings['fcm_config'];
+        $config     = $settings['fcm_config'];
+        
          if($server_key !='' && $config !=''){             
-          $swHtmlContent = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
-          $firebase_config = 'var config='.$config.';';
-          $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
-          $file_creating_obj = new PWAFORWP_File_Creation_Init();
-          $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
-          
-          wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.$multisite_filename_postfix.'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
-          $object_name = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),           
-         );
-         wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
-         wp_enqueue_script('pwaforwp-push-js');            
+             
+            $swHtmlContent   = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
+            $firebase_config = 'var config='.$config.';';
+            $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
+
+            $file_creating_obj = new PWAFORWP_File_Creation_Init();
+            $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
+
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.$multisite_filename_postfix.'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+
+            $object_name = array(
+              'ajax_url' => admin_url( 'admin-ajax.php' ),           
+            );
+
+            wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
+            wp_enqueue_script('pwaforwp-push-js');      
+            
          }  
          
          
@@ -116,6 +126,7 @@ function pwaforwp_frontend_enqueue(){
             wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
          
             wp_enqueue_script('pwaforwp-js'); 
+            
         }
         
         
@@ -124,7 +135,9 @@ function pwaforwp_frontend_enqueue(){
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
 
 if(!function_exists('pwaforwp_is_admin')){
+    
 	function pwaforwp_is_admin(){
+            
 		if ( is_admin() ) {
 			return true;
 		}                
@@ -135,6 +148,7 @@ if(!function_exists('pwaforwp_is_admin')){
 	}
 }
 function pwaforwp_admin_link($tab = '', $args = array()){	
+    
 	$page = 'pwaforwp';
 
 	if ( ! is_multisite() ) {
@@ -205,6 +219,7 @@ function pwaforwp_defaultSettings(){
 }
 
 function pwaforwp_expanded_allowed_tags() {
+    
     $my_allowed = wp_kses_allowed_html( 'post' );
     // form fields - input
     $my_allowed['input'] = array(
@@ -219,7 +234,7 @@ function pwaforwp_expanded_allowed_tags() {
             'checked'      => array(),
             'readonly'     => array(),
             'disabled'     => array(),
-            'width'     => array(),
+            'width'        => array(),
             
     ); 
     //number
@@ -230,7 +245,7 @@ function pwaforwp_expanded_allowed_tags() {
             'value'        => array(),
             'type'         => array(),
             'style'        => array(),                    
-            'width'     => array(),
+            'width'        => array(),
             
     ); 
     //textarea
@@ -265,6 +280,7 @@ function pwaforwp_expanded_allowed_tags() {
 }  
 
 function pwaforwp_front_url(){
+    
         if ( ! is_multisite() ) {
             $link = home_url();
         }
