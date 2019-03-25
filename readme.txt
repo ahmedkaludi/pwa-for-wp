@@ -62,7 +62,7 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 = 1.0.9 (25 March 2019) =
 
-* Bug Fixed : Security issue fixed
+* Bug Fixed: Security issue improvement.
 
 = 1.0.8 (01 March 2019) =
 * Added     : Option to customize push notification title.
