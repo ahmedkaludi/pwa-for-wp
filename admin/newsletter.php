@@ -6,9 +6,11 @@
 		add_action('admin_enqueue_scripts', array($this, 'pwaforwp_admin_enqueue_scripts'));
 	}
         
-	function pwaforwp_admin_enqueue_scripts () {           
+	function pwaforwp_admin_enqueue_scripts () { 
+            
 		$dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                
-		$do_tour = !in_array ('pwaforwp_subscribe_pointer', $dismissed);                   
+		$do_tour = !in_array ('pwaforwp_subscribe_pointer', $dismissed);   
+                
 		if ($do_tour) {
 			wp_enqueue_style ('wp-pointer');
 			wp_enqueue_script ('wp-pointer');
@@ -26,7 +28,7 @@
 		global $pagenow;                                
 		global $current_user;                
 		$tour = array ();
-        $tab = isset($_GET['tab']) ? $_GET['tab'] : '';                   
+                $tab  = isset($_GET['tab']) ? $_GET['tab'] : '';                   
 		$function = '';
 		$button2 = '';
 		$options = array ();

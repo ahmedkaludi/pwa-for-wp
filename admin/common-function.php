@@ -79,9 +79,9 @@ function pwaforwp_review_notice_remindme(){
        
         $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
         if($result){           
-        echo json_encode(array('status'=>'t'));            
+            echo json_encode(array('status'=>'t'));            
         }else{
-        echo json_encode(array('status'=>'f'));            
+            echo json_encode(array('status'=>'f'));            
         }        
         wp_die();           
 }
@@ -288,5 +288,6 @@ function pwaforwp_front_url(){
             $link = network_site_url();
         }    
     $link = str_replace("http:","https:", $link);
+    
     return trailingslashit($link);
 }

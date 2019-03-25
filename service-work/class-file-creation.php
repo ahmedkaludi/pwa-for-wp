@@ -15,13 +15,15 @@ class pwaforwpFileCreation{
 			$swHtmlContent 			= str_replace(array("{{serviceWorkerFile}}"), array($ServiceWorkerfileName), $swHtmlContent);
 			return $swHtmlContent;		    
 	    }	
+            
 	}
     
     public function pwaforwp_swr($is_amp = false){	
+        
         $settings                       = pwaforwp_defaultSettings();
         $server_key                     = $settings['fcm_server_key'];
         $config                         = $settings['fcm_config'];
-        $addtohomemanually              ='';
+        $addtohomemanually              = '';
         
         if(isset($settings['add_to_home_selector'])){
           
@@ -42,7 +44,8 @@ class pwaforwpFileCreation{
                                                   }
                                                 }';
                                                
-         }                                     
+        }
+        
         }else{
          $addtohomemanually ='';
         }
@@ -150,9 +153,10 @@ class pwaforwpFileCreation{
 		return $swHtmlContent;		    
     }
     
-    public function pwaforwp_firebase_js(){	            
-		$settings 		= pwaforwp_defaultSettings();                                
-                $config = $settings['fcm_config'];
+    public function pwaforwp_firebase_js(){
+        
+		$settings = pwaforwp_defaultSettings();                                
+                $config   = $settings['fcm_config'];
                 
                 $firebase_str = 'importScripts("https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js");
                                  importScripts("https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js");
@@ -221,6 +225,7 @@ class pwaforwpFileCreation{
                
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
+                
                 if(!empty($store_post_id) && isset($settings['precaching_automatic'])){
                     foreach ($store_post_id as $post_id){
                        $pre_cache_urls .= "'".trim(get_permalink($post_id))."',\n"; 
@@ -352,8 +357,10 @@ class pwaforwpFileCreation{
 		
 	}
       
-    public function pwaforwp_manifest($is_amp = false){                        
-    	$defaults = pwaforwp_defaultSettings();        
+    public function pwaforwp_manifest($is_amp = false){ 
+        
+    	$defaults = pwaforwp_defaultSettings();  
+        
         if($is_amp){ 
                         if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
@@ -369,6 +376,7 @@ class pwaforwpFileCreation{
                         $scope_url    = get_home_url();
                         
         } else {
+            
             $homeUrl = get_home_url(); 
             if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
@@ -376,8 +384,8 @@ class pwaforwpFileCreation{
             $scope_url = $homeUrl;    
                 
         }                                            
-                $homeUrl    = trailingslashit(str_replace("http://", "https://", $homeUrl));
-                $scope_url  = trailingslashit(str_replace("http://", "https://", $scope_url));
+                $homeUrl        = trailingslashit(str_replace("http://", "https://", $homeUrl));
+                $scope_url      = trailingslashit(str_replace("http://", "https://", $scope_url));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
 		if($orientation==0) { $orientation = "portrait"; }

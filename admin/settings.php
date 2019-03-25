@@ -42,8 +42,9 @@ function pwaforwp_admin_interface_render(){
                 update_option('pwaforwp_update_pre_cache_list', 'disable');
                                                 
                 if(array_key_exists('manualfileSetup', $settings)){
-                $manualfileSetup = $settings['manualfileSetup'];      
+                    $manualfileSetup = $settings['manualfileSetup'];      
                 }
+                
                 $fileCreationInit = new PWAFORWP_File_Creation_Init();
 		if($manualfileSetup){
                     
