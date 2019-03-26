@@ -53,8 +53,7 @@ class PWAFORWP_Service_Worker{
         
         public function pwafowp_setup_hooks(){                                    
             
-              add_action( 'init', array($this, 'pwaforwp_add_rewrite_rules'));   
-              add_action( 'parse_request', array($this, 'pwaforwp_change_files_url_on_fly'));                                                                              
+            add_action( 'parse_request', array($this, 'pwaforwp_change_files_url_on_fly')); 
         }
         public function pwaforwp_service_worker_init(){
             $settings = pwaforwp_defaultSettings();
@@ -181,12 +180,12 @@ class PWAFORWP_Service_Worker{
 		if($manualfileSetup){
 		    echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json').'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
-		    	<meta name="theme-color" content="'.$settings['theme_color'].'">'.PHP_EOL;
+		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
+		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url($settings['icon']) . '">'.PHP_EOL;
 		    }
 		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . $settings['splash_icon'] . '">'.PHP_EOL;
+		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url($settings['splash_icon']) . '">'.PHP_EOL;
 		    }
 
 		}
@@ -203,7 +202,7 @@ class PWAFORWP_Service_Worker{
 		}
 		if($manualfileSetup){
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
-                      <meta name="theme-color" content="'.$settings['theme_color'].'">'.PHP_EOL;
+                      <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			echo '<link rel="manifest" href="'. parse_url(pwaforwp_front_url().PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . $settings['icon'] . '">'.PHP_EOL;
@@ -222,15 +221,6 @@ class PWAFORWP_Service_Worker{
 		}    
     }      
     
-    public function pwaforwp_add_rewrite_rules(){
-        
-//        $sw_filename = 'pwa-register-sw.js';
-//	   add_rewrite_rule( "^/{$sw_filename}$",
-//		"index.php?{$sw_filename}=1"
-//	);
-//	       
-    }
-    
     public function pwaforwp_change_files_url_on_fly( $query ) {
         
         $site_url = get_site_url();        
@@ -241,7 +231,8 @@ class PWAFORWP_Service_Worker{
         if ( is_multisite() ) {
            $multisite_filename_postfix = '-' . get_current_blog_id();
         }
-        $url 			 = trailingslashit(site_url());
+        
+        $url 			 = trailingslashit('https://'.$_SERVER['HTTP_HOST']);
        
         $settings 		 = pwaforwp_defaultSettings();
         $manualfileSetup         = $settings['manualfileSetup'];                                
@@ -324,8 +315,7 @@ class PWAFORWP_Service_Worker{
         }                
 	
     }
-    
-    
+        
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
 	new PWAFORWP_Service_Worker;

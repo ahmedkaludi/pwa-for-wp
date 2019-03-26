@@ -21,11 +21,12 @@ class pushNotification{
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
             }         
-            $body    = sanitize_text_field($_POST['message']);                        
+            $body    = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = 'Manual';
             $message['body'] = $body;
             $message['url'] = site_url();
-            $result = $this->pwaforwp_send_push_notification($message);  
+            $result = $this->pwaforwp_send_push_notification($message); 
+            
             $result = json_decode($result, true);                         
             if(!empty($result)){             
             echo json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
@@ -113,6 +114,7 @@ class pushNotification{
      }
      
      public function pwaforwp_load_pushnotification_script(){	
+         
             $url 	  = pwaforwp_front_url();
             $settings = pwaforwp_defaultSettings();                        
             $server_key = $settings['fcm_server_key'];
@@ -128,6 +130,7 @@ class pushNotification{
             }                    
      }         
      public function pwaforwp_store_token(){
+         
             $token   = sanitize_text_field($_POST['token']);             
             $get_token_list = array();  
             $result = false;

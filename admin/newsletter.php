@@ -1,11 +1,16 @@
 <?php class pwaforwp_ads_newsletter {
+    
 	const DISPLAY_VERSION = 'v1.0';
+        
 	function __construct () {
 		add_action('admin_enqueue_scripts', array($this, 'pwaforwp_admin_enqueue_scripts'));
 	}
-	function pwaforwp_admin_enqueue_scripts () {           
+        
+	function pwaforwp_admin_enqueue_scripts () { 
+            
 		$dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                
-		$do_tour = !in_array ('pwaforwp_subscribe_pointer', $dismissed);                   
+		$do_tour = !in_array ('pwaforwp_subscribe_pointer', $dismissed);   
+                
 		if ($do_tour) {
 			wp_enqueue_style ('wp-pointer');
 			wp_enqueue_script ('wp-pointer');
@@ -13,6 +18,7 @@
 			add_action('admin_head', array($this, 'pwaforwp_admin_head'));  // Hook to admin head
 		}
 	}
+        
 	function pwaforwp_admin_head () {           
 		?>
 		<style type="text/css" media="screen"> #pointer-primary { margin: 0 5px 0 0; } </style>
@@ -22,7 +28,7 @@
 		global $pagenow;                                
 		global $current_user;                
 		$tour = array ();
-                $tab = isset($_GET['tab']) ? $_GET['tab'] : '';                   
+                $tab  = isset($_GET['tab']) ? $_GET['tab'] : '';                   
 		$function = '';
 		$button2 = '';
 		$options = array ();
@@ -31,8 +37,8 @@
          if (!array_key_exists($tab, $tour)) {                
 			$show_pointer = true;                                            
 			$displayID = '#toplevel_page_pwaforwp';  // Define ID used on page html element where we want to display pointer
-			$content = '<h3>' . sprintf (__('You are awesome for using PWA for WP!', 'pwa-for-wp'), self::DISPLAY_VERSION) . '</h3>';
-			$content .= __('<p>Do you want the latest on <b>PWA update</b> before others and some best resources on monetization in a single email? - Free just for users of PWA!</p>', 'pwa-for-wp');
+			$content = '<h3>' . sprintf (esc_html__('You are awesome for using PWA for WP!', 'pwa-for-wp'), self::DISPLAY_VERSION) . '</h3>';
+			$content .= sprintf('<p>%s <b>%s</b> %s</p>', esc_html__('Do you want the latest on','pwa-for-wp'),esc_html__('PWA update', 'pwa-for-wp'), esc_html__('before others and some best resources on monetization in a single email? - Free just for users of PWA!','pwa-for-wp'));
                         $content .= __('
                         <style type="text/css">
                         .wp-pointer-buttons{ padding:0; overflow: hidden; }
@@ -46,7 +52,7 @@
 
                                                     <input type="text" value="' . esc_attr( $current_user->user_email ) . '" name="fields[email]" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">
 
-                                                    <input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="' . esc_attr( get_home_url() ) . '">
+                                                    <input type="text" name="fields[company]" class="form-control" placeholder="Website" hidden style=" display:none; width: 168px; padding: 6px 5px;" value="' . esc_url( get_home_url() ) . '">
                                                         
                                                     <input type="hidden" name="ml-submit" value="1" />
                                     </div>
