@@ -392,7 +392,7 @@ self.addEventListener(
                                             .then(
                                                 (response) => {
 
-                                                    if(response.status < 400) {
+                                                    if(response.status < 300 && response.status > 0) {
                                                         if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
                                                             cache.put(event.request, response.clone());
                                                         }
