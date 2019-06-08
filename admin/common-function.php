@@ -286,8 +286,19 @@ function pwaforwp_front_url(){
         }
         else {
             $link = network_site_url();
-        }    
-    $link = str_replace("http:","https:", $link);
+        }
+        
+        $link = pwaforwp_https($link);
     
     return trailingslashit($link);
+}
+
+function pwaforwp_https( $url ) {
+    
+        if(strpos($url, 'localhost') === false){
+            
+           return str_replace( 'http://', 'https://', $url );
+            
+        }
+        	
 }
