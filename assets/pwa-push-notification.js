@@ -1,5 +1,5 @@
  
-		     var config=66;                     
+		     var config=f;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  

@@ -1,4 +1,46 @@
 <?php
+function pwaforwp_required_file_creation(){
+    
+                $settings = pwaforwp_defaultSettings(); 
+                $manualfileSetup = "";       
+    
+                $serviceWorkerObj = new PWAFORWP_Service_Worker();
+                $is_amp = $serviceWorkerObj->is_amp;
+    
+                if(array_key_exists('manualfileSetup', $settings)){
+                    $manualfileSetup = $settings['manualfileSetup'];      
+                }
+                
+                $fileCreationInit = new PWAFORWP_File_Creation_Init();
+		if($manualfileSetup){
+                    
+                    $status = '';                    
+                    $status = $fileCreationInit->pwaforwp_swjs_init();
+                    $status = $fileCreationInit->pwaforwp_manifest_init();
+                    $status = $fileCreationInit->pwaforwp_swr_init();
+                    
+                    if($is_amp){
+                        
+                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
+                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
+                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
+                        
+                    }
+                    if(!$status){
+                        
+                        set_transient( 'pwaforwp_file_change_transient', true );
+                    }
+                                       
+		}
+                
+                $server_key = $settings['fcm_server_key'];  
+                $config     = $settings['fcm_config'];
+                
+                if($server_key !='' && $config !=''){
+                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
+                }
+    
+}
 function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
@@ -24,8 +66,7 @@ function pwaforwp_admin_interface_render(){
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$serviceWorkerObj = new PWAFORWP_Service_Worker();
-	$is_amp = $serviceWorkerObj->is_amp;
+	
 	$multisite_filename_postfix = '';
         
         if ( is_multisite() ) {
@@ -33,68 +74,18 @@ function pwaforwp_admin_interface_render(){
         }
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {	
-                                            
-                $settings = pwaforwp_defaultSettings(); 
-                $manualfileSetup ="";                
-                
+                                                                                    
                 $service_worker = new PWAFORWP_Service_Worker();
                 $service_worker->pwaforwp_store_latest_post_ids();
                 update_option('pwaforwp_update_pre_cache_list', 'disable');
-                                                
-                if(array_key_exists('manualfileSetup', $settings)){
-                    $manualfileSetup = $settings['manualfileSetup'];      
-                }
-                
-                $fileCreationInit = new PWAFORWP_File_Creation_Init();
-		if($manualfileSetup){
-                    
-                    $status = '';                    
-                    $status = $fileCreationInit->pwaforwp_swjs_init();
-                    $status = $fileCreationInit->pwaforwp_manifest_init();
-                    $status = $fileCreationInit->pwaforwp_swr_init();
-                    
-                    if($is_amp){
-                        
-                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
-                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
-                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
-                        
-                    }
-                    
-                    if(!$status){
-                        echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
-                    }
-		}
-                
-                $server_key = $settings['fcm_server_key'];  
-                $config     = $settings['fcm_config'];
-                
-                if($server_key !='' && $config !=''){
-                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
-                }
-                
+                pwaforwp_required_file_creation();                                                               
 		settings_errors();
+                
 	}
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting', 'precaching_setting', 'tools','help'));
-        
-                $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
-				$file_json_headers = @checkStatus($swJsonNonAmp);
-				$swJsNonAmp = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
-				$file_js_headers = @checkStatus($swJsNonAmp);
-                                
-                if($file_json_headers || $file_js_headers){
-                	/* Delete transient, only display this notice once. */
-        	 delete_transient( 'pwaforwp_admin_notice_transient' );   
-                 echo '<div class="wrap">';   
-                 
-                }else{
-                    
-                 set_transient( 'pwaforwp_admin_notice_transient', true );
-                 echo '<div class="wrap" style="display: none;">';   
-                 
-                }
+                                                                        
 	?>
-		                            
+		<div class="wrap">                            
 		<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper pwaforwp-tabs">
 			<?php
@@ -193,19 +184,7 @@ function pwaforwp_admin_interface_render(){
 	</div>
         
 	<?php            
-            if($file_json_headers || $file_js_headers){
-                
-                    echo' <div class="manual-setup-button" style="padding: 20px; display:none;">';
-                    echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
-                    echo '</div>';
-                
-                }else{
-                    
-                    echo' <div class="manual-setup-button" style="padding: 20px;">';
-                    echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
-                    echo '</div>';
-                
-                }
+           
 }
 
 
@@ -324,6 +303,7 @@ function pwaforwp_settings_init(){
 		);
                 
                 add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+                                                
 		add_settings_field(
 			'pwaforwp_reset_setting',							// ID
 			esc_html__('Reset', 'pwa-for-wp'),	// Title
@@ -331,6 +311,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_tools_section',						// Page slug
 			'pwaforwp_tools_section'						// Settings Section ID
 		);
+                
                 add_settings_field(
 			'pwaforwp_loading_setting',							// ID
 			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
@@ -695,6 +676,7 @@ function pwaforwp_cdn_setting_callback(){
 	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
 	<?php
 }
+
 function pwaforwp_reset_setting_callback(){		
 	?>              
         <button class="button pwaforwp-reset-settings">

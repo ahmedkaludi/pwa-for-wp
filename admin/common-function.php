@@ -291,3 +291,71 @@ function pwaforwp_front_url(){
     
     return trailingslashit($link);
 }
+
+add_action('wp_ajax_pwaforwp_download_require_files', 'pwaforwp_download_require_files');
+
+function pwaforwp_download_require_files(){ 
+                                 
+          $multisite_filename_postfix = '';
+          
+          if ( is_multisite() ) {
+            $multisite_filename_postfix = '-' . get_current_blog_id();
+          }
+                                
+          $creation_obj = new pwaforwpFileCreation();
+     
+          $swjs             = $creation_obj->pwaforwp_swjs();
+          $manifest         = $creation_obj->pwaforwp_manifest();
+          $rswjs            = $creation_obj->pwaforwp_swr();
+          
+          $ampsw_js         = $creation_obj->pwaforwp_swjs(true);
+          $amp_manifest     = $creation_obj->pwaforwp_manifest(true);
+          $amp_swhtml       = $creation_obj->pwaforwp_swhtml(true);
+          
+          $pn_manifest      = '{"gcm_sender_id": "103953800507"}';
+                  
+          $files = array(
+               "pwa-sw".$multisite_filename_postfix.".js"                           => $swjs,
+               "pwa-manifest".$multisite_filename_postfix.".json"                   => $manifest,
+               "pwa-register-sw".$multisite_filename_postfix.".js"                  => $rswjs,               
+               "pwa-push-notification-manifest".$multisite_filename_postfix.".json" => $pn_manifest
+           );
+          
+           if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
+                                              
+               $files["pwa-amp-sw".$multisite_filename_postfix.".js"]         = $ampsw_js;
+               $files["pwa-amp-manifest".$multisite_filename_postfix.".json"] = $amp_manifest;
+               $files["pwa-amp-sw".$multisite_filename_postfix.".html"]       = $amp_swhtml;
+           }
+
+           # create new zip opbject
+           $zip = new ZipArchive();
+
+           # create a temp file & open it
+           $tmp_file = tempnam('.','');
+           $zip->open($tmp_file, ZipArchive::CREATE);
+
+           # loop through each file
+           foreach($files as $file => $value){
+
+               # download file
+               @file_put_contents($file,$value);
+               $download_file = @file_get_contents($file);
+
+               #add it to the zip
+               $zip->addFromString(basename($file),$download_file);
+
+           }
+
+           # close zip
+           $zip->close();
+
+           # send the file to the browser as a download
+           header('Content-disposition: attachment; filename=download.zip');
+           header('Content-type: application/zip');
+           readfile($tmp_file);
+           unlink($tmp_file);
+     
+        wp_die();
+    
+}

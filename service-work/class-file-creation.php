@@ -1,7 +1,7 @@
 <?php
 class pwaforwpFileCreation{
                 
-	public function pwaforwp_swhtml($is_amp = false){      
+    public function pwaforwp_swhtml($is_amp = false){      
             
 	    if( $is_amp ){  
                 
