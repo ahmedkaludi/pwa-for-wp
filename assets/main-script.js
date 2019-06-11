@@ -176,8 +176,11 @@ jQuery(document).ready(function($){
         
         $(".pwaforwp-manual-notification").on("click", function(e){
 	    e.preventDefault();   
-	    var message = $("#pwaforwp_notification_message").val();           
-	                $.ajax({
+	    var message = $("#pwaforwp_notification_message").val();   
+            
+            if($.trim(message) !=''){
+                
+                $.ajax({
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
@@ -198,6 +201,12 @@ jQuery(document).ready(function($){
 	                    console.log(response);
 	                    }
 	                    });
+                
+            }else{
+                alert('Please enter the message');
+            }
+            
+	                
 	    
 	});
         
@@ -287,7 +296,7 @@ jQuery(document).ready(function($){
                 if($(this).prop("checked")){
                     $(this).parent().find('p').removeClass('pwaforwp-hide');
 		}else{
-                    $(this).parent().find('p').Class('pwaforwp-hide');
+                    $(this).parent().find('p').addClass('pwaforwp-hide');
 		}
             
         });
