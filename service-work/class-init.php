@@ -190,7 +190,18 @@ class PWAFORWP_File_Creation_Init {
             $handle         = @fopen($this->firebase_manifest_init, 'w');
             $writestatus    = @fwrite($handle, $swjsContent);
             @fclose($handle);
-        }        
+        } 
+        
+        //Dummy file to work FCM perfectly 
+        $pn_sw_js = $this->wppath."firebase-messaging-sw.js";  
+        
+        if(!file_exists($pn_sw_js)){
+            $swjsContent    = '';
+            $handle         = @fopen($pn_sw_js, 'w');
+            $writestatus    = @fwrite($handle, $swjsContent);
+            @fclose($handle);
+        }
+                
         if($writestatus){
             return true;   
         }else{
