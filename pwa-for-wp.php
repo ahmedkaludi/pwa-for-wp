@@ -3,7 +3,7 @@
 Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
-Author: Ahmed Kaludi, Mohammed Kaludi
+Author: Magazine3
 Version: 1.0.9
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
