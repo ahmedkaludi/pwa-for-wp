@@ -177,7 +177,7 @@ jQuery(document).ready(function($){
         $(".pwaforwp-manual-notification").on("click", function(e){
 	    e.preventDefault();   
 	    var message = $("#pwaforwp_notification_message").val(); 
-            var title   = $("#pwaforwp_notification_message_title").val(); 
+            var pn_title   = $("#pwaforwp_notification_message_title").val(); 
             
             if($.trim(message) !=''){
                 
@@ -185,11 +185,11 @@ jQuery(document).ready(function($){
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
-	                    data:{action:"pwaforwp_send_notification_manually", message:message, title:title, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+	                    data:{action:"pwaforwp_send_notification_manually", message:message, title:pn_title, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
 	                    success:function(response){                                 
 	                      if(response['status'] =='t'){
                                 var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
-                                    html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
+                                    //html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
 	                        $(".pwaforwp-notification-success").show();
                                 $(".pwaforwp-notification-success").html(html);
 	                        $(".pwaforwp-notification-error").hide();

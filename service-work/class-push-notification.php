@@ -26,6 +26,7 @@ class pushNotification{
             $message['title'] = sanitize_text_field($_POST['title']);
             $message['body']  = $body;
             $message['url']   = site_url();
+            
             $result           = $this->pwaforwp_send_push_notification($message); 
             
             $result = json_decode($result, true);                         
