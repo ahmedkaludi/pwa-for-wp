@@ -1,5 +1,5 @@
  
-		     var config=f;                     
+		     var config=sdgdg;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
