@@ -812,8 +812,18 @@ function pwaforwp_push_notification_callback(){
             <h2><?php echo esc_html__('Send Manual Notification', 'pwa-for-wp') ?></h2>
             <table class="pwaforwp-push-notificatoin-table">
                 <tbody>
+                    
                     <tr>
-                        <th><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea><button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
+                        <th><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title">
+                            <br>
+			                   
+                        </th>  
+                        <td></td>
+                    </tr>
+                    
+                    <tr>
+                        <th><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
+                            <button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
                             <br>
 			                    <div class="pwaforwp-notification-success pwa_hide"></div>
 			                    <p class="pwaforwp-notification-error pwa_hide"></p>
