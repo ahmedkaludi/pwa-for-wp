@@ -2,7 +2,8 @@
 function pwaforwp_required_file_creation(){
     
                 $settings = pwaforwp_defaultSettings(); 
-                $manualfileSetup = "";       
+                
+                $manualfileSetup = $server_key = $config = '';       
     
                 $serviceWorkerObj = new PWAFORWP_Service_Worker();
                 $is_amp = $serviceWorkerObj->is_amp;
@@ -33,9 +34,14 @@ function pwaforwp_required_file_creation(){
                                        
 		}
                 
-                $server_key = $settings['fcm_server_key'];  
-                $config     = $settings['fcm_config'];
+                if(isset($settings['fcm_server_key'])){
+                 $server_key = $settings['fcm_server_key'];    
+                }
                 
+                if(isset($settings['fcm_config'])){
+                 $config     = $settings['fcm_config'];   
+                }
+                                                 
                 if($server_key !='' && $config !=''){
                   $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
                 }
@@ -562,7 +568,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>
                     <td><strong><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></strong></td>
                    <td>
-                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
+                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0">   
                    </td>
                 </tr>
                 <tr>

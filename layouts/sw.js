@@ -307,7 +307,7 @@ self.addEventListener(
     'fetch', event => {
         // Return if the current request url is in the never cache list
         if ( ! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.url) ) {
-          console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' );
+          //console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' );
           return;
         }
         
