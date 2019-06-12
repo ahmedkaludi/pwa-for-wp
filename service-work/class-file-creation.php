@@ -273,9 +273,9 @@ class pwaforwpFileCreation{
                 }
                 
                 
-                $site_url 		= user_trailingslashit(str_replace( 'http://', 'https://', site_url() ));  
-		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  get_permalink( $settings['offline_page'] )  :  get_home_url());
-		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  get_permalink( $settings['404_page'] ) : get_home_url());  
+                $site_url 		= user_trailingslashit(pwaforwp_https( site_url() ));  
+		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  pwaforwp_https(get_permalink( $settings['offline_page'] ))  :  pwaforwp_https(get_home_url()));
+		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] )) : pwaforwp_https(get_home_url()));  
 		
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
@@ -288,8 +288,8 @@ class pwaforwpFileCreation{
 
 		if( $is_amp ){
                         $firebasejs ='';
-			$offline_page 	= str_replace( 'http://', 'https://', $offline_page ).'?amp=1';
-			$page404 	= str_replace( 'http://', 'https://', $page404 ).'?amp=1';  
+			$offline_page 	= pwaforwp_https( $offline_page ).'?amp=1';
+			$page404 	= pwaforwp_https( $page404 ).'?amp=1';  
 			$swJsContent 	= str_replace(array(
                                                         "{{PRE_CACHE_URLS}}", 
 							"{{OFFLINE_PAGE}}", 
@@ -321,8 +321,8 @@ class pwaforwpFileCreation{
 							 $swJsContent
                                                         );                		
 		} else {
-			$offline_page 	= str_replace( 'http://', 'https://', $offline_page );
-			$page404 		= str_replace( 'http://', 'https://', $page404 );    
+			$offline_page 	        = pwaforwp_https( $offline_page );
+			$page404 		= pwaforwp_https( $page404 );    
 			$swJsContent 	= str_replace(array(
                                                             "{{PRE_CACHE_URLS}}",     
                                                             "{{OFFLINE_PAGE}}", 
@@ -384,8 +384,8 @@ class pwaforwpFileCreation{
             $scope_url = $homeUrl;    
                 
         }                                            
-                $homeUrl        = trailingslashit(str_replace("http://", "https://", $homeUrl));
-                $scope_url      = trailingslashit(str_replace("http://", "https://", $scope_url));
+                $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
+                $scope_url      = trailingslashit(pwaforwp_https($scope_url));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
 		if($orientation==0) { 

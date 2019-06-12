@@ -1297,7 +1297,7 @@ function pwaforwp_send_query_message(){
             $user_email = $user_data->user_email;       
             //php mailer variables
             $to = 'team@magazine3.com';
-            $subject = "Customer Query";
+            $subject = "PWA Customer Query";
             $headers = 'From: '. esc_attr($user_email) . "\r\n" .
             'Reply-To: ' . esc_attr($user_email) . "\r\n";
             // Load WP components, no themes.                      

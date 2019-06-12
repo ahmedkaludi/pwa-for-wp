@@ -197,10 +197,11 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup = $settings['manualfileSetup'];
 		$multisite_filename_postfix = '';
 		if ( is_multisite() ) {
-			$url =  trailingslashit(str_replace("http:","https:",network_site_url()));
+			$url =  trailingslashit(pwaforwp_https(network_site_url()));
 			$multisite_filename_postfix = '-' . get_current_blog_id();
 		}
 		if($manualfileSetup){
+                    
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			echo '<link rel="manifest" href="'. parse_url(pwaforwp_front_url().PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
@@ -224,7 +225,7 @@ class PWAFORWP_Service_Worker{
     public function pwaforwp_change_files_url_on_fly( $query ) {
         
         $site_url = get_site_url();        
-        $site_url = str_replace("http:","https:", $site_url);
+        $site_url = pwaforwp_https($site_url);
         
         if((trailingslashit($site_url)  != pwaforwp_front_url() ) && !is_admin() ){                              
             $multisite_filename_postfix = '';
