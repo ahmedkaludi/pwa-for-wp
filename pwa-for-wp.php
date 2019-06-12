@@ -3,7 +3,7 @@
 Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
-Author: Ahmed Kaludi, Mohammed Kaludi
+Author: Magazine3
 Version: 1.0.9
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
@@ -25,6 +25,7 @@ require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
 
       
 if( pwaforwp_is_admin() ){
@@ -143,7 +144,20 @@ function pwaforwp_after_activation_redirect( $plugin ) {
 }
 add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
-register_activation_hook( __FILE__, 'pwaforwp_admin_notice_activation_hook' );
+register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
+
+function pwaforwp_on_activation(){
+    
+    pwaforwp_admin_notice_activation_hook();
+    
+    $settings = get_option( 'pwaforwp_settings'); 
+    $settings['manualfileSetup'] = 1;
+    update_option('pwaforwp_settings', $settings);
+    
+    pwaforwp_required_file_creation();
+    
+}
+
 function pwaforwp_admin_notice_activation_hook() {
     set_transient( 'pwaforwp_admin_notice_transient', true );
     update_option( "pwaforwp_activation_date", date("Y-m-d"));
@@ -151,12 +165,48 @@ function pwaforwp_admin_notice_activation_hook() {
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
+    
+    $screen_id      = ''; 
+    $current_screen = get_current_screen();
+    
+    if(is_object($current_screen)){
+       $screen_id =  $current_screen->id;
+    }
+    
+    if( $screen_id == 'toplevel_page_pwaforwp' ){
+        
+        $multisite_filename_postfix = '';
+        
+        if ( is_multisite() ) {
+           $multisite_filename_postfix = '-' . get_current_blog_id();
+        }
+        
+        $swJsonNonAmp      = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
+        $file_json_headers = @checkStatus($swJsonNonAmp);
+        $swJsNonAmp        = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
+        $file_js_headers   = @checkStatus($swJsNonAmp);
+        
+        if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
+        
+            $url =  admin_url('admin-ajax.php?action=pwaforwp_download_require_files');
+            
+            ?>
+            <div class="updated notice">
+                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
+            </div>
+            <?php
+              delete_transient( 'pwaforwp_file_change_transient' );
+        }
+                
+    }
+    
+    
     /* Check transient, if available display notice */
     
     if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
          ?>
         <div class="updated notice">
-            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click', 'pwa-for-wp') ?></a></p>
+            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click Here To Update', 'pwa-for-wp') ?></a></p>
         </div>
         <?php
         
@@ -165,7 +215,7 @@ function pwaforwp_admin_notice(){
     if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
         ?>
         <div class="updated notice">
-            <p><?php echo esc_html__('Thank you for using this','pwa-for-wp'); echo "<strong>".esc_html__(' PWA for WP plugin! ','pwa-for-wp')."</strong>"; echo esc_html__('Setup the plugin.', 'pwa-for-wp') ?> <a href="<?php echo esc_url(admin_url( 'admin.php?page=pwaforwp' )) ?>"> <?php echo esc_html__('Click here', 'pwa-for-wp') ?></a></p>
+            <p><?php echo esc_html__('Thank you for using','pwa-for-wp'); echo "<strong>".esc_html__(' PWA for WP plugin! ','pwa-for-wp')."</strong>"; ?> </p>
         </div>
         <?php
         /* Delete transient, only display this notice once. */

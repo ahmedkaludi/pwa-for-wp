@@ -1,4 +1,52 @@
 <?php
+function pwaforwp_required_file_creation(){
+    
+                $settings = pwaforwp_defaultSettings(); 
+                
+                $manualfileSetup = $server_key = $config = '';       
+    
+                $serviceWorkerObj = new PWAFORWP_Service_Worker();
+                $is_amp = $serviceWorkerObj->is_amp;
+    
+                if(array_key_exists('manualfileSetup', $settings)){
+                    $manualfileSetup = $settings['manualfileSetup'];      
+                }
+                
+                $fileCreationInit = new PWAFORWP_File_Creation_Init();
+		if($manualfileSetup){
+                    
+                    $status = '';                    
+                    $status = $fileCreationInit->pwaforwp_swjs_init();
+                    $status = $fileCreationInit->pwaforwp_manifest_init();
+                    $status = $fileCreationInit->pwaforwp_swr_init();
+                    
+                    if($is_amp){
+                        
+                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
+                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
+                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
+                        
+                    }
+                    if(!$status){
+                        
+                        set_transient( 'pwaforwp_file_change_transient', true );
+                    }
+                                       
+		}
+                
+                if(isset($settings['fcm_server_key'])){
+                 $server_key = $settings['fcm_server_key'];    
+                }
+                
+                if(isset($settings['fcm_config'])){
+                 $config     = $settings['fcm_config'];   
+                }
+                                                 
+                if($server_key !='' && $config !=''){
+                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
+                }
+    
+}
 function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
@@ -24,8 +72,7 @@ function pwaforwp_admin_interface_render(){
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	$serviceWorkerObj = new PWAFORWP_Service_Worker();
-	$is_amp = $serviceWorkerObj->is_amp;
+	
 	$multisite_filename_postfix = '';
         
         if ( is_multisite() ) {
@@ -33,68 +80,18 @@ function pwaforwp_admin_interface_render(){
         }
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {	
-                                            
-                $settings = pwaforwp_defaultSettings(); 
-                $manualfileSetup ="";                
-                
+                                                                                    
                 $service_worker = new PWAFORWP_Service_Worker();
                 $service_worker->pwaforwp_store_latest_post_ids();
                 update_option('pwaforwp_update_pre_cache_list', 'disable');
-                                                
-                if(array_key_exists('manualfileSetup', $settings)){
-                    $manualfileSetup = $settings['manualfileSetup'];      
-                }
-                
-                $fileCreationInit = new PWAFORWP_File_Creation_Init();
-		if($manualfileSetup){
-                    
-                    $status = '';                    
-                    $status = $fileCreationInit->pwaforwp_swjs_init();
-                    $status = $fileCreationInit->pwaforwp_manifest_init();
-                    $status = $fileCreationInit->pwaforwp_swr_init();
-                    
-                    if($is_amp){
-                        
-                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
-                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
-                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
-                        
-                    }
-                    
-                    if(!$status){
-                        echo esc_html__('Check permission or download from manual', 'pwa-for-wp');   
-                    }
-		}
-                
-                $server_key = $settings['fcm_server_key'];  
-                $config     = $settings['fcm_config'];
-                
-                if($server_key !='' && $config !=''){
-                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
-                }
-                
+                pwaforwp_required_file_creation();                                                               
 		settings_errors();
+                
 	}
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting', 'precaching_setting', 'tools','help'));
-        
-                $swJsonNonAmp = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
-				$file_json_headers = @checkStatus($swJsonNonAmp);
-				$swJsNonAmp = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
-				$file_js_headers = @checkStatus($swJsNonAmp);
-                                
-                if($file_json_headers || $file_js_headers){
-                	/* Delete transient, only display this notice once. */
-        	 delete_transient( 'pwaforwp_admin_notice_transient' );   
-                 echo '<div class="wrap">';   
-                 
-                }else{
-                    
-                 set_transient( 'pwaforwp_admin_notice_transient', true );
-                 echo '<div class="wrap" style="display: none;">';   
-                 
-                }
+                                                                        
 	?>
-		                            
+		<div class="wrap">                            
 		<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper pwaforwp-tabs">
 			<?php
@@ -193,19 +190,7 @@ function pwaforwp_admin_interface_render(){
 	</div>
         
 	<?php            
-            if($file_json_headers || $file_js_headers){
-                
-                    echo' <div class="manual-setup-button" style="padding: 20px; display:none;">';
-                    echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
-                    echo '</div>';
-                
-                }else{
-                    
-                    echo' <div class="manual-setup-button" style="padding: 20px;">';
-                    echo '<button class="button pwaforwp-activate-service" type="button">'.esc_html__( 'Start the PWA Setup', 'pwa-for-wp' ).'</button>';
-                    echo '</div>';
-                
-                }
+           
 }
 
 
@@ -324,6 +309,7 @@ function pwaforwp_settings_init(){
 		);
                 
                 add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+                                                
 		add_settings_field(
 			'pwaforwp_reset_setting',							// ID
 			esc_html__('Reset', 'pwa-for-wp'),	// Title
@@ -331,6 +317,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_tools_section',						// Page slug
 			'pwaforwp_tools_section'						// Settings Section ID
 		);
+                
                 add_settings_field(
 			'pwaforwp_loading_setting',							// ID
 			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
@@ -525,7 +512,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo $settings['excluded_urls']; ?></textarea></label>
+        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? $settings['excluded_urls']: ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -581,7 +568,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>
                     <td><strong><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></strong></td>
                    <td>
-                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0" max="50">   
+                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0">   
                    </td>
                 </tr>
                 <tr>
@@ -590,10 +577,10 @@ function pwaforwp_precaching_setting_callback(){
                          <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
                         </td>
 		</tr>                
-                <tr>
+                <tr>    
                     <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
-                      <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
+                      <label><textarea placeholder="https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/ "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
@@ -695,6 +682,7 @@ function pwaforwp_cdn_setting_callback(){
 	<p><?php echo esc_html__('This helps you remove conflict with the CDN', 'pwa-for-wp'); ?></p>
 	<?php
 }
+
 function pwaforwp_reset_setting_callback(){		
 	?>              
         <button class="button pwaforwp-reset-settings">
@@ -747,12 +735,12 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
-                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo $settings['fcm_server_key']; ?>"></td>
+                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? $settings['fcm_server_key']:'') ; ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
-                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo $settings['fcm_config']; ?></textarea>
+                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? $settings['fcm_config'] : ''; ?></textarea>
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
@@ -784,9 +772,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_post]" id="pwaforwp_settings[on_update_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_post'] ) &&  $settings['on_update_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_post']) == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_post_notification_title']).'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']): '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_post_notification_title']).'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']) : '').'"></p>';  
                             }
                             ?>
                         </td>
@@ -797,9 +785,9 @@ function pwaforwp_push_notification_callback(){
                             
                             <?php
                             if(isset($settings['on_add_page']) == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.esc_attr($settings['on_add_page_notification_title']).'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.esc_attr($settings['on_add_page_notification_title']).'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';  
                             }
                             ?>
                             
@@ -810,9 +798,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_page]" id="pwaforwp_settings[on_update_page]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_page'] ) &&  $settings['on_update_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_page']) == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_page_notification_title']).'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.esc_attr($settings['on_update_page_notification_title']).'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';  
                             }
                             ?>
                         </td>
@@ -824,8 +812,18 @@ function pwaforwp_push_notification_callback(){
             <h2><?php echo esc_html__('Send Manual Notification', 'pwa-for-wp') ?></h2>
             <table class="pwaforwp-push-notificatoin-table">
                 <tbody>
+                    
                     <tr>
-                        <th><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea><button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
+                        <th><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title">
+                            <br>
+			                   
+                        </th>  
+                        <td></td>
+                    </tr>
+                    
+                    <tr>
+                        <th><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
+                            <button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
                             <br>
 			                    <div class="pwaforwp-notification-success pwa_hide"></div>
 			                    <p class="pwaforwp-notification-error pwa_hide"></p>

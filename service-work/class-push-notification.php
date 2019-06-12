@@ -15,17 +15,19 @@ class pushNotification{
      }
 
      public function pwaforwp_send_notification_manually(){                  
+         
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
             return; 
             }
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
             }         
-            $body    = sanitize_textarea_field($_POST['message']);                        
-            $message['title'] = 'Manual';
-            $message['body'] = $body;
-            $message['url'] = site_url();
-            $result = $this->pwaforwp_send_push_notification($message); 
+            $body             = sanitize_textarea_field($_POST['message']);                        
+            $message['title'] = sanitize_text_field($_POST['title']);
+            $message['body']  = $body;
+            $message['url']   = site_url();
+            
+            $result           = $this->pwaforwp_send_push_notification($message); 
             
             $result = json_decode($result, true);                         
             if(!empty($result)){             
@@ -116,29 +118,35 @@ class pushNotification{
      public function pwaforwp_load_pushnotification_script(){	
          
             $url 	  = pwaforwp_front_url();
-            $settings = pwaforwp_defaultSettings();                        
-            $server_key = $settings['fcm_server_key'];
-            $config = $settings['fcm_config'];
+            $settings     = pwaforwp_defaultSettings();                        
+            $server_key   = $settings['fcm_server_key'];
+            $config       = $settings['fcm_config'];
             $multisite_filename_postfix = '';
+            
                     if ( is_multisite() ) {
                      $multisite_filename_postfix = '-' . get_current_blog_id();
                     }        
+                    
             if($server_key !='' && $config !=''){
+                
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js"></script>';	
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	             
              echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-push-notification-manifest'.$multisite_filename_postfix.'.json').'">';	
+             
             }                    
      }         
      public function pwaforwp_store_token(){
-         
-            $token   = sanitize_text_field($_POST['token']);             
+                     
             $get_token_list = array();  
-            $result = false;
+            $result         = false;
+            $token          = sanitize_text_field($_POST['token']);             
+            
             if($token){
                 $get_token_list = (array)json_decode(get_option('pwa_token_list'), true);               
                 array_push($get_token_list, $token);                
                 $result = update_option('pwa_token_list', json_encode($get_token_list));
             } 
+            
             if($result){
             echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
@@ -148,9 +156,9 @@ class pushNotification{
       }
       public function pwaforwp_send_push_notification($message){
           
-            $settings = pwaforwp_defaultSettings();                        
+            $settings   = pwaforwp_defaultSettings();                        
             $server_key = $settings['fcm_server_key'];           
-            $tokens = (array)json_decode(get_option('pwa_token_list'), true);             
+            $tokens     = (array)json_decode(get_option('pwa_token_list'), true);             
             if(empty($tokens) || $server_key ==''){
                 return;
             }            
@@ -161,7 +169,7 @@ class pushNotification{
             $msg = [
                     'title' => $message['title'],
                     'body'  => $message['body'],
-                    'icon'  => PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg',
+                    'icon'  => (isset($settings['icon'])? esc_attr( $settings['icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
                     'url'  => $message['url'],
                     'primarykey'  => uniqid(),
                     'image' => '',

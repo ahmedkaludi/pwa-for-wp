@@ -176,16 +176,20 @@ jQuery(document).ready(function($){
         
         $(".pwaforwp-manual-notification").on("click", function(e){
 	    e.preventDefault();   
-	    var message = $("#pwaforwp_notification_message").val();           
-	                $.ajax({
+	    var message = $("#pwaforwp_notification_message").val(); 
+            var pn_title   = $("#pwaforwp_notification_message_title").val(); 
+            
+            if($.trim(message) !=''){
+                
+                $.ajax({
 	                    type: "POST",    
 	                    url: ajaxurl,                    
 	                    dataType: "json",
-	                    data:{action:"pwaforwp_send_notification_manually", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+	                    data:{action:"pwaforwp_send_notification_manually", message:message, title:pn_title, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
 	                    success:function(response){                                 
 	                      if(response['status'] =='t'){
                                 var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
-                                    html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
+                                    //html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
 	                        $(".pwaforwp-notification-success").show();
                                 $(".pwaforwp-notification-success").html(html);
 	                        $(".pwaforwp-notification-error").hide();
@@ -198,6 +202,12 @@ jQuery(document).ready(function($){
 	                    console.log(response);
 	                    }
 	                    });
+                
+            }else{
+                alert('Please enter the message');
+            }
+            
+	                
 	    
 	});
         
@@ -287,7 +297,7 @@ jQuery(document).ready(function($){
                 if($(this).prop("checked")){
                     $(this).parent().find('p').removeClass('pwaforwp-hide');
 		}else{
-                    $(this).parent().find('p').Class('pwaforwp-hide');
+                    $(this).parent().find('p').addClass('pwaforwp-hide');
 		}
             
         });
