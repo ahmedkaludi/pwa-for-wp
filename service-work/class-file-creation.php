@@ -323,7 +323,7 @@ class pwaforwpFileCreation{
 		} else {
 			$offline_page 	        = pwaforwp_https( $offline_page );
 			$page404 		= pwaforwp_https( $page404 );    
-			$swJsContent 	= str_replace(array(
+			$swJsContent 	        = str_replace(array(
                                                             "{{PRE_CACHE_URLS}}",     
                                                             "{{OFFLINE_PAGE}}", 
                                                             "{{404_PAGE}}", 
@@ -353,7 +353,7 @@ class pwaforwpFileCreation{
                                                             ), 
                                                             $swJsContent);                		
 		}                		
-	    return $swJsContent;
+	    return apply_filters( 'pwaforwp_sw_js_template', $swJsContent );
 		
 	}
       
@@ -377,11 +377,13 @@ class pwaforwpFileCreation{
                         
         } else {
             
-            $homeUrl = get_home_url(); 
-            if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+                $homeUrl = get_home_url(); 
+            
+                if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
-            $scope_url = $homeUrl;    
+                
+                $scope_url = $homeUrl;    
                 
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
