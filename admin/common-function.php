@@ -311,6 +311,8 @@ function pwaforwp_download_require_files(){
           $ampsw_js         = $creation_obj->pwaforwp_swjs(true);
           $amp_manifest     = $creation_obj->pwaforwp_manifest(true);
           $amp_swhtml       = $creation_obj->pwaforwp_swhtml(true);
+          $pn_sw_js         = '';
+          
           
           $pn_manifest      = '{"gcm_sender_id": "103953800507"}';
                   
@@ -318,7 +320,8 @@ function pwaforwp_download_require_files(){
                "pwa-sw".$multisite_filename_postfix.".js"                           => $swjs,
                "pwa-manifest".$multisite_filename_postfix.".json"                   => $manifest,
                "pwa-register-sw".$multisite_filename_postfix.".js"                  => $rswjs,               
-               "pwa-push-notification-manifest".$multisite_filename_postfix.".json" => $pn_manifest
+               "pwa-push-notification-manifest".$multisite_filename_postfix.".json" => $pn_manifest,
+               "firebase-messaging-sw.js"                                           => $pn_sw_js,
            );
           
            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  

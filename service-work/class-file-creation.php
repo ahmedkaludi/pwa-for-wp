@@ -388,30 +388,40 @@ class pwaforwpFileCreation{
                 $scope_url      = trailingslashit(str_replace("http://", "https://", $scope_url));
 		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
 
-		if($orientation==0) { $orientation = "portrait"; }
-		$manifest = '{			  
-			"name": "'.esc_attr($defaults['app_blog_name']).'",
-			"short_name": "'.esc_attr($defaults['app_blog_short_name']).'",
-			"description": "'.esc_attr($defaults['description']).'",
-			"icons": [
-			    {
-			      "src": "'.esc_url($defaults['icon']).'",
-			      "sizes": "192x192",
-			      "type": "image\/png"
-			    },
-			    {
-			      "src": "'.esc_url($defaults['splash_icon']).'",
-			      "sizes": "512x512",
-			      "type": "image\/png"
-			    }
-			],
-			"background_color": "'.sanitize_hex_color($defaults['background_color']).'",
-			"theme_color": "'.sanitize_hex_color($defaults['theme_color']).'",
-			"display": "standalone",
-			"orientation": "'.esc_html( $orientation ).'",
-			"start_url": "'.esc_url($homeUrl).'",
-			"scope": "'.esc_url($scope_url).'"
-		}';
-		return $manifest;				
+		if($orientation==0) { 
+                    $orientation = "portrait"; 
+                    
+                }
+                
+                $icons = array();
+                //App icon
+                $icons[] = array(
+                    'src' 	=> esc_url($defaults['icon']),
+                    'sizes'	=> '192x192', 
+                    'type'	=> 'image\/png', 
+                );
+                //Splash icon
+                $icons[] = array(
+                    'src' 	=> esc_url($defaults['splash_icon']),
+                    'sizes'	=> '512x512', 
+                    'type'	=> 'image\/png', 
+                );
+                                                             
+                $manifest[] = array();
+                                                
+                $manifest['name']             = esc_attr($defaults['app_blog_name']);
+                $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
+                $manifest['description']      = esc_attr($defaults['description']);
+                $manifest['icons']            = $icons;
+                $manifest['background_color'] = sanitize_hex_color($defaults['background_color']);
+                $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
+                $manifest['display']          = 'standalone';
+                $manifest['orientation']      = esc_html( $orientation );
+                $manifest['start_url']        = esc_url($homeUrl);
+                $manifest['scope']            = esc_url($scope_url);                             
+                
+                $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
+		
+                return json_encode($manifest);					
 	}        
 }

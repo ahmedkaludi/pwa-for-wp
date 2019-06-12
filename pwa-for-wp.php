@@ -25,6 +25,7 @@ require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
 
       
 if( pwaforwp_is_admin() ){
