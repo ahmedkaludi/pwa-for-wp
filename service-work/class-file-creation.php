@@ -10,9 +10,12 @@ class pwaforwpFileCreation{
                            $multisite_filename_postfix = '-' . get_current_blog_id();
                         }
                         $url 	                        = trailingslashit(get_home_url());
-		        $ServiceWorkerfileName          = $url.'pwa-amp-sw'.$multisite_filename_postfix;		
+		        $ServiceWorkerfileName          = $url.'pwa-amp-sw'.$multisite_filename_postfix.'js';		
 			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
-			$swHtmlContent 			= str_replace(array("{{serviceWorkerFile}}"), array($ServiceWorkerfileName), $swHtmlContent);
+			$swHtmlContent 			= str_replace(array(
+                                                                "{{serviceWorkerFile}}"), 
+                                                                  array($ServiceWorkerfileName), 
+                                                                  $swHtmlContent);
 			return $swHtmlContent;		    
 	    }	
             
@@ -122,7 +125,7 @@ class pwaforwpFileCreation{
         if ( is_multisite() ) {
            $multisite_filename_postfix  = '-' . get_current_blog_id();
         }
-		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix;		
+		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix.'js';		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
         if($server_key !='' && $config !=''){
          $firebaseconfig = 'var config ='.$config.'; '
@@ -400,16 +403,16 @@ class pwaforwpFileCreation{
                 $icons[] = array(
                     'src' 	=> esc_url($defaults['icon']),
                     'sizes'	=> '192x192', 
-                    'type'	=> 'image\/png', 
+                    'type'	=> 'image/png', 
                 );
                 //Splash icon
                 $icons[] = array(
                     'src' 	=> esc_url($defaults['splash_icon']),
                     'sizes'	=> '512x512', 
-                    'type'	=> 'image\/png', 
+                    'type'	=> 'image/png', 
                 );
                                                              
-                $manifest[] = array();
+                $manifest = array();
                                                 
                 $manifest['name']             = esc_attr($defaults['app_blog_name']);
                 $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
@@ -424,6 +427,6 @@ class pwaforwpFileCreation{
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
-                return json_encode($manifest);					
+                return json_encode($manifest, JSON_PRETTY_PRINT);					
 	}        
 }

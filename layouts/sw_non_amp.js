@@ -1,4 +1,4 @@
-                                 var swsource = "{{swfile}}.js";                                          
+                                 var swsource = "{{swfile}}";                                          
                                  {{config}}                                 
 			         if("serviceWorker" in navigator) {
                                      window.addEventListener('load', function() {			         		

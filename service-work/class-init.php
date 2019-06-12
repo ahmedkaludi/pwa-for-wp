@@ -27,13 +27,13 @@ class PWAFORWP_File_Creation_Init {
         }
         $this->wppath                 = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/"); 
         $this->fileCreation           = new pwaforwpFileCreation();
-        $this->swjs_init              = apply_filters('pwaforwp_sw_file_name',           $this->wppath."pwa-sw".$multisite_filename_postfix.".js");
-        $this->minifest_init          = apply_filters('pwaforwp_manifest_file_name',     $this->wppath."pwa-manifest".$multisite_filename_postfix.".json");
-        $this->swr_init               = apply_filters('pwaforwp_reg_sw_file_name',       $this->wppath."pwa-register-sw".$multisite_filename_postfix.".js");
-        $this->swjs_init_amp          = apply_filters('pwaforwp_amp_sw_file_name',       $this->wppath."pwa-amp-sw".$multisite_filename_postfix.".js");
-        $this->minifest_init_amp      = apply_filters('pwaforwp_amp_manifest_file_name', $this->wppath."pwa-amp-manifest".$multisite_filename_postfix.".json");
-        $this->swhtml_init_amp        = apply_filters('pwaforwp_amp_sw_html_file_name',  $this->wppath."pwa-amp-sw".$multisite_filename_postfix.".html");
-        $this->firebase_manifest_init = apply_filters('pwaforwp_pn_manifest_file_name',  $this->wppath."pwa-push-notification-manifest".$multisite_filename_postfix.".json");                         
+        $this->swjs_init              = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-sw".$multisite_filename_postfix.".js");
+        $this->minifest_init          = $this->wppath.apply_filters('pwaforwp_manifest_file_name',     "pwa-manifest".$multisite_filename_postfix.".json");
+        $this->swr_init               = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-register-sw".$multisite_filename_postfix.".js");
+        $this->swjs_init_amp          = $this->wppath.apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".$multisite_filename_postfix.".js");
+        $this->minifest_init_amp      = $this->wppath.apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".$multisite_filename_postfix.".json");
+        $this->swhtml_init_amp        = $this->wppath.apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".$multisite_filename_postfix.".html");
+        $this->firebase_manifest_init = $this->wppath.apply_filters('pwaforwp_pn_manifest_file_name',  "pwa-push-notification-manifest".$multisite_filename_postfix.".json");                         
         $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/pwa-push-notification'.$multisite_filename_postfix.".js";                         
     }
 
@@ -220,7 +220,7 @@ add_action('wp_ajax_pwaforwp_download_setup_files', 'pwaforwp_download_setup_fil
 function pwaforwp_download_setup_files(){   
     
     if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
-    return; 
+        return; 
     }
     if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
        return;  
