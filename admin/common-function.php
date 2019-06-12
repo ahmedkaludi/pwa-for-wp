@@ -91,11 +91,7 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function pwaforwp_frontend_enqueue(){
-        
-        $multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }          
+                       
         $settings   = pwaforwp_defaultSettings();
         $server_key = $settings['fcm_server_key'];
         $config     = $settings['fcm_config'];
@@ -109,7 +105,7 @@ function pwaforwp_frontend_enqueue(){
             $file_creating_obj = new PWAFORWP_File_Creation_Init();
             $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
 
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.$multisite_filename_postfix.'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
               'ajax_url' => admin_url( 'admin-ajax.php' ),           
@@ -302,16 +298,90 @@ function pwaforwp_https( $url ) {
         	
 }
 
+function pwaforwp_multisite_postfix(){
+    
+        $multisite_postfix = '';
+        if ( is_multisite() ) {
+           $multisite_postfix = '-' . get_current_blog_id();
+        }
+        return $multisite_postfix;
+                        
+}
+
+function pwaforwp_write_a_file($path, $content){
+        
+        $writestatus = '';
+        
+        if(file_exists($path)){
+                unlink($path);
+        }
+        
+        if(!file_exists($path)){            
+            $handle      = @fopen($path, 'w');
+            $writestatus = @fwrite($handle, $content);
+            @fclose($handle);
+        }                        
+        if($writestatus){
+            return true;   
+        }else{
+            return false;   
+        }
+                
+}
+
+function pwaforwp_required_file_creation(){
+    
+                $settings = pwaforwp_defaultSettings(); 
+                
+                $manualfileSetup = $server_key = $config = '';       
+    
+                $serviceWorkerObj = new PWAFORWP_Service_Worker();
+                $is_amp = $serviceWorkerObj->is_amp;
+    
+                if(array_key_exists('manualfileSetup', $settings)){
+                    $manualfileSetup = $settings['manualfileSetup'];      
+                }
+                
+                $fileCreationInit = new PWAFORWP_File_Creation_Init();
+		if($manualfileSetup){
+                    
+                    $status = '';                    
+                    $status = $fileCreationInit->pwaforwp_swjs_init();
+                    $status = $fileCreationInit->pwaforwp_manifest_init();
+                    $status = $fileCreationInit->pwaforwp_swr_init();
+                    
+                    if($is_amp){
+                        
+                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
+                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
+                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
+                        
+                    }
+                    if(!$status){
+                        
+                        set_transient( 'pwaforwp_file_change_transient', true );
+                    }
+                    pwaforwp_onesignal_compatiblity();                   
+		}
+                
+                if(isset($settings['fcm_server_key'])){
+                 $server_key = $settings['fcm_server_key'];    
+                }
+                
+                if(isset($settings['fcm_config'])){
+                 $config     = $settings['fcm_config'];   
+                }
+                                                 
+                if($server_key !='' && $config !=''){
+                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
+                }
+    
+}
+
 add_action('wp_ajax_pwaforwp_download_require_files', 'pwaforwp_download_require_files');
 
 function pwaforwp_download_require_files(){ 
-                                 
-          $multisite_filename_postfix = '';
-          
-          if ( is_multisite() ) {
-            $multisite_filename_postfix = '-' . get_current_blog_id();
-          }
-                                
+        
           $creation_obj = new pwaforwpFileCreation();
      
           $swjs             = $creation_obj->pwaforwp_swjs();
@@ -327,18 +397,18 @@ function pwaforwp_download_require_files(){
           $pn_manifest      = '{"gcm_sender_id": "103953800507"}';
                   
           $files = array(
-               "pwa-sw".$multisite_filename_postfix.".js"                           => $swjs,
-               "pwa-manifest".$multisite_filename_postfix.".json"                   => $manifest,
-               "pwa-register-sw".$multisite_filename_postfix.".js"                  => $rswjs,               
-               "pwa-push-notification-manifest".$multisite_filename_postfix.".json" => $pn_manifest,
+               "pwa-sw".pwaforwp_multisite_postfix().".js"                           => $swjs,
+               "pwa-manifest".pwaforwp_multisite_postfix().".json"                   => $manifest,
+               "pwa-register-sw".pwaforwp_multisite_postfix().".js"                  => $rswjs,               
+               "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json" => $pn_manifest,
                "firebase-messaging-sw.js"                                           => $pn_sw_js,
            );
           
            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
                                               
-               $files["pwa-amp-sw".$multisite_filename_postfix.".js"]         = $ampsw_js;
-               $files["pwa-amp-manifest".$multisite_filename_postfix.".json"] = $amp_manifest;
-               $files["pwa-amp-sw".$multisite_filename_postfix.".html"]       = $amp_swhtml;
+               $files["pwa-amp-sw".pwaforwp_multisite_postfix().".js"]         = $ampsw_js;
+               $files["pwa-amp-manifest".pwaforwp_multisite_postfix().".json"] = $amp_manifest;
+               $files["pwa-amp-sw".pwaforwp_multisite_postfix().".html"]       = $amp_swhtml;
            }
 
            # create new zip opbject

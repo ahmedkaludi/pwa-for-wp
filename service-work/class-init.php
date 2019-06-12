@@ -19,63 +19,31 @@ class PWAFORWP_File_Creation_Init {
              
     public function __construct(){
         
-        
-        
-        $multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
         $this->wppath                 = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/"); 
         $this->fileCreation           = new pwaforwpFileCreation();
-        $this->swjs_init              = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-sw".$multisite_filename_postfix.".js");
-        $this->minifest_init          = $this->wppath.apply_filters('pwaforwp_manifest_file_name',     "pwa-manifest".$multisite_filename_postfix.".json");
-        $this->swr_init               = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-register-sw".$multisite_filename_postfix.".js");
-        $this->swjs_init_amp          = $this->wppath.apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".$multisite_filename_postfix.".js");
-        $this->minifest_init_amp      = $this->wppath.apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".$multisite_filename_postfix.".json");
-        $this->swhtml_init_amp        = $this->wppath.apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".$multisite_filename_postfix.".html");
-        $this->firebase_manifest_init = $this->wppath.apply_filters('pwaforwp_pn_manifest_file_name',  "pwa-push-notification-manifest".$multisite_filename_postfix.".json");                         
-        $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/pwa-push-notification'.$multisite_filename_postfix.".js";                         
+        $this->swjs_init              = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-sw".pwaforwp_multisite_postfix().".js");
+        $this->minifest_init          = $this->wppath.apply_filters('pwaforwp_manifest_file_name',     "pwa-manifest".pwaforwp_multisite_postfix().".json");
+        $this->swr_init               = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-register-sw".pwaforwp_multisite_postfix().".js");
+        $this->swjs_init_amp          = $this->wppath.apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js");
+        $this->minifest_init_amp      = $this->wppath.apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
+        $this->swhtml_init_amp        = $this->wppath.apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html");
+        $this->firebase_manifest_init = $this->wppath.apply_filters('pwaforwp_pn_manifest_file_name',  "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json");                         
+        $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/pwa-push-notification'.pwaforwp_multisite_postfix().".js";                         
     }
 
     
     public function pwaforwp_push_notification_js($js_str){
         
-        $writestatus = '';
-        
-        if(file_exists($this->push_notification_js)){
-                unlink($this->push_notification_js);
-        }
-        
-        if(!file_exists($this->push_notification_js)){
-            $swjsContent = $js_str;
-            $handle      = @fopen($this->push_notification_js, 'w');
-            $writestatus = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }                        
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }                        
+        return pwaforwp_write_a_file($this->push_notification_js, $js_str);
+                                               
     }
     
     
     public function pwaforwp_swjs_init(){
-        $writestatus='';
-		if(file_exists($this->swjs_init)){
-			unlink($this->swjs_init);
-		}
-        if(!file_exists($this->swjs_init)){
-            $swjsContent = $this->fileCreation->pwaforwp_swjs();
-            $handle      = @fopen($this->swjs_init, 'w');
-            $writestatus = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }                        
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }                        
+        
+        $swjsContent = $this->fileCreation->pwaforwp_swjs();
+        return pwaforwp_write_a_file($this->swjs_init, $swjsContent);
+                                
     }
     
     public function pwaforwp_manifest_init(){
@@ -98,120 +66,50 @@ class PWAFORWP_File_Creation_Init {
     }
     
     public function pwaforwp_swr_init(){   
-        $writestatus = '';
-        if(file_exists($this->swr_init)){
-            unlink($this->swr_init);
-        }
-        if(!file_exists($this->swr_init)){
-            $swjsContent    = $this->fileCreation->pwaforwp_swr();
-            $handle         = @fopen($this->swr_init, 'w');
-            $writestatus    = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }
+        
+        $swjsContent    = $this->fileCreation->pwaforwp_swr();
+        return pwaforwp_write_a_file($this->swr_init, $swjsContent);
+                       
     }
     
     public function pwaforwp_swjs_init_amp(){  
-        $writestatus='';
-        if(file_exists($this->swjs_init_amp)){
-            unlink($this->swjs_init_amp);
-        }
-        if(!file_exists($this->swjs_init_amp)){
-            $swjsContent    = $this->fileCreation->pwaforwp_swjs(true);
-            $handle         = @fopen($this->swjs_init_amp, 'w');
-            $writestatus    = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }
-        if( $writestatus ){
-            return true;   
-        }else{
-            return false;   
-        }
+        
+        $swjsContent    = $this->fileCreation->pwaforwp_swjs(true);
+        return pwaforwp_write_a_file($this->swjs_init_amp, $swjsContent);
+        
      }
      public function pwaforwp_manifest_init_amp(){
-        $writestatus='';
-        if(file_exists($this->minifest_init_amp)){
-            unlink($this->minifest_init_amp);
-        }
-        if(!file_exists($this->minifest_init_amp)){				
-            $swHtmlContent = $this->fileCreation->pwaforwp_manifest(true);
-            $handleHtml = @fopen($this->minifest_init_amp, 'w');
-            $writestatus = @fwrite($handleHtml, $swHtmlContent);
-            @fclose($handleHtml);
-        }
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }
+         
+         $swHtmlContent = $this->fileCreation->pwaforwp_manifest(true);
+         return pwaforwp_write_a_file($this->minifest_init_amp, $swHtmlContent);
+        
     }    
     public function pwaforwp_swhtml_init_amp(){  
-        $writestatus='';
-        if(file_exists($this->swhtml_init_amp)){
-            unlink($this->swhtml_init_amp);
-        }
-        if(!file_exists($this->swhtml_init_amp)){
-            $swHtmlContent = $this->fileCreation->pwaforwp_swhtml(true);
-            $handleHtml = @fopen($this->swhtml_init_amp, 'w');
-            $writestatus = @fwrite($handleHtml, $swHtmlContent);
-            @fclose($handleHtml);
-        }
-
-        if( $writestatus ){
-            return true;   
-        } else {
-            return false;   
-        }
+        
+        $swHtmlContent = $this->fileCreation->pwaforwp_swhtml(true);
+        return pwaforwp_write_a_file($this->swhtml_init_amp, $swHtmlContent);
+                 
     }
     public function pwaforwp_swhtml_init_firebase_js(){  
-        $writestatus='';
-        if(file_exists($this->swjs_init)){
-			unlink($this->swjs_init);
-	}
-        if(!file_exists($this->swjs_init)){
-            $swjsContent = $this->fileCreation->pwaforwp_swjs();
-            $handle      = @fopen($this->swjs_init, 'w');
-            $writestatus = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }                             
-        if(file_exists($this->swr_init)){
-            unlink($this->swr_init);
-        }
-        if(!file_exists($this->swr_init)){
-            $swjsContent    = $this->fileCreation->pwaforwp_swr();
-            $handle         = @fopen($this->swr_init, 'w');
-            $writestatus    = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }
-        if(file_exists($this->firebase_manifest_init)){
-            unlink($this->firebase_manifest_init);
-        }
-        if(!file_exists($this->firebase_manifest_init)){
-            $swjsContent    = '{"gcm_sender_id": "103953800507"}';
-            $handle         = @fopen($this->firebase_manifest_init, 'w');
-            $writestatus    = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        } 
-        
-        //Dummy file to work FCM perfectly 
-        $pn_sw_js = $this->wppath."firebase-messaging-sw.js";  
-        
-        if(!file_exists($pn_sw_js)){
-            $swjsContent    = '';
-            $handle         = @fopen($pn_sw_js, 'w');
-            $writestatus    = @fwrite($handle, $swjsContent);
-            @fclose($handle);
-        }
                 
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }        
+        $swjsContent = $this->fileCreation->pwaforwp_swjs();
+        $status      = pwaforwp_write_a_file($this->swjs_init, $swjsContent);
+        
+        
+        $swjsContent    = $this->fileCreation->pwaforwp_swr();
+        $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent);
+        
+        $swjsContent    = '{"gcm_sender_id": "103953800507"}';
+        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent);
+                         
+        //Dummy file to work FCM perfectly 
+        
+        $pn_sw_js       = $this->wppath."firebase-messaging-sw.js";  
+        $swjsContent    = '';
+        $status         =  pwaforwp_write_a_file($pn_sw_js, $swjsContent);
+        
+        return $status;
+                                
     }    
 }
 

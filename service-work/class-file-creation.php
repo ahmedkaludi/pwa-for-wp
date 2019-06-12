@@ -4,13 +4,9 @@ class pwaforwpFileCreation{
     public function pwaforwp_swhtml($is_amp = false){      
             
 	    if( $is_amp ){  
-                
-                       $multisite_filename_postfix = '';
-                        if ( is_multisite() ) {
-                           $multisite_filename_postfix = '-' . get_current_blog_id();
-                        }
+                                       
                         $url 	                        = trailingslashit(get_home_url());
-		        $ServiceWorkerfileName          = $url.'pwa-amp-sw'.$multisite_filename_postfix.'js';		
+		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'js');		
 			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
 			$swHtmlContent 			= str_replace(array(
                                                                 "{{serviceWorkerFile}}"), 
@@ -121,21 +117,19 @@ class pwaforwpFileCreation{
         }
 
 		$url = trailingslashit(get_home_url());
-        $multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix  = '-' . get_current_blog_id();
-        }
-		$ServiceWorkerfileName 	        = $url.'pwa-sw'.$multisite_filename_postfix.'js';		
+       
+		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'js');		
 		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
-        if($server_key !='' && $config !=''){
-         $firebaseconfig = 'var config ='.$config.'; '
-                                         .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
-			          const firebaseMessaging = firebase.messaging();';
-         $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
-        }else{
-         $firebaseconfig = '';  
-         $useserviceworker = '';
-        }                                
+                
+                if($server_key !='' && $config !=''){
+                 $firebaseconfig = 'var config ='.$config.'; '
+                                                 .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
+                                          const firebaseMessaging = firebase.messaging();';
+                 $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
+                }else{
+                 $firebaseconfig = '';  
+                 $useserviceworker = '';
+                }                                
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
                                                 "{{config}}", 
