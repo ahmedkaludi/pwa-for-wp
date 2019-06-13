@@ -334,10 +334,7 @@ function pwaforwp_required_file_creation(){
                 $settings = pwaforwp_defaultSettings(); 
                 
                 $manualfileSetup = $server_key = $config = '';       
-    
-                $serviceWorkerObj = new PWAFORWP_Service_Worker();
-                $is_amp = $serviceWorkerObj->is_amp;
-    
+                                                                       
                 if(array_key_exists('manualfileSetup', $settings)){
                     $manualfileSetup = $settings['manualfileSetup'];      
                 }
@@ -350,13 +347,14 @@ function pwaforwp_required_file_creation(){
                     $status = $fileCreationInit->pwaforwp_manifest_init();
                     $status = $fileCreationInit->pwaforwp_swr_init();
                     
-                    if($is_amp){
-                        
+                    
+                    if(function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )){
+                                    
                         $status = $fileCreationInit->pwaforwp_swjs_init_amp();
                         $status = $fileCreationInit->pwaforwp_manifest_init_amp();
                         $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
-                        
-                    }
+                                            
+                    }                    
                     if(!$status){
                         
                         set_transient( 'pwaforwp_file_change_transient', true );
@@ -401,7 +399,7 @@ function pwaforwp_download_require_files(){
                "pwa-manifest".pwaforwp_multisite_postfix().".json"                   => $manifest,
                "pwa-register-sw".pwaforwp_multisite_postfix().".js"                  => $rswjs,               
                "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json" => $pn_manifest,
-               "firebase-messaging-sw.js"                                           => $pn_sw_js,
+               "firebase-messaging-sw.js"                                            => $pn_sw_js,
            );
           
            if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  

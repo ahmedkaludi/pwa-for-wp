@@ -56,39 +56,15 @@ function pwaforwp_add_sw_to_onesignal_sw(){
         $abs_path              = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
         $onesignal_sdk         = $abs_path.'OneSignalSDKWorker.js';
         $onesignal_sdk_updator = $abs_path.'OneSignalSDKUpdaterWorker.js';
-        $url = trailingslashit(get_home_url());
+        $url                   = trailingslashit(get_home_url());
                                                  
-        $content  =  "";
+        $content  = "";
         $content .= "importScripts('".esc_attr($url.'pwa-sw.js')."')".PHP_EOL;
         $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
-        
-        
-        $writestatus = '';
-        if(file_exists($onesignal_sdk)){
-            unlink($onesignal_sdk);
-        }
-        if(!file_exists($onesignal_sdk)){
-           
-            $handle         = @fopen($onesignal_sdk, 'w');
-            $writestatus    = @fwrite($handle, $content);
-            @fclose($handle);
-        }
-        
-        if(file_exists($onesignal_sdk_updator)){
-            unlink($onesignal_sdk_updator);
-        }
-        if(!file_exists($onesignal_sdk_updator)){
-           
-            $handle         = @fopen($onesignal_sdk_updator, 'w');
-            $writestatus    = @fwrite($handle, $content);
-            @fclose($handle);
-        }
-        
-        if( $writestatus ){
-            return true;   
-        }else{
-            return false;   
-        }
+                                
+        $status = pwaforwp_write_a_file($onesignal_sdk, $content);
+        $status = pwaforwp_write_a_file($onesignal_sdk_updator, $content);
+       
+        return $status;
     
 }
-
