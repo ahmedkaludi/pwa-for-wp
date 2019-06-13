@@ -47,22 +47,11 @@ class PWAFORWP_File_Creation_Init {
     }
     
     public function pwaforwp_manifest_init(){
-        $writestatus = '';
-        if(file_exists($this->minifest_init)){
-            unlink($this->minifest_init);
-        }
-        if(!file_exists($this->minifest_init)){				
-            $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
-            $handleHtml     = @fopen($this->minifest_init, 'w');
-            $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
-            $writestatus    = @fwrite($handleHtml, $swHtmlContent );
-            @fclose($handleHtml);
-        }
-        if($writestatus){
-            return true;   
-        }else{
-            return false;   
-        }
+        
+        $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
+        $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
+        return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent);
+                
     }
     
     public function pwaforwp_swr_init(){   
@@ -91,11 +80,15 @@ class PWAFORWP_File_Creation_Init {
                  
     }
     public function pwaforwp_swhtml_init_firebase_js(){  
+        
+        $settings 	= pwaforwp_defaultSettings(); 
+        
+        $server_key     = $settings['fcm_server_key'];
+        $config         = $settings['fcm_config'];
+                                
+        $swjsContent    = $this->fileCreation->pwaforwp_swjs();
+        $status         = pwaforwp_write_a_file($this->swjs_init, $swjsContent);
                 
-        $swjsContent = $this->fileCreation->pwaforwp_swjs();
-        $status      = pwaforwp_write_a_file($this->swjs_init, $swjsContent);
-        
-        
         $swjsContent    = $this->fileCreation->pwaforwp_swr();
         $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent);
         
@@ -104,10 +97,14 @@ class PWAFORWP_File_Creation_Init {
                          
         //Dummy file to work FCM perfectly 
         
-        $pn_sw_js       = $this->wppath."firebase-messaging-sw.js";  
-        $swjsContent    = '';
-        $status         =  pwaforwp_write_a_file($pn_sw_js, $swjsContent);
+        if($server_key !='' && $config !=''){
+
+            $pn_sw_js       = $this->wppath."firebase-messaging-sw.js";  
+            $swjsContent    = '';
+            $status         =  pwaforwp_write_a_file($pn_sw_js, $swjsContent);
         
+        }
+                
         return $status;
                                 
     }    
@@ -122,7 +119,8 @@ function pwaforwp_download_setup_files(){
     }
     if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
        return;  
-    }    
+    } 
+    
     $file_type = sanitize_text_field($_GET['filetype']);    
     $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
     $result = '';        

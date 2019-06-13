@@ -105,7 +105,7 @@ function pwaforwp_frontend_enqueue(){
             $file_creating_obj = new PWAFORWP_File_Creation_Init();
             $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
 
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/'.PWAFORWP_FILE_PREFIX.'-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
               'ajax_url' => admin_url( 'admin-ajax.php' ),           

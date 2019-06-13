@@ -126,7 +126,7 @@ class pushNotification{
                 
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js"></script>';	
              echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	             
-             echo '<link rel="manifest" href="'. esc_url($url.PWAFORWP_FILE_PREFIX.'-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
+             echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
              
             }                    
      }         

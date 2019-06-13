@@ -32,7 +32,7 @@ function pwaforwp_onesignal_insert_gcm_sender_id( $manifest ) {
 	return $manifest;
 }
 
-add_filter( 'pwaforwp_manifest_file', 'pwaforwp_onesignal_insert_gcm_sender_id' );
+add_filter( 'pwaforwp_manifest_file_name', 'pwaforwp_onesignal_insert_gcm_sender_id' );
 
 function pwaforwp_onesignal_change_sw_name($name){
     

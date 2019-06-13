@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('PWAFORWP_PLUGIN_VERSION', '1.1');
-define('PWAFORWP_FILE_PREFIX', 'pwa');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
@@ -53,9 +52,9 @@ function pwaforwp_amp_cdn_replace_urls_revert($src){
 	$url = pwaforwp_front_url();
 	
 	if($src[1]==$url){
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.pwaforwp_multisite_postfix().'.js"';
+		return 'src="'.$src.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
 	}else{
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.pwaforwp_multisite_postfix().'.js"';
+		return 'src="'.$url.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
@@ -63,18 +62,18 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
         $url = pwaforwp_front_url();    
     
 	if($src[1]==$url){
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return 'href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return 'href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
         $url = pwaforwp_front_url(); 
    
 	if($src[1]==$url){
-		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return ' rel="manifest" href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return ' rel="manifest" href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 
@@ -82,9 +81,9 @@ function pwaforwp_cdn_replace_urls_revert($src){
            
 	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw'.pwaforwp_multisite_postfix().'.js"';
+		return 'src="'.$src.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
 	}else{
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw'.pwaforwp_multisite_postfix().'.js"';
+		return 'src="'.$url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
 	}
 }
 
@@ -92,9 +91,9 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
             
        $url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return 'href="'.$src.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest'.pwaforwp_multisite_postfix().'.json"';
+		return 'href="'.$url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 
@@ -102,14 +101,14 @@ function pwaforwp_revert_src($content){
     	
 	//NON AMP
 	$url = pwaforwp_front_url(); 
-	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw".pwaforwp_multisite_postfix()."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
+	$content = preg_replace_callback("/src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/href=\"(.*?)"."pwa-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
 
 	//AMP
-	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw".pwaforwp_multisite_postfix().".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
-	$content.=' ';
-	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);        
+	$content = preg_replace_callback("/src=\"([^\"]+"."pwa-amp-sw".pwaforwp_multisite_postfix().".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content.='';
+	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
+	$content = preg_replace_callback("/href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);        
         
 	return $content;
 }
