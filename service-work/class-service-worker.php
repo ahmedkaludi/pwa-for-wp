@@ -68,9 +68,11 @@ class PWAFORWP_Service_Worker{
             if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
             } 
+            
             $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
             $result = $file_creation_init_obj->pwaforwp_swjs_init();
             $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+            
             update_option('pwaforwp_update_pre_cache_list', 'disable'); 
             delete_transient( 'pwaforwp_pre_cache_post_ids' );
             echo json_encode(array('status' => 't'));
@@ -93,6 +95,7 @@ class PWAFORWP_Service_Worker{
                 $page_args = array( 'number'       => $post_count );                                                                                        
                 $postslist = get_posts( $post_args );
                 $pageslist = get_pages( $page_args );
+                
                 if($postslist || $pageslist){
                                         
                     if($postslist && isset($settings['precaching_automatic_post'])){
@@ -157,7 +160,7 @@ class PWAFORWP_Service_Worker{
 		
                 $url 			 = trailingslashit(get_home_url());	
 		$settings 		 = pwaforwp_defaultSettings();
-		$manualfileSetup = $settings['manualfileSetup'];
+		$manualfileSetup         = $settings['manualfileSetup'];
 		if( $manualfileSetup ){
                 echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
 		}  

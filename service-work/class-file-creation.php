@@ -5,9 +5,9 @@ class pwaforwpFileCreation{
             
 	    if( $is_amp ){  
                                        
-                        $url 	                        = trailingslashit(get_home_url());
+                        $url 	                        = trailingslashit(pwaforwp_https(get_home_url()));
 		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');		
-			$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
+			$swHtmlContent 			= @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.html");
 			$swHtmlContent 			= str_replace(array(
                                                                 "{{serviceWorkerFile}}"), 
                                                                   array($ServiceWorkerfileName), 
@@ -116,10 +116,10 @@ class pwaforwpFileCreation{
             
         }
 
-		$url = trailingslashit(get_home_url());
+		$url = trailingslashit(pwaforwp_https(get_home_url()));
        
 		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');		
-		$swHtmlContent 			= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
+		$swHtmlContent 			= @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");                                                               
                 
                 if($server_key !='' && $config !=''){
                  $firebaseconfig   = 'var config ='.$config.';'
@@ -155,7 +155,7 @@ class pwaforwpFileCreation{
 		$settings = pwaforwp_defaultSettings();                                
                 $config   = $settings['fcm_config'];
                 
-                $swHtmlContent  = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/pn_background.js");
+                $swHtmlContent  = @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/pn_background.js");
                 
                 $swHtmlContent 	= str_replace(array("{{config}}"),array($config),$swHtmlContent);
                                                                                                                                  
@@ -164,7 +164,7 @@ class pwaforwpFileCreation{
        
     public function pwaforwp_swjs($is_amp = false){
             
-		$swJsContent 		= file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
+		$swJsContent 		= @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw.js");
 		$settings 		= pwaforwp_defaultSettings();   
                 
                 $external_links ='';

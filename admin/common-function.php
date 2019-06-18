@@ -98,7 +98,7 @@ function pwaforwp_frontend_enqueue(){
         
          if($server_key !='' && $config !=''){             
              
-            $swHtmlContent   = file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
+            $swHtmlContent   = @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
             $firebase_config = 'var config='.$config.';';
             $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
 
