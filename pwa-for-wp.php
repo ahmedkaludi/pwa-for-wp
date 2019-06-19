@@ -123,12 +123,6 @@ function pwaforwp_after_activation_redirect( $plugin ) {
 add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
 register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
-register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
-
-function pwaforwp_on_deactivation(){
-    
-    
-}
 
 function pwaforwp_on_activation(){
     

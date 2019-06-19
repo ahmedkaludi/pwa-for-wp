@@ -123,7 +123,8 @@ function pwaforwp_download_setup_files(){
     
     $file_type = sanitize_text_field($_GET['filetype']);    
     $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-    $result = '';        
+    $result = '';  
+    
     switch($file_type){
         case 'pwa-sw':                
             $result = $file_creation_init_obj->pwaforwp_swjs_init(); 

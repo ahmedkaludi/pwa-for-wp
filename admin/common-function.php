@@ -391,7 +391,7 @@ add_action('wp_ajax_pwaforwp_download_require_files', 'pwaforwp_download_require
 
 function pwaforwp_download_require_files(){ 
         
-          $creation_obj = new pwaforwpFileCreation();
+          $creation_obj     = new pwaforwpFileCreation();
      
           $swjs             = $creation_obj->pwaforwp_swjs();
           $manifest         = $creation_obj->pwaforwp_manifest();
@@ -401,8 +401,7 @@ function pwaforwp_download_require_files(){
           $amp_manifest     = $creation_obj->pwaforwp_manifest(true);
           $amp_swhtml       = $creation_obj->pwaforwp_swhtml(true);
           $pn_sw_js         = '';
-          
-          
+                    
           $pn_manifest      = '{"gcm_sender_id": "103953800507"}';
                   
           $files = array(
@@ -413,13 +412,13 @@ function pwaforwp_download_require_files(){
                "firebase-messaging-sw.js"                                            => $pn_sw_js,
            );
           
-           if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
+           if ((function_exists( 'ampforwp_is_amp_endpoint' )) || function_exists( 'is_amp_endpoint' )) {                  
                                               
                $files["pwa-amp-sw".pwaforwp_multisite_postfix().".js"]         = $ampsw_js;
                $files["pwa-amp-manifest".pwaforwp_multisite_postfix().".json"] = $amp_manifest;
                $files["pwa-amp-sw".pwaforwp_multisite_postfix().".html"]       = $amp_swhtml;
            }
-
+ 
            # create new zip opbject
            $zip = new ZipArchive();
 
@@ -429,7 +428,7 @@ function pwaforwp_download_require_files(){
 
            # loop through each file
            foreach($files as $file => $value){
-
+              
                # download file
                @file_put_contents($file,$value);
                $download_file = @file_get_contents($file);

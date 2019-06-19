@@ -60,6 +60,16 @@ You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
 
+= 1.1 (19 June 2019) =
+* Added: Manual notification title & app icon in push notification #125
+* Added: Option to download required files when file creation permission is not there #108
+* Improvements: Increase pre-caching post limit from 50 to unlimited #124
+* Bug Fixed: PHP Notice: Undefined index: #119
+* Bug Fixed: messaging/permission-blocked and push notification issues in the PWA for a user #104
+* Bug Fixed: Enter Urls To Be Cached is showing backend links instead of actual links #102
+* Bug Fixed: One Signal issues with Progressive Web Apps (Currently, PWA For WP & AMP is compatible with single site using oneSignal and multisite without oneSignal ( https://wordpress.org/plugins/onesignal-free-web-push-notifications/ )) #81
+
+
 = 1.0.9 (25 March 2019) =
 
 * Bug Fixed: Security improvement.
