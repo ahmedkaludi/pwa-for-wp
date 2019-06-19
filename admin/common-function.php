@@ -96,9 +96,11 @@ function pwaforwp_frontend_enqueue(){
         $server_key = $settings['fcm_server_key'];
         $config     = $settings['fcm_config'];
         
-         if($server_key !='' && $config !=''){             
+         if(($server_key !='' && $config !='')){             
              
-            $swHtmlContent   = @file_get_contents(PWAFORWP_PLUGIN_DIR."layouts/push-notification-template.js");    
+            $swHtmlContentbody   = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
+            $swHtmlContent       = $swHtmlContentbody['body'];
+            
             $firebase_config = 'var config='.$config.';';
             $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
 
@@ -108,7 +110,9 @@ function pwaforwp_frontend_enqueue(){
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
-              'ajax_url' => admin_url( 'admin-ajax.php' ),           
+              'ajax_url'       => admin_url( 'admin-ajax.php' ),
+              'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
+              'pwa_home_url'   => get_home_url(),  
             );
 
             wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
@@ -119,13 +123,20 @@ function pwaforwp_frontend_enqueue(){
          
         if(isset($settings['loading_icon'])){
             
-            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
          
+            $object_js_name = array(
+              'ajax_url'       => admin_url( 'admin-ajax.php' ),
+              'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
+              'pwa_home_url'   => get_home_url(),  
+            );
+            
+            wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
+            
             wp_enqueue_script('pwaforwp-js'); 
             
         }
-        
-        
+                
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp-main.css', false , PWAFORWP_PLUGIN_VERSION );       
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
@@ -422,7 +433,7 @@ function pwaforwp_download_require_files(){
                # download file
                @file_put_contents($file,$value);
                $download_file = @file_get_contents($file);
-
+               
                #add it to the zip
                $zip->addFromString(basename($file),$download_file);
 

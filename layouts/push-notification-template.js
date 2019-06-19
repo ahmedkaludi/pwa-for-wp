@@ -1,5 +1,4 @@
- 
-		     {{firebaseconfig}}                     
+		    {{firebaseconfig}}                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  

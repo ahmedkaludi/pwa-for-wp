@@ -939,18 +939,7 @@ function pwaforwp_one_signal_support_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[one_signal_support_setting]" id="pwaforwp_settings[one_signal_support_setting]" class="pwaforwp-onesignal-support" <?php echo (isset( $settings['one_signal_support_setting'] ) &&  $settings['one_signal_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
-        <?php if(isset($settings['one_signal_support_setting']) && $settings['one_signal_support_setting'] == 1) { ?>
-        <div class="pwaforwp-onesignal-instruction">
-         <?php } else { ?>   
-            <div class="pwaforwp-onesignal-instruction" style="display: none;">
-         <?php } ?>          
-            <p><?php echo esc_html__( 'Note: To work PWA For WP with OneSignal you need to enable settings given below', 'pwa-for-wp' ); ?></p>
-            <ul>
-                <li><strong><?php echo esc_html__( '1.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Go to OneSignal Settings', 'pwa-for-wp' ); ?></li>
-                <li><strong><?php echo esc_html__( '2.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'See', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( 'Advanced Settings', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'at the bottom of the page.', 'pwa-for-wp' ); ?></li>
-                <li><strong><?php echo esc_html__( '3.', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'Enable', 'pwa-for-wp' ); ?> <strong><?php echo esc_html__( '"Use my own manifest.json"', 'pwa-for-wp' ); ?></strong> <?php echo esc_html__( 'and add PWA For WP manifest URL into the field and Save Settings.', 'pwa-for-wp' ); ?> (Example : https://example.com/pwa-manifest.json)</li>
-            </ul>    
-        </div>        
+               
 	<?php
 }
 function pwaforwp_custom_add_to_home_callback(){
