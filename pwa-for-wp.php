@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.0.9
+Version: 1.1
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -16,8 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.0.9');
-define('PWAFORWP_FILE_PREFIX', 'pwa');
+define('PWAFORWP_PLUGIN_VERSION', '1.1');
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
@@ -49,88 +48,67 @@ function pwaforwp_add_action_links($links){
 //}
 
 function pwaforwp_amp_cdn_replace_urls_revert($src){
+    
 	$url = pwaforwp_front_url();
-	$multisite_filename_postfix = '';
-    if ( is_multisite() ) {
-       $multisite_filename_postfix = '-' . get_current_blog_id();
-    }
+	
 	if($src[1]==$url){
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$src.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
 	}else{
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-amp-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$url.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
-    $url = pwaforwp_front_url();    
-    $multisite_filename_postfix = '';
-    if ( is_multisite() ) {
-       $multisite_filename_postfix = '-' . get_current_blog_id();
-    }
+    
+        $url = pwaforwp_front_url();    
+    
 	if($src[1]==$url){
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
-    $url = pwaforwp_front_url(); 
-    $multisite_filename_postfix = '';
-    if ( is_multisite() ) {
-       $multisite_filename_postfix = '-' . get_current_blog_id();
-    }   
+        $url = pwaforwp_front_url(); 
+   
 	if($src[1]==$url){
-		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return ' rel="manifest" href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return ' rel="manifest" href="'.$url.PWAFORWP_FILE_PREFIX.'-amp-manifest'.$multisite_filename_postfix.'.json"';
+		return ' rel="manifest" href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 
 function pwaforwp_cdn_replace_urls_revert($src){
-    
-        $multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
-    
+           
 	$url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$src.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
 	}else{
-		return 'src="'.$url.PWAFORWP_FILE_PREFIX.'-register-sw'.$multisite_filename_postfix.'.js"';
+		return 'src="'.$url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
 	}
 }
 
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
-    
-    $multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
-    
-    $url = pwaforwp_front_url();    
+            
+       $url = pwaforwp_front_url();    
 	if($src[1]==$url){
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$src.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
-		return 'href="'.$url.PWAFORWP_FILE_PREFIX.'-manifest'.$multisite_filename_postfix.'.json"';
+		return 'href="'.$url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}
 }
 
 function pwaforwp_revert_src($content){
-    
-	$multisite_filename_postfix = '';
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
+    	
 	//NON AMP
 	$url = pwaforwp_front_url(); 
-	$content = preg_replace_callback("/src=\"(.*?)".PWAFORWP_FILE_PREFIX."-register-sw".$multisite_filename_postfix."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
+	$content = preg_replace_callback("/src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
+	$content = preg_replace_callback("/href=\"(.*?)"."pwa-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
 
 	//AMP
-	$content = preg_replace_callback("/src=\"([^\"]+".PWAFORWP_FILE_PREFIX."-amp-sw".$multisite_filename_postfix.".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
-	$content.=' ';
-	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
-	$content = preg_replace_callback("/href=\"(.*?)".PWAFORWP_FILE_PREFIX."-amp-manifest".$multisite_filename_postfix."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);        
+	$content = preg_replace_callback("/src=\"([^\"]+"."pwa-amp-sw".pwaforwp_multisite_postfix().".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
+	$content.='';
+	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
+	$content = preg_replace_callback("/href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);        
         
 	return $content;
 }
@@ -174,16 +152,10 @@ function pwaforwp_admin_notice(){
     }
     
     if( $screen_id == 'toplevel_page_pwaforwp' ){
-        
-        $multisite_filename_postfix = '';
-        
-        if ( is_multisite() ) {
-           $multisite_filename_postfix = '-' . get_current_blog_id();
-        }
-        
-        $swJsonNonAmp      = esc_url(pwaforwp_front_url()."pwa-manifest".$multisite_filename_postfix.".json");               
+                
+        $swJsonNonAmp      = esc_url(pwaforwp_front_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
         $file_json_headers = @checkStatus($swJsonNonAmp);
-        $swJsNonAmp        = esc_url(pwaforwp_front_url()."pwa-sw".$multisite_filename_postfix.".js");                               
+        $swJsNonAmp        = esc_url(pwaforwp_front_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
         $file_js_headers   = @checkStatus($swJsNonAmp);
         
         if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
@@ -261,7 +233,7 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
       $meta_fields[] = "<a href='" . esc_url($hire_url) . "' target='_blank'>" . esc_html__('Hire Us', 'pwa-for-wp') . "</a>";
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "/reviews#new-post' target='_blank' title='" . esc_html__('Rate', 'pwa-for-wp') . "'>
-            <i class='pwaforwp-wdi-rate-stars'>"
+            <i class='pwaforwp-p-rate-stars'>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
@@ -269,10 +241,10 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "</i></a>";      
       echo "<style>"
-        . ".pwaforwp-wdi-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
-        . ".pwaforwp-wdi-rate-stars svg{fill:#ffb900;}"
-        . ".pwaforwp-wdi-rate-stars svg:hover{fill:#ffb900}"
-        . ".pwaforwp-wdi-rate-stars svg:hover ~ svg{fill:none;}"
+        . ".pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
+        . ".pwaforwp-p-rate-stars svg{fill:#ffb900;}"
+        . ".pwaforwp-p-rate-stars svg:hover{fill:#ffb900}"
+        . ".pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;}"
         . "</style>";
     }
 
