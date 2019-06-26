@@ -301,10 +301,10 @@ function pwaforwp_front_url(){
 
 function pwaforwp_https( $url ) {
     
-        if(strpos($url, 'localhost') === false){
-            
-           return str_replace( 'http://', 'https://', $url );
-            
+        if(strpos($url, 'localhost') === false){            
+           return str_replace( 'http://', 'https://', $url );            
+        }else{
+           return $url;
         }
         	
 }
