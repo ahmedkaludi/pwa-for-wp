@@ -18,7 +18,7 @@ function pwaforwp_onesignal_compatiblity() {
 
 function pwaforwp_use_custom_manifest(){
     
-    $url = trailingslashit(pwaforwp_https(get_home_url()));
+    $url = pwaforwp_home_url();
     
     $onesignal_option = get_option('OneSignalWPSetting');
     
@@ -75,7 +75,7 @@ function pwaforwp_add_sw_to_onesignal_sw(){
         $abs_path              = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
         $onesignal_sdk         = $abs_path.'OneSignalSDKWorker.js';
         $onesignal_sdk_updator = $abs_path.'OneSignalSDKUpdaterWorker.js';
-        $url                   = trailingslashit(pwaforwp_https(get_home_url()));
+        $url                   = pwaforwp_home_url();
                                               
         $content  = "";        
         $content .= "importScripts('".esc_attr($url.'pwa-sw.js')."')".PHP_EOL;

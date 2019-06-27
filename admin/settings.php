@@ -546,8 +546,8 @@ function pwaforwp_utm_setting_callback(){
 	}
         
 	$utm_source  = $utm_medium = $utm_term = $utm_content = ''; 
-	$utm_url     = pwaforwp_front_url();
-	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_front_url()) : pwaforwp_front_url()."amp");
+	$utm_url     = pwaforwp_home_url();
+	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_home_url()) : pwaforwp_home_url()."amp");
         
 	if(isset($settings['utm_details'])){
             
@@ -1005,7 +1005,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                    $swUrl = esc_url(pwaforwp_front_url()."pwa-manifest". pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_home_url()."pwa-manifest". pwaforwp_multisite_postfix().".json");
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>' );
@@ -1017,7 +1017,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -1036,7 +1036,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = esc_url(pwaforwp_front_url()."pwa-sw".pwaforwp_multisite_postfix().".js");
+                      $swUrl = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>' );
@@ -1049,7 +1049,7 @@ function pwaforwp_files_status_callback(){
                   <?php
                   if($is_amp){
                       
-                    $swUrl = esc_url(pwaforwp_front_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js");
+                    $swUrl = esc_url(pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js");
                     $file_headers = @checkStatus($swUrl);  
                     
                     if(!$file_headers) {
@@ -1116,32 +1116,32 @@ function checkStatus($swUrl){
                 $swmanifestFileNonAmp = $wppath."pwa-manifest".pwaforwp_multisite_postfix().".json";
         
         switch ($swUrl) {
-            case pwaforwp_front_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json":
                     if(file_exists($swmanifestFile)){
                             return true;
                     }
                     break;
-            case pwaforwp_front_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js":
+            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js":
 				if(file_exists($swjsFile)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."pwa-sw".pwaforwp_multisite_postfix().".js":
+            case pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js":
 				if(file_exists($swjsFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."pwa-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json":
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}
 				break;
-            case pwaforwp_front_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".html":
+            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".html":
 				if(file_exists($swHtmlFile)){
 					return true;
 				}
 				break;  
-            case pwaforwp_front_url()."pwa-register-sw".pwaforwp_multisite_postfix().".js":
+            case pwaforwp_home_url()."pwa-register-sw".pwaforwp_multisite_postfix().".js":
 				if(file_exists($swrFile)){
 					return true;
 				}

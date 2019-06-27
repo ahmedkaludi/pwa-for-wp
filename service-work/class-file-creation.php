@@ -5,7 +5,7 @@ class pwaforwpFileCreation{
             
 	    if( $is_amp ){  
                                        
-                        $url 	                        = trailingslashit(pwaforwp_https(get_home_url()));
+                        $url 	                        = pwaforwp_site_url();
 		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');		
 			$swHtmlContentbody 	        = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.html");
                         $swHtmlContent                  = $swHtmlContentbody['body'];
@@ -117,7 +117,7 @@ class pwaforwpFileCreation{
             
         }
 
-		$url = trailingslashit(pwaforwp_https(get_home_url()));
+		$url = pwaforwp_site_url();
        
 		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');		
 		$swHtmlContentbody 		= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw_non_amp.js");                                                               
@@ -192,8 +192,7 @@ class pwaforwpFileCreation{
                  }   
                  
                 }
-                
-               
+                               
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
                 
@@ -205,12 +204,12 @@ class pwaforwpFileCreation{
                                               
                        if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {
 				
-                           $pre_cache_urls_amp .= "'".trim(get_permalink($post_id)).'/amp'. "',\n"; 
+                           $pre_cache_urls_amp .= "'".user_trailingslashit(trim(get_permalink($post_id))).'amp'. "',\n"; 
 			}
                         
                         if (is_plugin_active('amp/amp.php')) {
 				
-                           $pre_cache_urls_amp .= "'".trim(get_permalink($post_id)). "',\n"; 
+                           $pre_cache_urls_amp .= "'".user_trailingslashit(trim(get_permalink($post_id))). "',\n"; 
 			}
                                                                                                                    
                     }
@@ -247,8 +246,8 @@ class pwaforwpFileCreation{
                 }
                                 
                 $site_url 		= user_trailingslashit(pwaforwp_https( site_url() ));  
-		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  pwaforwp_https(get_permalink( $settings['offline_page'] ))  :  pwaforwp_https(get_home_url()));
-		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] )) : pwaforwp_https(get_home_url()));  
+		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  pwaforwp_https(get_permalink( $settings['offline_page'] ))  :  pwaforwp_home_url());
+		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] )) : pwaforwp_home_url());  
 		
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
@@ -336,27 +335,27 @@ class pwaforwpFileCreation{
         
         if($is_amp){ 
                         if(function_exists('ampforwp_url_controller')){
-				$homeUrl = ampforwp_url_controller( get_home_url() ) ;
+				$homeUrl = ampforwp_url_controller( pwaforwp_home_url() ) ;
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			} else {
-				$homeUrl = get_home_url().'/'.AMP_QUERY_VAR;
+				$homeUrl = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			}                       
-                        $scope_url    = get_home_url();
+                        $scope_url    = pwaforwp_home_url();
                         
         } else {
             
-                $homeUrl = get_home_url(); 
+                $homeUrl = pwaforwp_home_url(); 
             
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
                 
-                $scope_url = $homeUrl;    
+                $scope_url = pwaforwp_site_url();    
                 
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));

@@ -117,7 +117,7 @@ class pushNotification{
      
      public function pwaforwp_load_pushnotification_script(){	
          
-            $url 	  = pwaforwp_front_url();
+            $url 	  = pwaforwp_home_url();
             $settings     = pwaforwp_defaultSettings();                        
             $server_key   = $settings['fcm_server_key'];
             $config       = $settings['fcm_config'];

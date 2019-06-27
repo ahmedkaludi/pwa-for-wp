@@ -49,7 +49,7 @@ function pwaforwp_add_action_links($links){
 
 function pwaforwp_amp_cdn_replace_urls_revert($src){
     
-	$url = pwaforwp_front_url();
+	$url = pwaforwp_site_url();
 	
 	if($src[1]==$url){
 		return 'src="'.$src[1].'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
@@ -59,7 +59,7 @@ function pwaforwp_amp_cdn_replace_urls_revert($src){
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
     
-        $url = pwaforwp_front_url();    
+        $url = pwaforwp_site_url();    
     
 	if($src[1]==$url){
 		return 'href="'.$src[1].'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
@@ -68,7 +68,7 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
 	}
 }
 function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
-        $url = pwaforwp_front_url(); 
+        $url = pwaforwp_site_url(); 
    
 	if($src[1]==$url){
 		return ' rel="manifest" href="'.$src[1].'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
@@ -79,7 +79,7 @@ function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
 
 function pwaforwp_cdn_replace_urls_revert($src){
            
-	$url = pwaforwp_front_url();    
+	$url = pwaforwp_site_url();    
 	if($src[1]==$url){
 		return 'src="'.$src[1].'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
 	}else{
@@ -89,7 +89,7 @@ function pwaforwp_cdn_replace_urls_revert($src){
 
 function pwaforwp_cdn_replace_urls_revert_manifest($src){
             
-       $url = pwaforwp_front_url();    
+       $url = pwaforwp_site_url();    
 	if($src[1]==$url){
 		return 'href="'.$src[1].'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
 	}else{
@@ -100,7 +100,7 @@ function pwaforwp_cdn_replace_urls_revert_manifest($src){
 function pwaforwp_revert_src($content){
     	
 	//NON AMP
-	$url = pwaforwp_front_url(); 
+	$url = pwaforwp_site_url(); 
 	$content = preg_replace_callback("/src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
 	$content = preg_replace_callback("/href=\"(.*?)"."pwa-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
 
@@ -153,9 +153,9 @@ function pwaforwp_admin_notice(){
     
     if( $screen_id == 'toplevel_page_pwaforwp' ){
                 
-        $swJsonNonAmp      = esc_url(pwaforwp_front_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
+        $swJsonNonAmp      = esc_url(pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
         $file_json_headers = @checkStatus($swJsonNonAmp);
-        $swJsNonAmp        = esc_url(pwaforwp_front_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
+        $swJsNonAmp        = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
         $file_js_headers   = @checkStatus($swJsNonAmp);
         
         if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){

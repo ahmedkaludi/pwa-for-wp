@@ -112,7 +112,7 @@ function pwaforwp_frontend_enqueue(){
             $object_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
-              'pwa_home_url'   => get_home_url(),  
+              'pwa_home_url'   => pwaforwp_home_url(),  
             );
 
             wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
@@ -128,7 +128,7 @@ function pwaforwp_frontend_enqueue(){
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
-              'pwa_home_url'   => get_home_url(),  
+              'pwa_home_url'   => pwaforwp_home_url(),  
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
@@ -286,17 +286,31 @@ function pwaforwp_expanded_allowed_tags() {
     return $my_allowed;
 }  
 
-function pwaforwp_front_url(){
+function pwaforwp_home_url(){
     
-        if ( ! is_multisite() ) {
-            $link = home_url();
+        if ( is_multisite() ) {
+            $link = get_site_url();              
         }
         else {
-            $link = network_site_url();
+            $link = home_url();
         }    
-    $link = pwaforwp_https($link);
+            $link = pwaforwp_https($link);
     
-    return trailingslashit($link);
+        return trailingslashit($link);
+}
+function pwaforwp_site_url(){
+    
+        if (is_multisite() ) {
+            
+           $link = get_site_url();   
+           
+        }
+        else {
+            $link = site_url();
+        }    
+            $link = pwaforwp_https($link);
+            
+        return trailingslashit($link);
 }
 
 function pwaforwp_https( $url ) {
