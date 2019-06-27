@@ -371,13 +371,13 @@ class pwaforwpFileCreation{
                 $icons = array();
                 //App icon
                 $icons[] = array(
-                    'src' 	=> esc_url($defaults['icon']),
+                    'src' 	=> esc_url(pwaforwp_https($defaults['icon'])),
                     'sizes'	=> '192x192', 
                     'type'	=> 'image/png', 
                 );
                 //Splash icon
                 $icons[] = array(
-                    'src' 	=> esc_url($defaults['splash_icon']),
+                    'src' 	=> esc_url(pwaforwp_https($defaults['splash_icon'])),
                     'sizes'	=> '512x512', 
                     'type'	=> 'image/png', 
                 );

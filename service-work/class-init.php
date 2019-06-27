@@ -37,8 +37,7 @@ class PWAFORWP_File_Creation_Init {
         return pwaforwp_write_a_file($this->push_notification_js, $js_str);
                                                
     }
-    
-    
+        
     public function pwaforwp_swjs_init(){
         
         $swjsContent = $this->fileCreation->pwaforwp_swjs();

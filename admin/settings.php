@@ -834,7 +834,7 @@ function pwaforwp_app_icon_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Application Icon -->
-	<input type="text" name="pwaforwp_settings[icon]" id="pwaforwp_settings[icon]" class="pwaforwp-icon regular-text" size="50" value="<?php echo isset( $settings['icon'] ) ? esc_attr( $settings['icon']) : ''; ?>">
+        <input type="text" name="pwaforwp_settings[icon]" id="pwaforwp_settings[icon]" class="pwaforwp-icon regular-text" size="50" value="<?php echo isset( $settings['icon'] ) ? esc_attr( pwaforwp_https($settings['icon'])) : ''; ?>">
 	<button type="button" class="button pwaforwp-icon-upload" data-editor="content">
 		<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?> 
 	</button>
@@ -850,7 +850,7 @@ function pwaforwp_splash_icon_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Splash Screen Icon -->
-	<input type="text" name="pwaforwp_settings[splash_icon]" id="pwaforwp_settings[splash_icon]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['splash_icon'] ) ? esc_attr( $settings['splash_icon']) : ''; ?>">
+        <input type="text" name="pwaforwp_settings[splash_icon]" id="pwaforwp_settings[splash_icon]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['splash_icon'] ) ? esc_attr( pwaforwp_https($settings['splash_icon'])) : ''; ?>">
 	<button type="button" class="button pwaforwp-splash-icon-upload" data-editor="content">
 		<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
 	</button>

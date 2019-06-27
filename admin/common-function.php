@@ -313,6 +313,34 @@ function pwaforwp_site_url(){
         return trailingslashit($link);
 }
 
+function pwaforwp_amp_takeover_status(){
+    
+       $amp_take_over = false;
+        
+        if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )) {
+         
+            global $redux_builder_amp;
+
+            if(isset($redux_builder_amp['ampforwp-amp-takeover'])){
+                
+                if($redux_builder_amp['ampforwp-amp-takeover'] == 1){
+                    $amp_take_over = true;
+                }
+                                
+            }else{
+                
+                if(function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() && is_front_page()||is_home() ){
+                    $amp_take_over = true;
+                }
+                
+            }
+                            
+        }
+        
+        return $amp_take_over;
+        
+}
+
 function pwaforwp_https( $url ) {
     
         if(strpos($url, 'localhost') === false){            
