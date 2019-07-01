@@ -155,13 +155,12 @@ class pwaforwpFileCreation{
     public function pwaforwp_firebase_js(){
             
                 $config = '';
-                
+                $settings = pwaforwp_defaultSettings();  
+                                
                 if(isset($settings['fcm_config'])){
                     $config   = $settings['fcm_config'];
                 }
-                                
-                $settings = pwaforwp_defaultSettings();     
-                
+                                                                   
                 $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
                 $swHtmlContent      = $swHtmlContentbody['body'];
                 $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);

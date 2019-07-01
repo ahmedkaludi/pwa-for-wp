@@ -314,6 +314,9 @@ self.addEventListener(
         // Return if request url protocal isn't http or https
         if ( ! event.request.url.match(/^(http|https):\/\//i) )
             return;
+        // Return if request url is amp cdn
+        if (event.request.url.includes('cdn.ampproject'))			
+	    return;
                 
         {{EXTERNAL_LINKS}}
                 

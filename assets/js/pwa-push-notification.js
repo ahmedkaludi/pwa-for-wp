@@ -1,4 +1,6 @@
-		    var config=asfd;                     
+		    var config={
+push notifica
+};                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
