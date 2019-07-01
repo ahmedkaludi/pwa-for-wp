@@ -1,0 +1,127 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 20, 2018, 3:55:15 PM
+    Author     : Magazine3
+*/
+@media only screen and (min-width: 992px) {
+    .pwaforwp-footer-prompt {
+        padding: 1% 3%;
+     flex-direction: row;
+    justify-content: center;
+    }
+}
+.pwaforwp-footer-prompt{
+    display: none;
+    width: 100vw;
+    line-height: 2em;
+    background-color: #fff;
+    color: #333;
+    text-align: center;
+    text-decoration: none;    
+    min-height: 10%;
+    padding-top:20px;
+    position: fixed;
+    bottom: 0;
+    justify-content: flex-end;
+    flex-direction: column;
+    flex-grow: 1;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    z-index: 9999;
+}
+pwaforwp-bounceInUp{
+    animation-name: bounceInUp;
+}
+.pwaforwp-animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.pwaforwp-btn{
+        border: none;
+    display: inline-block;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    text-decoration: none;
+    color: #fff;
+    background-color: #2247ce;
+    letter-spacing: .5px;
+    -webkit-transition: .2s ease-out;
+    transition: .2s ease-out;
+    cursor: pointer;
+    padding: 10px 12px;
+    font-size: 16px;
+    line-height: 24px;
+    height: 46px;
+    min-width: 160px;
+    text-align: center;
+    border-radius: 0;
+    text-transform: uppercase;
+    margin: 10px 0;
+    transition: all .2s ease-in-out;
+}
+.pwaforwp-btn-add-to-home{
+    
+}
+
+/* Center the loader */
+
+#pwaforwp_loading_div {
+width: 100%;
+height: 200%;
+position: fixed;
+top: 0;
+left: 0;
+background-color: white;
+z-index: 500;
+}
+#pwaforwp_loading_icon {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 501;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}

@@ -1,4 +1,5 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * 
  * Class PWAFORWP_File_Creation_Init
@@ -28,7 +29,7 @@ class PWAFORWP_File_Creation_Init {
         $this->minifest_init_amp      = $this->wppath.apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
         $this->swhtml_init_amp        = $this->wppath.apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html");
         $this->firebase_manifest_init = $this->wppath.apply_filters('pwaforwp_pn_manifest_file_name',  "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json");                         
-        $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/pwa-push-notification'.pwaforwp_multisite_postfix().".js";                         
+        $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().".js";                         
     }
 
     

@@ -1,4 +1,6 @@
 <?php    
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
@@ -22,7 +24,10 @@ function pwaforwp_reset_all_settings(){
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
            return;  
         }    
-       
+        if ( ! current_user_can( 'manage_options' ) ) {
+           return;
+        }
+        
         $default = pwaforwp_get_default_settings_array();                        
         $result  = update_option('pwaforwp_settings', $default);   
         
@@ -91,11 +96,19 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function pwaforwp_frontend_enqueue(){
-                       
-        $settings   = pwaforwp_defaultSettings();
-        $server_key = $settings['fcm_server_key'];
-        $config     = $settings['fcm_config'];
+                               
+        $server_key = $config ='';
         
+        $settings   = pwaforwp_defaultSettings();
+                
+        if(isset($settings['fcm_server_key'])){
+            $server_key = $settings['fcm_server_key'];
+        }
+        
+        if(isset($settings['fcm_config'])){
+            $config     = $settings['fcm_config'];
+        }
+                        
          if(($server_key !='' && $config !='')){             
              
             $swHtmlContentbody   = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
@@ -107,23 +120,23 @@ function pwaforwp_frontend_enqueue(){
             $file_creating_obj = new PWAFORWP_File_Creation_Init();
             $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
 
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
-              'ajax_url'       => admin_url( 'admin-ajax.php' ),
-              'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
-              'pwa_home_url'   => pwaforwp_home_url(),  
+              'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+              'pwa_ms_prefix'             => pwaforwp_multisite_postfix(),
+              'pwa_home_url'              => pwaforwp_home_url(), 
+              'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')  
             );
 
             wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
             wp_enqueue_script('pwaforwp-push-js');      
             
          }  
-         
-         
+                  
         if(isset($settings['loading_icon'])){
             
-            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
          
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
@@ -137,7 +150,7 @@ function pwaforwp_frontend_enqueue(){
             
         }
                 
-        wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/pwaforwp-main.css', false , PWAFORWP_PLUGIN_VERSION );       
+        wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
 

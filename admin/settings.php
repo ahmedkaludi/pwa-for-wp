@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
@@ -576,19 +577,19 @@ function pwaforwp_utm_setting_callback(){
 	<table class="form-table">
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo esc_attr($utm_source); ?>" data-val="<?php echo $utm_source; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo esc_attr($utm_source); ?>" data-val="<?php echo esc_attr($utm_source); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo $utm_medium; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo esc_attr($utm_medium); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo esc_attr($utm_term); ?>" data-val="<?php echo $utm_term; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo esc_attr($utm_term); ?>" data-val="<?php echo esc_attr($utm_term); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></td>
-			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo esc_attr($utm_content); ?>" data-val="<?php echo $utm_content; ?>"/></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo esc_attr($utm_content); ?>" data-val="<?php echo esc_attr($utm_content); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></td>
@@ -874,7 +875,7 @@ function pwaforwp_offline_page_callback(){
 			'echo'              => 0, 
 			'show_option_none'  => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
-			'selected'          =>  isset($settings['offline_page']) ? $settings['offline_page'] : '',
+			'selected'          =>  isset($settings['offline_page']) ? esc_attr($settings['offline_page']) : '',
 		)), $allowed_html); ?>
 	</label>
 	
@@ -897,7 +898,7 @@ function pwaforwp_404_page_callback(){
 			'echo'              => 0, 
 			'show_option_none'  => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
-			'selected'          => isset($settings['404_page']) ? $settings['404_page'] : '',
+			'selected'          => isset($settings['404_page']) ? esc_attr($settings['404_page']) : '',
 		)), $allowed_html); ?>
 	</label>
 	
@@ -1176,16 +1177,21 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();        
 	
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/main-css.css',PWAFORWP_PLUGIN_VERSION,true );            
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',PWAFORWP_PLUGIN_VERSION,true );            
         // Main JS
-        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/main-script.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
+        
         $object_name = array(
-            'uploader_title' => esc_html('Application Icon', 'pwa-for-wp'),
+            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            'uploader_title'            => esc_html('Application Icon', 'pwa-for-wp'),
             'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
             'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
             'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
             'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')
         );
+        
+        $object_name = apply_filters('pwaforwp_localize_filter',$object_name,'pwaforwp_obj');
+        
         wp_localize_script('pwaforwp-main-js', 'pwaforwp_obj', $object_name);
         wp_enqueue_script('pwaforwp-main-js');
 }

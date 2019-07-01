@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 class pwaforwpFileCreation{
                 
     public function pwaforwp_swhtml($is_amp = false){      
@@ -152,9 +153,14 @@ class pwaforwpFileCreation{
     }
     
     public function pwaforwp_firebase_js(){
-        
-		$settings = pwaforwp_defaultSettings();                                
-                $config   = $settings['fcm_config'];
+            
+                $config = '';
+                
+                if(isset($settings['fcm_config'])){
+                    $config   = $settings['fcm_config'];
+                }
+                                
+                $settings = pwaforwp_defaultSettings();     
                 
                 $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
                 $swHtmlContent      = $swHtmlContentbody['body'];
@@ -336,6 +342,7 @@ class pwaforwpFileCreation{
         if($is_amp){ 
                         if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( pwaforwp_home_url() ) ;
+                                $homeUrl = trailingslashit($homeUrl);
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}

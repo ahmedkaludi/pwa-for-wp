@@ -1,4 +1,4 @@
-		    var config=sdgdg;                     
+		    var config=asfd;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
@@ -49,7 +49,7 @@
                     };
                     xhttp.open("POST", pwaforwp_obj.ajax_url+'?action=pwaforwp_store_token', true);
                     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xhttp.send("token="+currentToken);
+                    xhttp.send("token="+currentToken+'&pwaforwp_security_nonce='+pwaforwp_obj.pwaforwp_security_nonce);
                 }              
                  messaging.onMessage(function(payload) {
                  console.log('Message received. ', payload);

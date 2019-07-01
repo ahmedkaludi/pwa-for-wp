@@ -25,7 +25,7 @@ function pwaforwp_use_custom_manifest(){
     if($onesignal_option['custom_manifest_url'] == '' && $onesignal_option['use_custom_manifest'] == false){
         
         $onesignal_option['use_custom_manifest'] = true;
-        $onesignal_option['custom_manifest_url'] = $url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json';
+        $onesignal_option['custom_manifest_url'] = esc_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json');
         update_option('OneSignalWPSetting', $onesignal_option);
         
     }
@@ -78,7 +78,7 @@ function pwaforwp_add_sw_to_onesignal_sw(){
         $url                   = pwaforwp_home_url();
                                               
         $content  = "";        
-        $content .= "importScripts('".esc_attr($url.'pwa-sw.js')."')".PHP_EOL;
+        $content .= "importScripts('".esc_url($url.'pwa-sw.js')."')".PHP_EOL;
         $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
                                 
         $status = pwaforwp_write_a_file($onesignal_sdk, $content);
