@@ -237,25 +237,24 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section'						// Settings Section ID
 		);                                
 
-	add_settings_section('pwaforwp_design_section', esc_html__('Splash Screen','pwa-for-wp'), '__return_false', 'pwaforwp_design_section');
+	add_settings_section('pwaforwp_design_section', '', '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_background_color',							// ID
-			esc_html__('Background Color', 'pwa-for-wp'),	// Title
+			esc_html__('', 'pwa-for-wp'),	// Title
 			'pwaforwp_background_color_callback',							// CB
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
-		);
-		
-		// Theme Color
-		add_settings_field(
-			'pwaforwp_theme_color',									// ID
-			esc_html__('Theme Color', 'pwa-for-wp'),		// Title
-			'pwaforwp_theme_color_callback',								// CB
+		);		
+                // Add to Home screen Color
+                add_settings_field(
+			'pwaforwp_custom_banner_design',									// ID
+			esc_html__('', 'pwa-for-wp'),		// Title
+			'pwaforwp_custom_banner_design_callback',								// CB
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);
-                
+                                                
                 add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
                                                 
 		add_settings_field(
@@ -546,7 +545,7 @@ function pwaforwp_utm_setting_callback(){
 		$style="style='display:block;'";
 	}
         
-	$utm_source  = $utm_medium = $utm_term = $utm_content = ''; 
+	$utm_source  = $utm_medium = $utm_term = $utm_content = $utm_campaign = ''; 
 	$utm_url     = pwaforwp_home_url();
 	$utm_url_amp = (function_exists('ampforwp_url_controller')? ampforwp_url_controller(pwaforwp_home_url()) : pwaforwp_home_url()."amp");
         
@@ -554,13 +553,15 @@ function pwaforwp_utm_setting_callback(){
             
 		$utm_source     = $settings['utm_details']['utm_source'];
 		$utm_medium     = $settings['utm_details']['utm_medium'];
+                $utm_campaign   = $settings['utm_details']['utm_campaign'];
 		$utm_term       = $settings['utm_details']['utm_term'];
 		$utm_content    = $settings['utm_details']['utm_content'];
                 
-		$queryArg['utm_source']  = $utm_source;
-		$queryArg['utm_medium']  = $utm_medium;
-		$queryArg['utm_term']    = $utm_term;
-		$queryArg['utm_content'] = $utm_content;
+		$queryArg['utm_source']   = $utm_source;
+		$queryArg['utm_medium']   = $utm_medium;
+                $queryArg['utm_campaign'] = $utm_campaign;
+		$queryArg['utm_term']     = $utm_term;
+		$queryArg['utm_content']  = $utm_content;
                 
 		$queryArg    = array_filter($queryArg);
 		$utm_url     = $utm_url."?".http_build_query($queryArg);
@@ -568,7 +569,7 @@ function pwaforwp_utm_setting_callback(){
 
 	}
         
-	$queryArg = 'utm_source=&utm_medium=&utm_term=&utm_content'
+	$queryArg = 'utm_source=&utm_medium=&utm_medium=&utm_term=&utm_content'
                 
 	?>
                 
@@ -582,6 +583,10 @@ function pwaforwp_utm_setting_callback(){
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo esc_attr($utm_medium); ?>"/></td>
+		</tr>
+                <tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+			<td><?php echo esc_html__('UTM Campaign', 'pwa-for-wp'); ?></td>
+			<td><input type="text" name="pwaforwp_settings[utm_details][utm_campaign]" value="<?php echo esc_attr($utm_campaign); ?>" data-val="<?php echo esc_attr($utm_campaign); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
 			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
@@ -666,7 +671,11 @@ function pwaforwp_background_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-	<input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+        <h2><?php echo esc_html__('Splash Screen', 'pwa-for-wp') ?></h2>
+        <table>
+            <tr><td><strong><?php echo esc_html__('Background Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>
+        <tr><td><strong><?php echo esc_html__('Theme Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>                
+        </table>        	
 	
 	<?php
 }
@@ -783,6 +792,20 @@ function pwaforwp_push_notification_callback(){
         </div>
         </div>	
 	<?php
+}
+
+function pwaforwp_custom_banner_design_callback(){
+    
+        $settings = pwaforwp_defaultSettings(); ?>           
+        
+        <h2><?php echo esc_html__('Add To Homescreen Customization', 'pwa-for-wp') ?></h2>
+        <table class="" style="display: block;">
+            <tr><td><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#fff"></td></tr> 
+            <tr><td><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
+            <tr><td><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
+            <tr><td><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#D5E0EB'; ?>" data-default-color="#fdc309"></td></tr>                         
+        </table>
+        <?php
 }
 
 function pwaforwp_theme_color_callback(){

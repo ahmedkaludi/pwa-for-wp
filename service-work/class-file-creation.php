@@ -374,6 +374,10 @@ class pwaforwpFileCreation{
                     
                 }
                 
+                if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+		   $homeUrl = rtrim($homeUrl, '/\\');
+	        }
+                                
                 $icons = array();
                 //App icon
                 $icons[] = array(

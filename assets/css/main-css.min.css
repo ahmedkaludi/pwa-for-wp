@@ -73,5 +73,8 @@ and open the template in the editor.
     padding-top: 0px;
     padding-bottom: 0px;
 }
-
+.pwaforwp-design table th{
+    width: auto;  
+    padding: 0px;
+}
 
