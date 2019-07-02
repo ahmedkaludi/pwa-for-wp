@@ -39,47 +39,47 @@ class PWAFORWP_File_Creation_Init {
                                                
     }
         
-    public function pwaforwp_swjs_init(){
+    public function pwaforwp_swjs_init($action = null){
         
         $swjsContent = $this->fileCreation->pwaforwp_swjs();
-        return pwaforwp_write_a_file($this->swjs_init, $swjsContent);
+        return pwaforwp_write_a_file($this->swjs_init, $swjsContent, $action);
                                 
     }
     
-    public function pwaforwp_manifest_init(){
+    public function pwaforwp_manifest_init($action = null){
         
         $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
         $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
-        return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent);
+        return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
                 
     }
     
-    public function pwaforwp_swr_init(){   
+    public function pwaforwp_swr_init($action = null){   
         
         $swjsContent    = $this->fileCreation->pwaforwp_swr();
-        return pwaforwp_write_a_file($this->swr_init, $swjsContent);
+        return pwaforwp_write_a_file($this->swr_init, $swjsContent, $action);
                        
     }
     
-    public function pwaforwp_swjs_init_amp(){  
+    public function pwaforwp_swjs_init_amp($action = null){  
         
         $swjsContent    = $this->fileCreation->pwaforwp_swjs(true);
-        return pwaforwp_write_a_file($this->swjs_init_amp, $swjsContent);
+        return pwaforwp_write_a_file($this->swjs_init_amp, $swjsContent, $action);
         
      }
-     public function pwaforwp_manifest_init_amp(){
+     public function pwaforwp_manifest_init_amp($action = null){
          
          $swHtmlContent = $this->fileCreation->pwaforwp_manifest(true);
-         return pwaforwp_write_a_file($this->minifest_init_amp, $swHtmlContent);
+         return pwaforwp_write_a_file($this->minifest_init_amp, $swHtmlContent, $action);
         
     }    
-    public function pwaforwp_swhtml_init_amp(){  
+    public function pwaforwp_swhtml_init_amp($action = null){  
         
         $swHtmlContent = $this->fileCreation->pwaforwp_swhtml(true);
-        return pwaforwp_write_a_file($this->swhtml_init_amp, $swHtmlContent);
+        return pwaforwp_write_a_file($this->swhtml_init_amp, $swHtmlContent, $action);
                  
     }
-    public function pwaforwp_swhtml_init_firebase_js(){  
+    public function pwaforwp_swhtml_init_firebase_js($action = null){  
         
         $settings 	= pwaforwp_defaultSettings(); 
         
@@ -87,13 +87,13 @@ class PWAFORWP_File_Creation_Init {
         $config         = $settings['fcm_config'];
                                 
         $swjsContent    = $this->fileCreation->pwaforwp_swjs();
-        $status         = pwaforwp_write_a_file($this->swjs_init, $swjsContent);
+        $status         = pwaforwp_write_a_file($this->swjs_init, $swjsContent, $action);
                 
         $swjsContent    = $this->fileCreation->pwaforwp_swr();
-        $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent);
+        $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent, $action);
         
         $swjsContent    = '{"gcm_sender_id": "103953800507"}';
-        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent);
+        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent, $action);
                          
         //Dummy file to work FCM perfectly 
         
@@ -101,7 +101,7 @@ class PWAFORWP_File_Creation_Init {
 
             $pn_sw_js       = $this->wppath."firebase-messaging-sw.js";  
             $swjsContent    = '';
-            $status         =  pwaforwp_write_a_file($pn_sw_js, $swjsContent);
+            $status         =  pwaforwp_write_a_file($pn_sw_js, $swjsContent, $action);
         
         }
                 

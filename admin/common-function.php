@@ -374,19 +374,22 @@ function pwaforwp_multisite_postfix(){
                         
 }
 
-function pwaforwp_write_a_file($path, $content){
+function pwaforwp_write_a_file($path, $content, $action = null){
         
-        $writestatus = '';
+        $writestatus = '';                        
         
         if(file_exists($path)){
-                unlink($path);
+         $writestatus =  unlink($path);
         }
         
-        if(!file_exists($path)){            
+        if(!$action){
+            if(!file_exists($path)){            
             $handle      = @fopen($path, 'w');
             $writestatus = @fwrite($handle, $content);
             @fclose($handle);
-        }                        
+        }
+        }
+                                        
         if($writestatus){
             return true;   
         }else{
@@ -395,7 +398,11 @@ function pwaforwp_write_a_file($path, $content){
                 
 }
 
-function pwaforwp_required_file_creation(){
+function pwaforwp_delete_pwa_files(){
+    pwaforwp_required_file_creation(true);
+}
+
+function pwaforwp_required_file_creation($action = null){
     
                 $settings = pwaforwp_defaultSettings(); 
                 
@@ -409,23 +416,23 @@ function pwaforwp_required_file_creation(){
 		if($manualfileSetup){
                     
                     $status = '';                    
-                    $status = $fileCreationInit->pwaforwp_swjs_init();
-                    $status = $fileCreationInit->pwaforwp_manifest_init();
-                    $status = $fileCreationInit->pwaforwp_swr_init();
+                    $status = $fileCreationInit->pwaforwp_swjs_init($action);
+                    $status = $fileCreationInit->pwaforwp_manifest_init($action);
+                    $status = $fileCreationInit->pwaforwp_swr_init($action);
                     
                     
                     if(function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )){
                                     
-                        $status = $fileCreationInit->pwaforwp_swjs_init_amp();
-                        $status = $fileCreationInit->pwaforwp_manifest_init_amp();
-                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp();
+                        $status = $fileCreationInit->pwaforwp_swjs_init_amp($action);
+                        $status = $fileCreationInit->pwaforwp_manifest_init_amp($action);
+                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp($action);
                                             
                     }                    
                     if(!$status){
                         
                         set_transient( 'pwaforwp_file_change_transient', true );
                     }
-                    pwaforwp_onesignal_compatiblity();                   
+                    pwaforwp_onesignal_compatiblity($action);                   
 		}
                 
                 if(isset($settings['fcm_server_key'])){
@@ -437,7 +444,7 @@ function pwaforwp_required_file_creation(){
                 }
                                                  
                 if($server_key !='' && $config !=''){
-                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js();  
+                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
                 }
     
 }
@@ -445,6 +452,16 @@ function pwaforwp_required_file_creation(){
 add_action('wp_ajax_pwaforwp_download_require_files', 'pwaforwp_download_require_files');
 
 function pwaforwp_download_require_files(){ 
+    
+        if ( ! current_user_can( 'manage_options' ) ) {
+             return;
+        }
+        if ( ! isset( $_GET['_wpnonce'] ) ){
+             return; 
+        }
+        if ( !wp_verify_nonce( $_GET['_wpnonce'], '_wpnonce' ) ){
+             return;  
+        }
         
           $creation_obj     = new pwaforwpFileCreation();
      

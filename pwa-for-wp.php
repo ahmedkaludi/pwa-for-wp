@@ -101,6 +101,13 @@ function pwaforwp_after_activation_redirect( $plugin ) {
 add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
 register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
+register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
+
+function pwaforwp_on_deactivation(){
+            
+    pwaforwp_delete_pwa_files();
+    
+}
 
 function pwaforwp_on_activation(){
     
@@ -138,8 +145,8 @@ function pwaforwp_admin_notice(){
         
         if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
         
-            $url =  admin_url('admin-ajax.php?action=pwaforwp_download_require_files');
-            
+            $url = wp_nonce_url(admin_url('admin-ajax.php?action=pwaforwp_download_require_files'), '_wpnonce'); 
+                        
             ?>
             <div class="updated notice">
                 <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
