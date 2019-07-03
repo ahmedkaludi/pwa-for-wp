@@ -382,10 +382,12 @@ function pwaforwp_settings_init(){
 function pwaforwp_caching_strategies_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
-	$arrayOPT = array('staleWhileRevalidate'=>'Stale While Revalidate',
-						'networkFirst'=>'Network First',
-						'cacheFirst'=>'Cache First',
-						'networkOnly'=> 'Network Only');
+	$arrayOPT = array(
+                    'staleWhileRevalidate'  => 'Stale While Revalidate',
+                    'networkFirst'          => 'Network First',
+                    'cacheFirst'            => 'Cache First',
+                    'networkOnly'           => 'Network Only'
+                );
 
 	?>
 	<tr>
@@ -395,7 +397,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching']==$key){$sel = "selected"; }
-					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_html__($opval, 'pwa-for-wp').'</option>';
 				}
 			}
 			 ?>
@@ -409,7 +411,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_js_css']==$key){$sel = "selected"; }
-					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_html__($opval, 'pwa-for-wp').'</option>';
 				}
 			}
 			 ?>
@@ -422,7 +424,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_images']==$key){$sel = "selected"; }
-					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_html__($opval, 'pwa-for-wp').'</option>';
 				}
 			}
 			 ?>
@@ -435,7 +437,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_fonts']==$key){$sel = "selected"; }
-					echo '<option value="'.$key.'" '.$sel.'>'.$opval.'</option>';
+					echo '<option value="'.esc_attr($key).'" '.esc_attr($sel).'>'.esc_html__($opval, 'pwa-for-wp').'</option>';
 				}
 			}
 			 ?>
@@ -449,9 +451,9 @@ function pwaforwp_cache_time_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<p><?php echo esc_html__('Set max cache time for Html Default:', 'pwa-for-wp'); ?> <code>3600</code> <?php echo esc_html__('in seconds;', 'pwa-for-wp'); ?> <?php echo esc_html__('You need to enter time in seconds', 'pwa-for-wp'); ?></p>
-	<input type="text" name="pwaforwp_settings[cached_timer][html]" id="pwaforwp_settings[cached_timer][html]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['html'] : '3600'); ?>">
+        <input type="text" name="pwaforwp_settings[cached_timer][html]" id="pwaforwp_settings[cached_timer][html]" class=""  value="<?php echo (isset( $settings['cached_timer'] )? esc_attr($settings['cached_timer']['html']) : '3600'); ?>">
 	<p><?php echo esc_html__('Set max cache time for JS, CSS, JSON Default:', 'pwa-for-wp'); ?> <code>86400</code> <?php echo esc_html__('in seconds;', 'pwa-for-wp'); ?> <?php echo esc_html__('You need to enter time in seconds', 'pwa-for-wp'); ?></p>
-	<input type="text" name="pwaforwp_settings[cached_timer][css]" id="pwaforwp_settings[cached_timer][css]" class=""  value="<?php echo (isset( $settings['cached_timer'] )?  $settings['cached_timer']['css'] : '86400'); ?>">
+        <input type="text" name="pwaforwp_settings[cached_timer][css]" id="pwaforwp_settings[cached_timer][css]" class=""  value="<?php echo (isset( $settings['cached_timer'] )? esc_attr($settings['cached_timer']['css']) : '86400'); ?>">
 	<?php
 }
 
@@ -459,7 +461,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? $settings['excluded_urls']: ''); ?></textarea></label>
+        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -515,7 +517,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>
                     <td><strong><?php echo esc_html__('Enter Post Count', 'pwa-for-wp'); ?></strong></td>
                    <td>
-                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo $settings['precaching_post_count'];} ?>" type="number" min="0">   
+                       <input id="pwaforwp_settings_precaching_post_count" name="pwaforwp_settings[precaching_post_count]" value="<?php if(isset($settings['precaching_post_count'])){ echo esc_attr($settings['precaching_post_count']);} ?>" type="number" min="0">   
                    </td>
                 </tr>
                 <tr>
@@ -527,7 +529,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>    
                     <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
-                      <label><textarea placeholder="https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/ "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo $settings['precaching_urls'];} ?></textarea></label>
+                       <label><textarea placeholder="https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/ "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
@@ -539,10 +541,10 @@ function pwaforwp_precaching_setting_callback(){
 function pwaforwp_utm_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
-	$style    = "style='display:none;'";
+	$style    = "none";
         
 	if(isset($settings['utm_setting']) && $settings['utm_setting']){
-		$style="style='display:block;'";
+		$style="block";
 	}
         
 	$utm_source  = $utm_medium = $utm_term = $utm_content = $utm_campaign = ''; 
@@ -576,31 +578,31 @@ function pwaforwp_utm_setting_callback(){
 	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><?php echo esc_html__('Enable UTM Tracking', 'pwa-for-wp'); ?></label>
 	<p> <?php echo esc_html__('To identify users are coming from your App', 'pwa-for-wp'); ?></p>
 	<table class="form-table">
-		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo esc_attr($utm_source); ?>" data-val="<?php echo esc_attr($utm_source); ?>"/></td>
 		</tr>
-		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo esc_attr($utm_medium); ?>"/></td>
 		</tr>
-                <tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+                <tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Campaign', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_campaign]" value="<?php echo esc_attr($utm_campaign); ?>" data-val="<?php echo esc_attr($utm_campaign); ?>"/></td>
 		</tr>
-		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo esc_attr($utm_term); ?>" data-val="<?php echo esc_attr($utm_term); ?>"/></td>
 		</tr>
-		<tr class="pwawp_utm_values_class" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></td>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo esc_attr($utm_content); ?>" data-val="<?php echo esc_attr($utm_content); ?>"/></td>
 		</tr>
-		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class expectedValues" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></td>
 			<td><code><?php echo esc_url($utm_url); ?></code></td>
 		</tr>
-		<tr class="pwawp_utm_values_class expectedValues" <?php echo $style; ?>>
+		<tr class="pwawp_utm_values_class expectedValues" style="display:<?php echo esc_attr($style); ?>;">
 			<td><?php echo esc_html__('UTM amp Url', 'pwa-for-wp'); ?></td>
 			<td><code><?php echo esc_url($utm_url_amp); ?></code></td>
 		</tr>
@@ -622,7 +624,7 @@ function pwaforwp_force_update_sw_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ echo $settings['force_update_sw_setting'];}else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>        
+        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ echo esc_attr($settings['force_update_sw_setting']);}else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>        
 	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -692,12 +694,12 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
-                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? $settings['fcm_server_key']:'') ; ?>"></td>
+                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
-                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? $settings['fcm_config'] : ''; ?></textarea>
+                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
@@ -798,7 +800,7 @@ function pwaforwp_custom_banner_design_callback(){
     
         $settings = pwaforwp_defaultSettings(); ?>           
         
-        <h2><?php echo esc_html__('Add To Homescreen Customization', 'pwa-for-wp') ?></h2>
+        <h2><?php echo esc_html__('Custom Add To Homescreen Customization', 'pwa-for-wp') ?></h2>
         <table class="" style="display: block;">
             <tr><td><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#fff"></td></tr> 
             <tr><td><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 

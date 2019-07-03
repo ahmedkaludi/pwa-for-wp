@@ -97,7 +97,7 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  */
 function pwaforwp_frontend_enqueue(){
                                
-        $server_key = $config ='';
+        $server_key = $config = '';
         
         $settings   = pwaforwp_defaultSettings();
                 
@@ -112,14 +112,16 @@ function pwaforwp_frontend_enqueue(){
          if(($server_key !='' && $config !='')){             
              
             $swHtmlContentbody   = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
-            $swHtmlContent       = $swHtmlContentbody['body'];
             
-            $firebase_config = 'var config='.$config.';';
-            $swHtmlContent   = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
+            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
+                $swHtmlContent       = $swHtmlContentbody['body'];
+                $firebase_config     = 'var config='.$config.';';
+                $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
 
-            $file_creating_obj = new PWAFORWP_File_Creation_Init();
-            $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
-
+                $file_creating_obj = new PWAFORWP_File_Creation_Init();
+                $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
+            }                                    
+            
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
@@ -381,13 +383,13 @@ function pwaforwp_write_a_file($path, $content, $action = null){
         if(file_exists($path)){
          $writestatus =  unlink($path);
         }
-        
+                
         if(!$action){
-            if(!file_exists($path)){            
+            if(!file_exists($path) && $content){            
             $handle      = @fopen($path, 'w');
             $writestatus = @fwrite($handle, $content);
             @fclose($handle);
-        }
+         }
         }
                                         
         if($writestatus){

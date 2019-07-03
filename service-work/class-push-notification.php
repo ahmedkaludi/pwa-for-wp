@@ -15,7 +15,7 @@ class pushNotification{
      public function pwaforwp_send_notification_manually(){                  
          
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
-            return; 
+                return; 
             }
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
@@ -24,7 +24,7 @@ class pushNotification{
             $message['title'] = sanitize_text_field($_POST['title']);
             $message['body']  = $body;
             $message['url']   = site_url();
-            
+                        
             $result           = $this->pwaforwp_send_push_notification($message); 
             
             $result = json_decode($result, true);                         
@@ -156,9 +156,9 @@ class pushNotification{
             } 
             
             if($result){
-            echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }

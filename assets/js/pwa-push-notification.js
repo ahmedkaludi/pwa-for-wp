@@ -1,6 +1,12 @@
 		    var config={
-push notifica
-};                     
+    apiKey: "AIzaSyDkGWses7ptdY5wjvzJ1MfOit_QVqRPVpM",
+    authDomain: "testing-1a7e3.firebaseapp.com",
+    databaseURL: "https://testing-1a7e3.firebaseio.com",
+    projectId: "testing-1a7e3",
+    storageBucket: "testing-1a7e3.appspot.com",
+    messagingSenderId: "1079243937425",
+    appId: "1:1079243937425:web:aa42823e35c0d411"
+  };                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  

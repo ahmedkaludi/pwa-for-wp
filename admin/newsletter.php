@@ -12,7 +12,12 @@ class pwaforwp_ads_newsletter {
         function pwaforwp_add_localize_footer_data($object, $object_name){
             
         $dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                                
-        $do_tour   = !in_array ('pwaforwp_subscribe_pointer', $dismissed);                   
+        $do_tour   = !in_array ('pwaforwp_subscribe_pointer', $dismissed); 
+        
+        if ($do_tour) {
+                wp_enqueue_style ('wp-pointer');
+                wp_enqueue_script ('wp-pointer');						
+	}
                         
         if($object_name == 'pwaforwp_obj'){
                         

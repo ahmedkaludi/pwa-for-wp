@@ -1,9 +1,7 @@
 <?php 
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
- * 
  * Class PWAFORWP_File_Creation_Init
- *
  */
 class PWAFORWP_File_Creation_Init {
     

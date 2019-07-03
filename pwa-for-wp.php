@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('PWAFORWP_PLUGIN_VERSION', '1.1');
+define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
+
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
@@ -28,7 +30,7 @@ require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php";
 
       
 if( pwaforwp_is_admin() ){
-	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__),'pwaforwp_add_action_links');
+	add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
 	require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
 }
 function pwaforwp_add_action_links($links){
@@ -149,14 +151,13 @@ function pwaforwp_admin_notice(){
                         
             ?>
             <div class="updated notice">
-                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
+                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/check-or-download-from-manual-error/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
             </div>
             <?php
               delete_transient( 'pwaforwp_file_change_transient' );
         }
                 
-    }
-    
+    }    
     
     /* Check transient, if available display notice */
     
@@ -190,8 +191,9 @@ function pwaforwp_admin_notice(){
                      
         $current_date = date("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
+        
         $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
-        $review_notice_bar_never = get_option( "pwaforwp_review_never");
+        $review_notice_bar_never       = get_option( "pwaforwp_review_never");
         
         if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
             echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
@@ -212,7 +214,7 @@ add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 
 function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     
-    if ( plugin_basename(__FILE__) == $file ) {
+    if ( PWAFORWP_PLUGIN_BASENAME == $file ) {
       $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
       $hire_url = "https://ampforwp.com/hire/";
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
@@ -224,13 +226,7 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-        . "</i></a>";      
-      echo "<style>"
-        . ".pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
-        . ".pwaforwp-p-rate-stars svg{fill:#ffb900;}"
-        . ".pwaforwp-p-rate-stars svg:hover{fill:#ffb900}"
-        . ".pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;}"
-        . "</style>";
+        . "</i></a>";            
     }
 
     return $meta_fields;

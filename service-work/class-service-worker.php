@@ -69,6 +69,10 @@ class PWAFORWP_Service_Worker{
         }
         public function pwaforwp_store_latest_post_ids(){
            
+           if ( ! current_user_can( 'manage_options' ) ) {
+                 return;
+           }
+           
            $post_ids = array();           
            $settings = pwaforwp_defaultSettings();
            

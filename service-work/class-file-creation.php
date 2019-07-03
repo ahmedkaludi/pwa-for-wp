@@ -9,11 +9,17 @@ class pwaforwpFileCreation{
                         $url 	                        = pwaforwp_site_url();
 		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');		
 			$swHtmlContentbody 	        = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.html");
-                        $swHtmlContent                  = $swHtmlContentbody['body'];
-			$swHtmlContent 			= str_replace(array(
+                        
+                        $swHtmlContent = '';
+                        
+                        if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
+                            $swHtmlContent                      = $swHtmlContentbody['body'];
+                            $swHtmlContent 			= str_replace(array(
                                                                 "{{serviceWorkerFile}}"), 
                                                                   array($ServiceWorkerfileName), 
                                                                   $swHtmlContent);
+                        }                                                
+			
 			return $swHtmlContent;		    
 	    }	
             
@@ -122,8 +128,14 @@ class pwaforwpFileCreation{
        
 		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');		
 		$swHtmlContentbody 		= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw_non_amp.js");                                                               
-                $swHtmlContent                  = $swHtmlContentbody['body'];
-                if($server_key !='' && $config !=''){
+                
+                $swHtmlContent = '';
+                
+                if(is_array($swHtmlContentbody) && $swHtmlContentbody['body']){
+                    
+                 $swHtmlContent         = $swHtmlContentbody['body'];
+                    
+                 if($server_key !='' && $config !=''){
                  $firebaseconfig   = 'var config ='.$config.';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
@@ -149,12 +161,15 @@ class pwaforwpFileCreation{
                                                 $addtohomefunction
                                             ), 
                                     $swHtmlContent);
+                    
+                    
+                }                                                
 		return $swHtmlContent;		    
     }
     
     public function pwaforwp_firebase_js(){
             
-                $config = '';
+                $config = $swHtmlContent = '';
                 $settings = pwaforwp_defaultSettings();  
                                 
                 if(isset($settings['fcm_config'])){
@@ -162,25 +177,31 @@ class pwaforwpFileCreation{
                 }
                                                                    
                 $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
-                $swHtmlContent      = $swHtmlContentbody['body'];
-                $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);
-                                                                                                                                 
+                                                
+                if(is_array($swHtmlContentbody)&& isset($swHtmlContentbody['body'])){
+                    $swHtmlContent      = $swHtmlContentbody['body'];
+                    $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);
+                }
+                                                                                                                                                 
 		return $swHtmlContent;		    
     }
        
     public function pwaforwp_swjs($is_amp = false){
             
 		$swJsContentbody 	= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.js");
+                
+                if(is_array($swJsContentbody) && isset($swJsContentbody['body'])){
+                 
                 $swJsContent            = $swJsContentbody['body'];
 		$settings 		= pwaforwp_defaultSettings();   
                 
                 $external_links ='';
                 
-                if(!isset($settings['external_links_setting'])){  
-                    
+                if(isset($settings['external_links_setting']) && $settings['external_links_setting'] ==1){                      
+                    $external_links = '';                                                                    
+                }else{
                     $external_links = 'if ( new URL(event.request.url).origin !== location.origin )
                             return;';
-                                                                    
                 }
                 
                 $pre_cache_urls     = '';
@@ -192,7 +213,8 @@ class pwaforwpFileCreation{
                  
                  foreach ($explod_urls as $url){
                      
-                  $pre_cache_urls .= "'".trim($url)."',\n";  
+                  $pre_cache_urls .= "'".trim(esc_url($url))."',\n"; 
+                  $pre_cache_urls_amp .= "'".trim(esc_url($url))."',\n"; 
                   
                  }   
                  
@@ -329,8 +351,10 @@ class pwaforwpFileCreation{
                                                             '/<img[^>]+src="(https:\/\/[^">]+)"/g'
                                                             ), 
                                                             $swJsContent);                		
-		}                		
-	    return apply_filters( 'pwaforwp_sw_js_template', $swJsContent );
+		} 
+                    
+                }                                               		
+	        return apply_filters( 'pwaforwp_sw_js_template', $swJsContent );
 		
 	}
       
