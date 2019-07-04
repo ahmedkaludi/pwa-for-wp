@@ -151,7 +151,7 @@ function pwaforwp_admin_notice(){
                         
             ?>
             <div class="updated notice">
-                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/check-or-download-from-manual-error/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
+                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
             </div>
             <?php
               delete_transient( 'pwaforwp_file_change_transient' );
