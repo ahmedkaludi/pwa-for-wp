@@ -113,8 +113,8 @@ class PWAFORWP_Service_Worker{
         public function pwaforwp_custom_add_to_home_screen(){
             
             $settings        = pwaforwp_defaultSettings();
-            $button_text     = esc_html__( $button_text, 'pwa-for-wp' );
-            $banner_title    = 'Add '.get_bloginfo().' to your Homescreen!';
+            $button_text     = esc_html__( 'Add', 'pwa-for-wp' );
+            $banner_title    = esc_html__( 'Add', 'pwa-for-wp' ).' '.get_bloginfo().' '.esc_html__( 'to your Homescreen!', 'pwa-for-wp' );
                         
             if($settings['custom_banner_title'] && $settings['custom_banner_title'] != ''){
                 $banner_title = $settings['custom_banner_title'];
