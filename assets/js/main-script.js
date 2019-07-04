@@ -154,9 +154,13 @@ jQuery(document).ready(function($){
             $(".pwaforwp-settings-form #submit").click();
             $(this).hide();
         });
-        $(".pwaforwp-service-activate").on("click", function(){       
+        $(".pwaforwp-service-activate").on("click", function(){  
+            
         var filetype = $(this).attr("data-id");                
-                $.ajax({
+        
+        if(filetype){
+            
+            $.ajax({
                     url:ajaxurl,
                     dataType: "json",
                     data:{filetype:filetype, action:"pwaforwp_download_setup_files", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
@@ -167,10 +171,13 @@ jQuery(document).ready(function($){
 	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
 	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
 	                    }else{
-	                        alert(pwaforwp_obj.file_status);
+	                        $(".pwaforwp-service-activate[data-id="+filetype+"]").parent().next().removeClass("pwaforwp-hide");
 	                    }  
                     }                
                 });
+            
+        }
+                
         return false;
     });
         

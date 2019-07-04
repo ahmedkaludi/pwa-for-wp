@@ -220,10 +220,7 @@ function pwaForWpprecacheUrl(url) {
                         }
                     })
                     .then((response) => {
-                        if(response) {
-						
-                        
-                             
+                        if(response) {						                                                     
                              fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
                                                     .then(data => {
 												
@@ -314,10 +311,7 @@ self.addEventListener(
         // Return if request url protocal isn't http or https
         if ( ! event.request.url.match(/^(http|https):\/\//i) )
             return;
-        // Return if request url is amp cdn
-        if (event.request.url.includes('cdn.ampproject'))			
-	    return;
-                
+                       
         {{EXTERNAL_LINKS}}
                 
         event.respondWith(
@@ -395,11 +389,11 @@ self.addEventListener(
                                             .then(
                                                 (response) => {
 
-                                                    if(response.status < 300 && response.status > 0) {
+                                                    if(response.status < 300) {
                                                         if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
                                                             cache.put(event.request, response.clone());
                                                         }
-                                                        return response;
+                                                            return response;
                                                     } else {
                                                         return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
                                                             return cache.match(NOT_FOUND_PAGE);
