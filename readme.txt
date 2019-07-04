@@ -66,7 +66,7 @@ You can contact us from [here](https://ampforwp.com/contact/)
 * Bug Fixed: If CDN compatiblity is enabled, Layout of the website is broken #140
 * Bug Fixed: AMP pages are broken on normal refresh. #139
 * Bug Fixed: If https status is valid and app icon URL is HTTP then redirect it as HTTPS #133
-* Bug Fixed: UTM tracking issue in PWA #114
+* Bug Fixed: UTM tracking issue in PWA (Campaign parameter has been added) #114
 * Bug Fixed: Home url issue #126
 
 = 1.1 (19 June 2019) =
