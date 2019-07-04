@@ -127,11 +127,11 @@ class pushNotification{
                 $config       = $settings['fcm_config'];
             }                        
                                                               
-            if($server_key !='' && $config !=''){
+            if($server_key !='' && $config !='' && isset($settings['normal_enable'])){
                 
-             echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'/assets/vendor/js/firebase-app.min.js').'"></script>';	
-             echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'/assets/vendor/js/firebase-messaging.min.js').'"></script>';	             
-             echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
+                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-app.min.js').'"></script>';	
+                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-messaging.min.js').'"></script>';	             
+                echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
              
             }                    
      }         

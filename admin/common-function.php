@@ -100,8 +100,10 @@ function pwaforwp_frontend_enqueue(){
         $server_key = $config = '';
         
         $settings   = pwaforwp_defaultSettings();
-                
-        if(isset($settings['fcm_server_key'])){
+        
+        if(isset($settings['normal_enable'])){
+            
+            if(isset($settings['fcm_server_key'])){
             $server_key = $settings['fcm_server_key'];
         }
         
@@ -153,6 +155,8 @@ function pwaforwp_frontend_enqueue(){
         }
                 
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
+        }
+        
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
 
