@@ -1,4 +1,3 @@
-
 jQuery(document).ready(function($){
     
   $('#pwaforwp_loading_div').hide();

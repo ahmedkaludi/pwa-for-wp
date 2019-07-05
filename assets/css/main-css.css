@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 4, 2018, 7:47:47 PM
+    Author     : Magazine3
+*/
+
+.pwaforwp-hide{
+    display: none;
+}
+.pwaforwp-dashboard h2{
+	margin-bottom: 5px;
+}
+.pwaforwp-dashboard table th{
+    width: 0px;
+    padding: 0px;   
+    
+}
+.pwaforwp-files-table{
+	width:70%;
+}
+.pwaforwp-files-table th td{
+    width: 300px;
+}
+.pwaforwp-files-table th{
+    vertical-align: inherit;
+}
+.pwa-query-success{
+    color: #028a00;
+}
+.pwa-query-error{
+    color: #f73434;
+}
+.pwa_hide{
+    display: none;
+}
+.pwaforwp-push_notification th{
+    padding: 0px;
+    width: 0px;
+}
+.pwaforwp-push_notification td{
+    padding: 0px;    
+}
+.pwaforwp-push-notificatoin-table{
+    width: 100%;
+    
+}
+.pwaforwp-push-notificatoin-table th{
+    width: 20%;
+    padding: 10px;
+    
+}
+.pwaforwp-push-notificatoin-table input[type="text"]{
+    width: 30%;   
+}
+.pwaforwp-notification-success{
+    color: #028a00;
+}
+.pwaforwp-notification-error{
+    color: #f73434;
+}
+.pwaforwp_precaching_table input, select {
+    width: 200px;
+}
+.pwaforwp_precaching_table td {
+    vertical-align: top;
+}
+.pwaforwp-pre-cache-table td{
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.pwaforwp-design table th{
+    width: auto;  
+    padding: 0px;
+}
+
+.pwaforwp-p-rate-stars {display:inline-block;color:#ffb900;position:relative;top:3px;};
+.pwaforwp-p-rate-stars svg{fill:#ffb900;};
+.pwaforwp-p-rate-stars svg:hover{fill:#ffb900};
+.pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;};
+

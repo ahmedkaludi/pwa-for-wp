@@ -1,12 +1,10 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 class pushNotification{
-     public function __construct() {   
-                          
-     }        
+            
      public function pwaforwp_push_notification_hooks(){
          
-            add_action('publish_post', array($this, 'pwaforwp_send_notification_on_post_save'));                 
-         
+            add_action('publish_post', array($this, 'pwaforwp_send_notification_on_post_save'));                          
             add_action('wp_head', array($this, 'pwaforwp_load_pushnotification_script'), 35);                 
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
             add_action('wp_ajax_pwaforwp_store_token', array($this, 'pwaforwp_store_token'));             
@@ -17,7 +15,7 @@ class pushNotification{
      public function pwaforwp_send_notification_manually(){                  
          
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
-            return; 
+                return; 
             }
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
@@ -26,7 +24,7 @@ class pushNotification{
             $message['title'] = sanitize_text_field($_POST['title']);
             $message['body']  = $body;
             $message['url']   = site_url();
-            
+                        
             $result           = $this->pwaforwp_send_push_notification($message); 
             
             $result = json_decode($result, true);                         
@@ -117,21 +115,36 @@ class pushNotification{
      
      public function pwaforwp_load_pushnotification_script(){	
          
-            $url 	  = pwaforwp_front_url();
-            $settings     = pwaforwp_defaultSettings();                        
-            $server_key   = $settings['fcm_server_key'];
-            $config       = $settings['fcm_config'];
+            $url 	  = pwaforwp_home_url();
+            $settings     = pwaforwp_defaultSettings();      
+            
+            $server_key = $config = '';
+            
+            if(isset($settings['fcm_server_key'])){
+                $server_key   = $settings['fcm_server_key'];
+            }
+            if(isset($settings['fcm_config'])){
+                $config       = $settings['fcm_config'];
+            }                        
                                                               
-            if($server_key !='' && $config !=''){
+            if($server_key !='' && $config !='' && isset($settings['normal_enable'])){
                 
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-app.js"></script>';	
-             echo '<script src="https://www.gstatic.com/firebasejs/5.5.4/firebase-messaging.js"></script>';	             
-             echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
+                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-app.min.js').'"></script>';	
+                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-messaging.min.js').'"></script>';	             
+                echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
              
             }                    
      }         
      public function pwaforwp_store_token(){
                      
+            if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+                return; 
+            }
+            
+            if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+               return;  
+            }
+         
             $get_token_list = array();  
             $result         = false;
             $token          = sanitize_text_field($_POST['token']);             
@@ -143,9 +156,9 @@ class pushNotification{
             } 
             
             if($result){
-            echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }

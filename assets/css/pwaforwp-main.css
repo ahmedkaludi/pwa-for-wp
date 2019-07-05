@@ -17,8 +17,7 @@ and open the template in the editor.
 .pwaforwp-footer-prompt{
     display: none;
     width: 100vw;
-    line-height: 2em;
-    background-color: #fff;
+    line-height: 2em;    
     color: #333;
     text-align: center;
     text-decoration: none;    
@@ -65,10 +64,6 @@ pwaforwp-bounceInUp{
     margin: 10px 0;
     transition: all .2s ease-in-out;
 }
-.pwaforwp-btn-add-to-home{
-    
-}
-
 /* Center the loader */
 
 #pwaforwp_loading_div {

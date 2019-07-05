@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.1
+Version: 1.2
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -16,7 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.1');
+define('PWAFORWP_PLUGIN_VERSION', '1.2');
+define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
+
         
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
@@ -28,7 +30,7 @@ require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php";
 
       
 if( pwaforwp_is_admin() ){
-	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__),'pwaforwp_add_action_links');
+	add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
 	require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
 }
 function pwaforwp_add_action_links($links){
@@ -40,76 +42,54 @@ function pwaforwp_add_action_links($links){
 //function pwaforwp_allow_cdn(){
 	if ( !is_admin() ) { 
             
-		$settings = pwaforwp_defaultSettings(); 
-			if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
-				ob_start('pwaforwp_revert_src');
+                $settings = pwaforwp_defaultSettings(); 
+                if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){                                            
+                        ob_start('pwaforwp_revert_src');
 		}
 	}
 //}
 
-function pwaforwp_amp_cdn_replace_urls_revert($src){
-    
-	$url = pwaforwp_front_url();
-	
-	if($src[1]==$url){
-		return 'src="'.$src.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
-	}else{
-		return 'src="'.$url.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"';
-	}
-}
-function pwaforwp_amp_cdn_replace_urls_revert_manifest($src){
-    
-        $url = pwaforwp_front_url();    
-    
-	if($src[1]==$url){
-		return 'href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}else{
-		return 'href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}
-}
-function pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel($src){
-        $url = pwaforwp_front_url(); 
-   
-	if($src[1]==$url){
-		return ' rel="manifest" href="'.$src.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}else{
-		return ' rel="manifest" href="'.$url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}
-}
 
-function pwaforwp_cdn_replace_urls_revert($src){
-           
-	$url = pwaforwp_front_url();    
-	if($src[1]==$url){
-		return 'src="'.$src.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
-	}else{
-		return 'src="'.$url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js"';
-	}
-}
-
-function pwaforwp_cdn_replace_urls_revert_manifest($src){
-            
-       $url = pwaforwp_front_url();    
-	if($src[1]==$url){
-		return 'href="'.$src.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}else{
-		return 'href="'.$url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json"';
-	}
-}
 
 function pwaforwp_revert_src($content){
-    	
-	//NON AMP
-	$url = pwaforwp_front_url(); 
-	$content = preg_replace_callback("/src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\"/i",  'pwaforwp_cdn_replace_urls_revert', $content);
-	$content = preg_replace_callback("/href=\"(.*?)"."pwa-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_cdn_replace_urls_revert_manifest', $content);
-
-	//AMP
-	$content = preg_replace_callback("/src=\"([^\"]+"."pwa-amp-sw".pwaforwp_multisite_postfix().".js)\"/",  'pwaforwp_amp_cdn_replace_urls_revert', $content);
-	$content.='';
-	$content = preg_replace_callback("/rel=\"dns-prefetch\"\s*href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest_with_rel', $content);
-	$content = preg_replace_callback("/href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\"/i",  'pwaforwp_amp_cdn_replace_urls_revert_manifest', $content);        
+                                 
+	$url = pwaforwp_site_url(); 
+                
+        //None AMP 
+        preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $match);
+                       
+        if(isset($match[0])){
+           $replacewith = '<script src="'.esc_url($url).'pwa-register-sw'.pwaforwp_multisite_postfix().'.js">';  
+           $content = str_replace($match[0],$replacewith,$content);
+        }
         
+        //AMP 
+        
+        if ((function_exists( 'ampforwp_is_amp_endpoint' )) || function_exists( 'is_amp_endpoint' )) {
+            
+            preg_match("/<link rel=\"manifest\" href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\">/i", $content, $match);
+        
+            if(isset($match[0])){
+               $replacewith = '<link rel="manifest" href="'.esc_url($url).'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json">'; 
+               $content = str_replace($match[0],$replacewith,$content);
+            }
+
+            preg_match("/src=\"(.*?)"."pwa-amp-sw".pwaforwp_multisite_postfix()."\.js/i", $content, $match);
+
+            if(isset($match[0])){
+               $replacewith = 'src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'; 
+               $content = str_replace($match[0],$replacewith,$content);
+            }
+
+            preg_match("/data-iframe-src=\"(.*?)"."pwa-amp-sw".pwaforwp_multisite_postfix()."\.html/i", $content, $match);
+
+            if(isset($match[0])){
+               $replacewith = 'data-iframe-src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html'; 
+               $content = str_replace($match[0],$replacewith,$content);
+            }
+            
+        }
+                        
 	return $content;
 }
 /**
@@ -123,6 +103,13 @@ function pwaforwp_after_activation_redirect( $plugin ) {
 add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
 register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
+register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
+
+function pwaforwp_on_deactivation(){
+            
+    pwaforwp_delete_pwa_files();
+    
+}
 
 function pwaforwp_on_activation(){
     
@@ -153,25 +140,24 @@ function pwaforwp_admin_notice(){
     
     if( $screen_id == 'toplevel_page_pwaforwp' ){
                 
-        $swJsonNonAmp      = esc_url(pwaforwp_front_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
+        $swJsonNonAmp      = esc_url(pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
         $file_json_headers = @checkStatus($swJsonNonAmp);
-        $swJsNonAmp        = esc_url(pwaforwp_front_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
+        $swJsNonAmp        = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
         $file_js_headers   = @checkStatus($swJsNonAmp);
         
         if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
         
-            $url =  admin_url('admin-ajax.php?action=pwaforwp_download_require_files');
-            
+            $url = wp_nonce_url(admin_url('admin-ajax.php?action=pwaforwp_download_require_files'), '_wpnonce'); 
+                        
             ?>
             <div class="updated notice">
-                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
+                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
             </div>
             <?php
               delete_transient( 'pwaforwp_file_change_transient' );
         }
                 
-    }
-    
+    }    
     
     /* Check transient, if available display notice */
     
@@ -205,8 +191,9 @@ function pwaforwp_admin_notice(){
                      
         $current_date = date("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
+        
         $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
-        $review_notice_bar_never = get_option( "pwaforwp_review_never");
+        $review_notice_bar_never       = get_option( "pwaforwp_review_never");
         
         if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
             echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
@@ -227,7 +214,7 @@ add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 
 function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     
-    if ( plugin_basename(__FILE__) == $file ) {
+    if ( PWAFORWP_PLUGIN_BASENAME == $file ) {
       $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
       $hire_url = "https://ampforwp.com/hire/";
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
@@ -239,13 +226,7 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
         . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-star'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-        . "</i></a>";      
-      echo "<style>"
-        . ".pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;}"
-        . ".pwaforwp-p-rate-stars svg{fill:#ffb900;}"
-        . ".pwaforwp-p-rate-stars svg:hover{fill:#ffb900}"
-        . ".pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;}"
-        . "</style>";
+        . "</i></a>";            
     }
 
     return $meta_fields;

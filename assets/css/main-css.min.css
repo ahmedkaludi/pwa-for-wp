@@ -73,5 +73,13 @@ and open the template in the editor.
     padding-top: 0px;
     padding-bottom: 0px;
 }
+.pwaforwp-design table th{
+    width: auto;  
+    padding: 0px;
+}
 
+.pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;};
+.pwaforwp-p-rate-stars svg{fill:#ffb900;};
+.pwaforwp-p-rate-stars svg:hover{fill:#ffb900};
+.pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;};
 

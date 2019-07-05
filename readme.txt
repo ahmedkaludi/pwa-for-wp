@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -59,6 +59,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://ampforwp.com/contact/)
 
 == Changelog ==
+
+= 1.2 (04 July 2019) =
+* Bug Fixed: Delete the pwaforwp required files on uninstallation #141
+* Bug Fixed: Click here to setup for particular file should have setup Instruction link and message. #142
+* Bug Fixed: If CDN compatiblity is enabled, Layout of the website is broken #140
+* Bug Fixed: AMP pages are broken on normal refresh. #139
+* Bug Fixed: If https status is valid and app icon URL is HTTP then redirect it as HTTPS #133
+* Bug Fixed: UTM tracking issue in PWA (Campaign parameter has been added) #114
+* Bug Fixed: Home url issue #126
 
 = 1.1 (19 June 2019) =
 * Added: Manual notification title & app icon in push notification #125

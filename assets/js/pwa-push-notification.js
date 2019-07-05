@@ -1,4 +1,12 @@
-		    var config=sdgdg;                     
+		    var config={
+    apiKey: "AIzaSyDkGWses7ptdY5wjvzJ1MfOit_QVqRPVpM",
+    authDomain: "testing-1a7e3.firebaseapp.com",
+    databaseURL: "https://testing-1a7e3.firebaseio.com",
+    projectId: "testing-1a7e3",
+    storageBucket: "testing-1a7e3.appspot.com",
+    messagingSenderId: "1079243937425",
+    appId: "1:1079243937425:web:aa42823e35c0d411"
+  };                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
@@ -49,7 +57,7 @@
                     };
                     xhttp.open("POST", pwaforwp_obj.ajax_url+'?action=pwaforwp_store_token', true);
                     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    xhttp.send("token="+currentToken);
+                    xhttp.send("token="+currentToken+'&pwaforwp_security_nonce='+pwaforwp_obj.pwaforwp_security_nonce);
                 }              
                  messaging.onMessage(function(payload) {
                  console.log('Message received. ', payload);
