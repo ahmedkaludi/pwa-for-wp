@@ -11,7 +11,7 @@ class PWAFORWP_Service_Worker{
                 
         $settings = pwaforwp_defaultSettings();
             
-        if(isset($settings['custom_add_to_home_setting'])){
+        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable'])){
          add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
         }        
                 
