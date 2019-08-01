@@ -25,6 +25,30 @@ class pwaforwpFileCreation{
             
 	}
     
+    public function pwaforwp_pnjs($is_amp = false){
+                
+            $config = '';
+        
+            $settings   = pwaforwp_defaultSettings();
+                       
+            if(isset($settings['fcm_config'])){
+                $config     = $settings['fcm_config'];
+            }
+                
+            $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
+            $swHtmlContent      = '';
+            
+            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
+                
+                $swHtmlContent       = $swHtmlContentbody['body'];
+                $firebase_config     = 'var config='.$config.';';
+                $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
+                                
+            }
+            return $swHtmlContent;
+            
+    } 
+    
     public function pwaforwp_swr($is_amp = false){	
         
         $settings                       = pwaforwp_defaultSettings();
@@ -166,6 +190,7 @@ class pwaforwpFileCreation{
                 }                                                
 		return $swHtmlContent;		    
     }
+    
     
     public function pwaforwp_firebase_js(){
             

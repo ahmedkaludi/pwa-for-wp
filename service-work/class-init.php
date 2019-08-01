@@ -29,11 +29,11 @@ class PWAFORWP_File_Creation_Init {
         $this->firebase_manifest_init = $this->wppath.apply_filters('pwaforwp_pn_manifest_file_name',  "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json");                         
         $this->push_notification_js   = PWAFORWP_PLUGIN_DIR.'/assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().".js";                         
     }
-
     
-    public function pwaforwp_push_notification_js($js_str){
+    public function pwaforwp_push_notification_js($action = null){
         
-        return pwaforwp_write_a_file($this->push_notification_js, $js_str);
+        $pnjs_strContent = $this->fileCreation->pwaforwp_pnjs();
+        return pwaforwp_write_a_file($this->push_notification_js, $pnjs_strContent, $action);
                                                
     }
         

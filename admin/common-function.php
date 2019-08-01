@@ -112,18 +112,7 @@ function pwaforwp_frontend_enqueue(){
         }
                         
          if(($server_key !='' && $config !='')){             
-             
-            $swHtmlContentbody   = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
-            
-            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
-                $swHtmlContent       = $swHtmlContentbody['body'];
-                $firebase_config     = 'var config='.$config.';';
-                $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
-
-                $file_creating_obj = new PWAFORWP_File_Creation_Init();
-                $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
-            }                                    
-            
+                                                                         
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
@@ -425,6 +414,7 @@ function pwaforwp_required_file_creation($action = null){
                     $status = $fileCreationInit->pwaforwp_swjs_init($action);
                     $status = $fileCreationInit->pwaforwp_manifest_init($action);
                     $status = $fileCreationInit->pwaforwp_swr_init($action);
+                    $status = $fileCreationInit->pwaforwp_push_notification_js($action);
                     
                     
                     if(function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )){
