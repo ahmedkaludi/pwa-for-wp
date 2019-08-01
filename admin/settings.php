@@ -227,6 +227,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		);
+                
+                // Start page
+		add_settings_field(
+			'pwaforwp_start_page',								// ID
+			esc_html__('Start Page', 'pwa-for-wp'),		// Title
+			'pwaforwp_start_page_callback',								// CB
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
 		
 		// Orientation
 		add_settings_field(
@@ -931,6 +940,30 @@ function pwaforwp_404_page_callback(){
 	
 	<p class="description">
 		<?php printf( esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' )); ?>
+	</p>
+
+	<?php
+}
+function pwaforwp_start_page_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
+	<!-- WordPress Pages Dropdown -->
+	<label for="pwaforwp_settings[start_page]">
+	<?php 
+        $allowed_html = pwaforwp_expanded_allowed_tags();        
+        echo wp_kses(wp_dropdown_pages( array( 
+			'name'              => esc_attr('pwaforwp_settings[start_page]'), 
+			'echo'              => 0, 
+			'show_option_none'  => esc_attr( '&mdash; Homepage &mdash;' ), 
+			'option_none_value' => '0', 
+			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
+		)), $allowed_html); ?>
+	</label>
+	
+	<p class="description">
+		<?php 
+                $current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
+                printf( esc_html__( 'From where you want to launch PWA APP. Current start page is %s', 'pwa-for-wp' ), $current_page); ?>
 	</p>
 
 	<?php
