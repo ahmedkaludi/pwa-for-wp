@@ -41,7 +41,8 @@ class pushNotification{
             global $post;              
             $settings = pwaforwp_defaultSettings();  
             $message  = array();
-            switch ($post->post_type) {
+            if(is_object($post)){
+                switch ($post->post_type) {
                 case 'post':
                     
                     if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
@@ -110,6 +111,8 @@ class pushNotification{
                 default:
                     break;
             }
+            }
+            
                               
      }
      

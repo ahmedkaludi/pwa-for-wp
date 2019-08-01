@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.2
+Version: 1.2.1
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.2');
+define('PWAFORWP_PLUGIN_VERSION', '1.2.1');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
         
@@ -38,54 +38,42 @@ function pwaforwp_add_action_links($links){
     return array_merge( $links, $mylinks );
 }
 //For CDN CODES
-//add_action("wp_loaded", 'pwaforwp_allow_cdn',999);
-//function pwaforwp_allow_cdn(){
-	if ( !is_admin() ) { 
-            
-                $settings = pwaforwp_defaultSettings(); 
-                if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){                                            
-                        ob_start('pwaforwp_revert_src');
-		}
-	}
-//}
+if ( !is_admin() ) { 
 
-
+        $settings = pwaforwp_defaultSettings(); 
+        if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){                                            
+                ob_start('pwaforwp_revert_src');
+        }
+}
 
 function pwaforwp_revert_src($content){
                                  
-	$url = pwaforwp_site_url(); 
+	$url = pwaforwp_site_url();                                 
                 
-        //None AMP 
-        preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $match);
-                       
-        if(isset($match[0])){
-           $replacewith = '<script src="'.esc_url($url).'pwa-register-sw'.pwaforwp_multisite_postfix().'.js">';  
-           $content = str_replace($match[0],$replacewith,$content);
-        }
-        
-        //AMP 
-        
         if ((function_exists( 'ampforwp_is_amp_endpoint' )) || function_exists( 'is_amp_endpoint' )) {
             
-            preg_match("/<link rel=\"manifest\" href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\">/i", $content, $match);
+            preg_match("/<link rel=\"manifest\" href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\">/i", $content, $manifest_match);
         
-            if(isset($match[0])){
+            if(isset($manifest_match[0])){
                $replacewith = '<link rel="manifest" href="'.esc_url($url).'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json">'; 
-               $content = str_replace($match[0],$replacewith,$content);
+               $content = str_replace($manifest_match[0],$replacewith,$content);
             }
+                        
+            preg_match("/<amp\-install\-serviceworker(.*?)src=\"(.*?)pwa-amp-sw".pwaforwp_multisite_postfix()."\.js\"(.*?)data-iframe-src=\"(.*?)pwa-amp-sw".pwaforwp_multisite_postfix()."\.html/s", $content, $amp_sw_match);
 
-            preg_match("/src=\"(.*?)"."pwa-amp-sw".pwaforwp_multisite_postfix()."\.js/i", $content, $match);
-
-            if(isset($match[0])){
-               $replacewith = 'src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'; 
-               $content = str_replace($match[0],$replacewith,$content);
+            if(isset($amp_sw_match[0])){
+               $dataset_src = 'data-iframe-src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html'; 
+               $replacewith = '<amp-install-serviceworker '.$amp_sw_match[1].' src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"'.$amp_sw_match[3].$dataset_src; 
+               $content = str_replace($amp_sw_match[0],$replacewith,$content);
             }
+                       
+        }else{
+                        
+            preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $sw_match);
 
-            preg_match("/data-iframe-src=\"(.*?)"."pwa-amp-sw".pwaforwp_multisite_postfix()."\.html/i", $content, $match);
-
-            if(isset($match[0])){
-               $replacewith = 'data-iframe-src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html'; 
-               $content = str_replace($match[0],$replacewith,$content);
+            if(isset($sw_match[0])){
+               $replacewith = '<script src="'.esc_url($url).'pwa-register-sw'.pwaforwp_multisite_postfix().'.js">';  
+               $content = str_replace($sw_match[0],$replacewith,$content);
             }
             
         }
