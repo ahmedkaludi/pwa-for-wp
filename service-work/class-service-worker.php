@@ -3,9 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PWAFORWP_Service_Worker{
 	
-    public $is_amp = false;       
+        public $is_amp = false;       
             
-    public function __construct() {
+        public function __construct() {
         
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
@@ -133,15 +133,13 @@ class PWAFORWP_Service_Worker{
             }
             
         }
-
         public function pwaforwp_amp_entry_point(){  
             
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
             add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
             
-        }
-	        
+        }	        
 	public function pwaforwp_service_worker(){ 
                             
                 $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
@@ -155,8 +153,7 @@ class PWAFORWP_Service_Worker{
 			</amp-install-serviceworker>
 		<?php
                 
-	}
-	
+	}	
 	public function pwaforwp_service_worker_script( $data ){
             
 		if ( empty( $data['amp_component_scripts']['amp-install-serviceworker'] ) ) {
@@ -164,8 +161,7 @@ class PWAFORWP_Service_Worker{
 		}
 		return $data;
                 
-	}
-       	
+	}       	
 	public function pwaforwp_service_worker_non_amp(){
 		
                 $url 			 = pwaforwp_site_url();	
@@ -176,8 +172,7 @@ class PWAFORWP_Service_Worker{
                 echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
 		}  
                 
-	}              
-    
+	}                  
         public function pwaforwp_paginated_post_add_homescreen_amp(){  
             
 		$url 			 = pwaforwp_site_url();	
@@ -199,7 +194,6 @@ class PWAFORWP_Service_Worker{
 
 		}
 	}
-
 	public function pwaforwp_paginated_post_add_homescreen(){    
             
 		$url 			 = pwaforwp_site_url();	
@@ -221,8 +215,7 @@ class PWAFORWP_Service_Worker{
 		}
                 
 	}
-
-    public function pwaforwp_is_amp_activated() {    
+        public function pwaforwp_is_amp_activated() {    
 		
         if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) ) {
                 $this->is_amp = true;

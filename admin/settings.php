@@ -716,7 +716,7 @@ function pwaforwp_push_notification_callback(){
                 </tbody>   
             </table>                   
         </div>
-        <div class="pwaforwp-notification-condition-section" <?php echo ($settings['fcm_server_key'] !='' ? 'style="display:block;"' : 'style="display:none;"'); ?>>
+        <div class="pwaforwp-notification-condition-section" <?php echo ( (isset($settings['fcm_server_key']) && $settings['fcm_server_key'] !='') ? 'style="display:block;"' : 'style="display:none;"'); ?>>
         <div>
             <h2><?php echo esc_html__('Send Notification On', 'pwa-for-wp') ?></h2>
             <table class="pwaforwp-push-notificatoin-table">

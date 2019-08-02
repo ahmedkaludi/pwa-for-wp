@@ -1,4 +1,4 @@
-		    var config=sadfsafsdfafdddddddddd;                     
+		    var config=;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  

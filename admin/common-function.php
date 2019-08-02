@@ -212,6 +212,7 @@ function pwaforwp_get_default_settings_array(){
 		'start_url_amp'		=> 0,
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
+                'start_page' 		=> 0,
 		'orientation'		=> 'portrait',
                 'manualfileSetup'	=> 0,
                 'cdn_setting'           => 0,
@@ -222,6 +223,7 @@ function pwaforwp_get_default_settings_array(){
                 'default_caching_js_css'=> 'cacheFirst',
                 'default_caching_images'=> 'cacheFirst',
                 'default_caching_fonts' => 'cacheFirst',
+                'on_add_post_notification_title' => ''
 	);
     return $defaults;    
 }

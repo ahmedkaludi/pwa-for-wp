@@ -153,9 +153,11 @@ class pushNotification{
             $token          = sanitize_text_field($_POST['token']);             
             
             if($token){
+                
                 $get_token_list = (array)json_decode(get_option('pwa_token_list'), true);               
                 array_push($get_token_list, $token);                
                 $result = update_option('pwa_token_list', json_encode($get_token_list));
+                
             } 
             
             if($result){
@@ -169,7 +171,8 @@ class pushNotification{
           
             $settings   = pwaforwp_defaultSettings();                        
             $server_key = $settings['fcm_server_key'];           
-            $tokens     = (array)json_decode(get_option('pwa_token_list'), true);             
+            $tokens     = (array)json_decode(get_option('pwa_token_list'), true); 
+            
             if(empty($tokens) || $server_key ==''){
                 return;
             }            

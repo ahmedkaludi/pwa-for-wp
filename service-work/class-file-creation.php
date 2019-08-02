@@ -35,7 +35,7 @@ class pwaforwpFileCreation{
                 $config     = $settings['fcm_config'];
             }
                 
-            $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
+            $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn-template.js"); 
             $swHtmlContent      = '';
             
             if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
@@ -190,8 +190,7 @@ class pwaforwpFileCreation{
                 }                                                
 		return $swHtmlContent;		    
     }
-    
-    
+        
     public function pwaforwp_firebase_js(){
             
                 $config = $swHtmlContent = '';
@@ -204,7 +203,7 @@ class pwaforwpFileCreation{
                 $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
                                                 
                 if(is_array($swHtmlContentbody)&& isset($swHtmlContentbody['body'])){
-                    $swHtmlContent      = $swHtmlContentbody['body'];
+                    $swHtmlContent          = $swHtmlContentbody['body'];
                     $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);
                 }
                                                                                                                                                  
