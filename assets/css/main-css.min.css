@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 .pwaforwp-hide{
-    display: none;
+    display: none !important;
 }
 .pwaforwp-dashboard h2{
 	margin-bottom: 5px;
@@ -78,8 +78,87 @@ and open the template in the editor.
     padding: 0px;
 }
 
-.pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;};
+.pwaforwp-p-rate-stars {display:inline-block;color:#ffb900;position:relative;top:3px;};
 .pwaforwp-p-rate-stars svg{fill:#ffb900;};
 .pwaforwp-p-rate-stars svg:hover{fill:#ffb900};
 .pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;};
 
+.pwaforwp-features-blocks{
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+.pwafowp-feature-ext{
+    background:#fff;
+    padding: 25px;
+    border: 1px solid #d8d8d8;
+}
+.pwaforwp-features-blocks li a{
+    text-decoration: none;
+}
+
+.pwaforwp-ele-1{
+    background: #96588a;
+}
+
+.pwaforwp-ele-ic{
+    border-radius: 256px;
+    display: inline-block;
+    padding:8px 10px 8px 10px;
+    width: 70px;
+    margin-right: 20px;
+    float: left;
+}
+.pwaforwp-ele-ic img{
+    width:100%;
+}
+
+.pwaforwp-ele-tlt h3{
+    margin:0;
+    font-size: 18px;
+    line-height: 1.4;
+}
+.pwaforwp-ele-tlt p{
+    margin-top:10px;
+}
+
+.form-wrap .pwaforwp-sts-txt{
+    font-size: 16px;
+    color:#000;
+}
+.pwaforwp-sts-txt span{
+    color:#bebfc0;
+    padding-left:5px;
+}
+
+.pwaforwp-d-btn{
+    background: #d2150a;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.pwaforwp-sts-btn{
+    box-sizing: border-box;
+    height: 52px;
+    margin-top: 20px;
+    padding: 6px 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pwaforwp-premium_features .form-table th{
+    width: auto;
+    padding: 0px;
+}
+
+.pwaforwp-ext-selected{
+    color: #000000;
+    font-weight: 500;
+}
+#pwaforwp-ext-tab a{
+    cursor: pointer;
+}

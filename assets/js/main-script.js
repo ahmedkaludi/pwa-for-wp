@@ -397,4 +397,65 @@ jQuery(document).ready(function($){
             
         });
         
+        //Licensing jquery starts here
+    $(document).on("click",".pwaforwp_license_activation", function(e){
+                e.preventDefault();
+                var current = $(this);
+                current.addClass('updating-message');
+                var license_status = $(this).attr('license-status');
+                var add_on         = $(this).attr('add-on');
+                var license_key    = $("#"+add_on+"_addon_license_key").val();
+               
+            if(license_status && add_on && license_key){
+                
+                $.ajax({
+                            type: "POST",    
+                            url:ajaxurl,                    
+                            dataType: "json",
+                            data:{action:"pwaforwp_license_status_check",license_key:license_key,license_status:license_status, add_on:add_on, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                            success:function(response){                               
+                               
+                               $("#"+add_on+"_addon_license_key_status").val(response['status']);
+                                                                
+                              if(response['status'] =='active'){  
+                               $(".saswp-"+add_on+"-dashicons").addClass('dashicons-yes');
+                               $(".saswp-"+add_on+"-dashicons").removeClass('dashicons-no-alt');
+                               $(".saswp-"+add_on+"-dashicons").css("color", "green");
+                               
+                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "inactive");
+                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Deactivate");
+                               
+                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text('Activated');
+                               
+                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "green");                                
+                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
+                                                                                             
+                              }else{
+                                  
+                               $(".saswp-"+add_on+"-dashicons").addClass('dashicons-no-alt');
+                               $(".saswp-"+add_on+"-dashicons").removeClass('dashicons-yes');
+                               $(".saswp-"+add_on+"-dashicons").css("color", "red");
+                               
+                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "active");
+                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Activate");
+                               
+                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "red"); 
+                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
+                              }
+                               current.removeClass('updating-message');                                                           
+                            },
+                            error: function(response){                    
+                                console.log(response);
+                            }
+                            });
+                            
+            }else{
+                alert('Please enter value license key');
+                current.removeClass('updating-message'); 
+            }
+
+        });
+        //Licensing jquery ends here
+        
+        
 });
