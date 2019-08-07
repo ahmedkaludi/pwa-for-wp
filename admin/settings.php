@@ -1431,6 +1431,8 @@ add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message')
 
 function pwaforwp_get_license_section_html($on){
             
+                $settings = pwaforwp_defaultSettings();
+    
                 $license_key        = '';
                 $license_status     = 'inactive';
                 $license_status_msg = '';
@@ -1448,7 +1450,7 @@ function pwaforwp_get_license_section_html($on){
                 } 
                 
                 $response = '';                                                                             
-                $response.='<td>';
+                $response.= '<td>';
                 if($license_status == 'active'){
                 
                     $response.= '<span class="dashicons dashicons-yes pwaforwp-'.strtolower($on).'-dashicons" style="color: #46b450;"></span>';    
@@ -1478,8 +1480,8 @@ function pwaforwp_get_license_section_html($on){
                     $response.= '<p style="color:red;" add-on="'.strtolower($on).'" class="pwaforwp_license_status_msg">'.$license_status_msg.'</p>';
                 }                
                                                 
-                $response.= '<p>'.esc_html__('Enter your '.$on.' addon license key to activate updates & support.','pwa-for-wp').'</p>';
-                 $response.='</td>';               
+                 $response.= '<p>'.esc_html__('Enter your '.$on.' addon license key to activate updates & support.','pwa-for-wp').'</p>';
+                 $response.= '</td>';               
                 
                 return $response;
     
