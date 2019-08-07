@@ -43,7 +43,6 @@ function pwaforwp_admin_interface_render(){
 		<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
 		<h2 class="nav-tab-wrapper pwaforwp-tabs">
 			<?php
-
 			echo '<a href="' . esc_url(pwaforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
@@ -58,7 +57,7 @@ function pwaforwp_admin_interface_render(){
                         
                         echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
                         
-                        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+                        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 			?>
@@ -369,15 +368,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-                
-                add_settings_field(
-			'pwaforwp_license_setting',							// ID
-			'',
-			'pwaforwp_license_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
-                
+                               
                 add_settings_section('pwaforwp_precaching_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
 		add_settings_field(
 			'pwaforwp_precaching_setting',							// ID
@@ -413,32 +404,12 @@ function pwaforwp_settings_init(){
 		
 }
 
-function pwaforwp_addon_feature_html($type){
-    
-    $f_html = '';
-    
-    switch ($type) {
-        
-        case 'ctafp':
-
-            $f_html .= '<p>Sticky add to home</p><br>';
-            $f_html .= '<p>Add to home in menu</p><br>';
-            $f_html .= '<p>Add to home using shortcode</p>';
-
-            break;
-
-        default:
-            break;
-    }
-    return $f_html;
-    
-}
 function pwaforwp_addon_html(){
     
     $ctafp_active_text = '';
     
     if(is_plugin_active('call-to-action-for-pwa/call-to-action-for-pwa.php')){                                           
-       $ctafp_active_text = '<label class="pwaforwp-sts-txt">Status :<span style="color:green">'.esc_html__('Active', 'pwa-for-wp').'</span></label>';                                          ;
+       $ctafp_active_text =  '<table><tr>'.pwaforwp_get_license_section_html('CTAFP').'</tr></table>';                                         
     }else{                                            
        $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
        $ctafp_active_text .= '<a target="_blank" href="http://structured-data-for-wp.com/extensions/call-to-action-for-pwa/"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
@@ -452,7 +423,7 @@ function pwaforwp_addon_html(){
               
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic pwaforwp-ele-1">
-                                            <img src="'.SASWP_PLUGIN_URL.'/admin_section/images/woocommerce-icon.png">
+                                            <img src="'.PWAFORWP_PLUGIN_URL.'/admin_section/images/woocommerce-icon.png">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html__('Call to Action for PWA','pwa-for-wp').'</h3>
@@ -477,7 +448,7 @@ function pwaforwp_premium_features_callback(){
      $add_on_list = array(
          'ctafp'  => array(
                     'p-slug' => 'call-to-action-for-pwa/call-to-action-for-pwa.php',
-                    'p-name' => 'Call to Action for PWA',
+                    'p-name' => 'Call To Action',
          ),         
      );   
      $ext_is_there = false;
@@ -502,7 +473,8 @@ function pwaforwp_premium_features_callback(){
                                   
                  $tabs .=' <a data-id="pwaforwp-'.$key.'">'.$on['p-name'].'</a> |'; 
                  $container .= '<div class="pwaforwp-ext-container" id="pwaforwp-'.$key.'">'
-                            .pwaforwp_addon_feature_html($key)  
+                            . apply_filters('pwaforwp_add_ons_options',$key)  
+                            .'<p><a target="_blank" href="http://pwa-for-wp.com/docs">View Documentation</a></p>'
                             . '</div>';
                                  
              }
@@ -514,7 +486,7 @@ function pwaforwp_premium_features_callback(){
         
        <div id="pwaforwp-ext-tab" style="margin-top: 10px;">                            
            <?php echo $tabs; ?>   
-           <a data-id="pwaforwp-addon">Add Ons</a> |
+           <a data-id="pwaforwp-addon">Add Ons</a> 
        </div>
 
        <div id="pwaforwp-ext-container-for-all" style="margin-top: 10px;">
@@ -537,52 +509,6 @@ function pwaforwp_premium_features_callback(){
              
 }
 
-function pwaforwp_license_setting_callback(){
- 
-        $settings = pwaforwp_defaultSettings(); 
-        
-        $add_on = array();
-                
-        if(is_plugin_active('call-to-action-for-pwa/call-to-action-for-pwa.php')){
-                      
-           $add_on[] = 'CTAFP';           
-                                      
-        }       
-        
-        if(!empty($add_on)){
-            
-            echo '<tr><td><strong style="font-size:18px;">'.esc_html__('License','pwa-for-wp').'</strong></td></tr>';
-            
-            echo '<tr>';
-            
-            foreach($add_on as $on){
-                
-                $license_key        = '';
-                $license_status     = 'inactive';
-                $license_status_msg = '';
-                
-                if(isset($settings[strtolower($on).'_addon_license_key'])){
-                  $license_key =   $settings[strtolower($on).'_addon_license_key'];
-                }
-                
-                if(isset($settings[strtolower($on).'_addon_license_key_status'])){
-                  $license_status =   $settings[strtolower($on).'_addon_license_key_status'];
-                }
-                
-                if(isset($settings[strtolower($on).'_addon_license_key_message'])){
-                  $license_status_msg =   $settings[strtolower($on).'_addon_license_key_message'];
-                }
-                                
-                echo pwaforwp_get_license_section_html($on, $license_key, $license_status, $license_status_msg, $label=true);                
-                
-            }
-            
-            echo '</tr>';
-            
-        }
-    
-    
-}
 function pwaforwp_caching_strategies_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -1503,18 +1429,25 @@ function pwaforwp_send_query_message(){
 
 add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message');
 
-function pwaforwp_get_license_section_html($on, $license_key, $license_status, $license_status_msg, $label=null){
+function pwaforwp_get_license_section_html($on){
             
-               $response = '';                               
-               
-               if($label == true){
-                   
-                $response.= '<td>';
-                $response.= esc_html__('Call to Action for PWA','pwa-for-wp');
-                $response.= '</td>';
+                $license_key        = '';
+                $license_status     = 'inactive';
+                $license_status_msg = '';
                 
-               }
+                if(isset($settings[strtolower($on).'_addon_license_key'])){
+                  $license_key =   $settings[strtolower($on).'_addon_license_key'];
+                }
                 
+                if(isset($settings[strtolower($on).'_addon_license_key_status'])){
+                  $license_status =   $settings[strtolower($on).'_addon_license_key_status'];
+                }
+                
+                if(isset($settings[strtolower($on).'_addon_license_key_message'])){
+                  $license_status_msg =   $settings[strtolower($on).'_addon_license_key_message'];
+                } 
+                
+                $response = '';                                                                             
                 $response.='<td>';
                 if($license_status == 'active'){
                 

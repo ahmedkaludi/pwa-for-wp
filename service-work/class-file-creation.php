@@ -128,19 +128,7 @@ class pwaforwpFileCreation{
         
         if(isset($settings['add_to_home_selector']) || isset($settings['custom_add_to_home_setting'])){
             
-            $addtohomefunction ='function addToHome(){
-                                                 deferredPrompt.prompt();							  
-					  deferredPrompt.userChoice
-					    .then((choiceResult) => {
-					      if (choiceResult.outcome === "accepted") {
-					        console.log("User accepted the prompt");
-                                                        document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
-					      } else {
-					        console.log("User dismissed the prompt");
-					      }
-					      deferredPrompt = null;
-					  });
-                                             }';
+            $addtohomefunction ='document.getElementById("pwaforwp-add-to-home-click").style.display = "none";';
             
         }else{
             
@@ -167,12 +155,16 @@ class pwaforwpFileCreation{
                 }else{
                  $firebaseconfig   = '';  
                  $useserviceworker = '';
-                }                                
+                } 
+                
+                $addtohomeshortcode = apply_filters('pwaforwp_add_home_shortcode_modify', '');
+                                
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
                                                 "{{config}}", 
                                                 "{{userserviceworker}}", 
-                                                "{{addtohomemanually}}", 
+                                                "{{addtohomemanually}}",
+                                                "{{addtohomeshortcode}}",
                                                 "{{addtohomebanner}}",
                                                 "{{addtohomefunction}}"
                                             ), 
@@ -181,6 +173,7 @@ class pwaforwpFileCreation{
                                                 $firebaseconfig, 
                                                 $useserviceworker,
                                                 $addtohomemanually,
+                                                $addtohomeshortcode,
                                                 $addtohomebanner,
                                                 $addtohomefunction
                                             ), 

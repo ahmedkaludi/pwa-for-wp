@@ -102,12 +102,7 @@ function pwaforwp_on_deactivation(){
 
 function pwaforwp_on_activation(){
     
-    pwaforwp_admin_notice_activation_hook();
-    
-    $settings = get_option( 'pwaforwp_settings'); 
-    $settings['manualfileSetup'] = 1;
-    update_option('pwaforwp_settings', $settings);
-    
+    pwaforwp_admin_notice_activation_hook();            
     pwaforwp_required_file_creation();
     
 }

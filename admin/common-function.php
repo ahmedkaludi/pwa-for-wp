@@ -127,7 +127,7 @@ function pwaforwp_frontend_enqueue(){
             
          }  
                   
-        if(isset($settings['loading_icon'])){
+        if(isset($settings['loading_icon']) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
             
             wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
          
@@ -227,12 +227,14 @@ function pwaforwp_get_default_settings_array(){
 	);
     return $defaults;    
 }
-
+$pwaforwp_settings;
 function pwaforwp_defaultSettings(){
-	
+    
+	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
-	$settings = get_option( 'pwaforwp_settings', $defaults ); 
-	return $settings;
+	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+	return $pwaforwp_settings;
+        
 }
 
 function pwaforwp_expanded_allowed_tags() {
@@ -401,17 +403,12 @@ function pwaforwp_delete_pwa_files(){
 
 function pwaforwp_required_file_creation($action = null){
     
-                $settings = pwaforwp_defaultSettings(); 
+                    $settings = pwaforwp_defaultSettings(); 
                 
-                $manualfileSetup = $server_key = $config = '';       
-                                                                       
-                if(array_key_exists('manualfileSetup', $settings)){
-                    $manualfileSetup = $settings['manualfileSetup'];      
-                }
+                    $server_key = $config = '';       
                 
-                $fileCreationInit = new PWAFORWP_File_Creation_Init();
-		if($manualfileSetup){
-                    
+                    $fileCreationInit = new PWAFORWP_File_Creation_Init();
+                		                    
                     $status = '';                    
                     $status = $fileCreationInit->pwaforwp_swjs_init($action);
                     $status = $fileCreationInit->pwaforwp_manifest_init($action);
@@ -430,20 +427,20 @@ function pwaforwp_required_file_creation($action = null){
                         
                         set_transient( 'pwaforwp_file_change_transient', true );
                     }
+                    
                     pwaforwp_onesignal_compatiblity($action);                   
-		}
-                
-                if(isset($settings['fcm_server_key'])){
-                 $server_key = $settings['fcm_server_key'];    
-                }
-                
-                if(isset($settings['fcm_config'])){
-                 $config     = $settings['fcm_config'];   
-                }
-                                                 
-                if($server_key !='' && $config !=''){
-                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
-                }
+		                
+                    if(isset($settings['fcm_server_key'])){
+                         $server_key = $settings['fcm_server_key'];    
+                    }
+
+                    if(isset($settings['fcm_config'])){
+                        $config     = $settings['fcm_config'];   
+                    }
+
+                    if($server_key !='' && $config !=''){
+                         $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
+                    }
     
 }
 

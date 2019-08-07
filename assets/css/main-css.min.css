@@ -140,8 +140,7 @@ and open the template in the editor.
 }
 
 .pwaforwp-sts-btn{
-    box-sizing: border-box;
-    height: 52px;
+    box-sizing: border-box;    
     margin-top: 20px;
     padding: 6px 15px;
     border: 1px solid #e5e5e5;
@@ -161,4 +160,7 @@ and open the template in the editor.
 }
 #pwaforwp-ext-tab a{
     cursor: pointer;
+}
+.pwaforwp-p-feature-table lable{
+    font-weight: 500;
 }
