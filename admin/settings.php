@@ -998,7 +998,7 @@ function pwaforwp_app_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly 192x192 in size.', 'pwa-for-wp'); ?>
+		<?php echo esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly 192x192 in size.', 'pwa-for-wp'); ?>
 	</p>
 	<?php
 }
@@ -1014,7 +1014,7 @@ function pwaforwp_splash_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly 512x512.', 'pwa-for-wp'); ?>
+		<?php echo esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly 512x512.', 'pwa-for-wp'); ?>
 	</p>
 
 	<?php
