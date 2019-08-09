@@ -78,7 +78,7 @@ class PWAFORWP_Service_Worker{
            
            if(isset($settings['precaching_automatic'])){
            
-                $post_count =10;
+                $post_count = 10;
                 
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
