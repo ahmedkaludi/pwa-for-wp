@@ -25,6 +25,11 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
         
+        /*
+        load manifest on using Rest API
+        * This change for manifest
+        */
+        add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
             //Only when Searve url & Installation Url Different
             $url = pwaforwp_site_url();
             $home_url = pwaforwp_home_url();
@@ -41,11 +46,16 @@ class PWAFORWP_Service_Worker{
                 @header( 'Cache-Control: no-cache' ); 
                 @header( 'Content-Type: text/javascript; charset=utf-8' );
                 $filename = $query->get( pwaforwp_query_var('sw_file_var') );
-                if ( !file_exists(ABSPATH.$filename) ) {
+                $filename = ABSPATH.$filename;
+                $path_info = pathinfo($filename);
+                if ( !file_exists($filename) 
+                    || !isset($path_info['extension']) 
+                    || (isset($path_info['extension']) && $path_info['extension']!='js') 
+                ) {
                     status_header( 304 );
                     return;
                 }
-                $file_data = file_get_contents( ABSPATH.$filename );
+                $file_data = file_get_contents( $filename );
                 echo $file_data;
                 exit;
             }
@@ -172,8 +182,17 @@ class PWAFORWP_Service_Worker{
         }	        
 	public function pwaforwp_service_worker(){ 
                             
-                $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
+                //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
+
+                $url = pwaforwp_site_url();
+                $home_url = pwaforwp_home_url();
+                if( !is_multisite() && trim($url)!==trim($home_url) ){
+                    $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
+                }else{
+                    $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
+                }
+
             
                 ?>
                         <amp-install-serviceworker data-scope="<?php echo pwaforwp_home_url(); ?>" 
@@ -234,7 +253,8 @@ class PWAFORWP_Service_Worker{
                     
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
-			echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
+			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
+            echo '<link rel="manifest" href="'. esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) ).'">'.PHP_EOL;
             echo '<meta name="apple-mobile-web-app-title" content="'.$settings['app_blog_name'].'">
             <meta name="application-name" content="'.$settings['app_blog_name'].'">';
 			if(isset($settings['icon']) && !empty($settings['icon'])){
@@ -253,6 +273,45 @@ class PWAFORWP_Service_Worker{
                 $this->is_amp = true;
         }
 		  
+    }
+
+    /**
+     * Registers the rest route to get the manifest.
+     */
+    public function register_manifest_rest_route() {
+        $rest_namepace = 'pwa-for-wp/v2';
+        $route = 'pwa-manifest-json';
+        register_rest_route(
+            $rest_namepace,
+            'pwa-manifest-json',
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'get_manifest' ),
+                'permission_callback' => array( $this, 'rest_permission' ),
+            )
+        );
+    }   
+
+    /**
+     * Registers the rest route to get the manifest.
+     *
+     * Mainly copied from WP_REST_Posts_Controller::get_items_permissions_check().
+     * This should ndt allow a request in the 'edit' context.
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     * @return true|WP_Error True if the request is allowed, WP_Error if the request is in the 'edit' context.
+     */
+    public function rest_permission( WP_REST_Request $request ) {
+        if ( 'edit' === $request['context'] ) {
+            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'default' ), array( 'status' => rest_authorization_required_code() ) );
+        }
+        return true;
+    }
+
+    public function get_manifest(){
+        $dataObj = new pwaforwpFileCreation();
+        return json_decode($dataObj->pwaforwp_manifest(),true);
+
     }      
                 
 }

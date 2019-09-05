@@ -5,9 +5,15 @@ class pwaforwpFileCreation{
     public function pwaforwp_swhtml($is_amp = false){      
             
 	    if( $is_amp ){  
-                                       
-                        $url 	                        = pwaforwp_site_url();
-		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');		
+          $url = pwaforwp_site_url();
+          $home_url = pwaforwp_home_url();
+
+          if( !is_multisite() && trim($url)!==trim($home_url) ){
+            $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
+          }else{
+            $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
+          }
+		        		
 			$swHtmlContentbody 	        = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.html");
                         
                         $swHtmlContent = '';
