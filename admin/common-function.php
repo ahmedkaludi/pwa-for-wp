@@ -517,3 +517,15 @@ function pwaforwp_download_require_files(){
         wp_die();
     
 }
+
+function pwaforwp_query_var($key=''){
+  $default = array(
+              'sw_query_var'=>'pwa_for_wp_script',
+              'sw_file_var'=> 'sw',
+            );
+  if(!empty($key) && isset($default[$key])){
+    return $default[$key];
+  }else{
+    return $default;
+  }
+}

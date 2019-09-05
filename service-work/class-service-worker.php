@@ -24,7 +24,37 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
+        
+            //Only when Searve url & Installation Url Different
+            $url = pwaforwp_site_url();
+            $home_url = pwaforwp_home_url();
+            if(!is_multisite() && $url!==$home_url){
+               
+                add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
+                add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
+            }
                                                   
+        }
+        function pwaforwp_load_service_worker( WP_Query $query ){
+            if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
+                @ini_set( 'display_errors', 0 );
+                @header( 'Cache-Control: no-cache' ); 
+                @header( 'Content-Type: text/javascript; charset=utf-8' );
+                $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                if ( !file_exists(ABSPATH.$filename) ) {
+                    status_header( 304 );
+                    return;
+                }
+                $file_data = file_get_contents( ABSPATH.$filename );
+                echo $file_data;
+                exit;
+            }
+        }
+
+        function pwa_add_error_template_query_var() {
+            global $wp;
+            $wp->add_query_var( pwaforwp_query_var('sw_file_var') );
+            $wp->add_query_var( pwaforwp_query_var('sw_query_var') );
         }
         
         public function pwaforwp_service_worker_init(){
@@ -205,6 +235,8 @@ class PWAFORWP_Service_Worker{
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
+            echo '<meta name="apple-mobile-web-app-title" content="'.$settings['app_blog_name'].'">
+            <meta name="application-name" content="'.$settings['app_blog_name'].'">';
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
 		    }

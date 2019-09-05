@@ -137,8 +137,15 @@ class pwaforwpFileCreation{
         }
 
 		$url = pwaforwp_site_url();
+    $home_url = pwaforwp_home_url();
+
+    if( !is_multisite() && trim($url)!==trim($home_url) ){
+      $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
+    }else{
+      $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
+    }
        
-		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');		
+		
 		$swHtmlContentbody 		= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw_non_amp.js");                                                               
                 
                 $swHtmlContent = '';
@@ -166,7 +173,8 @@ class pwaforwpFileCreation{
                                                 "{{addtohomemanually}}",
                                                 "{{addtohomeshortcode}}",
                                                 "{{addtohomebanner}}",
-                                                "{{addtohomefunction}}"
+                                                "{{addtohomefunction}}",
+                                                "{{home_url}}"
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
@@ -175,7 +183,8 @@ class pwaforwpFileCreation{
                                                 $addtohomemanually,
                                                 $addtohomeshortcode,
                                                 $addtohomebanner,
-                                                $addtohomefunction
+                                                $addtohomefunction,
+                                                $home_url
                                             ), 
                                     $swHtmlContent);
                     
@@ -417,7 +426,7 @@ class pwaforwpFileCreation{
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
                 
-                $scope_url = pwaforwp_site_url();    
+                $scope_url = pwaforwp_home_url();//Scope Url should be serving url
                 
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));

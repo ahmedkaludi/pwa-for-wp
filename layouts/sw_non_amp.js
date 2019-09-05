@@ -2,7 +2,7 @@
                                  {{config}}                                 
 			         if("serviceWorker" in navigator) {
                                      window.addEventListener('load', function() {			         		
-			                navigator.serviceWorker.register(swsource).then(function(reg){                                                                                        
+			                navigator.serviceWorker.register(swsource, {scope: '{{home_url}}'}).then(function(reg){                                                                                        
 			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
                                             {{userserviceworker}}                                                                        
 			                }).catch(function(err) {
