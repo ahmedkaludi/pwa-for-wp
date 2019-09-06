@@ -250,7 +250,7 @@ class PWAFORWP_Service_Worker{
 		if($manualfileSetup){
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
-            echo '<link rel="manifest" href="'. esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' ) ).'">
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
 		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
@@ -274,7 +274,7 @@ class PWAFORWP_Service_Worker{
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
-            echo '<link rel="manifest" href="'. esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) ).'">'.PHP_EOL;
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             echo '<meta name="apple-mobile-web-app-title" content="'.$settings['app_blog_name'].'">
             <meta name="application-name" content="'.$settings['app_blog_name'].'">';
 			if(isset($settings['icon']) && !empty($settings['icon'])){

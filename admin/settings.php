@@ -52,6 +52,8 @@ function pwaforwp_admin_interface_render(){
                         echo '<a href="' . esc_url(pwaforwp_admin_link('push_notification')) . '" class="nav-tab ' . esc_attr( $tab == 'push_notification' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Push Notification','pwa-for-wp') . '</a>';
 
 			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+
+						echo '<a href="' . esc_url(pwaforwp_admin_link('compatibility_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'compatibility_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Compatibility','pwa-for-wp') . '</a>';
                         
                         echo '<a href="' . esc_url(pwaforwp_admin_link('precaching_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'precaching_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Pre Caching','pwa-for-wp') . '</a>';
                         
@@ -101,6 +103,11 @@ function pwaforwp_admin_interface_render(){
 			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
 				// other_setting Application Settings
 				do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
+			echo "</div>";
+
+			echo "<div class='pwaforwp-compatibility_setting' ".( $tab != 'compatibility_setting' ? 'style="display:none;"' : '').">";
+				// other_setting Application Settings
+				do_settings_sections( 'pwaforwp_compatibility_setting_section' );	// Page slug
 			echo "</div>";
                         
                         echo "<div class='pwaforwp-precaching_setting' ".( $tab != 'precaching_setting' ? 'style="display:none;"' : '').">";
@@ -325,13 +332,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-                add_settings_field(
-			'pwaforwp_one_signal_support',									// ID
-			esc_html__('OneSignal Compatibility', 'pwa-for-wp'),		// Title
-			'pwaforwp_one_signal_support_callback',								// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
-		);
+                
                 add_settings_field(
 			'pwaforwp_cache_external_links_setting',							// ID
 			esc_html__('Cache External Links', 'pwa-for-wp'),	// Title
@@ -367,6 +368,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_caching_strategies_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+
+		add_settings_section('pwaforwp_compatibility_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_compatibility_setting_section');
+                add_settings_field(
+			'pwaforwp_one_signal_support',									// ID
+			esc_html__('OneSignal', 'pwa-for-wp'),		// Title
+			'pwaforwp_one_signal_support_callback',								// CB
+			'pwaforwp_compatibility_setting_section',						// Page slug
+			'pwaforwp_compatibility_setting_section'						// Settings Section ID
 		);
                                
                 add_settings_section('pwaforwp_precaching_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');

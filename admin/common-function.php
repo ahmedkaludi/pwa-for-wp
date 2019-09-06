@@ -532,3 +532,21 @@ function pwaforwp_query_var($key=''){
     return $default;
   }
 }
+
+function pwaforwp_manifest_json_url($is_amp=false){
+  $link = '';
+  $jsonp_enabled = apply_filters( 'rest_jsonp_enabled', true );
+  if($jsonp_enabled){
+    $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json' );
+    if($is_amp){
+      $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' );
+    }
+  }else{
+    $url       = pwaforwp_site_url(); 
+    $link = parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH);
+    if($is_amp){
+      $link = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
+    }
+  }
+  return $link;
+}

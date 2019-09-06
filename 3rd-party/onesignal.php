@@ -30,13 +30,17 @@ function pwaforwp_use_custom_manifest($action = null){
             $onesignal_option['use_custom_manifest'] = false;
         }        
         if(function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint()){
-            $onesignal_option['custom_manifest_url'] = esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' ) );
+            $onesignal_option['custom_manifest_url'] = esc_url( pwaforwp_manifest_json_url(true) );
         }else{
-            $onesignal_option['custom_manifest_url'] = esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );//esc_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json');
+            $onesignal_option['custom_manifest_url'] = esc_url( pwaforwp_manifest_json_url() );//esc_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json');
         }
         update_option('OneSignalWPSetting', $onesignal_option);
         
     }
+    //update own settings
+    $get_pwaforwp_options   = get_option('pwaforwp_settings');
+    $get_pwaforwp_options['one_signal_support_setting'] = 1;
+    update_option('pwaforwp_settings', $get_pwaforwp_options);  
     
             
 }
