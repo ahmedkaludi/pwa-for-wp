@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.2.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -37,10 +37,10 @@ You can give the APP-like experience to your audience which will get your websit
 * More PWA Features Coming soon.
 
 **We Act Fast on Feedback!**
-We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](http://magazine3.company/contact/).
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
 
 **Technical Support**
-Support is provided in [Forum](https://wordpress.org/support/plugin/pwa-for-wp). You can also [Contact us](http://magazine3.company/contact/), our turn around time on email is around 12 hours. 
+Support is provided in [Forum](https://wordpress.org/support/plugin/pwa-for-wp). You can also [Contact us](https://pwa-for-wp.com/contact-us/), our turn around time on email is around 12 hours. 
 
 **Would you like to contribute?**
 You may now contribute to this PWA plugin on Github: [View repository](https://github.com/ahmedkaludi/pwa-for-wp) on Github
@@ -58,10 +58,10 @@ You can report the bugs for this PWA plugin [here](https://github.com/ahmedkalud
 Yes, Absolutely! We would suggest you send your feature request by creating an issue in [Github](https://github.com/ahmedkaludi/pwa-for-wp/issues/new/) . It helps us organize the feedback easily.
 
 = How do I get in touch? =
-You can contact us from [here](https://ampforwp.com/contact/)
+You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.2.1 (6 September 2019) =
+= 1.3 (6 September 2019) =
 * Added: Option to change start page URL #153
 * Feature: Onesignal fully compatible with multisites #164
 * Bug Fixed: Service worker installation issue when home url & site url not same #160
