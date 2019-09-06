@@ -14,6 +14,7 @@ License: GPL2+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('PWAFORWP_PLUGIN_VERSION', '1.2.1');

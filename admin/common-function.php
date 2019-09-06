@@ -523,6 +523,9 @@ function pwaforwp_query_var($key=''){
               'sw_query_var'=>'pwa_for_wp_script',
               'sw_file_var'=> 'sw',
             );
+  if(is_multisite()){
+    $default['site_id_var'] = 'site';
+  }
   if(!empty($key) && isset($default[$key])){
     return $default[$key];
   }else{

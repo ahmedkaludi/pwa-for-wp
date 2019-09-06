@@ -33,8 +33,7 @@ class PWAFORWP_Service_Worker{
             //Only when Searve url & Installation Url Different
             $url = pwaforwp_site_url();
             $home_url = pwaforwp_home_url();
-            if(!is_multisite() && $url!==$home_url){
-               
+            if(is_multisite() || $url!==$home_url){
                 add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
                 add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
             }
@@ -43,9 +42,20 @@ class PWAFORWP_Service_Worker{
         function pwaforwp_load_service_worker( WP_Query $query ){
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
-                @header( 'Cache-Control: no-cache' ); 
+                @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: text/javascript; charset=utf-8' );
                 $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                if($filename == 'dynamic_onesignal'){//work with onesignal only
+                    $home_url = pwaforwp_home_url();
+                    $site_id = $query->get( pwaforwp_query_var('site_id_var') );
+                    
+                    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'.js');   
+                    $content .= "importScripts('".$url."')".PHP_EOL;
+                    $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    echo $content;
+                    exit;
+                }
+
                 $filename = ABSPATH.$filename;
                 $path_info = pathinfo($filename);
                 if ( !file_exists($filename) 
@@ -63,8 +73,12 @@ class PWAFORWP_Service_Worker{
 
         function pwa_add_error_template_query_var() {
             global $wp;
-            $wp->add_query_var( pwaforwp_query_var('sw_file_var') );
-            $wp->add_query_var( pwaforwp_query_var('sw_query_var') );
+            $allQueryVar = pwaforwp_query_var();
+            if(is_array($allQueryVar)){
+                foreach ($allQueryVar as $key => $value) {
+                    $wp->add_query_var( $value );
+                }
+            }
         }
         
         public function pwaforwp_service_worker_init(){
@@ -218,7 +232,12 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
 		if( $manualfileSetup ){
-                echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
+                if(is_multisite()){
+                    $url = esc_url_raw($url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js');   
+                    echo '<script src="'.esc_url($url).'"></script>'; 
+                }else{
+                    echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
+                }
 		}  
                 
 	}                  
@@ -230,7 +249,8 @@ class PWAFORWP_Service_Worker{
 		
 		if($manualfileSetup){
                     
-		    echo '<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
+		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
+            echo '<link rel="manifest" href="'. esc_url( rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' ) ).'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
 		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
@@ -290,6 +310,15 @@ class PWAFORWP_Service_Worker{
                 'permission_callback' => array( $this, 'rest_permission' ),
             )
         );
+        register_rest_route(
+            $rest_namepace,
+            $route.'/(?P<is_amp>[a-zA-Z0-9-]+)',
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'get_manifest' ),
+                'permission_callback' => array( $this, 'rest_permission' ),
+            )
+        );
     }   
 
     /**
@@ -308,9 +337,13 @@ class PWAFORWP_Service_Worker{
         return true;
     }
 
-    public function get_manifest(){
+    public function get_manifest($request){
         $dataObj = new pwaforwpFileCreation();
-        return json_decode($dataObj->pwaforwp_manifest(),true);
+        if(isset($request['is_amp']) && $request['is_amp'] == 'amp' && defined('AMP_QUERY_VAR')){
+            return json_decode($dataObj->pwaforwp_manifest(true),true);
+        }else{
+            return json_decode($dataObj->pwaforwp_manifest(),true);
+        }
 
     }      
                 
