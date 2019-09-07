@@ -39,115 +39,161 @@ function pwaforwp_admin_interface_render(){
 	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting', 'precaching_setting', 'tools', 'premium_features','help'));
                                                                         
 	?>
-		<div class="wrap">                            
-		<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
-		<h2 class="nav-tab-wrapper pwaforwp-tabs">
-			<?php
-			echo '<a href="' . esc_url(pwaforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
+		<div class="wrap pwaforwp-wrap">                            
+			<h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
+			<div class="pwaforwp-main-wrapper">
+				<h2 class="nav-tab-wrapper pwaforwp-tabs">
+					<?php
+					echo '<a href="' . esc_url(pwaforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
+					echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(pwaforwp_admin_link('push_notification')) . '" class="nav-tab ' . esc_attr( $tab == 'push_notification' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Push Notification','pwa-for-wp') . '</a>';
+					echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+					echo '<a href="' . esc_url(pwaforwp_admin_link('compatibility_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'compatibility_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Compatibility','pwa-for-wp') . '</a>';
+		            
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
-						echo '<a href="' . esc_url(pwaforwp_admin_link('compatibility_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'compatibility_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Compatibility','pwa-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(pwaforwp_admin_link('precaching_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'precaching_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Pre Caching','pwa-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
-                        
-                        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-clipboard"></span> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+		            
+		            //echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
-			echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
-			?>
-		</h2>
-                <form action="options.php" method="post" enctype="multipart/form-data" class="pwaforwp-settings-form">		
-			<div class="form-wrap">
-			<?php
-			// Output nonce, action, and option_page fields for a settings page.
-			settings_fields( 'pwaforwp_setting_dashboard_group' );						
-			
-			echo "<div class='pwaforwp-dashboard' ".( $tab != 'dashboard' ? 'style="display:none;"' : '').">";
-			// Status
-			do_settings_sections( 'pwaforwp_dashboard_section' );	// Page slug
-			echo "</div>";
+					echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
+					?>
+				</h2>
+	            <form action="options.php" method="post" enctype="multipart/form-data" class="pwaforwp-settings-form">		
+					<div class="form-wrap">
+						<?php
+						// Output nonce, action, and option_page fields for a settings page.
+						settings_fields( 'pwaforwp_setting_dashboard_group' );						
+						
+						echo "<div class='pwaforwp-dashboard' ".( $tab != 'dashboard' ? 'style="display:none;"' : '').">";
+						// Status
+						do_settings_sections( 'pwaforwp_dashboard_section' );	// Page slug
+						echo "</div>";
 
-			echo "<div class='pwaforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
-				// general Application Settings
-				do_settings_sections( 'pwaforwp_general_section' );	// Page slug
-			echo "</div>";
+						echo "<div class='pwaforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
+							/*Sub menu tabs*/
+							echo '<div class="pwaforwp-sub-tab-headings">
+									<span data-tab-id="subtab-general" class="selected">'.esc_html__('General','pwa-for-wp').'</span>&nbsp;|&nbsp;
+									<span data-tab-id="subtab-pushnots">'.esc_html__('Push Notification','pwa-for-wp').'</span>&nbsp;|&nbsp;
+									<span data-tab-id="subtab-precache">'.esc_html__('Pre Caching','pwa-for-wp').'</span>
+								</div>';
+							echo '<div class="pwaforwp-subheading">';
+								// general Application Settings
+								echo '<div id="subtab-general" class="selected">';
+										do_settings_sections( 'pwaforwp_general_section' );
+								echo '</div>';
+								echo '<div id="subtab-pushnots" class="pwaforwp-hide">';
+										do_settings_sections( 'pwaforwp_push_notification_section' );
+								echo '</div>';
+								echo '<div id="subtab-precache" class="pwaforwp-hide">';
+										do_settings_sections( 'pwaforwp_precaching_setting_section' );
+								echo '</div>';
+							echo '</div>';
 
-			echo "<div class='pwaforwp-design' ".( $tab != 'design' ? 'style="display:none;"' : '').">";
-				// design Application Settings
-				do_settings_sections( 'pwaforwp_design_section' );	// Page slug
-			echo "</div>";
-                        
-                        echo "<div class='pwaforwp-push_notification' ".( $tab != 'push_notification' ? 'style="display:none;"' : '').">";
-				// design Application Settings
-				do_settings_sections( 'pwaforwp_push_notification_section' );	// Page slug
-			echo "</div>";
-                        
-                        echo "<div class='pwaforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
-				// other_setting Application Settings
-				do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
-			echo "</div>";
-                        
-                        echo "<div class='pwaforwp-premium_features' ".( $tab != 'Premium Features' ? 'style="display:none;"' : '').">";
-				// other_setting Application Settings
-				do_settings_sections( 'pwaforwp_premium_features_section' );	// Page slug
-			echo "</div>";
-                        
-			echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
-				// other_setting Application Settings
-				do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
-			echo "</div>";
+						echo "</div>";
 
-			echo "<div class='pwaforwp-compatibility_setting' ".( $tab != 'compatibility_setting' ? 'style="display:none;"' : '').">";
-				// other_setting Application Settings
-				do_settings_sections( 'pwaforwp_compatibility_setting_section' );	// Page slug
-			echo "</div>";
-                        
-                        echo "<div class='pwaforwp-precaching_setting' ".( $tab != 'precaching_setting' ? 'style="display:none;"' : '').">";
-				// other_setting Application Settings
-				do_settings_sections( 'pwaforwp_precaching_setting_section' );	// Page slug
-			echo "</div>";
-                        
-			echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
-				echo "<h3>".esc_html__('Help Section', 'pwa-for-wp')."</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">".esc_html__('View Setup Documentation', 'pwa-for-wp')."</a>";
-				?>	
-				<hr />	
-        	                   <div class="pwa_contact_us_div">
-			            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
-			       		<hr />	
-			            <ul>
-			                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
-			                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
-			                    <br>
-			                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
-			                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
-			                </li> 
-			                <li><button class="button pwa-send-query"><?php echo esc_html__('Send Message', 'pwa-for-wp'); ?></button></li>
-			            </ul>            
-			                   
-			        </div>
-				<?php
-				// design Application Settings
-				do_settings_sections( 'amp_pwa_help_section' );	// Page slug
-			echo "</div>";
+						echo "<div class='pwaforwp-design' ".( $tab != 'design' ? 'style="display:none;"' : '').">";
+							// design Application Settings
+							do_settings_sections( 'pwaforwp_design_section' );	// Page slug
+						echo "</div>";
+			                        
+			            
+			                        
+			                        echo "<div class='pwaforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+							// other_setting Application Settings
+							do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
+						echo "</div>";
+			                        
+			                        echo "<div class='pwaforwp-premium_features' ".( $tab != 'premium_features' ? 'style="display:none;"' : '').">";
+							// other_setting Application Settings
+							do_settings_sections( 'pwaforwp_premium_features_section' );	// Page slug
+						echo "</div>";
+			                        
+						echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
+							// other_setting Application Settings
+							do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
+						echo "</div>";
 
-			?>
-		</div>
-			<div class="button-wrapper">
-                            <input type="hidden" name="pwaforwp_settings[manualfileSetup]" value="1">
-				<?php
-				// Output save settings button
-			submit_button( esc_html__('Save Settings', 'pwa-for-wp') );
-				?>
+						echo "<div class='pwaforwp-compatibility_setting' ".( $tab != 'compatibility_setting' ? 'style="display:none;"' : '').">";
+							// other_setting Application Settings
+							do_settings_sections( 'pwaforwp_compatibility_setting_section' );	// Page slug
+						echo "</div>";
+			                       
+						echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
+							echo "<h3>".esc_html__('Help Section', 'pwa-for-wp')."</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">".esc_html__('View Setup Documentation', 'pwa-for-wp')."</a>";
+							?>	
+							<hr />	
+			        	                   <div class="pwa_contact_us_div">
+						            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
+						       		<hr />	
+						            <ul>
+						                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
+						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
+						                    <br>
+						                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
+						                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
+						                </li> 
+						                <li><button class="button pwa-send-query"><?php echo esc_html__('Send Message', 'pwa-for-wp'); ?></button></li>
+						            </ul>            
+						                   
+						        </div>
+							<?php
+							// design Application Settings
+							do_settings_sections( 'amp_pwa_help_section' );	// Page slug
+						echo "</div>";
+
+						?>
+					</div>
+					<div class="button-wrapper">
+		                            <input type="hidden" name="pwaforwp_settings[manualfileSetup]" value="1">
+						<?php
+						// Output save settings button
+					submit_button( esc_html__('Save Settings', 'pwa-for-wp') );
+						?>
+					</div>
+				</form>
 			</div>
-		</form>
+			<div class="pwaforwp-settings-second-div">
+		        <div class="pwaforwp-feedback-panel">
+			        
+			        <h2><?php echo esc_html__( 'Leave A Feedback', 'pwa-for-wp' ); ?></h2>
+			        
+			        <ul>
+			            <li><a target="_blank" href="https://wordpress.org/support/plugin/pwa-for-wp/reviews/#new-post"><?php echo esc_html__( 'I would like to review this plugin', 'pwa-for-wp' ); ?></a></li>    
+			            <li><a target="_blank" href="https://pwa-for-wp.com/contact-us/"><?php echo esc_html__( 'I have ideas to improve this plugin', 'pwa-for-wp' ); ?></a></li>
+			            <li><a href="<?php echo esc_url( admin_url( 'admin.php?page=pwaforwp&tab=help' ) ); ?>"><?php echo esc_html__( 'I need help this plugin', 'pwa-for-wp' ); ?></a></li>              
+			        </ul>  
+			        <div class="pwaforwp-social-sharing-buttons">
+			            <a class="pwaforwp-facebook-share" href="https://www.facebook.com/sharer/sharer.php?u=https://pwa-for-wp.com/" target="_blank">           
+			        <span class="dashicons dashicons-facebook"></span>
+			        <?php echo esc_html__( 'Share', 'pwa-for-wp' ); ?>
+			       </a>
+			        <a target="_blank" class="pwaforwp-twitter-share-button"
+			        href="https://twitter.com/home?status=I'm%20using%20this%20PWA%20for%20wp%20AMP%20plugin%20for%20implementing%20PWA%20on%20my%20site!%20https%3A//pwa-for-wp.com/%20via%20%40WPF_community">
+			            <span class="dashicons dashicons-twitter"></span>
+			                <?php echo esc_html__( 'Tweet', 'pwa-for-wp' ); ?>
+			        </a>
+			        </div>
+			        
+			    </div>
+		        <div class="pwaforwp-view-docs">
+		            
+		            <p style="float: left;"><?php echo esc_html__('Need Help?','pwa-for-wp') ?></p>  <a style="float: right;margin: 1em 0;" class="button button-default" target="_blank" href="https://pwa-for-wp.com/docs/"><?php echo esc_html__('View Documentation','pwa-for-wp') ?></a>
+		            
+		        </div>
+		         <div class="pwaforwp-upgrade-pro">
+		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
+		        	<ul>
+		        		<li><?php echo esc_html__('Premium features','pwa-for-wp') ?></li>
+		        		<li><?php echo esc_html__('Dedicated PWA Support','pwa-for-wp') ?></li>
+		        		<li><?php echo esc_html__('Active Development','pwa-for-wp') ?></li>
+		        	</ul>
+		        	<a target="_blank" href="https://pwa-for-wp.com/pricing/"><?php echo esc_html__('UPGRADE','pwa-for-wp') ?></a>
+		        </div>
+
+		    </div>
 	</div>
         
 	<?php            
@@ -422,7 +468,7 @@ function pwaforwp_addon_html(){
        $ctafp_active_text =  '<table><tr>'.pwaforwp_get_license_section_html('CTAFP').'</tr></table>';                                         
     }else{                                            
        $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
-       $ctafp_active_text .= '<a target="_blank" href="http://structured-data-for-wp.com/extensions/call-to-action-for-pwa/"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+       $ctafp_active_text .= '<a target="_blank" href="https://pwa-for-wp.com/extensions/call-to-action-for-pwa/"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
     }
     
     $ext_html = '';    
@@ -433,7 +479,7 @@ function pwaforwp_addon_html(){
               
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic pwaforwp-ele-1">
-                                            <img src="'.PWAFORWP_PLUGIN_URL.'/admin_section/images/woocommerce-icon.png">
+                                            <img src="'.PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html__('Call to Action for PWA','pwa-for-wp').'</h3>

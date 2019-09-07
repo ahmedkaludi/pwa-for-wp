@@ -457,5 +457,12 @@ jQuery(document).ready(function($){
         });
         //Licensing jquery ends here
         
-        
+        $('.pwaforwp-sub-tab-headings span').click(function(){
+            var tabId = $(this).attr('data-tab-id');
+            $('.pwaforwp-subheading').find('div.selected').removeClass('selected').addClass('pwaforwp-hide');
+            $('.pwaforwp-subheading').find('#'+tabId).removeClass('pwaforwp-hide').addClass('selected');
+            //tab head
+            $(this).parent('.pwaforwp-sub-tab-headings').find('span.selected').removeClass('selected');
+            $(this).addClass('selected');
+        });
 });
