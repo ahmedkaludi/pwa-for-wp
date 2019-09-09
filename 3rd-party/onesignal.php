@@ -110,7 +110,7 @@ function pwaforwp_add_sw_to_onesignal_sw($action = null){
 }
 add_action("wp", 'pwaforwp_onesignal_for_multisite');
 function pwaforwp_onesignal_for_multisite(){
-    if(is_multisite()){
+    if( is_multisite() && class_exists('OneSignal') ){
         remove_action( 'wp_head', [ 'OneSignal_Public', 'onesignal_header' ] );
         add_action( 'wp_head',  'pwaforwp_onesignal_init_onesignal_head' );
     }
