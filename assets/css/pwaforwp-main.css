@@ -40,8 +40,7 @@ pwaforwp-bounceInUp{
     animation-fill-mode: both;
 }
 .pwaforwp-btn{
-        border: none;
-    display: inline-block;
+        border: none;   
     text-transform: uppercase;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;

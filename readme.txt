@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.2.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -17,8 +17,10 @@ You can give the APP-like experience to your audience which will get your websit
 * <strong>AMP Support</strong>: Full PWA compatibility for AMP.  It works well with AMPforWP & AMP for WordPress by Automattic.
 * NEW: Multi site support
 * NEW: UTM Tracking
+* NEW: OneSignal support with multisite
+* NEW: Easily change start URL
 * NEW: Caching Strategy for PWA enabled assets
-* NEW: Cache Expire option added
+* Cache Expire option added
 * <strong>Service Worker </strong>: We have developed a service worker which automatically gets installed in the background and performs the necessary actions such as caching the external objects to reduce the requests and more.
 * <strong>APP Banners in Home-screen</strong>: Automatically notifies your visitor to get the APP version of the website which directly gets added with the list of Apps and Home-screen. You can customize the icons for this as well.
 * <strong>Web App Manifest</strong>: The Manifest file is necessary to get this functionality rolled out and we have made this automatic and connected with the PWA options.
@@ -35,10 +37,10 @@ You can give the APP-like experience to your audience which will get your websit
 * More PWA Features Coming soon.
 
 **We Act Fast on Feedback!**
-We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](http://magazine3.company/contact/).
+We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
 
 **Technical Support**
-Support is provided in [Forum](https://wordpress.org/support/plugin/pwa-for-wp). You can also [Contact us](http://magazine3.company/contact/), our turn around time on email is around 12 hours. 
+Support is provided in [Forum](https://wordpress.org/support/plugin/pwa-for-wp). You can also [Contact us](https://pwa-for-wp.com/contact-us/), our turn around time on email is around 12 hours. 
 
 **Would you like to contribute?**
 You may now contribute to this PWA plugin on Github: [View repository](https://github.com/ahmedkaludi/pwa-for-wp) on Github
@@ -56,9 +58,21 @@ You can report the bugs for this PWA plugin [here](https://github.com/ahmedkalud
 Yes, Absolutely! We would suggest you send your feature request by creating an issue in [Github](https://github.com/ahmedkaludi/pwa-for-wp/issues/new/) . It helps us organize the feedback easily.
 
 = How do I get in touch? =
-You can contact us from [here](https://ampforwp.com/contact/)
+You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.3.2 (9 September 2019) =
+* Bug Fixed: Fatal error in multisite #167
+
+= 1.3.1 (7 September 2019) =
+* Added: Caching strategists documentation #152
+* Improved: Option panel improvements #166
+
+= 1.3 (6 September 2019) =
+* Added: Option to change start page URL #153
+* Feature: Onesignal fully compatible with multisites #164
+* Bug Fixed: Service worker installation issue when home url & site url not same #160
+* Improved: Multisite service worker installation #163
 
 = 1.2.1 (10 July 2019) =
 

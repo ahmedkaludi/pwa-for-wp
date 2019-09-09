@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 .pwaforwp-hide{
-    display: none;
+    display: none !important;
 }
 .pwaforwp-dashboard h2{
 	margin-bottom: 5px;
@@ -78,8 +78,179 @@ and open the template in the editor.
     padding: 0px;
 }
 
-.pwaforwp-p-rate-stars{display:inline-block;color:#ffb900;position:relative;top:3px;};
+.pwaforwp-p-rate-stars {display:inline-block;color:#ffb900;position:relative;top:3px;};
 .pwaforwp-p-rate-stars svg{fill:#ffb900;};
 .pwaforwp-p-rate-stars svg:hover{fill:#ffb900};
 .pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;};
 
+.pwaforwp-features-blocks{
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+.pwafowp-feature-ext{
+    background:#fff;
+    padding: 25px;
+    border: 1px solid #d8d8d8;
+}
+.pwaforwp-features-blocks li a{
+    text-decoration: none;
+}
+
+.pwaforwp-ele-1{
+    background: #96588a;
+}
+
+.pwaforwp-ele-ic{
+    border-radius: 256px;
+    display: inline-block;
+    padding:8px 10px 8px 10px;
+    width: 70px;
+    margin-right: 20px;
+    float: left;
+}
+.pwaforwp-ele-ic img{
+    width:100%;
+}
+
+.pwaforwp-ele-tlt h3{
+    margin:0;
+    font-size: 18px;
+    line-height: 1.4;
+}
+.pwaforwp-ele-tlt p{
+    margin-top:10px;
+}
+
+.form-wrap .pwaforwp-sts-txt{
+    font-size: 16px;
+    color:#000;
+}
+.pwaforwp-sts-txt span{
+    color:#bebfc0;
+    padding-left:5px;
+}
+
+.pwaforwp-d-btn{
+    background: #d2150a;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.pwaforwp-sts-btn{
+    box-sizing: border-box;    
+    margin-top: 20px;
+    padding: 6px 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pwaforwp-premium_features .form-table th{
+    width: auto;
+    padding: 0px;
+}
+
+.pwaforwp-ext-selected{
+    color: #000000;
+    font-weight: 500;
+}
+#pwaforwp-ext-tab a{
+    cursor: pointer;
+}
+.pwaforwp-p-feature-table lable{
+    font-weight: 500;
+}
+
+.pwaforwp-sub-tab-headings{margin-top: 10px;}
+.pwaforwp-sub-tab-headings span{color:#0073aa;cursor: pointer;}
+.pwaforwp-sub-tab-headings span.selected{color:#000;}
+#subtab-pushnots th:empty{display: none;}
+
+.pwaforwp-main-wrapper{width:75%;float: left;}
+.pwaforwp-settings-second-div{width:24%;float: right;}
+.pwaforwp-feedback-panel {
+    height: 200px;
+    width: 280px;
+    background: #ffffff;
+    position: relative;
+}
+.pwaforwp-feedback-panel h2 {
+    text-align: center;
+    padding-top: 18px;
+}
+.pwaforwp-feedback-panel ul {
+    list-style-type: circle;
+    list-style: decimal;
+    padding-left: 30px;
+    font-size: 15px;
+}
+.pwaforwp-social-sharing-buttons {
+    text-align: center;
+    padding-top: 20px;
+}
+.pwaforwp-social-sharing-buttons a {
+    text-align: center;
+    text-decoration: none;
+    padding: 8px;
+}
+.pwaforwp-social-sharing-buttons .pwaforwp-twitter-share-button {
+    background: #1b95e0 !important;
+    box-shadow: 0 0px 0 #1b95e0 !important;
+    color: #fff !important;
+    line-height: 20px !important;
+    height: 21px !important;
+    border-radius: 3px;
+    margin-left: 5px;
+}
+.pwaforwp-social-sharing-buttons .pwaforwp-facebook-share {
+    background: #3B5998;
+    box-shadow: 0 0px 0 #1b95e0 !important;
+    color: #fff !important;
+    line-height: 20px !important;
+    height: 21px !important;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+.pwaforwp-upgrade-pro {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #d8d8d8;
+    display: inline-block;
+    margin-top: 10px;
+    width: 81%;
+    display: none;
+}
+.pwaforwp-upgrade-pro ul li {
+    position: relative;
+    padding-left: 30px;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+.pwaforwp-upgrade-pro ul li:before {
+    content: "";
+    background-image: url(../../images/check.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+}
+.pwaforwp-upgrade-pro a {
+    background: #d2150a;
+    padding: 10px 0px;
+    display: block;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 5px;
+}

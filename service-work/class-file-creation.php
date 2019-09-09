@@ -5,9 +5,15 @@ class pwaforwpFileCreation{
     public function pwaforwp_swhtml($is_amp = false){      
             
 	    if( $is_amp ){  
-                                       
-                        $url 	                        = pwaforwp_site_url();
-		        $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');		
+          $url = pwaforwp_site_url();
+          $home_url = pwaforwp_home_url();
+
+          if( !is_multisite() && trim($url)!==trim($home_url) ){
+            $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
+          }else{
+            $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
+          }
+		        		
 			$swHtmlContentbody 	        = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.html");
                         
                         $swHtmlContent = '';
@@ -24,6 +30,30 @@ class pwaforwpFileCreation{
 	    }	
             
 	}
+    
+    public function pwaforwp_pnjs($is_amp = false){
+                
+            $config = '';
+        
+            $settings   = pwaforwp_defaultSettings();
+                       
+            if(isset($settings['fcm_config'])){
+                $config     = $settings['fcm_config'];
+            }
+                
+            $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn-template.js"); 
+            $swHtmlContent      = '';
+            
+            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
+                
+                $swHtmlContent       = $swHtmlContentbody['body'];
+                $firebase_config     = 'var config='.$config.';';
+                $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
+                                
+            }
+            return $swHtmlContent;
+            
+    } 
     
     public function pwaforwp_swr($is_amp = false){	
         
@@ -104,19 +134,7 @@ class pwaforwpFileCreation{
         
         if(isset($settings['add_to_home_selector']) || isset($settings['custom_add_to_home_setting'])){
             
-            $addtohomefunction ='function addToHome(){
-                                                 deferredPrompt.prompt();							  
-					  deferredPrompt.userChoice
-					    .then((choiceResult) => {
-					      if (choiceResult.outcome === "accepted") {
-					        console.log("User accepted the prompt");
-                                                        document.getElementById("pwaforwp-add-to-home-click").style.display = "none";
-					      } else {
-					        console.log("User dismissed the prompt");
-					      }
-					      deferredPrompt = null;
-					  });
-                                             }';
+            $addtohomefunction ='document.getElementById("pwaforwp-add-to-home-click").style.display = "none";';
             
         }else{
             
@@ -125,8 +143,15 @@ class pwaforwpFileCreation{
         }
 
 		$url = pwaforwp_site_url();
+    $home_url = pwaforwp_home_url();
+
+    if( is_multisite() || trim($url)!==trim($home_url) ){
+      $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
+    }else{
+      $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
+    }
        
-		$ServiceWorkerfileName 	        = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');		
+		
 		$swHtmlContentbody 		= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw_non_amp.js");                                                               
                 
                 $swHtmlContent = '';
@@ -143,22 +168,29 @@ class pwaforwpFileCreation{
                 }else{
                  $firebaseconfig   = '';  
                  $useserviceworker = '';
-                }                                
+                } 
+                
+                $addtohomeshortcode = apply_filters('pwaforwp_add_home_shortcode_modify', '');
+                                
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
                                                 "{{config}}", 
                                                 "{{userserviceworker}}", 
-                                                "{{addtohomemanually}}", 
+                                                "{{addtohomemanually}}",
+                                                "{{addtohomeshortcode}}",
                                                 "{{addtohomebanner}}",
-                                                "{{addtohomefunction}}"
+                                                "{{addtohomefunction}}",
+                                                "{{home_url}}"
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
                                                 $firebaseconfig, 
                                                 $useserviceworker,
                                                 $addtohomemanually,
+                                                $addtohomeshortcode,
                                                 $addtohomebanner,
-                                                $addtohomefunction
+                                                $addtohomefunction,
+                                                $home_url
                                             ), 
                                     $swHtmlContent);
                     
@@ -166,7 +198,7 @@ class pwaforwpFileCreation{
                 }                                                
 		return $swHtmlContent;		    
     }
-    
+        
     public function pwaforwp_firebase_js(){
             
                 $config = $swHtmlContent = '';
@@ -179,7 +211,7 @@ class pwaforwpFileCreation{
                 $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
                                                 
                 if(is_array($swHtmlContentbody)&& isset($swHtmlContentbody['body'])){
-                    $swHtmlContent      = $swHtmlContentbody['body'];
+                    $swHtmlContent          = $swHtmlContentbody['body'];
                     $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);
                 }
                                                                                                                                                  
@@ -366,11 +398,22 @@ class pwaforwpFileCreation{
                         if(function_exists('ampforwp_url_controller')){
 				$homeUrl = ampforwp_url_controller( pwaforwp_home_url() ) ;
                                 $homeUrl = trailingslashit($homeUrl);
+                                
+                                if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
+                                        $homeUrl = get_permalink($defaults['start_page']);
+                                        $homeUrl = ampforwp_url_controller( $homeUrl ) ;
+                                }
+                                                                
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			} else {
-				$homeUrl = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                            
+                                $homeUrl = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                                
+                                if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
+                                  $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
+                                }				
 				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
@@ -380,12 +423,16 @@ class pwaforwpFileCreation{
         } else {
             
                 $homeUrl = pwaforwp_home_url(); 
+                
+                if(isset($defaults['start_page']) && $defaults['start_page'] !=0){                    
+                    $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
+                }
             
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 	        }
                 
-                $scope_url = pwaforwp_site_url();    
+                $scope_url = pwaforwp_home_url();//Scope Url should be serving url
                 
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));

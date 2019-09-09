@@ -3,9 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PWAFORWP_Service_Worker{
 	
-    public $is_amp = false;       
+        public $is_amp = false;       
             
-    public function __construct() {
+        public function __construct() {
         
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
@@ -24,7 +24,61 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
+        
+        /*
+        load manifest on using Rest API
+        * This change for manifest
+        */
+        add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
+            //Only when Searve url & Installation Url Different
+            $url = pwaforwp_site_url();
+            $home_url = pwaforwp_home_url();
+            if(is_multisite() || $url!==$home_url){
+                add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
+                add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
+            }
                                                   
+        }
+        function pwaforwp_load_service_worker( WP_Query $query ){
+            if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
+                @ini_set( 'display_errors', 0 );
+                @header( 'Cache-Control: no-cache' );
+                @header( 'Content-Type: text/javascript; charset=utf-8' );
+                $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                if($filename == 'dynamic_onesignal'){//work with onesignal only
+                    $home_url = pwaforwp_home_url();
+                    $site_id = $query->get( pwaforwp_query_var('site_id_var') );
+                    
+                    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'.js');   
+                    $content .= "importScripts('".$url."')".PHP_EOL;
+                    $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    echo $content;
+                    exit;
+                }
+
+                $filename = ABSPATH.$filename;
+                $path_info = pathinfo($filename);
+                if ( !file_exists($filename) 
+                    || !isset($path_info['extension']) 
+                    || (isset($path_info['extension']) && $path_info['extension']!='js') 
+                ) {
+                    status_header( 304 );
+                    return;
+                }
+                $file_data = file_get_contents( $filename );
+                echo $file_data;
+                exit;
+            }
+        }
+
+        function pwa_add_error_template_query_var() {
+            global $wp;
+            $allQueryVar = pwaforwp_query_var();
+            if(is_array($allQueryVar)){
+                foreach ($allQueryVar as $key => $value) {
+                    $wp->add_query_var( $value );
+                }
+            }
         }
         
         public function pwaforwp_service_worker_init(){
@@ -78,7 +132,7 @@ class PWAFORWP_Service_Worker{
            
            if(isset($settings['precaching_automatic'])){
            
-                $post_count =10;
+                $post_count = 10;
                 
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
@@ -133,19 +187,26 @@ class PWAFORWP_Service_Worker{
             }
             
         }
-
         public function pwaforwp_amp_entry_point(){  
             
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
             add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
             
-        }
-	        
+        }	        
 	public function pwaforwp_service_worker(){ 
                             
-                $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
+                //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
+
+                $url = pwaforwp_site_url();
+                $home_url = pwaforwp_home_url();
+                if( !is_multisite() && trim($url)!==trim($home_url) ){
+                    $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
+                }else{
+                    $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
+                }
+
             
                 ?>
                         <amp-install-serviceworker data-scope="<?php echo pwaforwp_home_url(); ?>" 
@@ -155,8 +216,7 @@ class PWAFORWP_Service_Worker{
 			</amp-install-serviceworker>
 		<?php
                 
-	}
-	
+	}	
 	public function pwaforwp_service_worker_script( $data ){
             
 		if ( empty( $data['amp_component_scripts']['amp-install-serviceworker'] ) ) {
@@ -164,8 +224,7 @@ class PWAFORWP_Service_Worker{
 		}
 		return $data;
                 
-	}
-       	
+	}       	
 	public function pwaforwp_service_worker_non_amp(){
 		
                 $url 			 = pwaforwp_site_url();	
@@ -173,11 +232,15 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
 		if( $manualfileSetup ){
-                echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
+                if(is_multisite()){
+                    $url = esc_url_raw($url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js');   
+                    echo '<script src="'.esc_url($url).'"></script>'; 
+                }else{
+                    echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
+                }
 		}  
                 
-	}              
-    
+	}                  
         public function pwaforwp_paginated_post_add_homescreen_amp(){  
             
 		$url 			 = pwaforwp_site_url();	
@@ -186,7 +249,8 @@ class PWAFORWP_Service_Worker{
 		
 		if($manualfileSetup){
                     
-		    echo '<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
+		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
 		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
@@ -199,7 +263,6 @@ class PWAFORWP_Service_Worker{
 
 		}
 	}
-
 	public function pwaforwp_paginated_post_add_homescreen(){    
             
 		$url 			 = pwaforwp_site_url();	
@@ -210,7 +273,10 @@ class PWAFORWP_Service_Worker{
                     
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
-			echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
+			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            echo '<meta name="apple-mobile-web-app-title" content="'.$settings['app_blog_name'].'">
+            <meta name="application-name" content="'.$settings['app_blog_name'].'">';
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
 		    }
@@ -221,13 +287,64 @@ class PWAFORWP_Service_Worker{
 		}
                 
 	}
-
-    public function pwaforwp_is_amp_activated() {    
+        public function pwaforwp_is_amp_activated() {    
 		
         if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) ) {
                 $this->is_amp = true;
         }
 		  
+    }
+
+    /**
+     * Registers the rest route to get the manifest.
+     */
+    public function register_manifest_rest_route() {
+        $rest_namepace = 'pwa-for-wp/v2';
+        $route = 'pwa-manifest-json';
+        register_rest_route(
+            $rest_namepace,
+            'pwa-manifest-json',
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'get_manifest' ),
+                'permission_callback' => array( $this, 'rest_permission' ),
+            )
+        );
+        register_rest_route(
+            $rest_namepace,
+            $route.'/(?P<is_amp>[a-zA-Z0-9-]+)',
+            array(
+                'methods'             => 'GET',
+                'callback'            => array( $this, 'get_manifest' ),
+                'permission_callback' => array( $this, 'rest_permission' ),
+            )
+        );
+    }   
+
+    /**
+     * Registers the rest route to get the manifest.
+     *
+     * Mainly copied from WP_REST_Posts_Controller::get_items_permissions_check().
+     * This should ndt allow a request in the 'edit' context.
+     *
+     * @param WP_REST_Request $request Full details about the request.
+     * @return true|WP_Error True if the request is allowed, WP_Error if the request is in the 'edit' context.
+     */
+    public function rest_permission( WP_REST_Request $request ) {
+        if ( 'edit' === $request['context'] ) {
+            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'default' ), array( 'status' => rest_authorization_required_code() ) );
+        }
+        return true;
+    }
+
+    public function get_manifest($request){
+        $dataObj = new pwaforwpFileCreation();
+        if(isset($request['is_amp']) && $request['is_amp'] == 'amp' && defined('AMP_QUERY_VAR')){
+            return json_decode($dataObj->pwaforwp_manifest(true),true);
+        }else{
+            return json_decode($dataObj->pwaforwp_manifest(),true);
+        }
+
     }      
                 
 }

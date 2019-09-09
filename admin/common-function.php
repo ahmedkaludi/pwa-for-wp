@@ -112,18 +112,7 @@ function pwaforwp_frontend_enqueue(){
         }
                         
          if(($server_key !='' && $config !='')){             
-             
-            $swHtmlContentbody   = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/push-notification-template.js"); 
-            
-            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
-                $swHtmlContent       = $swHtmlContentbody['body'];
-                $firebase_config     = 'var config='.$config.';';
-                $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
-
-                $file_creating_obj = new PWAFORWP_File_Creation_Init();
-                $file_creating_obj->pwaforwp_push_notification_js($swHtmlContent);
-            }                                    
-            
+                                                                         
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
@@ -138,7 +127,7 @@ function pwaforwp_frontend_enqueue(){
             
          }  
                   
-        if(isset($settings['loading_icon'])){
+        if(isset($settings['loading_icon']) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
             
             wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
          
@@ -223,6 +212,7 @@ function pwaforwp_get_default_settings_array(){
 		'start_url_amp'		=> 0,
 		'offline_page' 		=> 0,
 		'404_page' 		=> 0,
+                'start_page' 		=> 0,
 		'orientation'		=> 'portrait',
                 'manualfileSetup'	=> 0,
                 'cdn_setting'           => 0,
@@ -233,15 +223,18 @@ function pwaforwp_get_default_settings_array(){
                 'default_caching_js_css'=> 'cacheFirst',
                 'default_caching_images'=> 'cacheFirst',
                 'default_caching_fonts' => 'cacheFirst',
+                'on_add_post_notification_title' => ''
 	);
     return $defaults;    
 }
-
+$pwaforwp_settings;
 function pwaforwp_defaultSettings(){
-	
+    
+	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
-	$settings = get_option( 'pwaforwp_settings', $defaults ); 
-	return $settings;
+	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+	return $pwaforwp_settings;
+        
 }
 
 function pwaforwp_expanded_allowed_tags() {
@@ -410,21 +403,17 @@ function pwaforwp_delete_pwa_files(){
 
 function pwaforwp_required_file_creation($action = null){
     
-                $settings = pwaforwp_defaultSettings(); 
+                    $settings = pwaforwp_defaultSettings(); 
                 
-                $manualfileSetup = $server_key = $config = '';       
-                                                                       
-                if(array_key_exists('manualfileSetup', $settings)){
-                    $manualfileSetup = $settings['manualfileSetup'];      
-                }
+                    $server_key = $config = '';       
                 
-                $fileCreationInit = new PWAFORWP_File_Creation_Init();
-		if($manualfileSetup){
-                    
+                    $fileCreationInit = new PWAFORWP_File_Creation_Init();
+                		                    
                     $status = '';                    
                     $status = $fileCreationInit->pwaforwp_swjs_init($action);
                     $status = $fileCreationInit->pwaforwp_manifest_init($action);
                     $status = $fileCreationInit->pwaforwp_swr_init($action);
+                    $status = $fileCreationInit->pwaforwp_push_notification_js($action);
                     
                     
                     if(function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )){
@@ -438,20 +427,20 @@ function pwaforwp_required_file_creation($action = null){
                         
                         set_transient( 'pwaforwp_file_change_transient', true );
                     }
+                    
                     pwaforwp_onesignal_compatiblity($action);                   
-		}
-                
-                if(isset($settings['fcm_server_key'])){
-                 $server_key = $settings['fcm_server_key'];    
-                }
-                
-                if(isset($settings['fcm_config'])){
-                 $config     = $settings['fcm_config'];   
-                }
-                                                 
-                if($server_key !='' && $config !=''){
-                  $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
-                }
+		                
+                    if(isset($settings['fcm_server_key'])){
+                         $server_key = $settings['fcm_server_key'];    
+                    }
+
+                    if(isset($settings['fcm_config'])){
+                        $config     = $settings['fcm_config'];   
+                    }
+
+                    if($server_key !='' && $config !=''){
+                         $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
+                    }
     
 }
 
@@ -527,4 +516,37 @@ function pwaforwp_download_require_files(){
      
         wp_die();
     
+}
+
+function pwaforwp_query_var($key=''){
+  $default = array(
+              'sw_query_var'=>'pwa_for_wp_script',
+              'sw_file_var'=> 'sw',
+            );
+  if(is_multisite()){
+    $default['site_id_var'] = 'site';
+  }
+  if(!empty($key) && isset($default[$key])){
+    return $default[$key];
+  }else{
+    return $default;
+  }
+}
+
+function pwaforwp_manifest_json_url($is_amp=false){
+  $link = '';
+  $jsonp_enabled = apply_filters( 'rest_jsonp_enabled', true );
+  if($jsonp_enabled){
+    $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json' );
+    if($is_amp){
+      $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' );
+    }
+  }else{
+    $url       = pwaforwp_site_url(); 
+    $link = parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH);
+    if($is_amp){
+      $link = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
+    }
+  }
+  return $link;
 }

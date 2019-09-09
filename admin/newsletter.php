@@ -32,7 +32,7 @@ class pwaforwp_ads_newsletter {
                         $object['current_user_email'] = esc_attr($current_user->user_email);                
                         $object['current_user_name']  = esc_attr($current_user->display_name);        
 			$object['displayID']          = '#toplevel_page_pwaforwp';                        
-                        $object['button1']            = esc_html__('No Thanks', 'ads-for-wp');
+                        $object['button1']            = esc_html__('No Thanks', 'pwa-for-wp');
                         $object['button2']            = false;
                         $object['function_name']      = '';
 		}
