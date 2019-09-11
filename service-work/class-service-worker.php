@@ -248,11 +248,22 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
+            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
+            usort( $icons, array( $this, 'sort_icons_callback' ) );
+            $icon = array_shift( $icons );
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
 		    	<meta name="pwaforwp" content="wordpress-plugin"/>
-		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
+		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">
+                <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
+                <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
+                <meta name="apple-mobile-web-app-capable" content="yes">
+                <meta name="mobile-web-app-capable" content="yes">
+                <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
+            if ( ! empty( $icon ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            endif; 
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
 		    }
@@ -270,13 +281,22 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
+            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
+            usort( $icons, array( $this, 'sort_icons_callback' ) );
+            $icon = array_shift( $icons );
                     
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
-            echo '<meta name="apple-mobile-web-app-title" content="'.$settings['app_blog_name'].'">
-            <meta name="application-name" content="'.$settings['app_blog_name'].'">';
+            echo '<meta name=" " content="'.esc_attr($settings['app_blog_name']).'">
+            <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="apple-touch-fullscreen" content="YES">';
+            if ( ! empty( $icon ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            endif; 
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
 		    }
@@ -345,7 +365,19 @@ class PWAFORWP_Service_Worker{
             return json_decode($dataObj->pwaforwp_manifest(),true);
         }
 
-    }      
+    }    
+    /**
+     * Sort icon sizes.
+     *
+     * Used as a callback in usort(), called from the manifest_link_and_meta() method.
+     *
+     * @param array $a The 1st icon item in our comparison.
+     * @param array $b The 2nd icon item in our comparison.
+     * @return int
+     */
+    public function sort_icons_callback( $a, $b ) {
+        return (int) strtok( $a['sizes'], 'x' ) - (int) strtok( $b['sizes'], 'x' );
+    }  
                 
 }
 if (class_exists('PWAFORWP_Service_Worker')) {

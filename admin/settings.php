@@ -1054,7 +1054,12 @@ function pwaforwp_app_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php echo esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly 192x192 in size.', 'pwa-for-wp'); ?>
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly'),
+			esc_html__('192x192 in size.'),
+			esc_html__('- For Apple mobile exact sizes is necessary')
+				);
+		?>
 	</p>
 	<?php
 }
@@ -1070,7 +1075,12 @@ function pwaforwp_splash_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php echo esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly 512x512.', 'pwa-for-wp'); ?>
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly'),
+			esc_html__('512x512 in size.'),
+			esc_html__('- For Apple mobile exact sizes is necessary')
+				);
+		?>
 	</p>
 
 	<?php
