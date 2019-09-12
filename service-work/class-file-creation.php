@@ -437,13 +437,8 @@ class pwaforwpFileCreation{
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
                 $scope_url      = trailingslashit(pwaforwp_https($scope_url));
-		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
+		$orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
 
-		if($orientation == 0) { 
-                    
-                    $orientation = 'portrait';                     
-                    
-                }
                 
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 		   $homeUrl = rtrim($homeUrl, '/\\');
