@@ -16,8 +16,21 @@ function pwaforpw_add_menu_links() {
                 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
+                                
+	/*if(!pwaforwp_ext_installed_status()){*/
+	    add_submenu_page( 'pwaforwp', esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), '<span style="color:#fff176;">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', 'pwaforwp_data_premium', 'pwaforwp_premium_interface_render' );	
+	/*}*/
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
+
+/*
+* upgread to premium menu callback
+*/
+function pwaforwp_premium_interface_render(){
+    wp_redirect( 'https://pwa-for-wp.com/pricing/' );
+    exit;    
+        
+}
 
 function pwaforwp_admin_interface_render(){
     
@@ -56,7 +69,7 @@ function pwaforwp_admin_interface_render(){
 
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
 		            
-		            //echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 					echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
@@ -479,7 +492,7 @@ function pwaforwp_addon_html(){
               
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic pwaforwp-ele-1">
-                                            <img src="'.PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg">
+                                            <img src="'.PWAFORWP_PLUGIN_URL.'images/call-to-action.png">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html__('Call to Action for PWA','pwa-for-wp').'</h3>
