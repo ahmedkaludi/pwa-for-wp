@@ -66,6 +66,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Improved:  Add to homescreen icon showing blank in iphone(apple-touch-icon) #113
 * Bug Fixed: Landscape orientation is not working in PWA correctly #151
 * Bug Fixed: Showing "//" when adding to home screen in Firefox browser(start url) #147
+* Added: Upgrade to premium as a menu item in the PWA #174
 
 = 1.3.2 (9 September 2019) =
 * Bug Fixed: Fatal error in multisite #167
