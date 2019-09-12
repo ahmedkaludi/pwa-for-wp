@@ -550,3 +550,35 @@ function pwaforwp_manifest_json_url($is_amp=false){
   }
   return $link;
 }
+
+add_filter("pwaforwp_file_creation_path", "pwaforwp_check_root_writable", 10, 1);
+function pwaforwp_check_root_writable($wppath){
+  $uploadArray = wp_upload_dir();
+  $uploadBasePath = trailingslashit($uploadArray['basedir']);
+  if(!is_writable($uploadBasePath)){
+    $uploadPwaFolder = "pwaforwp";
+    $newpath = $uploadBasePath.$uploadPwaFolder;
+    wp_mkdir_p($newpath);
+    return trailingslashit($newpath);
+  }
+  return $wppath;
+}
+
+function service_workerUrls($url, $filename){
+  $uploadArray    = wp_upload_dir();
+  $uploadBasePath = trailingslashit($uploadArray['basedir']);
+  $url            = pwaforwp_site_url();
+  $home_url       = pwaforwp_home_url();  
+  if(!is_writable($uploadBasePath)){
+    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename);
+  }
+  return $url;
+}
+
+function pwaforwp_is_file_inroot(){
+  if(is_writable(ABSPATH)){
+    return true;
+  }else{
+    return false;
+  }
+}

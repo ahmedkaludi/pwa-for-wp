@@ -33,7 +33,7 @@ class PWAFORWP_Service_Worker{
             //Only when Searve url & Installation Url Different
             $url = pwaforwp_site_url();
             $home_url = pwaforwp_home_url();
-            if(is_multisite() || $url!==$home_url){
+            if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
                 add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
                 add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
             }
@@ -44,7 +44,7 @@ class PWAFORWP_Service_Worker{
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: text/javascript; charset=utf-8' );
-                $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                $fileRawName = $filename = $query->get( pwaforwp_query_var('sw_file_var') );
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
                     $site_id = $query->get( pwaforwp_query_var('site_id_var') );
@@ -56,11 +56,13 @@ class PWAFORWP_Service_Worker{
                     exit;
                 }
 
-                $filename = ABSPATH.$filename;
+                $filename = apply_filters('pwaforwp_file_creation_path', ABSPATH).$filename;
                 $path_info = pathinfo($filename);
                 if ( !file_exists($filename) 
                     || !isset($path_info['extension']) 
-                    || (isset($path_info['extension']) && $path_info['extension']!='js') 
+                    || ( (isset($path_info['extension']) && $path_info['extension']!='js') 
+                        && $fileRawName !== 'pwa-amp-sw.html'
+                        )
                 ) {
                     status_header( 304 );
                     return;
@@ -198,10 +200,11 @@ class PWAFORWP_Service_Worker{
                             
                 //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
+                $swhtml            = service_workerUrls($swhtml, 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html');
 
                 $url = pwaforwp_site_url();
                 $home_url = pwaforwp_home_url();
-                if( !is_multisite() && trim($url)!==trim($home_url) ){
+                if( !is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
                     $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
                 }else{
                     $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
@@ -210,8 +213,8 @@ class PWAFORWP_Service_Worker{
             
                 ?>
                         <amp-install-serviceworker data-scope="<?php echo pwaforwp_home_url(); ?>" 
-                        src="<?php echo esc_url($swjs_path_amp); ?>" 
-                        data-iframe-src="<?php echo esc_url($swhtml); ?>"  
+                        src="<?php echo esc_url_raw($swjs_path_amp); ?>" 
+                        data-iframe-src="<?php echo esc_url_raw($swhtml); ?>"  
                         layout="nodisplay">
 			</amp-install-serviceworker>
 		<?php
@@ -232,7 +235,7 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
 		if( $manualfileSetup ){
-                if(is_multisite()){
+                if(is_multisite() || !pwaforwp_is_file_inroot()){
                     $url = esc_url_raw($url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js');   
                     echo '<script src="'.esc_url($url).'"></script>'; 
                 }else{

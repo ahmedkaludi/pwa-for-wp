@@ -1253,7 +1253,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                    $swUrl = esc_url(pwaforwp_home_url()."pwa-manifest". pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_manifest_json_url());
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
@@ -1266,7 +1266,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
@@ -1360,6 +1360,7 @@ function checkStatus($swUrl){
 	if($manualfileSetup){
 	
 		$wppath               = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
+		$wppath         	  = apply_filters("pwaforwp_file_creation_path", $wppath);
 		$swjsFile             = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".js";
 		$swHtmlFile           = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".html";
                 $swrFile              = $wppath."pwa-register-sw".pwaforwp_multisite_postfix().".js";
@@ -1368,7 +1369,7 @@ function checkStatus($swUrl){
                 $swmanifestFileNonAmp = $wppath."pwa-manifest".pwaforwp_multisite_postfix().".json";
         
         switch ($swUrl) {
-            case pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_manifest_json_url(true):
                     if(file_exists($swmanifestFile)){
                             return true;
                     }
@@ -1383,7 +1384,7 @@ function checkStatus($swUrl){
 					return true;
 				}
 				break;
-            case pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_manifest_json_url():
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}
