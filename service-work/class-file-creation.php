@@ -404,7 +404,7 @@ class pwaforwpFileCreation{
                                 $homeUrl = trailingslashit($homeUrl);
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
-                                        $homeUrl = get_permalink($defaults['start_page']);
+                                        $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                                         $homeUrl = ampforwp_url_controller( $homeUrl ) ;
                                 }
                                                                 
