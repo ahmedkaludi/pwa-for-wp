@@ -16,8 +16,21 @@ function pwaforpw_add_menu_links() {
                 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
+                                
+	/*if(!pwaforwp_ext_installed_status()){*/
+	    add_submenu_page( 'pwaforwp', esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), '<span style="color:#fff176;">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', 'pwaforwp_data_premium', 'pwaforwp_premium_interface_render' );	
+	/*}*/
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
+
+/*
+* upgread to premium menu callback
+*/
+function pwaforwp_premium_interface_render(){
+    wp_redirect( 'https://pwa-for-wp.com/pricing/' );
+    exit;    
+        
+}
 
 function pwaforwp_admin_interface_render(){
     
@@ -56,7 +69,7 @@ function pwaforwp_admin_interface_render(){
 
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
 		            
-		            //echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 					echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
@@ -479,7 +492,7 @@ function pwaforwp_addon_html(){
               
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic pwaforwp-ele-1">
-                                            <img src="'.PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg">
+                                            <img src="'.PWAFORWP_PLUGIN_URL.'images/call-to-action.png">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html__('Call to Action for PWA','pwa-for-wp').'</h3>
@@ -1054,7 +1067,12 @@ function pwaforwp_app_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php echo esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly 192x192 in size.', 'pwa-for-wp'); ?>
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly'),
+			esc_html__('192x192 in size.'),
+			esc_html__('- For Apple mobile exact sizes is necessary')
+				);
+		?>
 	</p>
 	<?php
 }
@@ -1070,7 +1088,12 @@ function pwaforwp_splash_icon_callback(){
 	</button>
 	
 	<p class="description">
-		<?php echo esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly 512x512.', 'pwa-for-wp'); ?>
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly'),
+			esc_html__('512x512 in size.'),
+			esc_html__('- For Apple mobile exact sizes is necessary')
+				);
+		?>
 	</p>
 
 	<?php
@@ -1243,7 +1266,7 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                    $swUrl = esc_url(pwaforwp_home_url()."pwa-manifest". pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_manifest_json_url());
                     $file_headers = @checkStatus($swUrl);
                   if(!$file_headers) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
@@ -1256,7 +1279,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
+                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
                     $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
@@ -1350,6 +1373,7 @@ function checkStatus($swUrl){
 	if($manualfileSetup){
 	
 		$wppath               = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
+		$wppath         	  = apply_filters("pwaforwp_file_creation_path", $wppath);
 		$swjsFile             = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".js";
 		$swHtmlFile           = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".html";
                 $swrFile              = $wppath."pwa-register-sw".pwaforwp_multisite_postfix().".js";
@@ -1358,7 +1382,7 @@ function checkStatus($swUrl){
                 $swmanifestFileNonAmp = $wppath."pwa-manifest".pwaforwp_multisite_postfix().".json";
         
         switch ($swUrl) {
-            case pwaforwp_home_url()."pwa-amp-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_manifest_json_url(true):
                     if(file_exists($swmanifestFile)){
                             return true;
                     }
@@ -1373,7 +1397,7 @@ function checkStatus($swUrl){
 					return true;
 				}
 				break;
-            case pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json":
+            case pwaforwp_manifest_json_url():
 				if(file_exists($swmanifestFileNonAmp)){
 					return true;
 				}

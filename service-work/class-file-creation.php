@@ -7,8 +7,9 @@ class pwaforwpFileCreation{
 	    if( $is_amp ){  
           $url = pwaforwp_site_url();
           $home_url = pwaforwp_home_url();
+          $scope_url = trailingslashit($home_url).AMP_QUERY_VAR;
 
-          if( !is_multisite() && trim($url)!==trim($home_url) ){
+          if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
           }else{
             $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
@@ -21,8 +22,11 @@ class pwaforwpFileCreation{
                         if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
                             $swHtmlContent                      = $swHtmlContentbody['body'];
                             $swHtmlContent 			= str_replace(array(
-                                                                "{{serviceWorkerFile}}"), 
-                                                                  array($ServiceWorkerfileName), 
+                                                                  "{{serviceWorkerFile}}",
+                                                                  "{{scope_url}}"
+                                                                  ), 
+                                                                  array($ServiceWorkerfileName,
+                                                                    $scope_url), 
                                                                   $swHtmlContent);
                         }                                                
 			
@@ -145,7 +149,7 @@ class pwaforwpFileCreation{
 		$url = pwaforwp_site_url();
     $home_url = pwaforwp_home_url();
 
-    if( is_multisite() || trim($url)!==trim($home_url) ){
+    if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
       $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
     }else{
       $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
@@ -400,7 +404,7 @@ class pwaforwpFileCreation{
                                 $homeUrl = trailingslashit($homeUrl);
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
-                                        $homeUrl = get_permalink($defaults['start_page']);
+                                        $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                                         $homeUrl = ampforwp_url_controller( $homeUrl ) ;
                                 }
                                                                 
@@ -418,7 +422,7 @@ class pwaforwpFileCreation{
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			}                       
-                        $scope_url    = pwaforwp_home_url();
+                        $scope_url    = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
                         
         } else {
             
@@ -437,13 +441,8 @@ class pwaforwpFileCreation{
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
                 $scope_url      = trailingslashit(pwaforwp_https($scope_url));
-		$orientation 	= isset($defaults['orientation']) && $defaults['orientation']!='' ?  $defaults['orientation'] : "portrait";
+		$orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
 
-		if($orientation == 0) { 
-                    
-                    $orientation = 'portrait';                     
-                    
-                }
                 
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 		   $homeUrl = rtrim($homeUrl, '/\\');

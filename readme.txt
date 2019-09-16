@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.3.2
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -61,6 +61,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.4 (12 September 2019) =
+* Improved: Serve required files from dynamically #149
+* Improved:  Add to homescreen icon showing blank in iphone(apple-touch-icon) #113
+* Bug Fixed: Landscape orientation is not working in PWA correctly #151
+* Bug Fixed: Showing "//" when adding to home screen in Firefox browser(start url) #147
+* Added: Upgrade to premium as a menu item in the PWA #174
+
 = 1.3.2 (9 September 2019) =
 * Bug Fixed: Fatal error in multisite #167
 
