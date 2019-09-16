@@ -313,123 +313,156 @@ self.addEventListener(
             return;
                        
         {{EXTERNAL_LINKS}}
+
+
+        if (event.request.headers.get('range')) {
+            var pos =
+            Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
+            console.log('Range request for', event.request.url, ', starting position:', pos);
+            event.respondWith(
+              caches.open(CURRENT_CACHES.prefetch)
+              .then(function(cache) {
+                return cache.match(event.request.url);
+              }).then(function(res) {
+                if (!res) {
+                  return fetch(event.request)
+                  .then(res => {
+                    return res.arrayBuffer();
+                  });
+                }
+                return res.arrayBuffer();
+              }).then(function(ab) {
+                return new Response(
+                  ab.slice(pos),
+                  {
+                    status: 206,
+                    statusText: 'Partial Content',
+                    headers: [
+                      // ['Content-Type', 'video/webm'],
+                      ['Content-Range', 'bytes ' + pos + '-' +
+                        (ab.byteLength - 1) + '/' + ab.byteLength]]
+                  });
+              }));
+        } else {
                 
-        event.respondWith(
-            caches.open(CACHE_VERSIONS.content)
-                .then(
-                    (cache) => {
+            event.respondWith(
+                caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
 
-                        return cache.match(event.request)
-                            .then(
-                                (response) => {
+                            return cache.match(event.request)
+                                .then(
+                                    (response) => {
 
-                                    if (response) {
+                                        if (response) {
 
-                                        let headers = response.headers.entries();
-                                        let date = null;
+                                            let headers = response.headers.entries();
+                                            let date = null;
 
-                                        for (let pair of headers) {
-                                            if (pair[0] === 'date') {
-                                                date = new Date(pair[1]);
+                                            for (let pair of headers) {
+                                                if (pair[0] === 'date') {
+                                                    date = new Date(pair[1]);
+                                                }
                                             }
-                                        }
 
-                                        if (date) {
-                                            let age = parseInt((new Date().getTime() - date.getTime()));
-                                            let ttl = pwaForWpgetTTL(event.request.url);
+                                            if (date) {
+                                                let age = parseInt((new Date().getTime() - date.getTime()));
+                                                let ttl = pwaForWpgetTTL(event.request.url);
 
-                                            if (age > ttl) {
+                                                if (age > ttl) {
 
-                                                return new Promise(
-                                                    (resolve) => {
+                                                    return new Promise(
+                                                        (resolve) => {
 
-                                                        return fetch(event.request.clone())
-                                                            .then(
-                                                                (updatedResponse) => {
-                                                                    if (updatedResponse) {
-                                                                        cache.put(event.request, updatedResponse.clone());
-                                                                        resolve(updatedResponse);
-                                                                    } else {
-                                                                        resolve(response)
+                                                            return fetch(event.request.clone())
+                                                                .then(
+                                                                    (updatedResponse) => {
+                                                                        if (updatedResponse) {
+                                                                            cache.put(event.request, updatedResponse.clone());
+                                                                            resolve(updatedResponse);
+                                                                        } else {
+                                                                            resolve(response)
+                                                                        }
                                                                     }
-                                                                }
-                                                            )
-                                                            .catch(
-                                                                () => {
-                                                                    resolve(response);
-                                                                }
-                                                            );
+                                                                )
+                                                                .catch(
+                                                                    () => {
+                                                                        resolve(response);
+                                                                    }
+                                                                );
 
-                                                    }
-                                                )
-                                                    .catch(
-                                                        (err) => {
-                                                            return response;
                                                         }
-                                                    );
+                                                    )
+                                                        .catch(
+                                                            (err) => {
+                                                                return response;
+                                                            }
+                                                        );
+                                                } else {
+                                                    return response;
+                                                }
+
                                             } else {
                                                 return response;
                                             }
 
                                         } else {
-                                            return response;
+                                            return null;
                                         }
-
-                                    } else {
-                                        return null;
                                     }
-                                }
-                            )
-                            .then(
-                                (response) => {
-                                    if (response) {
-                                        return response;
-                                    } else {
-                                        return fetch(event.request.clone())
-                                            .then(
-                                                (response) => {
+                                )
+                                .then(
+                                    (response) => {
+                                        if (response) {
+                                            return response;
+                                        } else {
+                                            return fetch(event.request.clone())
+                                                .then(
+                                                    (response) => {
 
-                                                    if(response.status < 300) {
-                                                        if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
-                                                            cache.put(event.request, response.clone());
-                                                        }
-                                                            return response;
-                                                    } else {
-                                                        return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
-                                                            return cache.match(NOT_FOUND_PAGE);
-                                                        })
-                                                    }
-                                                }
-                                            )
-                                            .then((response) => {
-                                                if(response) {
-                                                    return response;
-                                                }
-                                            })
-                                            .catch(
-                                                () => {
-
-                                                    return caches.open(CACHE_VERSIONS.offline)
-                                                        .then(
-                                                            (offlineCache) => {
-                                                                return offlineCache.match(OFFLINE_PAGE)
+                                                        if(response.status < 300) {
+                                                            if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                                                cache.put(event.request, response.clone());
                                                             }
-                                                        )
+                                                                return response;
+                                                        } else {
+                                                            return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
+                                                                return cache.match(NOT_FOUND_PAGE);
+                                                            })
+                                                        }
+                                                    }
+                                                )
+                                                .then((response) => {
+                                                    if(response) {
+                                                        return response;
+                                                    }
+                                                })
+                                                .catch(
+                                                    () => {
 
-                                                }
-                                            );
+                                                        return caches.open(CACHE_VERSIONS.offline)
+                                                            .then(
+                                                                (offlineCache) => {
+                                                                    return offlineCache.match(OFFLINE_PAGE)
+                                                                }
+                                                            )
+
+                                                    }
+                                                );
+                                        }
                                     }
-                                }
-                            )
-                            .catch(
-                                (error) => {
-                                    console.error('  Error in fetch handler:', error);
-                                    throw error;
-                                }
-                            );
-                    }
-                )
-        );
+                                )
+                                .catch(
+                                    (error) => {
+                                        console.error('  Error in fetch handler:', error);
+                                        throw error;
+                                    }
+                                );
+                        }
+                    )
+            );
+        
+        }
 
     }
 );
