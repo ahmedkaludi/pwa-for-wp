@@ -123,27 +123,6 @@ function pwaforwp_admin_notice(){
        $screen_id =  $current_screen->id;
     }
     
-    if( $screen_id == 'toplevel_page_pwaforwp' ){
-                
-        $swJsonNonAmp      = esc_url(pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
-        $file_json_headers = @checkStatus($swJsonNonAmp);
-        $swJsNonAmp        = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
-        $file_js_headers   = @checkStatus($swJsNonAmp);
-        
-        if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
-        
-            $url = wp_nonce_url(admin_url('admin-ajax.php?action=pwaforwp_download_require_files'), '_wpnonce'); 
-                        
-            ?>
-            <div class="updated notice">
-                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
-            </div>
-            <?php
-              delete_transient( 'pwaforwp_file_change_transient' );
-        }
-                
-    }    
-    
     /* Check transient, if available display notice */
     
     if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
