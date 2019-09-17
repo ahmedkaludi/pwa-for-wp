@@ -214,6 +214,7 @@ function pwaforwp_get_default_settings_array(){
 		'404_page' 		=> 0,
                 'start_page' 		=> 0,
 		'orientation'		=> 'portrait',
+    'display'       => 'standalone',
                 'manualfileSetup'	=> 0,
                 'cdn_setting'           => 0,
                 'normal_enable'         => 1,
@@ -449,9 +450,9 @@ function pwaforwp_query_var($key=''){
               'sw_query_var'=>'pwa_for_wp_script',
               'sw_file_var'=> 'sw',
             );
-  if(is_multisite()){
+  //if(is_multisite()){
     $default['site_id_var'] = 'site';
-  }
+  //}
   if(!empty($key) && isset($default[$key])){
     return $default[$key];
   }else{

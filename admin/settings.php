@@ -316,6 +316,15 @@ function pwaforwp_settings_init(){
 			'pwaforpw_orientation_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
+		); 
+
+		// Display
+		add_settings_field(
+			'pwaforwp_display',									// ID
+			esc_html__('Display', 'pwa-for-wp'),		// Title
+			'pwaforpw_display_callback',								// CB
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
 		);                                
 
 	add_settings_section('pwaforwp_design_section', '', '__return_false', 'pwaforwp_design_section');
@@ -1185,6 +1194,39 @@ function pwaforpw_orientation_callback(){
 			</option>
 			<option value="landscape" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape' ); } ?>>
 				<?php echo esc_html__( 'Landscape', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="auto" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'auto' ); } ?>>
+				<?php echo esc_html__( 'Auto', 'pwa-for-wp' ); ?>
+			</option>
+		</select>
+	</label>
+	
+	<p class="description">
+		<?php esc_html__( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
+	</p>
+
+	<?php
+}
+
+function pwaforpw_display_callback(){
+	
+	$settings = pwaforwp_defaultSettings();         
+        ?>
+	
+	<!-- Orientation Dropdown -->
+	<label for="pwaforwp_settings[display]">
+		<select name="pwaforwp_settings[display]" id="pwaforwp_settings[display]">
+			<option value="" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'],'' ); } ?>>
+				<?php echo esc_html__( 'Device display', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="fullscreen" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'fullscreen' ); } ?>>
+				<?php echo esc_html__( 'Fullscreen', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="standalone" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'standalone' ); } ?>>
+				<?php echo esc_html__( 'Standalone', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="minimal-ui" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'minimal-ui' ); } ?>>
+				<?php echo esc_html__( 'Minimal-ui', 'pwa-for-wp' ); ?>
 			</option>
 		</select>
 	</label>
