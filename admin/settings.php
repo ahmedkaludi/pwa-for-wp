@@ -1341,7 +1341,9 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swUrl = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");
+                      $swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
+                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
+                      $swUrl = service_workerUrls($swUrl, $swFile);
                       $file_headers = @checkStatus($swUrl);
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
@@ -1354,8 +1356,9 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                      
-                    $swUrl = esc_url(pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js");
+                    $swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
+                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
+                    $swUrl = service_workerUrls($swUrl, $swFile);
                     $file_headers = @checkStatus($swUrl);  
                     
                     if(!$file_headers) {
@@ -1413,51 +1416,65 @@ function checkStatus($swUrl){
         }	
     
 	if($manualfileSetup){
-	
-		$wppath               = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-		$wppath         	  = apply_filters("pwaforwp_file_creation_path", $wppath);
-		$swjsFile             = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".js";
-		$swHtmlFile           = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".html";
-                $swrFile              = $wppath."pwa-register-sw".pwaforwp_multisite_postfix().".js";
-		$swmanifestFile       = $wppath."pwa-amp-manifest".pwaforwp_multisite_postfix().".json";                
-                $swjsFileNonAmp       = $wppath."pwa-sw".pwaforwp_multisite_postfix().".js";
-                $swmanifestFileNonAmp = $wppath."pwa-manifest".pwaforwp_multisite_postfix().".json";
-        
-        switch ($swUrl) {
-            case pwaforwp_manifest_json_url(true):
-                    if(file_exists($swmanifestFile)){
-                            return true;
-                    }
-                    break;
-            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js":
-				if(file_exists($swjsFile)){
-					return true;
-				}
-				break;
-            case pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js":
-				if(file_exists($swjsFileNonAmp)){
-					return true;
-				}
-				break;
-            case pwaforwp_manifest_json_url():
-				if(file_exists($swmanifestFileNonAmp)){
-					return true;
-				}
-				break;
-            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".html":
-				if(file_exists($swHtmlFile)){
-					return true;
-				}
-				break;  
-            case pwaforwp_home_url()."pwa-register-sw".pwaforwp_multisite_postfix().".js":
-				if(file_exists($swrFile)){
-					return true;
-				}
-				break;          
-                                
-			default:
-				# code...
-				break;
+		if(!pwaforwp_is_file_inroot()){
+			$response = wp_remote_get( esc_url_raw( $swUrl ) );
+			$response_code       = wp_remote_retrieve_response_code( $response );
+			$response_message = wp_remote_retrieve_response_message( $response );
+
+			if ( 200 != $response_code && ! empty( $response_message ) ) {
+				return false;
+			} elseif ( 200 != $response_code ) {
+				return false;
+			} else {
+				return true;
+		        }
+		}else{
+
+			$wppath               = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
+			$wppath         	  = apply_filters("pwaforwp_file_creation_path", $wppath);
+			$swjsFile             = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".js";
+			$swHtmlFile           = $wppath."pwa-amp-sw".pwaforwp_multisite_postfix().".html";
+			$swrFile              = $wppath."pwa-register-sw".pwaforwp_multisite_postfix().".js";
+			$swmanifestFile       = $wppath."pwa-amp-manifest".pwaforwp_multisite_postfix().".json";                
+			$swjsFileNonAmp       = $wppath."pwa-sw".pwaforwp_multisite_postfix().".js";
+			$swmanifestFileNonAmp = $wppath."pwa-manifest".pwaforwp_multisite_postfix().".json";
+	        
+	        switch ($swUrl) {
+	            case pwaforwp_manifest_json_url(true):
+	                    if(file_exists($swmanifestFile)){
+	                            return true;
+	                    }
+	                    break;
+	            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".js":
+					if(file_exists($swjsFile)){
+						return true;
+					}
+					break;
+	            case pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js":
+					if(file_exists($swjsFileNonAmp)){
+						return true;
+					}
+					break;
+	            case pwaforwp_manifest_json_url():
+					if(file_exists($swmanifestFileNonAmp)){
+						return true;
+					}
+					break;
+	            case pwaforwp_home_url()."pwa-amp-sw".pwaforwp_multisite_postfix().".html":
+					if(file_exists($swHtmlFile)){
+						return true;
+					}
+					break;  
+	            case pwaforwp_home_url()."pwa-register-sw".pwaforwp_multisite_postfix().".js":
+					if(file_exists($swrFile)){
+						return true;
+					}
+					break;          
+	                                
+				default:
+					# code...
+					break;
+			}
 		}
 	}
 	$ret = true;

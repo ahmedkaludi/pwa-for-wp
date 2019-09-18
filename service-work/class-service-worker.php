@@ -24,6 +24,7 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
+		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
         
         /*
         load manifest on using Rest API
@@ -39,6 +40,16 @@ class PWAFORWP_Service_Worker{
             }
                                                   
         }
+		
+		function pwaforwp_onesignal_rewrite(){
+            flush_rewrite_rules();
+            // Flushing rewrite urls ONLY on activation
+            global $wp_rewrite;
+            $wp_rewrite->flush_rules();
+			add_rewrite_rule("onesignal_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
+
+		}
+
         function pwaforwp_load_service_worker( WP_Query $query ){
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
@@ -49,25 +60,64 @@ class PWAFORWP_Service_Worker{
                     $home_url = pwaforwp_home_url();
                     $site_id = $query->get( pwaforwp_query_var('site_id_var') );
                     
-                    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'.js');   
+                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'-js');   
+					header("Service-Worker-Allowed: /");
+					header("Content-Type: application/javascript");
+					header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
                     echo $content;
                     exit;
                 }
+				if( strpos($filename, '-js', -3) !== -1 ){
+					$filename = str_replace("-js", ".js", $filename);
+				}if( strpos($filename, '-html', -5) !== -1 ){
+                    $filename = str_replace("-html", ".html", $filename);
+                }
 
                 $filename = apply_filters('pwaforwp_file_creation_path', ABSPATH).$filename;
                 $path_info = pathinfo($filename);
-                if ( !file_exists($filename) 
-                    || !isset($path_info['extension']) 
+                if ( !isset($path_info['extension']) 
                     || ( (isset($path_info['extension']) && $path_info['extension']!='js') 
-                        && $fileRawName !== 'pwa-amp-sw.html'
+                        && $fileRawName !== ( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' )
                         )
                 ) {
                     status_header( 304 );
                     return;
                 }
-                $file_data = file_get_contents( $filename );
+                if( file_exists($filename) ){
+                    $file_data = file_get_contents( $filename );
+                }else{
+                    $fileCreation = new pwaforwpFileCreation();
+                    if( strpos($fileRawName, '-js', -3) !== -1 ){
+                        $fileRawName = str_replace("-js", ".js", $fileRawName);
+                    }elseif( strpos($filename, '-html', -5) !== -1 ){
+                        $fileRawName = str_replace("-html", ".html", $fileRawName);
+                    }
+                    switch ($fileRawName) {
+                        case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
+                            $swjsContent = $fileCreation->pwaforwp_swjs();
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
+                            $swjsContent = $fileCreation->pwaforwp_swr();
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
+                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
+                            @header( 'Content-Type: text/html; charset=utf-8' );
+                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
+                            echo $swjsContent;
+                            break;
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                }
                 echo $file_data;
                 exit;
             }
@@ -229,18 +279,18 @@ class PWAFORWP_Service_Worker{
                 
 	}       	
 	public function pwaforwp_service_worker_non_amp(){
-		
-                $url 			 = pwaforwp_site_url();	
+
+        $url 			 = pwaforwp_site_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
-		if( $manualfileSetup ){
-                if(is_multisite() || !pwaforwp_is_file_inroot()){
-                    $url = esc_url_raw($url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js');   
-                    echo '<script src="'.esc_url($url).'"></script>'; 
-                }else{
-                    echo '<script src="'.esc_url($url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js').'"></script>';    		
-                }
+		if( $manualfileSetup && !class_exists('OneSignal')){
+            $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+            $url = $url.$filename;
+            $url = service_workerUrls($url, $filename);
+                  
+            echo '<script src="'.esc_url($url).'"></script>'; 
+               
 		}  
                 
 	}                  

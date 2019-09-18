@@ -494,10 +494,13 @@ function pwaforwp_check_root_writable($wppath){
 function service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
-  $url            = pwaforwp_site_url();
+  
+  $site_url       = pwaforwp_site_url();
   $home_url       = pwaforwp_home_url();  
-  if(!is_writable($uploadBasePath)){
-    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename);
+
+
+  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) ){
+    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
   }
   return $url;
 }
