@@ -102,7 +102,10 @@ function pwaforwp_on_deactivation(){
 }
 
 function pwaforwp_on_activation(){
-    
+    flush_rewrite_rules();
+    // Flushing rewrite urls ONLY on activation
+    global $wp_rewrite;
+    $wp_rewrite->flush_rules();
     pwaforwp_admin_notice_activation_hook();            
     pwaforwp_required_file_creation();
     
