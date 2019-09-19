@@ -500,6 +500,7 @@ function service_workerUrls($url, $filename){
 
 
   if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) ){
+	  $filename = str_replace(".", "-", $filename);
     $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
   }
   return $url;
