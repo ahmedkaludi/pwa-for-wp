@@ -12,7 +12,7 @@ and open the template in the editor.
     display: none !important;
 }
 .pwaforwp-dashboard h2{
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 .pwaforwp-dashboard table th{
     width: 0px;
@@ -20,7 +20,7 @@ and open the template in the editor.
     
 }
 .pwaforwp-files-table{
-	width:70%;
+    width:70%;
 }
 .pwaforwp-files-table th td{
     width: 300px;
@@ -252,4 +252,74 @@ and open the template in the editor.
     font-weight: 600;
     letter-spacing: 1px;
     border-radius: 5px;
+}
+
+/*TOOltip*/
+
+.afw-tooltip {
+    position: relative;
+    display: inline !important;
+    margin-left: 5px;
+    color: #d8d8d8 !important;
+}
+
+.afw-tooltip .afw-help-subtitle {
+visibility: hidden;
+    max-width: 250px;
+    width: max-content;
+    background-color: #333;
+    box-shadow: 0px 0px 10px 0px #999; 
+    color: #fff;
+    line-height: 1.45;
+    text-align: center;
+    border-radius: 3px;
+    padding: 8px 10px; 
+    position: absolute;
+    z-index: 100;
+    bottom: 100%;
+    left: -26px;
+    margin-bottom: 6px !important;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size:11px;
+}
+.afw-help-subtitle a{
+    color:#fff;
+}
+.afw-tooltip .afw-help-subtitle::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 35px;
+    max-width: 1px;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #111 transparent transparent transparent;
+}
+
+.afw-tooltip:hover .afw-help-subtitle {
+    visibility: visible;
+    opacity: 1;
+}
+.afw-tooltip .afw-help-subtitle .afw-tootip-bottom{
+    position: absolute;
+    bottom: 3px;
+    border-top: 1px solid #fff;
+    left: 0px;
+    right: 0px;
+    top: auto;
+    padding: 3px 0px 0px;
+}
+.afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap{
+    width: 49%;
+    float: left;
+    border-right: 1px solid #fff;
+    color:#fff;
+}
+.afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
+    border:none;
+}
+.afw-tootip-bottom i:before{
+    font-size: 15px;
 }

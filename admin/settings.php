@@ -223,7 +223,9 @@ function pwaforwp_settings_init(){
     
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
-	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp'), '__return_false', 'pwaforwp_dashboard_section');
+	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">For details click here</a></span>
+	                </span>', '__return_false', 'pwaforwp_dashboard_section');
 		// Manifest status
 		add_settings_field(
 			'pwaforwp_manifest_status',								// ID
@@ -689,7 +691,11 @@ function pwaforwp_precaching_setting_callback(){
 	?>
 			
 		<tr>
-                    <td><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong></td>
+                    <td><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong>
+                    	<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+		                </span>
+	            	</td>
                         <td>
                           <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
                         </td>
@@ -729,7 +735,11 @@ function pwaforwp_precaching_setting_callback(){
                    </td>
                 </tr>
                 <tr>
-                    <td><strong> <?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong></td>
+                    <td><strong> <?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong>
+                    	<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+		                </span>
+                    </td>
                         <td>
                          <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
                         </td>
@@ -897,7 +907,10 @@ function pwaforwp_push_notification_callback(){
         ?>        
         
         <div class="pwafowwp-server-key-section">
-            <h2><?php echo esc_html__('Settings', 'pwa-for-wp') ?></h2>
+            <h2><?php echo esc_html__('Settings', 'pwa-for-wp') ?><span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/">For details click here</a></span>
+	                </span>
+	        </h2>
             <table class="pwaforwp-push-notificatoin-table">
                 <tbody>
                     <tr>
@@ -1293,8 +1306,10 @@ function pwaforwp_files_status_callback(){
                 <?php } ?>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>    
-                    <td> <label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]"  <?php echo (isset( $settings['normal_enable'] ) &&  $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label> </td>    
+                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
+                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="afw-help-subtitle">Status of PWA</span>
+	                </span>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
@@ -1305,6 +1320,9 @@ function pwaforwp_files_status_callback(){
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 
+                 <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="afw-help-subtitle">status of Manifest</span>
+	                </span>
                 </th>
                 <td>
                    <?php
