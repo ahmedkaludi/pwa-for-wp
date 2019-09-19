@@ -234,6 +234,9 @@ function pwaforwp_defaultSettings(){
 	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+  if(!isset($pwaforwp_settings['normal_enable'])){
+    $pwaforwp_settings['normal_enable'] = 1;
+  }
 	return $pwaforwp_settings;
         
 }
