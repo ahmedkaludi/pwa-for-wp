@@ -233,8 +233,8 @@ class PWAFORWP_Service_Worker{
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
             }else{                             
                     echo '<div id="pwaforwp-add-to-home-click" style="background-color:'.sanitize_hex_color($settings['custom_banner_background_color']).'" class="pwaforwp-footer-prompt pwaforwp-bounceInUp pwaforwp-animated">'
-                       . '<h3 style="color:'.sanitize_hex_color($settings['custom_banner_title_color']).'">'. esc_attr($banner_title).'</h3>'
-                       . '<div style="background-color:'.sanitize_hex_color($settings['custom_banner_btn_color']).'; color:'.sanitize_hex_color($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_attr($button_text).'</div>'
+                       . '<h3 style="color:'.sanitize_hex_color($settings['custom_banner_title_color']).'">'. esc_html__($banner_title, 'pwa-for-wp').'</h3>'
+                       . '<div style="background-color:'.sanitize_hex_color($settings['custom_banner_btn_color']).'; color:'.sanitize_hex_color($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html__($button_text, 'pwa-for-wp').'</div>'
                        . '</div>'; 
             }
             
