@@ -446,7 +446,7 @@ class pwaforwpFileCreation{
 				}
 			} else {
                             
-                                $homeUrl = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                                $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
                                   $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
@@ -455,7 +455,7 @@ class pwaforwpFileCreation{
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			}                       
-                        $scope_url    = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                        $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                         
         } else {
             

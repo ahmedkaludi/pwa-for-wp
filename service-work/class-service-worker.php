@@ -254,7 +254,7 @@ class PWAFORWP_Service_Worker{
 
                 $url = pwaforwp_site_url();
                 $home_url = pwaforwp_home_url();
-                if( !is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
+                if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
                     $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
                 }else{
                     $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
@@ -262,7 +262,7 @@ class PWAFORWP_Service_Worker{
 
             
                 ?>
-                        <amp-install-serviceworker data-scope="<?php echo pwaforwp_home_url(); ?>" 
+                        <amp-install-serviceworker data-scope="<?php echo trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR; ?>" 
                         src="<?php echo esc_url_raw($swjs_path_amp); ?>" 
                         data-iframe-src="<?php echo esc_url_raw($swhtml); ?>"  
                         layout="nodisplay">
