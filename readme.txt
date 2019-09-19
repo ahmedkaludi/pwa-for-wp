@@ -69,6 +69,8 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Added: 	 Added text for translate in add to home screen banner #174
 * Added: 	 The closing button option for Add to Homescreen Banner #156
 * Added: 	 Tooltip for PWA option with there tutorials links #170
+* Added: 	 Manual push notification default title will be website name.
+			 Push notification popup icon should be changable #89
 
 = 1.4 (12 September 2019) =
 * Improved: Serve required files from dynamically #149
