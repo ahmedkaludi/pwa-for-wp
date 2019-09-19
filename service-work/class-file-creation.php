@@ -109,9 +109,30 @@ class pwaforwpFileCreation{
                                                     }   
                                         }';     
             }                                                        
-           $addtohomebanner ='var lastScrollTop = 0;                                        
+           $addtohomebanner ='function PWAforwpreadCookie(name) {
+                                  var nameEQ = name + "=";
+                                  var ca = document.cookie.split(";");
+                                  for(var i=0;i < ca.length;i++) {
+                                      var c = ca[i];
+                                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
+                                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                                  }
+                                  return null;
+                              }
+
+                              var lastScrollTop = 0;                                        
                               window.addEventListener("scroll", (evt) => {
-                                var st = document.documentElement.scrollTop;                                                                                                                
+                                var st = document.documentElement.scrollTop;
+                                var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
+                                    if(closedTime){
+                                      var today = new Date();
+                                      var closedTime = new Date(closedTime);
+                                      var diffMs = (today-closedTime);
+                                      var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                                      if(diffMins<4){
+                                        return false;
+                                      }
+                                    }
                                     if (st > lastScrollTop){
                                        if(deferredPrompt !=null){
                                        '.$banner_on_desktop.'                                                                 
@@ -124,7 +145,17 @@ class pwaforwpFileCreation{
                                     }
                                  lastScrollTop = st;  
                                 });
-                                
+
+                              var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
+                                if(addtohomeCloseBtn !==null){
+                                  addtohomeCloseBtn.addEventListener("click", (e) => {
+                                      var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
+                                      if(bhidescroll !== null){
+                                        bhidescroll.style.display = "none";
+                                        document.cookie = "pwaforwp_prompt_close="+new Date();
+                                      }                                         
+                                  });
+                                }
                               var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");	
                                 if(addtohomeBtn !==null){
                                     addtohomeBtn.addEventListener("click", (e) => {
