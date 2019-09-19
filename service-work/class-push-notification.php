@@ -22,8 +22,9 @@ class pushNotification{
             }         
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
+            $url              = esc_url(sanitize_text_field($_POST['url']));
             $message['body']  = $body;
-            $message['url']   = site_url();
+            $message['url']   = (!empty($url)? $url : site_url());
                         
             $result           = $this->pwaforwp_send_push_notification($message); 
             
@@ -183,7 +184,7 @@ class pushNotification{
             $msg = [
                     'title' => $message['title'],
                     'body'  => $message['body'],
-                    'icon'  => (isset($settings['icon'])? esc_attr( $settings['icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
+                    'icon'  => (isset($settings['fcm_push_icon'])? esc_attr( $settings['fcm_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
                     'url'  => $message['url'],
                     'primarykey'  => uniqid(),
                     'image' => '',

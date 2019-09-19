@@ -924,6 +924,16 @@ function pwaforwp_push_notification_callback(){
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
+                    </tr>
+                    <tr>
+                        <th><?php echo esc_html__('FCM Push Notification Icon', 'pwa-for-wp') ?></th>  
+                        <td>
+                            <input type="text" name="pwaforwp_settings[fcm_push_icon]" id="pwaforwp_settings[fcm_push_icon]" class="pwaforwp-fcm-push-icon regular-text" size="50" value="<?php echo isset( $settings['fcm_push_icon'] ) ? esc_attr( pwaforwp_https($settings['fcm_push_icon'])) : ''; ?>">
+							<button type="button" class="button pwaforwp-fcm-push-icon-upload" data-editor="content">
+								<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?> 
+							</button>
+                            <p><?php echo esc_html__('Change Firebase push notification icon. Default: PWA icon', 'pwa-for-wp') ?> </p>
+                        </td>
                     </tr>                                                            
                 </tbody>   
             </table>                   
@@ -994,22 +1004,31 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     
                     <tr>
-                        <th><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title">
+                        <th>Title:<br/><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
                             <br>
 			                   
                         </th>  
                         <td></td>
                     </tr>
-                    
+                     <tr>
+                        <th>
+                        	Redirection Url Onclick of notification:<br/>
+                        	<input style="width: 100%" placeholder="URL" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo pwaforwp_home_url(); ?>">
+                            <br>
+			                   
+                        </th>  
+                        <td></td>
+                    </tr>   
                     <tr>
-                        <th><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
+                        <th>Message:<br/><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
                             <button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
                             <br>
 			                    <div class="pwaforwp-notification-success pwa_hide"></div>
 			                    <p class="pwaforwp-notification-error pwa_hide"></p>
                         </th>  
                         <td></td>
-                    </tr>                                                                               
+                    </tr>
+                                                                                               
                 </tbody>   
             </table>                   
         </div>
@@ -1519,7 +1538,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();        
 	
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,true );            
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );            
         // Main JS
         wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
         

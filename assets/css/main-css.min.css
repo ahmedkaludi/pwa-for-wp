@@ -256,14 +256,14 @@ and open the template in the editor.
 
 /*TOOltip*/
 
-.afw-tooltip {
+.pwaforwp-wrap .afw-tooltip {
     position: relative;
     display: inline !important;
     margin-left: 5px;
     color: #d8d8d8 !important;
 }
 
-.afw-tooltip .afw-help-subtitle {
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle {
 visibility: hidden;
     max-width: 250px;
     width: max-content;
@@ -283,10 +283,10 @@ visibility: hidden;
     transition: opacity 0.3s;
     font-size:11px;
 }
-.afw-help-subtitle a{
+.pwaforwp-wrap .afw-help-subtitle a{
     color:#fff;
 }
-.afw-tooltip .afw-help-subtitle::after {
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -298,11 +298,11 @@ visibility: hidden;
     border-color: #111 transparent transparent transparent;
 }
 
-.afw-tooltip:hover .afw-help-subtitle {
+.pwaforwp-wrap .afw-tooltip:hover .afw-help-subtitle {
     visibility: visible;
     opacity: 1;
 }
-.afw-tooltip .afw-help-subtitle .afw-tootip-bottom{
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom{
     position: absolute;
     bottom: 3px;
     border-top: 1px solid #fff;
@@ -311,15 +311,15 @@ visibility: hidden;
     top: auto;
     padding: 3px 0px 0px;
 }
-.afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap{
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap{
     width: 49%;
     float: left;
     border-right: 1px solid #fff;
     color:#fff;
 }
-.afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
     border:none;
 }
-.afw-tootip-bottom i:before{
+.pwaforwp-wrap .afw-tootip-bottom i:before{
     font-size: 15px;
 }

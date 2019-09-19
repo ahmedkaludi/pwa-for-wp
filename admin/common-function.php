@@ -206,6 +206,7 @@ function pwaforwp_get_default_settings_array(){
 		'description'		=> get_bloginfo( 'description' ),
 		'icon'			=> PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'splash_icon'		=> PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
+    'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'background_color' 	=> '#D5E0EB',
 		'theme_color' 		=> '#D5E0EB',
 		'start_url' 		=> 0,
