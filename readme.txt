@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.5
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -61,6 +61,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.5.1 (20 September 2019) =
+* Bug Fixed: Added option to enable disabled PWA in normal non-amp
+* Bug Fixed: AMP multisite service worker URL serving 
+* Improved:  UTM parameter properly added
+
 = 1.5 (19 September 2019) =
 * Improved:  Video play with PWA caching support for streaming contents #136
 * Added:  	 Added auto & fullscreen options in orientation, display respectively #94 #96
