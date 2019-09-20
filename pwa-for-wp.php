@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.4
+Version: 1.5
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.4');
+define('PWAFORWP_PLUGIN_VERSION', '1.5');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -102,7 +102,10 @@ function pwaforwp_on_deactivation(){
 }
 
 function pwaforwp_on_activation(){
-    
+    flush_rewrite_rules();
+    // Flushing rewrite urls ONLY on activation
+    global $wp_rewrite;
+    $wp_rewrite->flush_rules();
     pwaforwp_admin_notice_activation_hook();            
     pwaforwp_required_file_creation();
     
@@ -122,27 +125,6 @@ function pwaforwp_admin_notice(){
     if(is_object($current_screen)){
        $screen_id =  $current_screen->id;
     }
-    
-    if( $screen_id == 'toplevel_page_pwaforwp' ){
-                
-        $swJsonNonAmp      = esc_url(pwaforwp_home_url()."pwa-manifest".pwaforwp_multisite_postfix().".json");               
-        $file_json_headers = @checkStatus($swJsonNonAmp);
-        $swJsNonAmp        = esc_url(pwaforwp_home_url()."pwa-sw".pwaforwp_multisite_postfix().".js");                               
-        $file_js_headers   = @checkStatus($swJsNonAmp);
-        
-        if((!$file_js_headers || !$file_json_headers) || get_transient( 'pwaforwp_file_change_transient' )){
-        
-            $url = wp_nonce_url(admin_url('admin-ajax.php?action=pwaforwp_download_require_files'), '_wpnonce'); 
-                        
-            ?>
-            <div class="updated notice">
-                <p><?php echo esc_html__('To run PWA smoothly, PWA creates files in root directly. Please change the permission or downlad the file and place in root','pwa-for-wp'); ?> <a href="<?php echo esc_url($url); ?>" class="button button-primary"> <?php echo esc_html__('Download', 'pwa-for-wp') ?></a> <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/" class="button"> <?php echo esc_html__('Instructions', 'pwa-for-wp') ?></a></p>
-            </div>
-            <?php
-              delete_transient( 'pwaforwp_file_change_transient' );
-        }
-                
-    }    
     
     /* Check transient, if available display notice */
     

@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.4
+Stable tag: 1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -61,6 +61,17 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.5 (19 September 2019) =
+* Improved:  Video play with PWA caching support for streaming contents #136
+* Added:  	 Added auto & fullscreen options in orientation, display respectively #94 #96
+* Improved:  Serviceworker and other files will display properly even it does not have write permission. #176
+* Improved:  PWA working along with onesignal when used with multisite network #169
+* Added: 	 Added text for translate in add to home screen banner #174
+* Added: 	 The closing button option for Add to Homescreen Banner #156
+* Added: 	 Tooltip for PWA option with there tutorials links #170
+* Added: 	 Manual push notification default title will be website name.
+			 Push notification popup icon should be changable #89
+
 = 1.4 (12 September 2019) =
 * Improved: Serve required files from dynamically #149
 * Improved:  Add to homescreen icon showing blank in iphone(apple-touch-icon) #113

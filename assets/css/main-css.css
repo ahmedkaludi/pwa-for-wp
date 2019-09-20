@@ -9,10 +9,10 @@ and open the template in the editor.
 */
 
 .pwaforwp-hide{
-    display: none;
+    display: none !important;
 }
 .pwaforwp-dashboard h2{
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 .pwaforwp-dashboard table th{
     width: 0px;
@@ -20,7 +20,7 @@ and open the template in the editor.
     
 }
 .pwaforwp-files-table{
-	width:70%;
+    width:70%;
 }
 .pwaforwp-files-table th td{
     width: 300px;
@@ -83,6 +83,87 @@ and open the template in the editor.
 .pwaforwp-p-rate-stars svg:hover{fill:#ffb900};
 .pwaforwp-p-rate-stars svg:hover ~ svg{fill:none;};
 
+.pwaforwp-features-blocks{
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+.pwafowp-feature-ext{
+    background:#fff;
+    padding: 25px;
+    border: 1px solid #d8d8d8;
+}
+.pwaforwp-features-blocks li a{
+    text-decoration: none;
+}
+
+.pwaforwp-ele-1{
+    background: #96588a;
+}
+
+.pwaforwp-ele-ic{
+    border-radius: 256px;
+    display: inline-block;
+    padding:8px 10px 8px 10px;
+    width: 70px;
+    margin-right: 20px;
+    float: left;
+}
+.pwaforwp-ele-ic img{
+    width:100%;
+}
+
+.pwaforwp-ele-tlt h3{
+    margin:0;
+    font-size: 18px;
+    line-height: 1.4;
+}
+.pwaforwp-ele-tlt p{
+    margin-top:10px;
+}
+
+.form-wrap .pwaforwp-sts-txt{
+    font-size: 16px;
+    color:#000;
+}
+.pwaforwp-sts-txt span{
+    color:#bebfc0;
+    padding-left:5px;
+}
+
+.pwaforwp-d-btn{
+    background: #d2150a;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.pwaforwp-sts-btn{
+    box-sizing: border-box;    
+    margin-top: 20px;
+    padding: 6px 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.pwaforwp-premium_features .form-table th{
+    width: auto;
+    padding: 0px;
+}
+
+.pwaforwp-ext-selected{
+    color: #000000;
+    font-weight: 500;
+}
+#pwaforwp-ext-tab a{
+    cursor: pointer;
+}
+.pwaforwp-p-feature-table lable{
+    font-weight: 500;
+}
 
 .pwaforwp-sub-tab-headings{margin-top: 10px;}
 .pwaforwp-sub-tab-headings span{color:#0073aa;cursor: pointer;}
@@ -171,4 +252,74 @@ and open the template in the editor.
     font-weight: 600;
     letter-spacing: 1px;
     border-radius: 5px;
+}
+
+/*TOOltip*/
+
+.pwaforwp-wrap .afw-tooltip {
+    position: relative;
+    display: inline !important;
+    margin-left: 5px;
+    color: #d8d8d8 !important;
+}
+
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle {
+visibility: hidden;
+    max-width: 250px;
+    width: max-content;
+    background-color: #333;
+    box-shadow: 0px 0px 10px 0px #999; 
+    color: #fff;
+    line-height: 1.45;
+    text-align: center;
+    border-radius: 3px;
+    padding: 8px 10px; 
+    position: absolute;
+    z-index: 100;
+    bottom: 100%;
+    left: -26px;
+    margin-bottom: 6px !important;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size:11px;
+}
+.pwaforwp-wrap .afw-help-subtitle a{
+    color:#fff;
+}
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 35px;
+    max-width: 1px;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #111 transparent transparent transparent;
+}
+
+.pwaforwp-wrap .afw-tooltip:hover .afw-help-subtitle {
+    visibility: visible;
+    opacity: 1;
+}
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom{
+    position: absolute;
+    bottom: 3px;
+    border-top: 1px solid #fff;
+    left: 0px;
+    right: 0px;
+    top: auto;
+    padding: 3px 0px 0px;
+}
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap{
+    width: 49%;
+    float: left;
+    border-right: 1px solid #fff;
+    color:#fff;
+}
+.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
+    border:none;
+}
+.pwaforwp-wrap .afw-tootip-bottom i:before{
+    font-size: 15px;
 }

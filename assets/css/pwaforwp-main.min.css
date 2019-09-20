@@ -16,7 +16,7 @@ and open the template in the editor.
 }
 .pwaforwp-footer-prompt{
     display: none;
-    width: 100vw;
+    width: 100%;
     line-height: 2em;    
     color: #333;
     text-align: center;
@@ -32,7 +32,18 @@ and open the template in the editor.
     animation-fill-mode: both;
     z-index: 9999;
 }
-pwaforwp-bounceInUp{
+.pwaforwp-footer-prompt .pwaforwp-prompt-close{
+  position: absolute;
+  right: 5px;
+  top: -4px;
+  width: 25px;
+  font-weight: 400;
+  color: #656060bf;
+  font-size: 20px;
+  z-index: 9;
+  cursor: pointer;
+}
+.pwaforwp-bounceInUp{
     animation-name: bounceInUp;
 }
 .pwaforwp-animated {
@@ -40,8 +51,7 @@ pwaforwp-bounceInUp{
     animation-fill-mode: both;
 }
 .pwaforwp-btn{
-     border: none;
-   
+        border: none;   
     text-transform: uppercase;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
@@ -64,8 +74,6 @@ pwaforwp-bounceInUp{
     margin: 10px 0;
     transition: all .2s ease-in-out;
 }
-
-
 /* Center the loader */
 
 #pwaforwp_loading_div {
@@ -121,11 +129,4 @@ z-index: 500;
 @keyframes animatebottom { 
   from{ bottom:-100px; opacity:0 } 
   to{ bottom:0; opacity:1 }
-}
-.pwaforwp_add_home_close{
-    position: absolute;
-    right: 10px;
-    top: 20px;
-    width: 32px;
-    height: 32px;    
 }

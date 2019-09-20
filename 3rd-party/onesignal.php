@@ -116,9 +116,9 @@ function pwaforwp_onesignal_for_multisite(){
     }
 }
 function pwaforwp_onesignal_init_onesignal_head(){
-    $home_url = pwaforwp_home_url();
-    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal')."&".pwaforwp_query_var('site_id_var')."=".get_current_blog_id()
-;   
+    $home_url = trailingslashit(pwaforwp_home_url());
+    //$url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal')."&".pwaforwp_query_var('site_id_var')."=".get_current_blog_id()
+    $url = ('onesignal_js/'.get_current_blog_id());   
 
     $onesignal_wp_settings = \OneSignal::get_onesignal_settings();
         echo '<meta name="onesignal" content="wordpress-plugin"/>
@@ -132,12 +132,12 @@ function pwaforwp_onesignal_init_onesignal_head(){
       OneSignal.push( function() {
         OneSignal.SERVICE_WORKER_UPDATER_PATH = '<?php echo $url; ?>';
         OneSignal.SERVICE_WORKER_PATH = '<?php echo $url; ?>';
-        OneSignal.SERVICE_WORKER_PARAM = { scope: '<?php echo $home_url; ?>' };
+        OneSignal.SERVICE_WORKER_PARAM = { scope: '/' };
 
         <?php
 
         if ($onesignal_wp_settings['default_icon'] != '') {
-            echo 'OneSignal.setDefaultIcon("'.\OneSignalUtils::decode_entities($onesignal_wp_settings['default_icon'])."\");\n";
+            echo 'OneSignal.setDefaultIcon("'.\OneSignalUtils::decode_entities($onesignal_wp_settings['default_icon'])."/\");\n";
         }
 
         if ($onesignal_wp_settings['default_url'] != '') {
@@ -184,7 +184,7 @@ function pwaforwp_onesignal_init_onesignal_head(){
         if ($onesignal_wp_settings['subdomain'] != '') {
             echo "oneSignal_options['subdomainName'] = \"".\OneSignalUtils::html_safe($onesignal_wp_settings['subdomain'])."\";\n";
         } else {
-            echo "oneSignal_options['path'] = \"".$current_plugin_url."sdk_files/\";\n";
+            echo "oneSignal_options['path'] = \"".$home_url."\";\n";
         }
 
         if (@$onesignal_wp_settings['safari_web_id']) {

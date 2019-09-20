@@ -11,6 +11,7 @@ class pwaforwpFileCreation{
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
+			$ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'));
           }else{
             $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
           }
@@ -108,9 +109,30 @@ class pwaforwpFileCreation{
                                                     }   
                                         }';     
             }                                                        
-           $addtohomebanner ='var lastScrollTop = 0;                                        
+           $addtohomebanner ='function PWAforwpreadCookie(name) {
+                                  var nameEQ = name + "=";
+                                  var ca = document.cookie.split(";");
+                                  for(var i=0;i < ca.length;i++) {
+                                      var c = ca[i];
+                                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
+                                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                                  }
+                                  return null;
+                              }
+
+                              var lastScrollTop = 0;                                        
                               window.addEventListener("scroll", (evt) => {
-                                var st = document.documentElement.scrollTop;                                                                                                                
+                                var st = document.documentElement.scrollTop;
+                                var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
+                                    if(closedTime){
+                                      var today = new Date();
+                                      var closedTime = new Date(closedTime);
+                                      var diffMs = (today-closedTime);
+                                      var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                                      if(diffMins<4){
+                                        return false;
+                                      }
+                                    }
                                     if (st > lastScrollTop){
                                        if(deferredPrompt !=null){
                                        '.$banner_on_desktop.'                                                                 
@@ -123,7 +145,17 @@ class pwaforwpFileCreation{
                                     }
                                  lastScrollTop = st;  
                                 });
-                                
+
+                              var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
+                                if(addtohomeCloseBtn !==null){
+                                  addtohomeCloseBtn.addEventListener("click", (e) => {
+                                      var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
+                                      if(bhidescroll !== null){
+                                        bhidescroll.style.display = "none";
+                                        document.cookie = "pwaforwp_prompt_close="+new Date();
+                                      }                                         
+                                  });
+                                }
                               var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");	
                                 if(addtohomeBtn !==null){
                                     addtohomeBtn.addEventListener("click", (e) => {
@@ -151,6 +183,7 @@ class pwaforwpFileCreation{
 
     if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
       $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
+	  $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js'));
     }else{
       $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
     }
@@ -413,7 +446,7 @@ class pwaforwpFileCreation{
 				}
 			} else {
                             
-                                $homeUrl = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                                $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
                                   $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
@@ -422,7 +455,7 @@ class pwaforwpFileCreation{
 					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
 				}
 			}                       
-                        $scope_url    = pwaforwp_home_url().'/'.AMP_QUERY_VAR;
+                        $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                         
         } else {
             
@@ -441,7 +474,8 @@ class pwaforwpFileCreation{
         }                                            
                 $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
                 $scope_url      = trailingslashit(pwaforwp_https($scope_url));
-		$orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
+		            $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
+                $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
 
                 
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
@@ -470,7 +504,7 @@ class pwaforwpFileCreation{
                 $manifest['icons']            = $icons;
                 $manifest['background_color'] = sanitize_hex_color($defaults['background_color']);
                 $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
-                $manifest['display']          = 'standalone';
+                $manifest['display']          = esc_html($display);
                 $manifest['orientation']      = esc_html( $orientation );
                 $manifest['start_url']        = esc_url($homeUrl);
                 $manifest['scope']            = esc_url($scope_url);                             

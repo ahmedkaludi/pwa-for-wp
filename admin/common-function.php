@@ -206,6 +206,7 @@ function pwaforwp_get_default_settings_array(){
 		'description'		=> get_bloginfo( 'description' ),
 		'icon'			=> PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'splash_icon'		=> PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
+    'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'background_color' 	=> '#D5E0EB',
 		'theme_color' 		=> '#D5E0EB',
 		'start_url' 		=> 0,
@@ -214,6 +215,7 @@ function pwaforwp_get_default_settings_array(){
 		'404_page' 		=> 0,
                 'start_page' 		=> 0,
 		'orientation'		=> 'portrait',
+    'display'       => 'standalone',
                 'manualfileSetup'	=> 0,
                 'cdn_setting'           => 0,
                 'normal_enable'         => 1,
@@ -233,6 +235,9 @@ function pwaforwp_defaultSettings(){
 	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+  if(!isset($pwaforwp_settings['normal_enable'])){
+    $pwaforwp_settings['normal_enable'] = 1;
+  }
 	return $pwaforwp_settings;
         
 }
@@ -444,88 +449,14 @@ function pwaforwp_required_file_creation($action = null){
     
 }
 
-add_action('wp_ajax_pwaforwp_download_require_files', 'pwaforwp_download_require_files');
-
-function pwaforwp_download_require_files(){ 
-    
-        if ( ! current_user_can( 'manage_options' ) ) {
-             return;
-        }
-        if ( ! isset( $_GET['_wpnonce'] ) ){
-             return; 
-        }
-        if ( !wp_verify_nonce( $_GET['_wpnonce'], '_wpnonce' ) ){
-             return;  
-        }
-        
-          $creation_obj     = new pwaforwpFileCreation();
-     
-          $swjs             = $creation_obj->pwaforwp_swjs();
-          $manifest         = $creation_obj->pwaforwp_manifest();
-          $rswjs            = $creation_obj->pwaforwp_swr();
-          
-          $ampsw_js         = $creation_obj->pwaforwp_swjs(true);
-          $amp_manifest     = $creation_obj->pwaforwp_manifest(true);
-          $amp_swhtml       = $creation_obj->pwaforwp_swhtml(true);
-          $pn_sw_js         = '';
-                    
-          $pn_manifest      = '{"gcm_sender_id": "103953800507"}';
-                  
-          $files = array(
-               "pwa-sw".pwaforwp_multisite_postfix().".js"                           => $swjs,
-               "pwa-manifest".pwaforwp_multisite_postfix().".json"                   => $manifest,
-               "pwa-register-sw".pwaforwp_multisite_postfix().".js"                  => $rswjs,               
-               "pwa-push-notification-manifest".pwaforwp_multisite_postfix().".json" => $pn_manifest,
-               "firebase-messaging-sw.js"                                            => $pn_sw_js,
-           );
-          
-           if ((function_exists( 'ampforwp_is_amp_endpoint' )) || function_exists( 'is_amp_endpoint' )) {                  
-                                              
-               $files["pwa-amp-sw".pwaforwp_multisite_postfix().".js"]         = $ampsw_js;
-               $files["pwa-amp-manifest".pwaforwp_multisite_postfix().".json"] = $amp_manifest;
-               $files["pwa-amp-sw".pwaforwp_multisite_postfix().".html"]       = $amp_swhtml;
-           }
- 
-           # create new zip opbject
-           $zip = new ZipArchive();
-
-           # create a temp file & open it
-           $tmp_file = tempnam('.','');
-           $zip->open($tmp_file, ZipArchive::CREATE);
-
-           # loop through each file
-           foreach($files as $file => $value){
-              
-               # download file
-               @file_put_contents($file,$value);
-               $download_file = @file_get_contents($file);
-               
-               #add it to the zip
-               $zip->addFromString(basename($file),$download_file);
-
-           }
-
-           # close zip
-           $zip->close();
-
-           # send the file to the browser as a download
-           header('Content-disposition: attachment; filename=download.zip');
-           header('Content-type: application/zip');
-           readfile($tmp_file);
-           unlink($tmp_file);
-     
-        wp_die();
-    
-}
-
 function pwaforwp_query_var($key=''){
   $default = array(
               'sw_query_var'=>'pwa_for_wp_script',
               'sw_file_var'=> 'sw',
             );
-  if(is_multisite()){
+  //if(is_multisite()){
     $default['site_id_var'] = 'site';
-  }
+  //}
   if(!empty($key) && isset($default[$key])){
     return $default[$key];
   }else{
@@ -567,10 +498,14 @@ function pwaforwp_check_root_writable($wppath){
 function service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
-  $url            = pwaforwp_site_url();
+  
+  $site_url       = pwaforwp_site_url();
   $home_url       = pwaforwp_home_url();  
-  if(!is_writable($uploadBasePath)){
-    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename);
+
+
+  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) ){
+	  $filename = str_replace(".", "-", $filename);
+    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
   }
   return $url;
 }
