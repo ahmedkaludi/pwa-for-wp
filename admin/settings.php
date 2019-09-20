@@ -1326,9 +1326,13 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
-                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="afw-help-subtitle">Status of PWA</span>
-	                </span>
+	                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="afw-help-subtitle">Status of PWA</span>
+		                </span>
+	                </th>
+	                <td> 
+	                	<label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
+	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>

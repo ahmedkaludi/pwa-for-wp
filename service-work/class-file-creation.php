@@ -8,6 +8,9 @@ class pwaforwpFileCreation{
           $url = pwaforwp_site_url();
           $home_url = pwaforwp_home_url();
           $scope_url = trailingslashit($home_url).AMP_QUERY_VAR;
+                 if(function_exists('ampforwp_url_controller')){
+                    $scope_url = ampforwp_url_controller($home_url);
+                 }
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
@@ -440,22 +443,23 @@ class pwaforwpFileCreation{
                                         $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                                         $homeUrl = ampforwp_url_controller( $homeUrl ) ;
                                 }
-                                                                
-				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
-				}
+          $scope_url    = ampforwp_url_controller(pwaforwp_home_url());
+                                            
 			} else {
                             
                                 $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
                                   $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
-                                }				
-				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
-				}
-			}                       
-                        $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
+                                }			
+                  $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;	
+           }
+          if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+            $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
+              $homeUrl 
+            );
+          }                         
+                        
                         
         } else {
             
@@ -466,14 +470,16 @@ class pwaforwpFileCreation{
                 }
             
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
+                  $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
+                              $homeUrl 
+                            );
 	        }
                 
                 $scope_url = pwaforwp_home_url();//Scope Url should be serving url
                 
         }                                            
-                $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
-                $scope_url      = trailingslashit(pwaforwp_https($scope_url));
+                $homeUrl        = pwaforwp_https($homeUrl);
+                $scope_url      = pwaforwp_https($scope_url);
 		            $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
                 $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
 

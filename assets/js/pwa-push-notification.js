@@ -1,4 +1,4 @@
-		    var config=uyjuyj;                     
+		    var config=;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
