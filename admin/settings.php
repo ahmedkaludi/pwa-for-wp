@@ -551,8 +551,8 @@ function pwaforwp_premium_features_callback(){
                           
              if(is_plugin_active($on['p-slug'])){
                                   
-                 $tabs .=' <a data-id="pwaforwp-'.$key.'">'.$on['p-name'].'</a> |'; 
-                 $container .= '<div class="pwaforwp-ext-container" id="pwaforwp-'.$key.'">'
+                 $tabs .=' <span data-tab-id="pwaforwp-'.$key.'">'.$on['p-name'].'</span> |'; 
+                 $container .= '<div class="pwaforwp-ext-container pwaforwp-hide" id="pwaforwp-'.$key.'">'
                             . apply_filters('pwaforwp_add_ons_options',$key)  
                             .'<p><a target="_blank" href="http://pwa-for-wp.com/docs">View Documentation</a></p>'
                             . '</div>';
@@ -564,14 +564,14 @@ function pwaforwp_premium_features_callback(){
          
         ?> 
         
-       <div id="pwaforwp-ext-tab" style="margin-top: 10px;">                            
+       <div class="pwaforwp-sub-tab-headings" style="margin-top: 10px;">                            
            <?php echo $tabs; ?>   
-           <a data-id="pwaforwp-addon">Add Ons</a> 
+           <span data-tab-id="pwaforwp-addon" class="selected">Add Ons</span> 
        </div>
 
-       <div id="pwaforwp-ext-container-for-all" style="margin-top: 10px;">
+       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading" style="margin-top: 10px;">
             <?php echo $container; ?>       
-           <div class="pwaforwp-ext-container" id="pwaforwp-addon">
+           <div class="pwaforwp-ext-container selected" id="pwaforwp-addon">
                 <?php echo pwaforwp_addon_html(); ?>
            </div>
            
