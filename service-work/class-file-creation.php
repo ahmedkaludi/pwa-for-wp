@@ -73,12 +73,29 @@ class pwaforwpFileCreation{
         if(isset($settings['add_to_home_selector'])){
           
          if(strchr($settings['add_to_home_selector'], '#')){
-          $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");
-                                            if(a2hsBtn !== null){
-                                                a2hsBtn.addEventListener("click", (e) => {
-                                                    addToHome();	
-                                                 });
-                                            }';    
+          $addtohomemanually    ='function collectionHas(a, b) { //helper function (see below)
+                                    for(var i = 0, len = a.length; i < len; i ++) {
+                                      if(a[i] == b) return true;
+                                    }
+                                    return false;
+                                  }
+                                   
+                                   function findParentBySelector(elm, selector) {
+                                    var all = document.querySelectorAll(selector);
+                                    var cur = elm.parentNode;
+                                    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+                                      cur = cur.parentNode; //go up
+                                    }
+                                    return cur; //will return null if not found
+                                  }
+                                  document.addEventListener("click",function(e){
+                                    if(e.target && e.target.id== "baixar-app"){
+                                       addToHome();
+                                     }
+                                     if(findParentBySelector(e.target, "#baixar-app")){
+                                      addToHome();
+                                     }
+                                  });';    
                                                
          }
          if(strchr($settings['add_to_home_selector'], '.')){
