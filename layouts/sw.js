@@ -320,7 +320,7 @@ self.addEventListener(
             Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
             console.log('Range request for', event.request.url, ', starting position:', pos);
             event.respondWith(
-              caches.open(CURRENT_CACHES.prefetch)
+              caches.open(CACHE_VERSIONS.content)
               .then(function(cache) {
                 return cache.match(event.request.url);
               }).then(function(res) {

@@ -34,10 +34,10 @@ class PWAFORWP_Service_Worker{
             //Only when Searve url & Installation Url Different
             $url = pwaforwp_site_url();
             $home_url = pwaforwp_home_url();
-            if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
+            //if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
                 add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
                 add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
-            }
+            //}
                                                   
         }
 		
@@ -47,6 +47,7 @@ class PWAFORWP_Service_Worker{
             global $wp_rewrite;
             $wp_rewrite->flush_rules();
 			add_rewrite_rule("onesignal_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
+            add_rewrite_rule("onesignal_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
 
 		}
 
@@ -54,11 +55,12 @@ class PWAFORWP_Service_Worker{
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
-                @header( 'Content-Type: text/javascript; charset=utf-8' );
+                @header( 'Content-Type: application/javascript; charset=utf-8' );
                 $fileRawName = $filename = $query->get( pwaforwp_query_var('sw_file_var') );
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
                     $site_id = $query->get( pwaforwp_query_var('site_id_var') );
+                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'-js');   
 					header("Service-Worker-Allowed: /");
@@ -69,17 +71,19 @@ class PWAFORWP_Service_Worker{
                     echo $content;
                     exit;
                 }
-				if( strpos($filename, '-js', -3) !== -1 ){
-					$filename = str_replace("-js", ".js", $filename);
-				}if( strpos($filename, '-html', -5) !== -1 ){
+                if( strpos($filename, '-js', -3) !== false ){
+                    $filename = str_replace("-js", ".js", $filename);
+                }if( strpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
+                    @header( 'Content-Type: text/html; charset=utf-8' );
                 }
 
                 $filename = apply_filters('pwaforwp_file_creation_path', ABSPATH).$filename;
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
-                    || ( (isset($path_info['extension']) && $path_info['extension']!='js') 
-                        && $fileRawName !== ( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' )
+                    || (
+                     (isset($path_info['extension']) && $path_info['extension']!='js') 
+                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
                         )
                 ) {
                     status_header( 304 );
@@ -89,9 +93,9 @@ class PWAFORWP_Service_Worker{
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
-                    if( strpos($fileRawName, '-js', -3) !== -1 ){
+                    if( strpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
-                    }elseif( strpos($filename, '-html', -5) !== -1 ){
+                    }if( strpos($filename, '-html', -5) !== false ){
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
