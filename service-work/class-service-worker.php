@@ -62,7 +62,7 @@ class PWAFORWP_Service_Worker{
                     $site_id = $query->get( pwaforwp_query_var('site_id_var') );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
-                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw-'.$site_id.'-js');   
+                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');   
 					header("Service-Worker-Allowed: /");
 					header("Content-Type: application/javascript");
 					header("X-Robots-Tag: none");
