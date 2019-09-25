@@ -89,10 +89,10 @@ class pwaforwpFileCreation{
                                     return cur; //will return null if not found
                                   }
                                   document.addEventListener("click",function(e){
-                                    if(e.target && e.target.id== "baixar-app"){
+                                    if(e.target && e.target.id== "'.substr($settings['add_to_home_selector'], 1).'"){
                                        addToHome();
                                      }
-                                     if(findParentBySelector(e.target, "#baixar-app")){
+                                     if(findParentBySelector(e.target, "'.$settings['add_to_home_selector'].'")){
                                       addToHome();
                                      }
                                   });';    
