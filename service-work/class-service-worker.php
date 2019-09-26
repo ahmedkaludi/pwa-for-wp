@@ -40,6 +40,11 @@ class PWAFORWP_Service_Worker{
             //}
                                                   
         }
+
+        public static function loadalernative_script_load_method(){
+            add_action( 'wp_ajax_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
+            add_action( 'wp_ajax_nopriv_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
+        }
 		
 		function pwaforwp_onesignal_rewrite(){
             flush_rewrite_rules();
@@ -50,6 +55,92 @@ class PWAFORWP_Service_Worker{
             add_rewrite_rule("onesignal_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
 
 		}
+
+        /*
+        * This function will work similar as "pwaforwp_load_service_worker" 
+        * Only for Ajax time
+        */
+        static function pwaforwp_load_service_worker_ajax(){
+            $returnFile = ( ( isset($_GET[pwaforwp_query_var('sw_query_var')]) && isset($_GET[pwaforwp_query_var('sw_file_var')]) ) || isset($_GET[pwaforwp_query_var('site_id_var')]) );
+            if ( $returnFile ) {
+                @ini_set( 'display_errors', 0 );
+                @header( 'Cache-Control: no-cache' );
+                @header( 'Content-Type: application/javascript; charset=utf-8' );
+                $fileRawName = $filename =  $_GET[pwaforwp_query_var('sw_file_var')];
+                if($filename == 'dynamic_onesignal'){//work with onesignal only
+                    $home_url = pwaforwp_home_url();
+                    $site_id = $_GET[ pwaforwp_query_var('site_id_var') ];
+                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
+                    
+                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
+                    $url = service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
+                    header("Service-Worker-Allowed: /");
+                    header("Content-Type: application/javascript");
+                    header("X-Robots-Tag: none");
+                    $content .= "importScripts('".$url."')".PHP_EOL;
+                    $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    echo $content;
+                    exit;
+                }
+                if( strpos($filename, '-js', -3) !== false ){
+                    $filename = str_replace("-js", ".js", $filename);
+                }if( strpos($filename, '-html', -5) !== false ){
+                    $filename = str_replace("-html", ".html", $filename);
+                    @header( 'Content-Type: text/html; charset=utf-8' );
+                }
+
+                $filename = apply_filters('pwaforwp_file_creation_path', ABSPATH).$filename;
+                $path_info = pathinfo($filename);
+                if ( !isset($path_info['extension']) 
+                    || (
+                     (isset($path_info['extension']) && $path_info['extension']!='js') 
+                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
+                        )
+                ) {
+                    status_header( 304 );
+                    return;
+                }
+                if( file_exists($filename) ){
+                    header("Service-Worker-Allowed: /");
+                    header("X-Robots-Tag: none");
+                    $file_data = file_get_contents( $filename );
+                }else{
+                    $fileCreation = new pwaforwpFileCreation();
+                    if( strpos($fileRawName, '-js', -3) !== false ){
+                        $fileRawName = str_replace("-js", ".js", $fileRawName);
+                    }if( strpos($filename, '-html', -5) !== false ){
+                        $fileRawName = str_replace("-html", ".html", $fileRawName);
+                    }
+                    switch ($fileRawName) {
+                        case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
+                            header("Service-Worker-Allowed: /");
+                            $swjsContent = $fileCreation->pwaforwp_swjs();
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
+                            $swjsContent = $fileCreation->pwaforwp_swr();
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
+                            header("Service-Worker-Allowed: /");
+                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
+                            echo $swjsContent;
+                            break;
+                        case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
+                            @header( 'Content-Type: text/html; charset=utf-8' );
+                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
+                            echo $swjsContent;
+                            break;
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                }
+                echo $file_data;
+                exit;
+            }
+        }
 
         function pwaforwp_load_service_worker( WP_Query $query ){
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
@@ -442,4 +533,7 @@ class PWAFORWP_Service_Worker{
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
 	new PWAFORWP_Service_Worker;
+    if( wp_doing_ajax() ){
+        PWAFORWP_Service_Worker::loadalernative_script_load_method();
+    }
 };
