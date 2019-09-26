@@ -1558,7 +1558,8 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();        
 	
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );            
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
+		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
         wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
         
