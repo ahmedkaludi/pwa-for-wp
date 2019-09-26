@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.5.1
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -61,8 +61,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.6 (26 September 2019) =
+* Bug Fixed: PWA service worker register with onesignal, Call to action for pwa feature #191 
+* Bug Fixed: Service worker with Onesignal on single site #193
+* Improved:  Added aletrnative method for service worker blocked by cache  #178
+* Bug Fixed: Custom add to HomeScreen Banner,add to HomeScreen on element with oneSignal in multisite #189 #188
+* Added:     RTL Support #185
+
 = 1.5.1 (20 September 2019) =
-* Bug Fixed: Added option to enable disabled PWA in normal non-amp
+* Bug Fixed: Added option to enable disabled PWA in normal non-amp #190
 * Bug Fixed: AMP multisite service worker URL serving 
 * Improved:  UTM parameter properly added
 
