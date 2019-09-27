@@ -8,6 +8,9 @@ class pwaforwpFileCreation{
           $url = pwaforwp_site_url();
           $home_url = pwaforwp_home_url();
           $scope_url = trailingslashit($home_url).AMP_QUERY_VAR;
+                 if(function_exists('ampforwp_url_controller')){
+                    $scope_url = ampforwp_url_controller($home_url);
+                 }
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
@@ -70,12 +73,29 @@ class pwaforwpFileCreation{
         if(isset($settings['add_to_home_selector'])){
           
          if(strchr($settings['add_to_home_selector'], '#')){
-          $addtohomemanually    ='var a2hsBtn = document.getElementById("'.substr($settings['add_to_home_selector'], 1).'");
-                                            if(a2hsBtn !== null){
-                                                a2hsBtn.addEventListener("click", (e) => {
-                                                    addToHome();	
-                                                 });
-                                            }';    
+          $addtohomemanually    ='function collectionHas(a, b) { //helper function (see below)
+                                    for(var i = 0, len = a.length; i < len; i ++) {
+                                      if(a[i] == b) return true;
+                                    }
+                                    return false;
+                                  }
+                                   
+                                   function findParentBySelector(elm, selector) {
+                                    var all = document.querySelectorAll(selector);
+                                    var cur = elm.parentNode;
+                                    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+                                      cur = cur.parentNode; //go up
+                                    }
+                                    return cur; //will return null if not found
+                                  }
+                                  document.addEventListener("click",function(e){
+                                    if(e.target && e.target.id== "'.substr($settings['add_to_home_selector'], 1).'"){
+                                       addToHome();
+                                     }
+                                     if(findParentBySelector(e.target, "'.$settings['add_to_home_selector'].'")){
+                                      addToHome();
+                                     }
+                                  });';    
                                                
          }
          if(strchr($settings['add_to_home_selector'], '.')){
@@ -314,6 +334,7 @@ class pwaforwpFileCreation{
                 if($settings['excluded_urls'] !=''){     
                     
                   $exclude_from_cache     = $settings['excluded_urls']; 
+                  $exclude_from_cache     = trim($exclude_from_cache, ",");
                   $exclude_from_cache     = str_replace('/', '\/', $exclude_from_cache);     
                   $exclude_from_cache     = '/'.str_replace(',', '/,/', $exclude_from_cache).'/'; 
                   
@@ -440,22 +461,23 @@ class pwaforwpFileCreation{
                                         $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                                         $homeUrl = ampforwp_url_controller( $homeUrl ) ;
                                 }
-                                                                
-				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
-				}
+          $scope_url    = ampforwp_url_controller(pwaforwp_home_url());
+                                            
 			} else {
                             
                                 $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
                                 
                                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
                                   $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
-                                }				
-				if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-					$homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
-				}
-			}                       
-                        $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
+                                }			
+                  $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;	
+           }
+          if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+            $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
+              $homeUrl 
+            );
+          }                         
+                        
                         
         } else {
             
@@ -466,14 +488,16 @@ class pwaforwpFileCreation{
                 }
             
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-	            $homeUrl = $homeUrl."?".http_build_query(array_filter($defaults['utm_details']));
+                  $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
+                              $homeUrl 
+                            );
 	        }
                 
                 $scope_url = pwaforwp_home_url();//Scope Url should be serving url
                 
         }                                            
-                $homeUrl        = trailingslashit(pwaforwp_https($homeUrl));
-                $scope_url      = trailingslashit(pwaforwp_https($scope_url));
+                $homeUrl        = pwaforwp_https($homeUrl);
+                $scope_url      = pwaforwp_https($scope_url);
 		            $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
                 $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
 

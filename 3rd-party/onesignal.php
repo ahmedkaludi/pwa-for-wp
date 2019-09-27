@@ -110,7 +110,7 @@ function pwaforwp_add_sw_to_onesignal_sw($action = null){
 }
 add_action("wp", 'pwaforwp_onesignal_for_multisite');
 function pwaforwp_onesignal_for_multisite(){
-    if( is_multisite() && class_exists('OneSignal') ){
+    if(  class_exists('OneSignal') ){//is_multisite() &&
         remove_action( 'wp_head', [ 'OneSignal_Public', 'onesignal_header' ] );
         add_action( 'wp_head',  'pwaforwp_onesignal_init_onesignal_head' );
     }
@@ -118,7 +118,11 @@ function pwaforwp_onesignal_for_multisite(){
 function pwaforwp_onesignal_init_onesignal_head(){
     $home_url = trailingslashit(pwaforwp_home_url());
     //$url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal')."&".pwaforwp_query_var('site_id_var')."=".get_current_blog_id()
-    $url = ('onesignal_js/'.get_current_blog_id());   
+    if(is_multisite()){
+        $url = ('onesignal_js/'.get_current_blog_id());   
+    }else{
+        $url = ('onesignal_js');   
+    }
 
     $onesignal_wp_settings = \OneSignal::get_onesignal_settings();
         echo '<meta name="onesignal" content="wordpress-plugin"/>

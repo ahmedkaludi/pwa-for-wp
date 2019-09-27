@@ -431,6 +431,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_serve_cache_method_setting',							// ID
+			esc_html__('PWA aletrnative method', 'pwa-for-wp'),	// Title
+			'pwaforwp_serve_cache_method_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
                 
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
@@ -551,8 +558,8 @@ function pwaforwp_premium_features_callback(){
                           
              if(is_plugin_active($on['p-slug'])){
                                   
-                 $tabs .=' <a data-id="pwaforwp-'.$key.'">'.$on['p-name'].'</a> |'; 
-                 $container .= '<div class="pwaforwp-ext-container" id="pwaforwp-'.$key.'">'
+                 $tabs .=' <span data-tab-id="pwaforwp-'.$key.'">'.$on['p-name'].'</span> |'; 
+                 $container .= '<div class="pwaforwp-ext-container pwaforwp-hide" id="pwaforwp-'.$key.'">'
                             . apply_filters('pwaforwp_add_ons_options',$key)  
                             .'<p><a target="_blank" href="http://pwa-for-wp.com/docs">View Documentation</a></p>'
                             . '</div>';
@@ -564,14 +571,14 @@ function pwaforwp_premium_features_callback(){
          
         ?> 
         
-       <div id="pwaforwp-ext-tab" style="margin-top: 10px;">                            
+       <div class="pwaforwp-sub-tab-headings" style="margin-top: 10px;">                            
            <?php echo $tabs; ?>   
-           <a data-id="pwaforwp-addon">Add Ons</a> 
+           <span data-tab-id="pwaforwp-addon" class="selected">Add Ons</span> 
        </div>
 
-       <div id="pwaforwp-ext-container-for-all" style="margin-top: 10px;">
+       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading" style="margin-top: 10px;">
             <?php echo $container; ?>       
-           <div class="pwaforwp-ext-container" id="pwaforwp-addon">
+           <div class="pwaforwp-ext-container selected" id="pwaforwp-addon">
                 <?php echo pwaforwp_addon_html(); ?>
            </div>
            
@@ -664,6 +671,15 @@ function pwaforwp_cache_time_setting_callback(){
         <input type="text" name="pwaforwp_settings[cached_timer][html]" id="pwaforwp_settings[cached_timer][html]" class=""  value="<?php echo (isset( $settings['cached_timer'] )? esc_attr($settings['cached_timer']['html']) : '3600'); ?>">
 	<p><?php echo esc_html__('Set max cache time for JS, CSS, JSON Default:', 'pwa-for-wp'); ?> <code>86400</code> <?php echo esc_html__('in seconds;', 'pwa-for-wp'); ?> <?php echo esc_html__('You need to enter time in seconds', 'pwa-for-wp'); ?></p>
         <input type="text" name="pwaforwp_settings[cached_timer][css]" id="pwaforwp_settings[cached_timer][css]" class=""  value="<?php echo (isset( $settings['cached_timer'] )? esc_attr($settings['cached_timer']['css']) : '86400'); ?>">
+	<?php
+}
+
+function pwaforwp_serve_cache_method_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> value="true">
+	<p>Enable(check) it when PWA with OneSignal functionality not working because of Cache</p>
 	<?php
 }
 
@@ -1326,9 +1342,13 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
-                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="afw-help-subtitle">Status of PWA</span>
-	                </span>
+	                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="afw-help-subtitle">Status of PWA</span>
+		                </span>
+	                </th>
+	                <td> 
+	                	<label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
+	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
@@ -1538,7 +1558,8 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();        
 	
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );            
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
+		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
         wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
         

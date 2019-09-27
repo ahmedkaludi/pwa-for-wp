@@ -144,6 +144,7 @@ function pwaforwp_frontend_enqueue(){
         }
                 
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
+        wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
         }
         
 }
@@ -221,6 +222,7 @@ function pwaforwp_get_default_settings_array(){
                 'normal_enable'         => 1,
                 'amp_enable'            => 1,
                 'cached_timer'          => array('html'=>3600,'css'=>86400),
+                'serve_js_cache_menthod'=> "false",
                 'default_caching'       => 'cacheFirst',
                 'default_caching_js_css'=> 'cacheFirst',
                 'default_caching_images'=> 'cacheFirst',
@@ -235,9 +237,7 @@ function pwaforwp_defaultSettings(){
 	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
-  if(!isset($pwaforwp_settings['normal_enable'])){
-    $pwaforwp_settings['normal_enable'] = 1;
-  }
+  
 	return $pwaforwp_settings;
         
 }
@@ -498,6 +498,7 @@ function pwaforwp_check_root_writable($wppath){
 function service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
+  $settings = pwaforwp_defaultSettings(); 
   
   $site_url       = pwaforwp_site_url();
   $home_url       = pwaforwp_home_url();  
@@ -506,6 +507,9 @@ function service_workerUrls($url, $filename){
   if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) ){
 	  $filename = str_replace(".", "-", $filename);
     $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
+  }
+  if(isset($settings['serve_js_cache_menthod']) && $settings['serve_js_cache_menthod']=='true'){
+    $url = esc_url_raw(admin_url( 'admin-ajax.php?action=pwaforwp_sw_files&'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename ));
   }
   return $url;
 }
