@@ -9,7 +9,7 @@
 			                    console.log('ServiceWorker registration failed: ', err);
 			                });	
                                                                                                                                                                                                                                                                               
-			                let deferredPrompt;                                                                                                                                                                                                                                                                                                                        
+			                var deferredPrompt;                                                                                                                                                                                                                                                                                                                        
                                                 window.addEventListener('beforeinstallprompt', (e) => {
 							  e.preventDefault();
 							  deferredPrompt = e;
@@ -32,7 +32,24 @@
 
                                                              }
                                                                                                                     
-							});			              							
+							});			    
+              // Safari 3.0+ "[object HTMLElementConstructor]" 
+              var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+              if( isSafari ){
+                var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
+                  if(a2hsviashortcode !== null){
+                      for (var i = 0; i < a2hsviashortcode.length; i++) {
+                        a2hsviashortcode[i].style.display="block"; 
+                    }
+                  }
+                  
+                  var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
+                  if(a2hsviashortcode !== null){
+                      for (var i = 0; i < a2hsviashortcode.length; i++) {
+                        a2hsviashortcode[i].style.display="flex"; 
+                    }
+                  }
+              }
                                                                                                                                                    
                                                      {{addtohomebanner}}                                                         
                                                      {{addtohomemanually}}
