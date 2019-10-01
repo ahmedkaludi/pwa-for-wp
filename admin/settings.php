@@ -17,9 +17,9 @@ function pwaforpw_add_menu_links() {
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
                                 
-	/*if(!pwaforwp_ext_installed_status()){*/
+	if(!pwaforwp_addons_is_active()){
 	    add_submenu_page( 'pwaforwp', esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), '<span style="color:#fff176;">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', 'pwaforwp_data_premium', 'pwaforwp_premium_interface_render' );	
-	/*}*/
+	}
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
 
@@ -85,7 +85,7 @@ function pwaforwp_admin_interface_render(){
 						do_settings_sections( 'pwaforwp_dashboard_section' );	// Page slug
 						echo "</div>";
 
-						echo "<div class='pwaforwp-general' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
+						echo "<div class='pwaforwp-general pwaforwp-subheading-wrap' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
 							/*Sub menu tabs*/
 							echo '<div class="pwaforwp-sub-tab-headings">
 									<span data-tab-id="subtab-general" class="selected">'.esc_html__('General','pwa-for-wp').'</span>&nbsp;|&nbsp;
@@ -196,6 +196,7 @@ function pwaforwp_admin_interface_render(){
 		            <p style="float: left;"><?php echo esc_html__('Need Help?','pwa-for-wp') ?></p>  <a style="float: right;margin: 1em 0;" class="button button-default" target="_blank" href="https://pwa-for-wp.com/docs/"><?php echo esc_html__('View Documentation','pwa-for-wp') ?></a>
 		            
 		        </div>
+		        <?php if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
 		        	<ul>
@@ -205,6 +206,7 @@ function pwaforwp_admin_interface_render(){
 		        	</ul>
 		        	<a target="_blank" href="https://pwa-for-wp.com/pricing/"><?php echo esc_html__('UPGRADE','pwa-for-wp') ?></a>
 		        </div>
+		        <?php  } ?>
 
 		    </div>
 	</div>
@@ -529,25 +531,32 @@ function pwaforwp_addon_html(){
     return $ext_html;
     
 }
-
-function pwaforwp_premium_features_callback(){
-    
-     $add_on_list = array(
+function pwaforwp_list_addons(){
+	$add_on_list = array(
          'ctafp'  => array(
                     'p-slug' => 'call-to-action-for-pwa/call-to-action-for-pwa.php',
                     'p-name' => 'Call To Action',
          ),         
-     );   
-     $ext_is_there = false;
-     
-     foreach($add_on_list as $key => $on){
-         
+     );
+	return $add_on_list;
+}
+function pwaforwp_addons_is_active(){
+	$add_on_list = pwaforwp_list_addons();
+	$ext_is_there = false;
+	foreach($add_on_list as $key => $on){
          if(is_plugin_active($on['p-slug'])){
            $ext_is_there = true;
-           
            break;
          }
      }
+	return $ext_is_there;
+}
+
+function pwaforwp_premium_features_callback(){
+    
+    $add_on_list = pwaforwp_list_addons();
+    
+    $ext_is_there = pwaforwp_addons_is_active();
           
      if($ext_is_there){
          
@@ -570,19 +579,20 @@ function pwaforwp_premium_features_callback(){
          }
          
         ?> 
-        
-       <div class="pwaforwp-sub-tab-headings" style="margin-top: 10px;">                            
-           <?php echo $tabs; ?>   
-           <span data-tab-id="pwaforwp-addon" class="selected">Add Ons</span> 
-       </div>
+        <div class="pwaforwp-subheading-wrap">
+	       <div class="pwaforwp-sub-tab-headings" style="margin-top: 10px;">                            
+	           <?php echo $tabs; ?>   
+	           <span data-tab-id="pwaforwp-addon" class="selected">Add Ons</span> 
+	       </div>
 
-       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading" style="margin-top: 10px;">
-            <?php echo $container; ?>       
-           <div class="pwaforwp-ext-container selected" id="pwaforwp-addon">
-                <?php echo pwaforwp_addon_html(); ?>
-           </div>
-           
-       </div>
+	       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading" style="margin-top: 10px;">
+	            <?php echo $container; ?>       
+	           <div class="pwaforwp-ext-container selected" id="pwaforwp-addon">
+	                <?php echo pwaforwp_addon_html(); ?>
+	           </div>
+	           
+	       </div>
+	   </div>
                                 
         <?php 
          
