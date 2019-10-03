@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.6
+Stable tag: 1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -61,6 +61,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7 (3 October 2019) =
+* Added:	 Options to add IOS splash screen for different different screen sizes #179
+* Bug Fixed: PWA addons panel improvement #196 
+* Improved:	 Added support for cdn support with autooptimize #195
+
 = 1.6 (26 September 2019) =
 * Bug Fixed: PWA service worker register with onesignal, Call to action for pwa feature #191 
 * Bug Fixed: Service worker with Onesignal on single site #193
