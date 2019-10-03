@@ -21,7 +21,7 @@ jQuery(document).ready(function($){
                         content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}  #afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
                         content += '</style>';                        
                         content += '<div id="afw_mc_embed_signup">';
-                        content += '<form action="//app.mailerlite.com/webforms/submit/o1s7u3" data-id="258182" data-code="o1s7u3" method="POST" target="_blank">';
+                        content += '<form action="//app.mailerlite.com/webforms/submit/v5p5a5" data-id="258182" data-code="v5p5a5" method="POST" target="_blank">';
                         content += '<div id="afw_mc_embed_signup_scroll">';
                         content += '<div class="afw-mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">';
                         content += '<input type="text" name="fields[name]" class="form-control" placeholder="Name" hidden value="'+pwaforwp_obj.current_user_name+'" style="display:none">';
