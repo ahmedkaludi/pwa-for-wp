@@ -328,3 +328,7 @@ visibility: hidden;
     border: 1px solid rgb(205, 205, 205);
     display: block;
 }
+.ios-splash-images-field{
+    padding: 5px 0px;
+    font-size: 13px;
+}
