@@ -249,6 +249,12 @@ function pwaforwp_defaultSettings(){
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
     $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+
+    //autoptimize cdn compatibility
+    $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    if($cdnUrl){
+        $pwaforwp_settings['external_links_setting'] = 1;
+    }
 	return $pwaforwp_settings;
         
 }
