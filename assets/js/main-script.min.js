@@ -493,4 +493,32 @@ jQuery(document).ready(function($){
                 $('.pwaforwp_'+data_id).addClass('pwaforwp-hide');
             }
         });
+
+    //ios splash screen start
+    $(".switch_apple_splash_screen").click(function(){
+        if($(this).is(':checked')){
+            $('.ios-splash-images').show();
+        }else{
+            $('.ios-splash-images').hide();
+        }
+    });
+    $(".pwaforwp-ios-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
+        e.preventDefault();
+        var self = $(this);
+        var splash_uploader_title = self.parent('.ios-splash-images-field').find('label').text();
+        var pwaforwpMediaUploader = wp.media({
+            title: splash_uploader_title,
+            button: {
+                text: 'Select image'
+            },
+            multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
+        })
+        .on("select", function() {
+            var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
+            self.parent('.ios-splash-images-field').find(".pwaforwp-splash-icon").val(attachment.url);
+        })
+        .open();
+    });
+    //ios splash screen End
 });

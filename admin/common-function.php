@@ -207,6 +207,17 @@ function pwaforwp_get_default_settings_array(){
 		'description'		=> get_bloginfo( 'description' ),
 		'icon'			=> PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'splash_icon'		=> PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
+        //Splash icon
+        'switch_apple_splash_screen'=>0,
+        'ios_splash_icon'=> array(
+                                '320x460'=>'',
+                                '640x920'=>'',
+                                '768x1004'=>'',
+                                '748x1024'=>'',
+                                '1536x2008'=>'',
+                                '2048x1496'=>'',
+                                '750x1334'=>'',
+                                ),
     'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
 		'background_color' 	=> '#D5E0EB',
 		'theme_color' 		=> '#D5E0EB',
@@ -237,7 +248,7 @@ function pwaforwp_defaultSettings(){
 	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
-  
+    $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
 	return $pwaforwp_settings;
         
 }
