@@ -324,7 +324,7 @@ visibility: hidden;
     font-size: 15px;
 }
 .ios-splash-images{
-    padding: 10px 0px 10px 15px;
+    padding: 10px 15px 10px 0px;
     border: 1px solid rgb(205, 205, 205);
     display: block;
 }
