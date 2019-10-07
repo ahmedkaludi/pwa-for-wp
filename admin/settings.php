@@ -358,14 +358,6 @@ function pwaforwp_settings_init(){
 			'pwaforwp_tools_section',						// Page slug
 			'pwaforwp_tools_section'						// Settings Section ID
 		);
-                
-                add_settings_field(
-			'pwaforwp_loading_setting',							// ID
-			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
-			'pwaforwp_loading_setting_callback',							// CB
-			'pwaforwp_tools_section',						// Page slug
-			'pwaforwp_tools_section'						// Settings Section ID
-		);
 
 		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
@@ -440,6 +432,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+
+		add_settings_field(
+			'pwaforwp_loading_setting',							// ID
+			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+        do_action("pwaforwp_loading_icon_libraries");
                 
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
