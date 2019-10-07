@@ -4,16 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
-    
     if(isset($settings['loading_icon'])){
         
-        echo '<div id="pwaforwp_loading_div"></div>'
-          . '<div id="pwaforwp_loading_icon"></div>';
+        echo '<div id="pwaforwp_loading_div"></div>';
+        echo apply_filters('pwaforwp_loading_contents', '<div id="pwaforwp_loading_icon"></div>');
         
     }
         
 }
-
 add_action('wp_footer', 'pwaforwp_loading_icon');
 
 function pwaforwp_reset_all_settings(){ 
@@ -240,6 +238,7 @@ function pwaforwp_get_default_settings_array(){
                 'default_caching_fonts' => 'cacheFirst',
                 'on_add_post_notification_title' => ''
 	);
+    $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }
 $pwaforwp_settings;
