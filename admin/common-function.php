@@ -7,7 +7,7 @@ function pwaforwp_loading_icon() {
     if(isset($settings['loading_icon'])){
         
         echo '<div id="pwaforwp_loading_div"></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div id="pwaforwp_loading_icon"></div>');
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
         
     }
         
