@@ -49,7 +49,7 @@ function pwaforwp_admin_interface_render(){
 		settings_errors();
                 
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general','design','push_notification', 'other_setting', 'precaching_setting', 'tools', 'premium_features','help'));
+	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general', 'features','push_notification', 'other_setting', 'precaching_setting', 'tools', 'premium_features','help'));
                                                                         
 	?>
 		<div class="wrap pwaforwp-wrap">                            
@@ -59,15 +59,13 @@ function pwaforwp_admin_interface_render(){
 					<?php
 					echo '<a href="' . esc_url(pwaforwp_admin_link('dashboard')) . '" class="nav-tab ' . esc_attr( $tab == 'dashboard' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-dashboard"></span> ' . esc_html__('Dashboard', 'pwa-for-wp') . '</a>';
 
-					echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('General','pwa-for-wp') . '</a>';
+					echo '<a href="' . esc_url(pwaforwp_admin_link('general')) . '" class="nav-tab ' . esc_attr( $tab == 'general' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-welcome-view-site"></span> ' . esc_html__('Setup','pwa-for-wp') . '</a>';
 
-					echo '<a href="' . esc_url(pwaforwp_admin_link('design')) . '" class="nav-tab ' . esc_attr( $tab == 'design' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-art"></span> ' . esc_html__('Design','pwa-for-wp') . '</a>';
-
-					echo '<a href="' . esc_url(pwaforwp_admin_link('compatibility_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'compatibility_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Compatibility','pwa-for-wp') . '</a>';
+					echo '<a href="' . esc_url(pwaforwp_admin_link('features')) . '" class="nav-tab ' . esc_attr( $tab == 'features' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-generic"></span> ' . esc_html__('Features','pwa-for-wp') . '</a>';
 		            
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advanced','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
 		            
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
@@ -87,36 +85,56 @@ function pwaforwp_admin_interface_render(){
 
 						echo "<div class='pwaforwp-general pwaforwp-subheading-wrap' ".( $tab != 'general' ? 'style="display:none;"' : '').">";
 							/*Sub menu tabs*/
+
 							echo '<div class="pwaforwp-sub-tab-headings">
 									<span data-tab-id="subtab-general" class="selected">'.esc_html__('General','pwa-for-wp').'</span>&nbsp;|&nbsp;
-									<span data-tab-id="subtab-pushnots">'.esc_html__('Push Notification','pwa-for-wp').'</span>&nbsp;|&nbsp;
-									<span data-tab-id="subtab-precache">'.esc_html__('Pre Caching','pwa-for-wp').'</span>
+									<span data-tab-id="subtab-design">'.esc_html__('Design','pwa-for-wp').'</span>
 								</div>';
 							echo '<div class="pwaforwp-subheading">';
 								// general Application Settings
 								echo '<div id="subtab-general" class="selected">';
 										do_settings_sections( 'pwaforwp_general_section' );
 								echo '</div>';
-								echo '<div id="subtab-pushnots" class="pwaforwp-hide">';
-										do_settings_sections( 'pwaforwp_push_notification_section' );
-								echo '</div>';
-								echo '<div id="subtab-precache" class="pwaforwp-hide">';
-										do_settings_sections( 'pwaforwp_precaching_setting_section' );
+								echo '<div id="subtab-design" class="pwaforwp-hide">';
+										do_settings_sections( 'pwaforwp_design_section' );
 								echo '</div>';
 							echo '</div>';
 
 						echo "</div>";
 
-						echo "<div class='pwaforwp-design' ".( $tab != 'design' ? 'style="display:none;"' : '').">";
+						//feature
+						echo "<div class='pwaforwp-features' ".( $tab != 'features' ? 'style="display:none;"' : '').">";
 							// design Application Settings
-							do_settings_sections( 'pwaforwp_design_section' );	// Page slug
+							pwaforwp_features_settings();
+							
 						echo "</div>";
 			                        
 			            
 			                        
-			                        echo "<div class='pwaforwp-tools' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
+			            echo "<div class='pwaforwp-tools pwaforwp-subheading-wrap' ".( $tab != 'tools' ? 'style="display:none;"' : '').">";
 							// other_setting Application Settings
-							do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
+
+
+								/*Sub menu tabs*/
+								echo '<div class="pwaforwp-sub-tab-headings">
+										<span data-tab-id="subtab-tools" class="selected">'.esc_html__('Tools','pwa-for-wp').'</span>&nbsp;|&nbsp;
+										<span data-tab-id="subtab-compatibility">'.esc_html__('Compatibility','pwa-for-wp').'</span>
+									</div>';
+								echo '<div class="pwaforwp-subheading">';
+									// general Application Settings
+									echo '<div id="subtab-tools" class="selected">';
+											do_settings_sections( 'pwaforwp_tools_section' );	// Page slug
+									echo '</div>';
+									echo '<div id="subtab-compatibility" class="pwaforwp-hide">';
+											do_settings_sections( 'pwaforwp_compatibility_setting_section' );
+									echo '</div>';
+								echo '</div>';
+
+
+
+
+
+
 						echo "</div>";
 			                        
 			                        echo "<div class='pwaforwp-premium_features' ".( $tab != 'premium_features' ? 'style="display:none;"' : '').">";
@@ -127,11 +145,6 @@ function pwaforwp_admin_interface_render(){
 						echo "<div class='pwaforwp-other_setting' ".( $tab != 'other_setting' ? 'style="display:none;"' : '').">";
 							// other_setting Application Settings
 							do_settings_sections( 'pwaforwp_other_setting_section' );	// Page slug
-						echo "</div>";
-
-						echo "<div class='pwaforwp-compatibility_setting' ".( $tab != 'compatibility_setting' ? 'style="display:none;"' : '').">";
-							// other_setting Application Settings
-							do_settings_sections( 'pwaforwp_compatibility_setting_section' );	// Page slug
 						echo "</div>";
 			                       
 						echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
@@ -340,14 +353,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);		
-                // Add to Home screen Color
-                add_settings_field(
-			'pwaforwp_custom_banner_design',									// ID
-			esc_html__('', 'pwa-for-wp'),		// Title
-			'pwaforwp_custom_banner_design_callback',								// CB
-			'pwaforwp_design_section',						// Page slug
-			'pwaforwp_design_section'						// Settings Section ID
-		);
+                
                                                 
                 add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
                                                 
@@ -389,12 +395,22 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-                add_settings_field(
+
+		add_settings_section('pwaforwp_addtohomescreen_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_addtohomescreen_setting_section');
+        add_settings_field(
 			'pwaforwp_custom_add_to_home',									// ID
 			esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),		// Title
 			'pwaforwp_custom_add_to_home_callback',								// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
+			'pwaforwp_addtohomescreen_setting_section',						// Page slug
+			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
+		);
+        // Add to Home screen Color
+        add_settings_field(
+			'pwaforwp_custom_banner_design',									// ID
+			esc_html__('', 'pwa-for-wp'),		// Title
+			'pwaforwp_custom_banner_design_callback',								// CB
+			'pwaforwp_addtohomescreen_setting_section',						// Page slug
+			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
 		);
                 
                 add_settings_field(
@@ -404,12 +420,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+        add_settings_section('pwaforwp_utmtracking_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_utmtracking_setting_section');
 		add_settings_field(
 			'pwaforwp_utm_setting',							// ID
 			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
 			'pwaforwp_utm_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
+			'pwaforwp_utmtracking_setting_section',						// Page slug
+			'pwaforwp_utmtracking_setting_section'						// Settings Section ID
 		);                
                 add_settings_field(
 			'pwaforwp_exclude_url_setting',							// ID
@@ -427,20 +444,21 @@ function pwaforwp_settings_init(){
 		);
 		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
-			esc_html__('PWA aletrnative method', 'pwa-for-wp'),	// Title
+			esc_html__('PWA alternative method', 'pwa-for-wp'),	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-
+		add_settings_section('pwaforwp_loaders_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
-			esc_html__('Loading Icon', 'pwa-for-wp'),	// Title
+			esc_html__('Loader', 'pwa-for-wp'),	// Title
 			'pwaforwp_loading_setting_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
 		);
-        do_action("pwaforwp_loading_icon_libraries");
+        do_action("pwaforwp_loading_icon_libraries", 'pwaforwp_loaders_setting_section');
+
                 
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
@@ -1636,7 +1654,8 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
         wp_enqueue_style( 'wp-color-picker' );	
 	// Everything needed for media upload
-        wp_enqueue_media();        
+        wp_enqueue_media();   
+        add_thickbox();     
 	
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
@@ -1898,16 +1917,107 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                                                                 
 }
 
-add_action("pwaforwp_loading_icon_libraries", 'pwaforwp_show_premium_options');
-function pwaforwp_show_premium_options(){
+add_action("pwaforwp_loading_icon_libraries", 'pwaforwp_show_premium_options',10, 1);
+function pwaforwp_show_premium_options($section){
 	add_settings_field(
 			'pwaforwp_loading_icon_selector',							// ID
-			esc_html__('Loading icon selector', 'pwa-for-wp'),	// Title
+			esc_html__('Loader icon selector', 'pwa-for-wp'),	// Title
 			'pwaforwp_loading_icon_premium_callback',							// CB
-			'pwaforwp_other_setting_section',						// Page slug
-			'pwaforwp_other_setting_section'						// Settings Section ID
+			$section,						// Page slug
+			$section						// Settings Section ID
 		);
 }
 function pwaforwp_loading_icon_premium_callback(){
-	echo "This feature available in premium plugin";
+	echo sprintf("%s <a href='%s'>%s</a>",
+			esc_html__('This feature requires', 'pwa-for-wp'),
+			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
+			esc_html__("Loading Icon Library for PWA plugin", 'pwa-for-wp'),
+
+		)
+	;
+}
+
+function pwaforwp_features_settings(){
+	$settings = pwaforwp_defaultSettings();
+	//print_r($settings );die;
+	$feturesArray = array(
+				'notification' => array(
+									'enable_field' => 'notification_feature',
+									'section_name' => 'pwaforwp_push_notification_section',
+									'setting_title' => 'Push notification',
+									'tooltip_option' => 'send notification to users',
+									),
+				'precaching' => array(
+									'enable_field' => 'precaching_feature',
+									'section_name' => 'pwaforwp_precaching_setting_section',
+									'setting_title' => 'Pre Caching',
+									'tooltip_option' => 'Pre-Cache pages and posts on page load',
+									),
+				'addtohomebanner' => array(
+									'enable_field' => 'addtohomebanner_feature',
+									'section_name' => 'pwaforwp_addtohomescreen_setting_section',
+									'setting_title' => 'Custom Add To Home Banner',
+									'tooltip_option' => 'Add a banner website for PWA app install',
+									),
+				'utmtracking' => array(
+									'enable_field' => 'utmtracking_feature',
+									'section_name' => 'pwaforwp_utmtracking_setting_section',
+									'setting_title' => 'UTM Tracking',
+									),
+				'loader' => array(
+									'enable_field' => 'loader_feature',
+									'section_name' => 'pwaforwp_loaders_setting_section',
+									'setting_title' => 'Loader',
+									),
+								);
+	$featuresHtml = '';
+	foreach ($feturesArray as $key => $featureVal) {
+		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
+			echo '<div class="pwaforwp-wrap">';
+				do_settings_sections( $featureVal['section_name'] );
+				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
+			echo '</div>';
+		echo '</div>';
+		$settingsHtml = $tooltipHtml = '';
+		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
+			$settingsHtml = '<div class="card-action" data-content="%2$s-contents">
+				<span class="pwaforwp-change-data dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
+			</div>';
+		}
+		if(isset($featureVal['tooltip_option'])) {
+			$tooltipHtml = '<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	            <span class="afw-help-subtitle">%5$s</span>
+	        </span>';
+	    }
+
+		$featuresHtml .= sprintf('<li class="pwaforwp-card-wrap">
+								<div class="pwaforwp-card-content">
+									<div class="pwaforwp-tlt-sw">
+										<h2>%1$s 
+											'.$tooltipHtml.'
+										</h2>
+										<div class="card-action">
+											<label class="switch">
+											  <input type="checkbox" %3$s name="pwaforwp_settings[%4$s]" value="1">
+											  <span class="slider round"></span>
+											</label>
+											'.$settingsHtml.'
+										</div>
+									</div>
+									
+								</div>
+							</li>',
+							$featureVal['setting_title'],
+							$key,
+							$settings[$featureVal['enable_field']]? "checked" : '',
+							$featureVal['enable_field'],
+							isset($featureVal['tooltip_option'])? $featureVal['tooltip_option']: ''
+
+
+
+			);
+	}
+	echo '<ul class="pwaforwp-feature-cards">
+			'.$featuresHtml.'
+		</ul>';
 }

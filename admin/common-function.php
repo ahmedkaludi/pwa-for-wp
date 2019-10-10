@@ -236,7 +236,14 @@ function pwaforwp_get_default_settings_array(){
                 'default_caching_js_css'=> 'cacheFirst',
                 'default_caching_images'=> 'cacheFirst',
                 'default_caching_fonts' => 'cacheFirst',
-                'on_add_post_notification_title' => ''
+                'on_add_post_notification_title' => '',
+
+    /*Features settings*/
+        'notification_feature'  => 0,
+        'precaching_feature'    => 0,
+        'addtohomebanner_feature'=> 0,
+        'utmtracking_feature'   => 0,
+        'loader_feature'         => 0,
 	);
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
