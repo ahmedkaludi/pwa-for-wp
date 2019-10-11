@@ -148,12 +148,12 @@ function pwaforwp_admin_interface_render(){
 						echo "</div>";
 			                       
 						echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
-							echo "<h3>".esc_html__('Help Section', 'pwa-for-wp')."</h3><a target=\"_blank\" href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">".esc_html__('View Setup Documentation', 'pwa-for-wp')."</a>";
+							echo "<h3>".esc_html__('Documentation', 'pwa-for-wp')."</h3><a target=\"_blank\" class='button' href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">".esc_html__('View Setup Documentation', 'pwa-for-wp')."</a>";
 							?>	
 							<hr />	
 			        	                   <div class="pwa_contact_us_div">
-						            <strong><?php echo esc_html__('If you have any query, please write the query in below box or email us at', 'pwa-for-wp') ?> <a href="mailto:team@magazine3.com">team@magazine3.com</a>. <?php echo esc_html__('We will reply to your email address shortly', 'pwa-for-wp') ?></strong>
-						       		<hr />	
+			        	                   	<h3><?php echo esc_html__('Ask for Technical Support', 'pwa-for-wp') ?></h3>
+			        	                   	<p><?php echo esc_html__('We are always available to help you with anything', 'pwa-for-wp') ?></p>
 						            <ul>
 						                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
 						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
@@ -182,7 +182,7 @@ function pwaforwp_admin_interface_render(){
 				</form>
 			</div>
 			<div class="pwaforwp-settings-second-div">
-		        <div class="pwaforwp-feedback-panel">
+		        <div class="pwaforwp-feedback-panel" style="display: none;">
 			        
 			        <h2><?php echo esc_html__( 'Leave A Feedback', 'pwa-for-wp' ); ?></h2>
 			        
@@ -204,7 +204,7 @@ function pwaforwp_admin_interface_render(){
 			        </div>
 			        
 			    </div>
-		        <div class="pwaforwp-view-docs">
+		        <div class="pwaforwp-view-docs" style="display: none;">
 		            
 		            <p style="float: left;"><?php echo esc_html__('Need Help?','pwa-for-wp') ?></p>  <a style="float: right;margin: 1em 0;" class="button button-default" target="_blank" href="https://pwa-for-wp.com/docs/"><?php echo esc_html__('View Documentation','pwa-for-wp') ?></a>
 		            
@@ -238,8 +238,8 @@ function pwaforwp_settings_init(){
     
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
-	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">For details click here</a></span>
+	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">For details click here</a></span>
 	                </span>', '__return_false', 'pwaforwp_dashboard_section');
 		// Manifest status
 		add_settings_field(
@@ -405,13 +405,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
 		);
         // Add to Home screen Color
-        add_settings_field(
+        /*add_settings_field(
 			'pwaforwp_custom_banner_design',									// ID
 			esc_html__('', 'pwa-for-wp'),		// Title
 			'pwaforwp_custom_banner_design_callback',								// CB
 			'pwaforwp_addtohomescreen_setting_section',						// Page slug
 			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
-		);
+		);*/
                 
                 add_settings_field(
 			'pwaforwp_cache_external_links_setting',							// ID
@@ -752,11 +752,11 @@ function pwaforwp_precaching_setting_callback(){
 	?>
 			
 		<tr>
-                    <td><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong>
-                    	<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+                    <th><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong>
+                    	<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
 		                </span>
-	            	</td>
+	            	</th>
                         <td>
                           <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
                         </td>
@@ -797,8 +797,8 @@ function pwaforwp_precaching_setting_callback(){
                 </tr>
                 <tr>
                     <td><strong> <?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong>
-                    	<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+                    	<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
 		                </span>
                     </td>
                         <td>
@@ -858,31 +858,31 @@ function pwaforwp_utm_setting_callback(){
 	<p> <?php echo esc_html__('To identify users are coming from your App', 'pwa-for-wp'); ?></p>
 	<table class="form-table">
 		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Source', 'pwa-for-wp'); ?></th>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_source]" value="<?php echo esc_attr($utm_source); ?>" data-val="<?php echo esc_attr($utm_source); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Medium', 'pwa-for-wp'); ?></th>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_medium]" value="<?php echo esc_attr($utm_medium); ?>" data-val="<?php echo esc_attr($utm_medium); ?>"/></td>
 		</tr>
                 <tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Campaign', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Campaign', 'pwa-for-wp'); ?></th>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_campaign]" value="<?php echo esc_attr($utm_campaign); ?>" data-val="<?php echo esc_attr($utm_campaign); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Term', 'pwa-for-wp'); ?></th>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_term]" value="<?php echo esc_attr($utm_term); ?>" data-val="<?php echo esc_attr($utm_term); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Content', 'pwa-for-wp'); ?></th>
 			<td><input type="text" name="pwaforwp_settings[utm_details][utm_content]" value="<?php echo esc_attr($utm_content); ?>" data-val="<?php echo esc_attr($utm_content); ?>"/></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM Non-amp Url', 'pwa-for-wp'); ?></th>
 			<td><code><?php echo esc_url($utm_url); ?></code></td>
 		</tr>
 		<tr class="pwawp_utm_values_class expectedValues" style="display:<?php echo esc_attr($style); ?>;">
-			<td><?php echo esc_html__('UTM amp Url', 'pwa-for-wp'); ?></td>
+			<th><?php echo esc_html__('UTM amp Url', 'pwa-for-wp'); ?></th>
 			<td><code><?php echo esc_url($utm_url_amp); ?></code></td>
 		</tr>
 	</table>
@@ -968,8 +968,8 @@ function pwaforwp_push_notification_callback(){
         ?>        
         
         <div class="pwafowwp-server-key-section">
-            <h2><?php echo esc_html__('Settings', 'pwa-for-wp') ?><span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="afw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/">For details click here</a></span>
+            <h2><?php echo esc_html__('Settings', 'pwa-for-wp') ?><span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/">For details click here</a></span>
 	                </span>
 	        </h2>
             <table class="pwaforwp-push-notificatoin-table">
@@ -1103,12 +1103,12 @@ function pwaforwp_custom_banner_design_callback(){
         
         <h2><?php echo esc_html__('Custom Add To Homescreen Customization', 'pwa-for-wp') ?></h2>
         <table class="" style="display: block;">
-            <tr><td><strong><?php echo esc_html__('Title', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_title]" id="pwaforwp_settings[custom_banner_title]" class="" value="<?php echo isset( $settings['custom_banner_title'] ) ? esc_attr( $settings['custom_banner_title']) : 'Add '.get_bloginfo().' to your Homescreen!'; ?>"></td></tr> 
-            <tr><td><strong><?php echo esc_html__('Button Text', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_button_text]" id="pwaforwp_settings[custom_banner_button_text]" class="" value="<?php echo isset( $settings['custom_banner_button_text'] ) ? esc_attr( $settings['custom_banner_button_text']) : 'Add'; ?>"></td></tr> 
-            <tr><td><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#fff"></td></tr> 
-            <tr><td><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
-            <tr><td><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
-            <tr><td><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></td><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#D5E0EB'; ?>" data-default-color="#fdc309"></td></tr>                         
+            <tr><th><strong><?php echo esc_html__('Title', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title]" id="pwaforwp_settings[custom_banner_title]" class="" value="<?php echo isset( $settings['custom_banner_title'] ) ? esc_attr( $settings['custom_banner_title']) : 'Add '.get_bloginfo().' to your Homescreen!'; ?>"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Button Text', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_button_text]" id="pwaforwp_settings[custom_banner_button_text]" class="" value="<?php echo isset( $settings['custom_banner_button_text'] ) ? esc_attr( $settings['custom_banner_button_text']) : 'Add'; ?>"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#fff"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#D5E0EB'; ?>" data-default-color="#fdc309"></td></tr>                         
         </table>
         <?php
 }
@@ -1409,6 +1409,7 @@ function pwaforwp_custom_add_to_home_callback(){
         </div>
         <?php } ?>
 	<?php
+	pwaforwp_custom_banner_design_callback();
 }
 function pwaforwp_add_to_home_callback(){
 	
@@ -1440,8 +1441,8 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
-	                    <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="afw-help-subtitle">Status of PWA</span>
+	                    <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+		                    <span class="pwafw-help-subtitle">Status of PWA</span>
 		                </span>
 	                </th>
 	                <td> 
@@ -1457,8 +1458,8 @@ function pwaforwp_files_status_callback(){
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 
-                 <span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="afw-help-subtitle">status of Manifest</span>
+                 <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="pwafw-help-subtitle">status of Manifest</span>
 	                </span>
                 </th>
                 <td>
@@ -1946,6 +1947,7 @@ function pwaforwp_features_settings(){
 									'section_name' => 'pwaforwp_push_notification_section',
 									'setting_title' => 'Push notification',
 									'tooltip_option' => 'send notification to users',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/'
 									),
 				'precaching' => array(
 									'enable_field' => 'precaching_feature',
@@ -1973,24 +1975,26 @@ function pwaforwp_features_settings(){
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
-			echo '<div class="pwaforwp-wrap">';
+			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap">';
 				do_settings_sections( $featureVal['section_name'] );
 				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
 		echo '</div>';
 		$settingsHtml = $tooltipHtml = '';
 		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
-			$settingsHtml = '<div class="card-action" data-content="%2$s-contents">
-				<span class="pwaforwp-change-data dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
-			</div>';
+			$settingsHtml = 'style="opacity:1;"';
+		}else{
+			$settingsHtml = 'style="opacity:0;"';
 		}
 		if(isset($featureVal['tooltip_option'])) {
-			$tooltipHtml = '<span class="afw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	            <span class="afw-help-subtitle">%5$s</span>
+			$tooltipHtml = '<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	            <span class="pwafw-help-subtitle">%5$s
+	            '.(isset($featureVal['tooltip_link']) && !empty($featureVal['tooltip_link'])? '<a href="'.esc_url($featureVal['tooltip_link']).'">Learn More</a>': '').'
+	            </span>
 	        </span>';
 	    }
 
-		$featuresHtml .= sprintf('<li class="pwaforwp-card-wrap">
+		$featuresHtml .= sprintf('<li class="pwaforwp-card-wrap %6$s">
 								<div class="pwaforwp-card-content">
 									<div class="pwaforwp-tlt-sw">
 										<h2>%1$s 
@@ -2001,17 +2005,20 @@ function pwaforwp_features_settings(){
 											  <input type="checkbox" %3$s name="pwaforwp_settings[%4$s]" value="1">
 											  <span class="slider round"></span>
 											</label>
-											'.$settingsHtml.'
+											<div class="card-action-settings" data-content="%2$s-contents" '.$settingsHtml.'>
+												<span class="pwaforwp-change-data dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
+											</div>
 										</div>
 									</div>
 									
 								</div>
 							</li>',
-							$featureVal['setting_title'],
-							$key,
-							$settings[$featureVal['enable_field']]? "checked" : '',
+							esc_html($featureVal['setting_title']),
+							esc_attr($key),
+							$settings[$featureVal['enable_field']]? esc_html("checked") : '',
 							$featureVal['enable_field'],
-							isset($featureVal['tooltip_option'])? $featureVal['tooltip_option']: ''
+							isset($featureVal['tooltip_option'])? esc_html($featureVal['tooltip_option']): '',
+							($settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : '')
 
 
 
@@ -2020,4 +2027,65 @@ function pwaforwp_features_settings(){
 	echo '<ul class="pwaforwp-feature-cards">
 			'.$featuresHtml.'
 		</ul>';
+}
+
+add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
+function pwaforwp_update_features_options(){
+	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
+		echo json_encode(array('status'=> 503, 'message'=> 'Unauthorized access, CSRF token not matched'));
+		die;
+	}
+	$allFields = $_POST['fields_data'];
+	$actualFields = array();
+	if(is_array($allFields)){
+		foreach ($allFields as $key => $field) {
+			
+			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
+			if(strpos($variable, '[')!==false){
+				$varArray = explode("[", $variable);
+				$actualFields[$varArray[0]][$varArray[1]] = $field['var_value'];
+			}else{
+				$actualFields[$variable] = $field['var_value'];
+			}
+		}
+		if(isset($actualFields['precaching_feature'])){
+			if($actualFields['precaching_feature']==1){
+				$actualFields['precaching_automatic'] = 1;
+				$actualFields['precaching_automatic_post'] = 1;
+			}elseif($actualFields['precaching_feature']==0){
+				$actualFields['precaching_automatic'] = 0;
+				$actualFields['precaching_automatic_post'] = 0;
+			}
+		}
+
+		if(isset($actualFields['addtohomebanner_feature'])){
+			if($actualFields['addtohomebanner_feature']==1){
+				$actualFields['custom_add_to_home_setting'] = 1;
+			}elseif($actualFields['addtohomebanner_feature']==0){
+				$actualFields['custom_add_to_home_setting'] = 0;
+			}
+		}
+		if(isset($actualFields['loader_feature'])){
+			if($actualFields['loader_feature']==1){
+				$actualFields['loading_icon'] = 1;
+			}elseif($actualFields['loader_feature']==0){
+				$actualFields['loading_icon'] = 0;
+			}
+		}
+		if(isset($actualFields['utmtracking_feature'])){
+			if($actualFields['utmtracking_feature']==1){
+				$actualFields['utm_setting'] = 1;
+			}elseif($actualFields['utmtracking_feature']==0){
+				$actualFields['utm_setting'] = 0;
+			}
+		}
+		$pre_settings = pwaforwp_defaultSettings();
+		$actualFields = wp_parse_args($actualFields, $pre_settings);
+		update_option( 'pwaforwp_settings', $actualFields ) ;
+		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));
+			die;
+	}else{
+		echo json_encode(array('status'=> 503, 'message'=> 'Fields not defined'));	
+		die;
+	}
 }

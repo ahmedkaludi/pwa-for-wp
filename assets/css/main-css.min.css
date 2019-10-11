@@ -256,24 +256,31 @@ and open the template in the editor.
 
 /*TOOltip*/
 
-.pwaforwp-wrap .afw-tooltip {
+.pwaforwp-wrap .pwafw-tooltip {
     position: relative;
     display: inline !important;
-    margin-left: 5px;
+    margin-left: 0;
     color: #d8d8d8 !important;
 }
-
-.pwaforwp-wrap .afw-tooltip .afw-help-subtitle {
-visibility: hidden;
-    max-width: 250px;
+.pwaforwp-wrap .pwafw-tooltip:hover {
+    color: #333 !important;
+}
+.pwaforwp-wrap .pwafw-tooltip i {
+    font-size: 18px;
+    position: relative;
+    top: 3px;
+}
+.pwaforwp-wrap .pwafw-tooltip .pwafw-help-subtitle {
+    visibility: hidden;
+    /* max-width: 250px; */
     width: max-content;
-    background-color: #333;
-    box-shadow: 0px 0px 10px 0px #999; 
+    background-color: #111;
+    box-shadow: 0px 0px 10px 0px #999;
     color: #fff;
-    line-height: 1.45;
+    line-height: 1;
     text-align: center;
-    border-radius: 3px;
-    padding: 8px 10px; 
+    border-radius: 5px;
+    padding: 10px 8px;
     position: absolute;
     z-index: 100;
     bottom: 100%;
@@ -281,12 +288,19 @@ visibility: hidden;
     margin-bottom: 6px !important;
     opacity: 0;
     transition: opacity 0.3s;
-    font-size:11px;
+    font-size: 11px;
 }
-.pwaforwp-wrap .afw-help-subtitle a{
-    color:#fff;
+.pwaforwp-wrap .pwafw-help-subtitle a{
+    color: #fff;
+    background: #eee;
+    padding: 0px 5px;
+    margin-left: 4px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 53px;
+    margin-top: 9px;
 }
-.pwaforwp-wrap .afw-tooltip .afw-help-subtitle::after {
+.pwaforwp-wrap .pwafw-tooltip .pwafw-help-subtitle::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -298,11 +312,11 @@ visibility: hidden;
     border-color: #111 transparent transparent transparent;
 }
 
-.pwaforwp-wrap .afw-tooltip:hover .afw-help-subtitle {
+.pwaforwp-wrap .pwafw-tooltip:hover .pwafw-help-subtitle {
     visibility: visible;
     opacity: 1;
 }
-.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom{
+.pwaforwp-wrap .pwafw-tooltip .pwafw-help-subtitle .afw-tootip-bottom{
     position: absolute;
     bottom: 3px;
     border-top: 1px solid #fff;
@@ -311,13 +325,13 @@ visibility: hidden;
     top: auto;
     padding: 3px 0px 0px;
 }
-.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap{
+.pwaforwp-wrap .pwafw-tooltip .pwafw-help-subtitle .afw-tootip-bottom .help-wrap{
     width: 49%;
     float: left;
     border-right: 1px solid #fff;
     color:#fff;
 }
-.pwaforwp-wrap .afw-tooltip .afw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
+.pwaforwp-wrap .pwafw-tooltip .pwafw-help-subtitle .afw-tootip-bottom .help-wrap:last-child{
     border:none;
 }
 .pwaforwp-wrap .afw-tootip-bottom i:before{
@@ -337,26 +351,26 @@ visibility: hidden;
 .pwaforwp-feature-cards{
     list-style: none;
     text-align: justify;
-    font-size: 0.1px;
+    margin-left: -2%;
     margin-top: 20px;
 }
 .pwaforwp-feature-cards li.pwaforwp-card-wrap{
-    max-width: 49%;
+    max-width: 48%;
     font-size: 16px;
     display: inline-block;
     width: 100%;
-    /*max-width: 32%;*/
+    /* max-width: 32%; */
     text-align: left;
     margin-bottom: 2%;
-    margin-left: 1%;
+    margin-left: 2%;
     vertical-align: top;
 }
 .pwaforwp-feature-cards li.pwaforwp-card-wrap .pwaforwp-card-content{
-    font-size: 16px;
     position: relative;
     background: #fff;
     box-shadow: 1px 1px 0px rgba(0,0,0,.1);
-    padding: 1em;
+    padding: 14px 7px 14px 17px;
+    border-radius: 5px;
 }
 .pwaforwp-feature-cards li.pwaforwp-card-wrap .pwaforwp-card-content .card-action{
     display: inline-flex;
@@ -364,8 +378,19 @@ visibility: hidden;
 
 .pwaforwp-feature-cards li.pwaforwp-card-wrap .pwaforwp-card-content h2 {
     font-size: 16px;
+    color: #000;
     margin: 0;
+    line-height: 1;
     padding: 0;
+    top: -1px;
+    position: relative;
+}
+.pwaforwp-tlt-sw .card-action-settings span {
+    font-size: 16px;
+    color: #555;
+    position: relative;
+    top: 2px;
+    cursor: pointer;
 }
 #TB_ajaxContent table th:empty, .pwaforwp-main-wrapper table th:empty{
     display: none;
@@ -373,20 +398,20 @@ visibility: hidden;
 
 
 /*Switch*/
-.switch {
+.pwaforwp-card-wrap .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
 
-.switch input { 
+.pwaforwp-card-wrap .switch input { 
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.slider {
+.pwaforwp-card-wrap .slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -398,22 +423,22 @@ visibility: hidden;
   transition: .4s;
 }
 
-.slider:before {
+.pwaforwp-card-wrap .slider:before {
     position: absolute;
     content: "";
-    height: 15px;
-    width: 15px;
-    left: 4px;
+    height: 12px;
+    width: 12px;
+    left: 3px;
     bottom: 3px;
     background-color: white;
     transition: .4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+    background-color: #46b450;
 }
 input:checked + .slider:before{
-    left: -4px;
+    left: -8px;
 }
 
 input:focus + .slider {
@@ -435,14 +460,65 @@ input:checked + .slider:before {
 .pwaforwp-card-content label.switch {
     display: block;
     padding: 2px 0;
-    width: 40px;
-    height: 16px;
+    width: 33px;
+    height: 14px;
+    right: 31px;
+    position: absolute;
+    top: 15px;
 }
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+    border-radius: 60px;
 }
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/*MESSAGING*/
+.pwaforwp-toast-wrap {
+    display: block;
+    position: fixed;
+    width: 200px;
+    pointer-events: none!important;
+    letter-spacing: normal;
+    z-index: 9999999;
+    bottom: 20px;
+    right: 20px;
+}
+.pwaforwp-toast-single {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 0 0 5px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: arial,sans-serif;
+    line-height: 17px;
+    position: relative;
+    pointer-events: all!important;
+}
+.pwaforwp-toast-success{
+    background-color: #4ab866;
+    color: #fff;
+}
+.pwaforwp-toast-error{
+    background-color: #d94f4f;
+    color: #fff;
+}
+.close-pwaforwp-toast-single {
+    position: absolute;
+    top: 10px;
+    right: 7px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/*
+* help section 
+*/
+.pwa_contact_us_div{
+border-top: 1px solid #ddd;
+padding-top: 7px;
+margin-top: 25px;
 }
