@@ -495,16 +495,15 @@ function pwaforwp_addon_html(){
     foreach ($add_on_list as $key => $plugin) {
     	$ctafp_active_text = '';
     	if(is_plugin_active($plugin['p-slug'])){                                           
-	       $ctafp_active_text =  '<table><tr>'.pwaforwp_get_license_section_html($plugin['p-short-prefix']).'</tr></table>';                                         
+	       $ctafp_active_text =  pwaforwp_get_license_section_html($plugin['p-short-prefix']);                                         
 	    }else{                                            
 	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
 	       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
 	    }	
-	    $pluginHtml .= '<tr>
-            <td>
+	    $pluginHtml .= '<div class="pwaforwp-ext-wrap">
                 <div class="pwafowp-feature-ext">    
 				<div class="pwaforwp-features-ele">
-					<div class="pwaforwp-ele-ic pwaforwp-ele-1">
+					<div class="pwaforwp-ele-ic" style="background: '.$plugin['p-background-color'].'">
                         <img src="'.$plugin['p-icon-img'].'">
 					</div>
 					<div class="pwaforwp-ele-tlt">
@@ -515,13 +514,12 @@ function pwaforwp_addon_html(){
 				<div class="pwaforwp-sts-btn">                                    
                                    '.$ctafp_active_text.'                                                                           										
 				</div>  
-                </div>    
-            </td>            
-        </tr>';
+                </div>            
+        </div>';
     }
 
     
-    $ext_html = '<table class="pwaforwp-ext-list-table">'.$pluginHtml.'</table>';
+    $ext_html = '<div class="pwaforwp-ext-list-table">'.$pluginHtml.'</div>';
 
     return $ext_html;
     
@@ -535,7 +533,8 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Call to Action for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/call-to-action-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/call-to-action.png',
-                    'p-desc' => 'Call to Action for PWA extension is the number one solution to enhance your add to home button',
+                    'p-background-color'=> '#333333',
+                    'p-desc' => 'Call to Action extension makes it easy for your users to add the website to the home screen',
                     'p-tab'	 => true
          ),
          'lilfp'  => array(
@@ -545,7 +544,8 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Loading Icon Library for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/loading-icon-library.png',
-                    'p-desc' => 'Loading Icon Library for PWA extension is the number one solution to enhance your loading icon',
+                    'p-background-color'=> '#2f696d',
+                    'p-desc' => 'Loading Icon Library extension multiple icons for PWA app',
                     'p-tab'	 => false
          ),         
      );
@@ -1719,7 +1719,7 @@ function pwaforwp_get_license_section_html($on){
                 } 
                 
                 $response = '';                                                                             
-                $response.= '<td>';
+                $response.= '<div class="pwaforwp-ext-active">';
                 if($license_status == 'active'){
                 
                     $response.= '<span class="dashicons dashicons-yes pwaforwp-'.strtolower($on).'-dashicons" style="color: #46b450;"></span>';    
@@ -1750,7 +1750,7 @@ function pwaforwp_get_license_section_html($on){
                 }                
                                                 
                  $response.= '<p>'.esc_html__('Enter addon license key to activate updates & support.','pwa-for-wp').'</p>';
-                 $response.= '</td>';               
+                 $response.= '</div>';               
                 
                 return $response;
     
@@ -1904,7 +1904,7 @@ function pwaforwp_loading_icon_premium_callback(){
 	echo sprintf("%s <a href='%s'>%s</a>",
 			esc_html__('This feature requires', 'pwa-for-wp'),
 			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
-			esc_html__("Loading Icon Library for PWA plugin", 'pwa-for-wp')
+			esc_html__("Loading Icon Library for PWA extension", 'pwa-for-wp')
 
 		);
 }

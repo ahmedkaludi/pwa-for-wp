@@ -97,20 +97,20 @@ and open the template in the editor.
     text-decoration: none;
 }
 
-.pwaforwp-ele-1{
-    background: #96588a;
-}
-
 .pwaforwp-ele-ic{
     border-radius: 256px;
     display: inline-block;
-    padding:8px 10px 8px 10px;
+    padding: 8px 10px 8px 10px;
     width: 70px;
+    height: 70px;
     margin-right: 20px;
     float: left;
 }
 .pwaforwp-ele-ic img{
-    width:100%;
+    width: 85%;
+    top: 5px;
+    position: relative;
+    left: 6px;
 }
 
 .pwaforwp-ele-tlt h3{
@@ -132,22 +132,34 @@ and open the template in the editor.
 }
 
 .pwaforwp-d-btn{
-    background: #d2150a;
+    background: #46b450;
     padding: 6px 18px;
     border-radius: 30px;
     font-size: 14px;
     color: #fff;
 }
-
+.pwaforwp-sts-btn a {
+    text-decoration: none;
+}
 .pwaforwp-sts-btn{
     box-sizing: border-box;    
-    margin-top: 20px;
-    padding: 6px 15px;
+    margin-top: 37px;
+    padding: 11px 11px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+}
+.pwaforwp-ext-active span{
+    vertical-align: sub;
+}
+.pwaforwp-ext-active input{
+    width:70%;
+}
+.pwaforwp-ext-active p{
+    margin: 0!important;
 }
 .pwaforwp-premium_features .form-table th{
     width: auto;
@@ -171,7 +183,7 @@ and open the template in the editor.
 #subtab-pushnots th:empty{display: none;}
 
 .pwaforwp-main-wrapper{width:75%;float: left;}
-.pwaforwp-settings-second-div{width:24%;float: right;}
+.pwaforwp-settings-second-div{width:22%;float: right;}
 .pwaforwp-feedback-panel {
     height: 200px;
     width: 280px;
@@ -217,38 +229,51 @@ and open the template in the editor.
 }
 .pwaforwp-upgrade-pro {
     background: #fff;
-    padding: 25px;
-    border: 1px solid #d8d8d8;
+    top: 32px;
+    padding: 30px 25px;
+    border: 1px solid #cecece;
     display: inline-block;
+    color: #111;
     margin-top: 10px;
-    width: 81%;
+    border-radius: 8px;
+    position: relative;
+}
+.pwaforwp-upgrade-pro h2 {
+    margin: 0;
+    color: #222;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 27px;
+}
+.pwaforwp-upgrade-pro ul {
+    margin: 0px 0 30px 0px;
 }
 .pwaforwp-upgrade-pro ul li {
     position: relative;
     padding-left: 30px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.4;
     margin-bottom: 10px;
 }
 .pwaforwp-upgrade-pro ul li:before {
-    content: "";
-    background-image: url(../../images/check.png);
+    content: "\f147";
     background-repeat: no-repeat;
-    background-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-family: dashicons;
     position: absolute;
-    left: 2px;
-    top: 2px;
+    color: #46b450;
+    font-size: 25px;
+    left: 0px;
+    line-height: 1;
+    top: 0px;
 }
 .pwaforwp-upgrade-pro a {
-    background: #d2150a;
+    background: #43A047;
     padding: 10px 0px;
     display: block;
     text-align: center;
     color: #fff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 1px;
     border-radius: 5px;
@@ -521,4 +546,17 @@ input:checked + .slider:before {
 border-top: 1px solid #ddd;
 padding-top: 7px;
 margin-top: 25px;
+}
+
+.pwaforwp-ext-list-table{
+    display: inline-block;
+    width: 100%;
+}
+.pwaforwp-ext-wrap{
+    width: 70%;
+    margin: 0;
+    padding: 0;
+    margin-right: 20px;
+    float: left;
+    margin-bottom: 20px;
 }
