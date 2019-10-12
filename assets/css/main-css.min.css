@@ -171,7 +171,7 @@ and open the template in the editor.
 #subtab-pushnots th:empty{display: none;}
 
 .pwaforwp-main-wrapper{width:75%;float: left;}
-.pwaforwp-settings-second-div{width:24%;float: right;}
+.pwaforwp-settings-second-div{width:22%;float: right;}
 .pwaforwp-feedback-panel {
     height: 200px;
     width: 280px;
@@ -217,38 +217,51 @@ and open the template in the editor.
 }
 .pwaforwp-upgrade-pro {
     background: #fff;
-    padding: 25px;
-    border: 1px solid #d8d8d8;
+    top: 32px;
+    padding: 30px 25px;
+    border: 1px solid #cecece;
     display: inline-block;
+    color: #111;
     margin-top: 10px;
-    width: 81%;
+    border-radius: 8px;
+    position: relative;
+}
+.pwaforwp-upgrade-pro h2 {
+    margin: 0;
+    color: #222;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 27px;
+}
+.pwaforwp-upgrade-pro ul {
+    margin: 0px 0 30px 0px;
 }
 .pwaforwp-upgrade-pro ul li {
     position: relative;
     padding-left: 30px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.4;
     margin-bottom: 10px;
 }
 .pwaforwp-upgrade-pro ul li:before {
-    content: "";
-    background-image: url(../../images/check.png);
+    content: "\f147";
     background-repeat: no-repeat;
-    background-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-family: dashicons;
     position: absolute;
-    left: 2px;
-    top: 2px;
+    color: #46b450;
+    font-size: 25px;
+    left: 0px;
+    line-height: 1;
+    top: 0px;
 }
 .pwaforwp-upgrade-pro a {
-    background: #d2150a;
+    background: #43A047;
     padding: 10px 0px;
     display: block;
     text-align: center;
     color: #fff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 1px;
     border-radius: 5px;

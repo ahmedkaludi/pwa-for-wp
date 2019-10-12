@@ -150,7 +150,6 @@ function pwaforwp_admin_interface_render(){
 						echo "<div class='pwaforwp-help' ".( $tab != 'help' ? 'style="display:none;"' : '').">";
 							echo "<h3>".esc_html__('Documentation', 'pwa-for-wp')."</h3><a target=\"_blank\" class='button' href=\"https://ampforwp.com/tutorials/article/pwa-for-amp/\">".esc_html__('View Setup Documentation', 'pwa-for-wp')."</a>";
 							?>	
-							<hr />	
 			        	                   <div class="pwa_contact_us_div">
 			        	                   	<h3><?php echo esc_html__('Ask for Technical Support', 'pwa-for-wp') ?></h3>
 			        	                   	<p><?php echo esc_html__('We are always available to help you with anything', 'pwa-for-wp') ?></p>
@@ -182,33 +181,6 @@ function pwaforwp_admin_interface_render(){
 				</form>
 			</div>
 			<div class="pwaforwp-settings-second-div">
-		        <div class="pwaforwp-feedback-panel" style="display: none;">
-			        
-			        <h2><?php echo esc_html__( 'Leave A Feedback', 'pwa-for-wp' ); ?></h2>
-			        
-			        <ul>
-			            <li><a target="_blank" href="https://wordpress.org/support/plugin/pwa-for-wp/reviews/#new-post"><?php echo esc_html__( 'I would like to review this plugin', 'pwa-for-wp' ); ?></a></li>    
-			            <li><a target="_blank" href="https://pwa-for-wp.com/contact-us/"><?php echo esc_html__( 'I have ideas to improve this plugin', 'pwa-for-wp' ); ?></a></li>
-			            <li><a href="<?php echo esc_url( admin_url( 'admin.php?page=pwaforwp&tab=help' ) ); ?>"><?php echo esc_html__( 'I need help this plugin', 'pwa-for-wp' ); ?></a></li>              
-			        </ul>  
-			        <div class="pwaforwp-social-sharing-buttons">
-			            <a class="pwaforwp-facebook-share" href="https://www.facebook.com/sharer/sharer.php?u=https://pwa-for-wp.com/" target="_blank">           
-			        <span class="dashicons dashicons-facebook"></span>
-			        <?php echo esc_html__( 'Share', 'pwa-for-wp' ); ?>
-			       </a>
-			        <a target="_blank" class="pwaforwp-twitter-share-button"
-			        href="https://twitter.com/home?status=I'm%20using%20this%20PWA%20for%20wp%20AMP%20plugin%20for%20implementing%20PWA%20on%20my%20site!%20https%3A//pwa-for-wp.com/%20via%20%40WPF_community">
-			            <span class="dashicons dashicons-twitter"></span>
-			                <?php echo esc_html__( 'Tweet', 'pwa-for-wp' ); ?>
-			        </a>
-			        </div>
-			        
-			    </div>
-		        <div class="pwaforwp-view-docs" style="display: none;">
-		            
-		            <p style="float: left;"><?php echo esc_html__('Need Help?','pwa-for-wp') ?></p>  <a style="float: right;margin: 1em 0;" class="button button-default" target="_blank" href="https://pwa-for-wp.com/docs/"><?php echo esc_html__('View Documentation','pwa-for-wp') ?></a>
-		            
-		        </div>
 		        <?php if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
@@ -217,7 +189,7 @@ function pwaforwp_admin_interface_render(){
 		        		<li><?php echo esc_html__('Dedicated PWA Support','pwa-for-wp') ?></li>
 		        		<li><?php echo esc_html__('Active Development','pwa-for-wp') ?></li>
 		        	</ul>
-		        	<a target="_blank" href="https://pwa-for-wp.com/pricing/"><?php echo esc_html__('UPGRADE','pwa-for-wp') ?></a>
+		        	<a target="_blank" href="https://pwa-for-wp.com/pricing/"><?php echo esc_html__('UPGRADE NOW','pwa-for-wp') ?></a>
 		        </div>
 		        <?php  } ?>
 
@@ -239,7 +211,7 @@ function pwaforwp_settings_init(){
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">For details click here</a></span>
+	                    <span class="pwafw-help-subtitle">'.esc_html__('PWA status verification', 'pwa-for-wp').' <a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
 	                </span>', '__return_false', 'pwaforwp_dashboard_section');
 		// Manifest status
 		add_settings_field(
