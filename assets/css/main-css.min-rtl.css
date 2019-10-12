@@ -522,6 +522,3 @@ border-top: 1px solid #ddd;
 padding-top: 7px;
 margin-top: 25px;
 }
-#TB_ajaxContent .precaching-wrap-tb table.form-table tbody tr:nth-child(1){
-    display:none;
-}

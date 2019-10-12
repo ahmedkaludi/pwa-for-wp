@@ -1928,10 +1928,9 @@ function pwaforwp_loading_icon_premium_callback(){
 	echo sprintf("%s <a href='%s'>%s</a>",
 			esc_html__('This feature requires', 'pwa-for-wp'),
 			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
-			esc_html__("Loading Icon Library for PWA plugin", 'pwa-for-wp'),
+			esc_html__("Loading Icon Library for PWA plugin", 'pwa-for-wp')
 
-		)
-	;
+		);
 }
 
 function pwaforwp_features_settings(){

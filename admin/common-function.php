@@ -246,7 +246,7 @@ function pwaforwp_get_default_settings_array(){
         'loader_feature'         => 0,
 
     /*UTM*/
-        'utm_setting'   => '1',
+        'utm_setting'   => 0,
         'utm_details' => array(
                         'utm_source'=> 'pwa-app',
                         'utm_medium'=> 'pwa-app',
@@ -274,6 +274,9 @@ function pwaforwp_defaultSettings(){
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
     $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
 
+    //Fallback for features tab
+    $pwaforwp_settings = pwaforwp_migration_setup_fetures($pwaforwp_settings);
+
     //autoptimize cdn compatibility
     $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
     if($cdnUrl){
@@ -281,6 +284,27 @@ function pwaforwp_defaultSettings(){
     }
 	return $pwaforwp_settings;
         
+}
+
+function pwaforwp_migration_setup_fetures($pwaforwp_settings){
+    if(isset($pwaforwp_settings['notification_feature']) && $pwaforwp_settings['notification_feature']==0 && isset($pwaforwp_settings['fcm_server_key']) && !empty($pwaforwp_settings['fcm_server_key'])){
+        $pwaforwp_settings['notification_feature'] = 1;
+    }
+
+    if(isset($pwaforwp_settings['precaching_feature']) && $pwaforwp_settings['precaching_feature']==0 && isset($pwaforwp_settings['precaching_automatic']) && $pwaforwp_settings['precaching_automatic'] == 1 ){
+        $pwaforwp_settings['precaching_feature'] = 1;
+    }
+
+    if(isset($pwaforwp_settings['addtohomebanner_feature']) && $pwaforwp_settings['addtohomebanner_feature']==0 && isset($pwaforwp_settings['custom_add_to_home_setting']) && $pwaforwp_settings['custom_add_to_home_setting'] == 1 ){
+        $pwaforwp_settings['addtohomebanner_feature'] = 1;
+    }
+    if(isset($pwaforwp_settings['utmtracking_feature']) && $pwaforwp_settings['utmtracking_feature']==0 && isset($pwaforwp_settings['utm_setting']) && $pwaforwp_settings['utm_setting'] == 1 ){
+        $pwaforwp_settings['utmtracking_feature'] = 1;
+    }
+    if(isset($pwaforwp_settings['loader_feature']) && $pwaforwp_settings['loader_feature']==0 && isset($pwaforwp_settings['loading_icon']) && $pwaforwp_settings['loading_icon'] == 1 ){
+        $pwaforwp_settings['loader_feature'] = 1;
+    }
+    return $pwaforwp_settings;
 }
 
 function pwaforwp_expanded_allowed_tags() {
