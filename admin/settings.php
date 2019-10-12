@@ -723,7 +723,7 @@ function pwaforwp_serve_cache_method_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> value="true">
+	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
 	<p>Enable(check) it when PWA with OneSignal functionality not working because of Cache</p>
 	<?php
 }
@@ -758,7 +758,7 @@ function pwaforwp_precaching_setting_callback(){
 		                </span>
 	            	</th>
                         <td>
-                          <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> value="1">   
+                          <input type="checkbox" name="pwaforwp_settings[precaching_automatic]" id="pwaforwp_settings_precaching_automatic" class="" <?php echo (isset( $settings['precaching_automatic'] ) &&  $settings['precaching_automatic'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">   
                         </td>
 		</tr>
                 <tr>
@@ -770,19 +770,19 @@ function pwaforwp_precaching_setting_callback(){
                           <?php echo esc_html__('Post', 'pwa-for-wp') ?>                             
                          </td>
                          <td>                         
-                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_post]" id="pwaforwp_settings_precaching_automatic_post" class="" <?php echo (isset( $settings['precaching_automatic_post'] ) &&  $settings['precaching_automatic_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">     
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_post]" id="pwaforwp_settings_precaching_automatic_post" class="" <?php echo (isset( $settings['precaching_automatic_post'] ) &&  $settings['precaching_automatic_post'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">     
                          </td>
                          <td>
                          <?php echo esc_html__('Page', 'pwa-for-wp') ?>   
                          </td>
                          <td>
-                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_page]" id="pwaforwp_settings_precaching_automatic_page" class="" <?php echo (isset( $settings['precaching_automatic_page'] ) &&  $settings['precaching_automatic_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_page]" id="pwaforwp_settings_precaching_automatic_page" class="" <?php echo (isset( $settings['precaching_automatic_page'] ) &&  $settings['precaching_automatic_page'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">         
                          </td>
                          <td>                          
                          <?php echo esc_html__('Custom Post', 'pwa-for-wp') ?>   
                          </td>
                          <td>
-                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_custom_post]" id="pwaforwp_settings_precaching_automatic_custom_post" class="" <?php echo (isset( $settings['precaching_automatic_custom_post'] ) &&  $settings['precaching_automatic_custom_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">         
+                         <input type="checkbox" name="pwaforwp_settings[precaching_automatic_custom_post]" id="pwaforwp_settings_precaching_automatic_custom_post" class="" <?php echo (isset( $settings['precaching_automatic_custom_post'] ) &&  $settings['precaching_automatic_custom_post'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">         
                          </td>                     
                      </tr>
                      
@@ -802,7 +802,7 @@ function pwaforwp_precaching_setting_callback(){
 		                </span>
                     </td>
                         <td>
-                         <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> value="1">    
+                         <input type="checkbox" name="pwaforwp_settings[precaching_manual]" id="pwaforwp_settings_precaching_manual" class="" <?php echo (isset( $settings['precaching_manual'] ) &&  $settings['precaching_manual'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">    
                         </td>
 		</tr>                
                 <tr>    
@@ -854,7 +854,7 @@ function pwaforwp_utm_setting_callback(){
                 
 	?>
                 
-	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><?php echo esc_html__('Enable UTM Tracking', 'pwa-for-wp'); ?></label>
+	<label><input type="checkbox" name="pwaforwp_settings[utm_setting]" id="pwaforwp_settings_utm_setting" class="" <?php echo (isset( $settings['utm_setting'] ) &&  $settings['utm_setting'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1"><?php echo esc_html__('Enable UTM Tracking', 'pwa-for-wp'); ?></label>
 	<p> <?php echo esc_html__('To identify users are coming from your App', 'pwa-for-wp'); ?></p>
 	<table class="form-table">
 		<tr class="pwawp_utm_values_class" style="display:<?php echo esc_attr($style); ?>;">
@@ -895,7 +895,7 @@ function pwaforwp_offline_google_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
         
-	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -968,10 +968,6 @@ function pwaforwp_push_notification_callback(){
         ?>        
         
         <div class="pwafowwp-server-key-section">
-            <h2><?php echo esc_html__('Settings', 'pwa-for-wp') ?><span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/">For details click here</a></span>
-	                </span>
-	        </h2>
             <table class="pwaforwp-push-notificatoin-table">
                 <tbody>
                     <tr>
@@ -1975,7 +1971,7 @@ function pwaforwp_features_settings(){
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
-			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap">';
+			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap '.$key.'-wrap-tb">';
 				do_settings_sections( $featureVal['section_name'] );
 				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
@@ -2081,6 +2077,22 @@ function pwaforwp_update_features_options(){
 		}
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
+
+		//dependent settings
+		if(isset($actualFields['utm_setting']) && $actualFields['utm_setting']==0){
+			$actualFields['utmtracking_feature'] = $actualFields['utm_setting'];
+		}
+		if(isset($actualFields['loading_icon']) && $actualFields['loading_icon']==0){
+			$actualFields['loader_feature'] = $actualFields['loading_icon'];
+		}
+		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
+			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
+		}
+		if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
+			$actualFields['precaching_feature'] = $actualFields['precaching_automatic'];
+		}
+
+
 		update_option( 'pwaforwp_settings', $actualFields ) ;
 		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));
 			die;
