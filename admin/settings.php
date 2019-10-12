@@ -434,7 +434,11 @@ function pwaforwp_settings_init(){
                 
 		add_settings_field(
 			'pwaforwp_caching_strategies_setting',							// ID
-			'<h2>'.esc_html__('Caching Strategies', 'pwa-for-wp').'<a target="_blank" href="'.esc_url('https://pwa-for-wp.com/docs/article/what-is-caching-strategies-in-pwa-and-how-to-use-it/').'" style="text-decoration: none;margin-left: 5px;vertical-align: sub;"><span class="dashicons dashicons-editor-help"></span></a></h2>',	// Title
+			'<h2>'.esc_html__('Caching Strategies', 'pwa-for-wp').'
+			<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
+	                    <span class="pwafw-help-subtitle">Caching preferences <a href="'.esc_url('https://pwa-for-wp.com/docs/article/what-is-caching-strategies-in-pwa-and-how-to-use-it/').'">Learn more</a></span>
+	                </span>
+			</h2>',	// Title
 			'pwaforwp_caching_strategies_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
