@@ -1390,6 +1390,7 @@ function pwaforwp_add_to_home_callback(){
         <input type="text" name="pwaforwp_settings[add_to_home_selector]" id="pwaforwp_settings[add_to_home_selector]" class="pwaforwp-add-to-home-selector regular-text" size="50" value="<?php echo isset( $settings['add_to_home_selector'] ) ? esc_attr( $settings['add_to_home_selector']) : ''; ?>">
 	<p><?php echo esc_html__('jQuery selector (.element) or (#element)', 'pwa-for-wp'); ?></p>	
         <p><?php echo esc_html__('Note: It is currently available in non AMP', 'pwa-for-wp'); ?></p>	
+        <p><?php echo esc_html__('Note: In IOS devices this functionality will not work.', 'pwa-for-wp'); ?></p>	
 	<?php
 }
 
