@@ -2077,3 +2077,12 @@ function pwaforwp_update_features_options(){
 		die;
 	}
 }
+
+add_action( 'activated_plugin', 'pwaforwp_active_update_transient' );
+function pwaforwp_active_update_transient($plugin){
+	delete_transient( 'pwaforwp_restapi_check' ); 
+}
+add_action( 'deactivated_plugin', 'pwaforwp_deactivate_update_transient' );
+function pwaforwp_deactivate_update_transient($plugin){
+	delete_transient( 'pwaforwp_restapi_check' ); 
+}
