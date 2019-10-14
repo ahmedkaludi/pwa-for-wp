@@ -412,6 +412,7 @@ class PWAFORWP_Service_Worker{
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
+                $this->iosSplashScreen();
             if ( ! empty( $icon ) ) : 
                 echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
             endif; 
@@ -445,6 +446,7 @@ class PWAFORWP_Service_Worker{
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-touch-fullscreen" content="YES">';
+            $this->iosSplashScreen();
             if ( ! empty( $icon ) ) : 
                 echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
             endif; 
@@ -529,6 +531,33 @@ class PWAFORWP_Service_Worker{
     public function sort_icons_callback( $a, $b ) {
         return (int) strtok( $a['sizes'], 'x' ) - (int) strtok( $b['sizes'], 'x' );
     }  
+
+    protected function iosSplashScreen(){
+        $settings        = pwaforwp_defaultSettings();
+        if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
+            if( isset( $settings['ios_splash_icon']['320x460'] ) && $settings['ios_splash_icon']['320x460'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['320x460'].'" media="(device-width: 320px)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['640x920'] ) && $settings['ios_splash_icon']['640x920'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['640x920'].'" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['768x1004'] ) && $settings['ios_splash_icon']['768x1004'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['768x1004'].'" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['748x1024'] ) && $settings['ios_splash_icon']['748x1024'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['748x1024'].'" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['1536x2008'] ) && $settings['ios_splash_icon']['1536x2008'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['1536x2008'].'" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['2048x1496'] ) && $settings['ios_splash_icon']['2048x1496'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['2048x1496'].'" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+            if( isset( $settings['ios_splash_icon']['750x1334'] ) && $settings['ios_splash_icon']['750x1334'] ){
+                echo '<link href="'.$settings['ios_splash_icon']['750x1334'].'" media="(device-width: 375px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
+            }
+        }
+    }
                 
 }
 if (class_exists('PWAFORWP_Service_Worker')) {

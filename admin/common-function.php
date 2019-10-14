@@ -4,16 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
-    
     if(isset($settings['loading_icon'])){
         
-        echo '<div id="pwaforwp_loading_div"></div>'
-          . '<div id="pwaforwp_loading_icon"></div>';
+        echo '<div id="pwaforwp_loading_div"></div>';
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
         
     }
         
 }
-
 add_action('wp_footer', 'pwaforwp_loading_icon');
 
 function pwaforwp_reset_all_settings(){ 
@@ -202,33 +200,70 @@ function pwaforwp_get_tab( $default = '', $available = array() ) {
 function pwaforwp_get_default_settings_array(){
     
     $defaults = array(
-		'app_blog_name'		=> get_bloginfo( 'name' ),
-		'app_blog_short_name'	=> get_bloginfo( 'name' ),
-		'description'		=> get_bloginfo( 'description' ),
-		'icon'			=> PWAFORWP_PLUGIN_URL . 'images/logo.png',
-		'splash_icon'		=> PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
-    'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
-		'background_color' 	=> '#D5E0EB',
-		'theme_color' 		=> '#D5E0EB',
-		'start_url' 		=> 0,
-		'start_url_amp'		=> 0,
-		'offline_page' 		=> 0,
-		'404_page' 		=> 0,
-                'start_page' 		=> 0,
-		'orientation'		=> 'portrait',
-    'display'       => 'standalone',
-                'manualfileSetup'	=> 0,
-                'cdn_setting'           => 0,
-                'normal_enable'         => 1,
-                'amp_enable'            => 1,
-                'cached_timer'          => array('html'=>3600,'css'=>86400),
-                'serve_js_cache_menthod'=> "false",
-                'default_caching'       => 'cacheFirst',
-                'default_caching_js_css'=> 'cacheFirst',
-                'default_caching_images'=> 'cacheFirst',
-                'default_caching_fonts' => 'cacheFirst',
-                'on_add_post_notification_title' => ''
+		'app_blog_name'		     => get_bloginfo( 'name' ),
+		'app_blog_short_name'	 => get_bloginfo( 'name' ),
+		'description'		     => get_bloginfo( 'description' ),
+		'icon'			         => PWAFORWP_PLUGIN_URL . 'images/logo.png',
+		'splash_icon'		     => PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
+        //Splash icon
+        'switch_apple_splash_screen'=>0,
+        'ios_splash_icon'=> array(
+                                '320x460'=>'',
+                                '640x920'=>'',
+                                '768x1004'=>'',
+                                '748x1024'=>'',
+                                '1536x2008'=>'',
+                                '2048x1496'=>'',
+                                '750x1334'=>'',
+                                ),
+        'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
+        'background_color' 	=> '#D5E0EB',
+        'theme_color' 		=> '#D5E0EB',
+        'start_url' 		=> 0,
+        'start_url_amp'		=> 0,
+        'offline_page' 		=> 0,
+        '404_page' 		=> 0,
+        'start_page' 		=> 0,
+        'orientation'		=> 'portrait',
+        'display'       => 'standalone',
+        'manualfileSetup'	=> 0,
+        'cdn_setting'           => 0,
+        'normal_enable'         => 1,
+        'amp_enable'            => 1,
+        'cached_timer'          => array('html'=>3600,'css'=>86400),
+        'serve_js_cache_menthod'=> "false",
+        'default_caching'       => 'cacheFirst',
+        'default_caching_js_css'=> 'cacheFirst',
+        'default_caching_images'=> 'cacheFirst',
+        'default_caching_fonts' => 'cacheFirst',
+        'on_add_post_notification_title' => '',
+
+    /*Features settings*/
+        'notification_feature'  => 0,
+        'precaching_feature'    => 0,
+        'addtohomebanner_feature'=> 0,
+        'utmtracking_feature'   => 0,
+        'loader_feature'         => 0,
+
+    /*UTM*/
+        'utm_setting'   => 0,
+        'utm_details' => array(
+                        'utm_source'=> 'pwa-app',
+                        'utm_medium'=> 'pwa-app',
+                        'utm_campaign'=> 'pwa-campaign',
+                        'utm_term'  => 'pwa-term',
+                        'utm_content'  => 'pwa-content',
+                        ),
+    /*Pre caching*/
+        'precaching_automatic'=> 0,
+        'precaching_automatic_post'=> 0,
+        'precaching_automatic_page'=> 0,
+        'precaching_post_count'=> 5,
+        'precaching_automatic_custom_post'=> 0,
+        'precaching_manual'    => 0, 
+        'precaching_urls'    => '', 
 	);
+    $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }
 $pwaforwp_settings;
@@ -237,9 +272,39 @@ function pwaforwp_defaultSettings(){
 	global $pwaforwp_settings;
         $defaults = pwaforwp_get_default_settings_array();
 	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
-  
+    $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+
+    //Fallback for features tab
+    $pwaforwp_settings = pwaforwp_migration_setup_fetures($pwaforwp_settings);
+
+    //autoptimize cdn compatibility
+    $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    if($cdnUrl){
+        $pwaforwp_settings['external_links_setting'] = 1;
+    }
 	return $pwaforwp_settings;
         
+}
+
+function pwaforwp_migration_setup_fetures($pwaforwp_settings){
+    if(isset($pwaforwp_settings['notification_feature']) && $pwaforwp_settings['notification_feature']==0 && isset($pwaforwp_settings['fcm_server_key']) && !empty($pwaforwp_settings['fcm_server_key'])){
+        $pwaforwp_settings['notification_feature'] = 1;
+    }
+
+    if(isset($pwaforwp_settings['precaching_feature']) && $pwaforwp_settings['precaching_feature']==0 && isset($pwaforwp_settings['precaching_automatic']) && $pwaforwp_settings['precaching_automatic'] == 1 ){
+        $pwaforwp_settings['precaching_feature'] = 1;
+    }
+
+    if(isset($pwaforwp_settings['addtohomebanner_feature']) && $pwaforwp_settings['addtohomebanner_feature']==0 && isset($pwaforwp_settings['custom_add_to_home_setting']) && $pwaforwp_settings['custom_add_to_home_setting'] == 1 ){
+        $pwaforwp_settings['addtohomebanner_feature'] = 1;
+    }
+    if(isset($pwaforwp_settings['utmtracking_feature']) && $pwaforwp_settings['utmtracking_feature']==0 && isset($pwaforwp_settings['utm_setting']) && $pwaforwp_settings['utm_setting'] == 1 ){
+        $pwaforwp_settings['utmtracking_feature'] = 1;
+    }
+    if(isset($pwaforwp_settings['loader_feature']) && $pwaforwp_settings['loader_feature']==0 && isset($pwaforwp_settings['loading_icon']) && $pwaforwp_settings['loading_icon'] == 1 ){
+        $pwaforwp_settings['loader_feature'] = 1;
+    }
+    return $pwaforwp_settings;
 }
 
 function pwaforwp_expanded_allowed_tags() {
