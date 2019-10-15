@@ -18,7 +18,9 @@ function pwaforpw_add_menu_links() {
                 'pwaforwp_admin_interface_render');	
                                 
 	if(!pwaforwp_addons_is_active()){
-	    add_submenu_page( 'pwaforwp', esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), '<span style="color:#fff176;">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', 'pwaforwp_data_premium', 'pwaforwp_premium_interface_render' );	
+	    global $submenu;
+		$permalink = 'javasctipt:void(0);';
+		$submenu['pwaforwp'][] = array( '<span style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', $permalink);
 	}
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
