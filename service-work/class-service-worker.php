@@ -399,9 +399,6 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
-            usort( $icons, array( $this, 'sort_icons_callback' ) );
-            $icon = array_shift( $icons );
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
@@ -413,8 +410,8 @@ class PWAFORWP_Service_Worker{
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
                 $this->iosSplashScreen();
-            if ( ! empty( $icon ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             endif; 
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
@@ -433,9 +430,6 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
-            usort( $icons, array( $this, 'sort_icons_callback' ) );
-            $icon = array_shift( $icons );
                     
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
@@ -445,10 +439,10 @@ class PWAFORWP_Service_Worker{
             <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
-            <meta name="apple-touch-fullscreen" content="YES">';
+            <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
             $this->iosSplashScreen();
-            if ( ! empty( $icon ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             endif; 
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;

@@ -417,7 +417,7 @@ and open the template in the editor.
     top: 2px;
     cursor: pointer;
 }
-#TB_ajaxContent table th:empty, .pwaforwp-main-wrapper table th:empty{
+#TB_ajaxContent .pwaforwp-wrap table th:empty{
     display: none;
 }
 

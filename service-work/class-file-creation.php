@@ -295,6 +295,14 @@ class pwaforwpFileCreation{
                 
                 $pre_cache_urls     = '';
                 $pre_cache_urls_amp = '';
+
+                //icons cache
+                if(isset($settings['icon'])){
+                  $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['icon']))."',\n";
+                }
+                if(isset($settings['splash_icon'])){
+                  $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
+                }
                 
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                     
