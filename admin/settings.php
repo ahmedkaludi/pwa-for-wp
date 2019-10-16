@@ -20,19 +20,10 @@ function pwaforpw_add_menu_links() {
 	if(!pwaforwp_addons_is_active()){
 	    global $submenu;
 		$permalink = 'javasctipt:void(0);';
-		$submenu['pwaforwp'][] = array( '<span style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', $permalink);
+		$submenu['pwaforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 	}
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
-
-/*
-* upgread to premium menu callback
-*/
-function pwaforwp_premium_interface_render(){
-    wp_redirect( 'https://pwa-for-wp.com/pricing/' );
-    exit;    
-        
-}
 
 function pwaforwp_admin_interface_render(){
     
