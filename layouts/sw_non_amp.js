@@ -11,7 +11,7 @@
                                                                                                                                                                                                                                                                               
 			                var deferredPrompt;                                                                                                                                                                                                                                                                                                                        
                                                 window.addEventListener('beforeinstallprompt', (e) => {
-							  //e.preventDefault();
+							  /*e.preventDefault();*/
 							  deferredPrompt = e;
                                                           
                                                             if(deferredPrompt != null || deferredPrompt != undefined){
