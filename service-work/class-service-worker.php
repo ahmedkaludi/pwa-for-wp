@@ -270,45 +270,53 @@ class PWAFORWP_Service_Worker{
         }
         public function pwaforwp_store_latest_post_ids(){
            
-           if ( ! current_user_can( 'manage_options' ) ) {
+           if ( ! current_user_can( 'edit_posts' ) ) {
                  return;
            }
            
            $post_ids = array();           
            $settings = pwaforwp_defaultSettings();
            
-           if(isset($settings['precaching_automatic'])){
+           if(isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
            
                 $post_count = 10;
                 
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
                 }                
-                $post_args = array( 'numberposts' => $post_count  );                                                          
-                $page_args = array( 'number'       => $post_count );                                                                                        
-                $postslist = get_posts( $post_args );
-                $pageslist = get_pages( $page_args );
-                
-                if($postslist || $pageslist){
+                $post_args = array( 'numberposts' => $post_count  );                      
+                $page_args = array( 'number'       => $post_count );
                                         
-                    if($postslist && isset($settings['precaching_automatic_post'])){
-                     
+                if(isset($settings['precaching_automatic_post']) && $settings['precaching_automatic_post']==1){
+                    $postslist = get_posts( $post_args );
+                    if($postslist){
                         foreach ($postslist as $post){
                          $post_ids[] = $post->ID;
                        }
-                        
                     }
-                    
-                    if($pageslist && isset($settings['precaching_automatic_page'])){
-                     
+                }
+                
+                if(isset($settings['precaching_automatic_page']) && $settings['precaching_automatic_page']==1){
+                    $pageslist = get_pages( $page_args );
+                    if($pageslist){
                         foreach ($pageslist as $post){
                          $post_ids[] = $post->ID;
-                       }                        
-                    }   
+                       }               
+                    }         
+                }   
                     
+                if($post_ids){
                      set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));    
                      update_option('pwaforwp_update_pre_cache_list', 'enable');
-                }               
+                    $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
+                    $result = $file_creation_init_obj->pwaforwp_swjs_init();
+                    $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+
+                    update_option('pwaforwp_update_pre_cache_list', 'disable'); 
+                    delete_transient( 'pwaforwp_pre_cache_post_ids' );
+                }
+
+                              
            }                                  
         }
         public function pwaforwp_custom_add_to_home_screen(){
