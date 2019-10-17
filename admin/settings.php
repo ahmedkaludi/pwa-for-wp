@@ -1780,10 +1780,8 @@ function pwaforwp_license_status_check(){
 add_action('wp_ajax_pwaforwp_license_status_check', 'pwaforwp_license_status_check');
 
 function pwaforwp_license_status($add_on, $license_status, $license_key){
-                                      
-                $item_name = array(
-                       'ctafp'       => 'Call to Action for PWA',                                               
-                );
+                
+                $item_name = pwaforwp_list_addons();
                                                                                     
                 $edd_action = '';
                 if($license_status =='active'){
@@ -1797,7 +1795,7 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 		$api_params = array(
 			'edd_action' => $edd_action,
 			'license'    => $license_key,
-                        'item_name'  => $item_name[strtolower($add_on)],
+                        'item_name'  => $item_name[strtolower($add_on)]['p-title'],
                         'author'     => 'Magazine3',			
 			'url'        => home_url(),
                         'beta'       => false,
