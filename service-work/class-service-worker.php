@@ -11,11 +11,11 @@ class PWAFORWP_Service_Worker{
                 
         $settings = pwaforwp_defaultSettings();
             
-        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable'])){
+        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
          add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
         }        
                 
-        if(isset($settings['amp_enable'])){
+        if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
          add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));      
         }  
         
@@ -232,7 +232,7 @@ class PWAFORWP_Service_Worker{
             
             $settings = pwaforwp_defaultSettings();
             
-            if(isset($settings['amp_enable']) && pwaforwp_amp_takeover_status()){
+            if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
                 
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
@@ -240,7 +240,7 @@ class PWAFORWP_Service_Worker{
                 
             }else{
                 
-               if(isset($settings['normal_enable'])){
+               if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
                  add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
                  add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  

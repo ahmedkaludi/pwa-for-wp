@@ -99,7 +99,7 @@ function pwaforwp_frontend_enqueue(){
         
         $settings   = pwaforwp_defaultSettings();
         
-        if(isset($settings['normal_enable'])){
+        if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
             
             if(isset($settings['fcm_server_key'])){
             $server_key = $settings['fcm_server_key'];

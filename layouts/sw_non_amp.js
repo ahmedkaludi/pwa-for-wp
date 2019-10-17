@@ -80,7 +80,7 @@
                                                      });  
                                                                                                           
                                                      function addToHome(){
-                                                         
+                                                         if(!deferredPrompt){return ;}
                                                          deferredPrompt.prompt();							  
                                                          deferredPrompt.userChoice
                                                            .then((choiceResult) => {

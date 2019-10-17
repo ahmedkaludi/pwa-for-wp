@@ -131,7 +131,7 @@ class pushNotification{
                 $config       = $settings['fcm_config'];
             }                        
                                                               
-            if(!empty($server_key) && !empty($config) && isset($settings['normal_enable'])){
+            if(!empty($server_key) && !empty($config) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
                 
                 echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-app.min.js').'"></script>';	
                 echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-messaging.min.js').'"></script>';	             
