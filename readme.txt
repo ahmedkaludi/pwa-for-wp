@@ -64,9 +64,9 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 = 1.7.1.1 (17 October 2019) =
 * Improved : Added note for Add To Home On Element Click #208
 * Improved : Added "apple-touch-startup-image" icon and cache the image previously to load fast For IOS devices #212
-* Bug Fixed: Improved upgread to premium link #214
-* Improved : Pre-cahing list automatd now. On publish post precache list will be updated #215
-* Bug Fixed: Enable/Disable to uncheck the PWA on AMP or Non-AMP #216
+* Bug Fixed: Improved upgrade to premium link #214
+* Improved : Pre-caching list automated now. On publish post precache list will be updated #215
+* Bug Fixed: Enable/Disable checkbox of the PWA on AMP or Non-AMP #216
 * Bug Fixed: Fixed the license key error while activating Loading Icon Plugins #218
 
 = 1.7.1 (12 October 2019) =
