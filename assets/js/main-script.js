@@ -419,6 +419,15 @@ jQuery(document).ready(function($){
         }
             
         });
+    $('.pwaforwp-checkbox-tracker').change(function(e){
+        var respectiveId = $(this).attr('data-id');
+        var chval = 0;
+        if($(this).is(":checked")){
+            chval = $(this).val();
+        }
+        console.log($(this).parent('label').find('#'+respectiveId), chval);
+        $(this).parent('label').find('input[name="'+respectiveId+'"]').val(chval);
+    })
         
         //Licensing jquery starts here
     $(document).on("click",".pwaforwp_license_activation", function(e){

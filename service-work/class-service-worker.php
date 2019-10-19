@@ -11,11 +11,11 @@ class PWAFORWP_Service_Worker{
                 
         $settings = pwaforwp_defaultSettings();
             
-        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable'])){
+        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
          add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
         }        
                 
-        if(isset($settings['amp_enable'])){
+        if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
          add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));      
         }  
         
@@ -232,7 +232,7 @@ class PWAFORWP_Service_Worker{
             
             $settings = pwaforwp_defaultSettings();
             
-            if(isset($settings['amp_enable']) && pwaforwp_amp_takeover_status()){
+            if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
                 
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
@@ -240,7 +240,7 @@ class PWAFORWP_Service_Worker{
                 
             }else{
                 
-               if(isset($settings['normal_enable'])){
+               if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
                  add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
                  add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
@@ -270,45 +270,53 @@ class PWAFORWP_Service_Worker{
         }
         public function pwaforwp_store_latest_post_ids(){
            
-           if ( ! current_user_can( 'manage_options' ) ) {
+           if ( ! current_user_can( 'edit_posts' ) ) {
                  return;
            }
            
            $post_ids = array();           
            $settings = pwaforwp_defaultSettings();
            
-           if(isset($settings['precaching_automatic'])){
+           if(isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
            
                 $post_count = 10;
                 
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
                 }                
-                $post_args = array( 'numberposts' => $post_count  );                                                          
-                $page_args = array( 'number'       => $post_count );                                                                                        
-                $postslist = get_posts( $post_args );
-                $pageslist = get_pages( $page_args );
-                
-                if($postslist || $pageslist){
+                $post_args = array( 'numberposts' => $post_count  );                      
+                $page_args = array( 'number'       => $post_count );
                                         
-                    if($postslist && isset($settings['precaching_automatic_post'])){
-                     
+                if(isset($settings['precaching_automatic_post']) && $settings['precaching_automatic_post']==1){
+                    $postslist = get_posts( $post_args );
+                    if($postslist){
                         foreach ($postslist as $post){
                          $post_ids[] = $post->ID;
                        }
-                        
                     }
-                    
-                    if($pageslist && isset($settings['precaching_automatic_page'])){
-                     
+                }
+                
+                if(isset($settings['precaching_automatic_page']) && $settings['precaching_automatic_page']==1){
+                    $pageslist = get_pages( $page_args );
+                    if($pageslist){
                         foreach ($pageslist as $post){
                          $post_ids[] = $post->ID;
-                       }                        
-                    }   
+                       }               
+                    }         
+                }   
                     
+                if($post_ids){
                      set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));    
                      update_option('pwaforwp_update_pre_cache_list', 'enable');
-                }               
+                    $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
+                    $result = $file_creation_init_obj->pwaforwp_swjs_init();
+                    $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+
+                    update_option('pwaforwp_update_pre_cache_list', 'disable'); 
+                    delete_transient( 'pwaforwp_pre_cache_post_ids' );
+                }
+
+                              
            }                                  
         }
         public function pwaforwp_custom_add_to_home_screen(){
@@ -399,9 +407,6 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
-            usort( $icons, array( $this, 'sort_icons_callback' ) );
-            $icon = array_shift( $icons );
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
@@ -413,8 +418,8 @@ class PWAFORWP_Service_Worker{
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
                 $this->iosSplashScreen();
-            if ( ! empty( $icon ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             endif; 
 		    if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
@@ -433,9 +438,6 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-            $icons = isset( $settings['icons'] ) ? $settings['icons'] : array();
-            usort( $icons, array( $this, 'sort_icons_callback' ) );
-            $icon = array_shift( $icons );
                     
            	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
@@ -445,10 +447,10 @@ class PWAFORWP_Service_Worker{
             <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
-            <meta name="apple-touch-fullscreen" content="YES">';
+            <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
             $this->iosSplashScreen();
-            if ( ! empty( $icon ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'.esc_url( $icon['src'] ).'">';
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             endif; 
 			if(isset($settings['icon']) && !empty($settings['icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;

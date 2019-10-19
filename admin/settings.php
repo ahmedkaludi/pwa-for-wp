@@ -18,19 +18,12 @@ function pwaforpw_add_menu_links() {
                 'pwaforwp_admin_interface_render');	
                                 
 	if(!pwaforwp_addons_is_active()){
-	    add_submenu_page( 'pwaforwp', esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), '<span style="color:#fff176;">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</span>', 'manage_options', 'pwaforwp_data_premium', 'pwaforwp_premium_interface_render' );	
+	    global $submenu;
+		$permalink = 'javasctipt:void(0);';
+		$submenu['pwaforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 	}
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
-
-/*
-* upgread to premium menu callback
-*/
-function pwaforwp_premium_interface_render(){
-    wp_redirect( 'https://pwa-for-wp.com/pricing/' );
-    exit;    
-        
-}
 
 function pwaforwp_admin_interface_render(){
     
@@ -1390,6 +1383,7 @@ function pwaforwp_add_to_home_callback(){
         <input type="text" name="pwaforwp_settings[add_to_home_selector]" id="pwaforwp_settings[add_to_home_selector]" class="pwaforwp-add-to-home-selector regular-text" size="50" value="<?php echo isset( $settings['add_to_home_selector'] ) ? esc_attr( $settings['add_to_home_selector']) : ''; ?>">
 	<p><?php echo esc_html__('jQuery selector (.element) or (#element)', 'pwa-for-wp'); ?></p>	
         <p><?php echo esc_html__('Note: It is currently available in non AMP', 'pwa-for-wp'); ?></p>	
+        <p><?php echo esc_html__('Note: In IOS devices this functionality will not work.', 'pwa-for-wp'); ?></p>	
 	<?php
 }
 
@@ -1418,11 +1412,15 @@ function pwaforwp_files_status_callback(){
 		                </span>
 	                </th>
 	                <td> 
-	                	<label><input type="checkbox" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
+	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
+	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
+	                	</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
-                        <label><input type="checkbox" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"> </label>
+                        <label><input type="checkbox"  <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"  class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[amp_enable]"> 
+                        	<input type="hidden"name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
+                        </label>
                          <?php } ?>
                     </td>    
                     
@@ -1786,10 +1784,8 @@ function pwaforwp_license_status_check(){
 add_action('wp_ajax_pwaforwp_license_status_check', 'pwaforwp_license_status_check');
 
 function pwaforwp_license_status($add_on, $license_status, $license_key){
-                                      
-                $item_name = array(
-                       'ctafp'       => 'Call to Action for PWA',                                               
-                );
+                
+                $item_name = pwaforwp_list_addons();
                                                                                     
                 $edd_action = '';
                 if($license_status =='active'){
@@ -1803,7 +1799,7 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 		$api_params = array(
 			'edd_action' => $edd_action,
 			'license'    => $license_key,
-                        'item_name'  => $item_name[strtolower($add_on)],
+                        'item_name'  => $item_name[strtolower($add_on)]['p-title'],
                         'author'     => 'Magazine3',			
 			'url'        => home_url(),
                         'beta'       => false,
@@ -2075,4 +2071,13 @@ function pwaforwp_update_features_options(){
 		echo json_encode(array('status'=> 503, 'message'=> 'Fields not defined'));	
 		die;
 	}
+}
+
+add_action( 'activated_plugin', 'pwaforwp_active_update_transient' );
+function pwaforwp_active_update_transient($plugin){
+	delete_transient( 'pwaforwp_restapi_check' ); 
+}
+add_action( 'deactivated_plugin', 'pwaforwp_deactivate_update_transient' );
+function pwaforwp_deactivate_update_transient($plugin){
+	delete_transient( 'pwaforwp_restapi_check' ); 
 }

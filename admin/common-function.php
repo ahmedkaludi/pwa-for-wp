@@ -99,7 +99,7 @@ function pwaforwp_frontend_enqueue(){
         
         $settings   = pwaforwp_defaultSettings();
         
-        if(isset($settings['normal_enable'])){
+        if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
             
             if(isset($settings['fcm_server_key'])){
             $server_key = $settings['fcm_server_key'];
@@ -531,8 +531,13 @@ function pwaforwp_query_var($key=''){
 
 function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
-  $jsonp_enabled = apply_filters( 'rest_jsonp_enabled', true );
-  if($jsonp_enabled){
+  if ( false === ( $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ) ) ) {
+    $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
+    $restApiEnabled = wp_remote_retrieve_response_code($response);
+    set_transient( "pwaforwp_restapi_check", $restApiEnabled );
+  }
+
+  if($restApiEnabled==200){
     $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json' );
     if($is_amp){
       $link = rest_url( 'pwa-for-wp/v2/pwa-manifest-json/amp' );
