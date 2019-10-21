@@ -540,6 +540,17 @@ function pwaforwp_list_addons(){
                     'p-background-color'=> '#2f696d',
                     'p-desc' => 'Loading Icon Library extension multiple icons for PWA app',
                     'p-tab'	 => false
+         ),
+         'dafp'  => array(
+                    'p-slug' => 'data-analytics-for-pwa/data-analytics-for-pwa.php',
+                    'p-name' => 'Data Analytics for PWA',
+                    'p-short-prefix'=> 'DAFP',
+                    'p-title' => 'Data Analytics for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/data-analytics-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/data-analytics-for-pwa.png',
+                    'p-background-color'=> '#84dbff',
+                    'p-desc' => 'Data Analytics for PWA installation growth and traffic analysis',
+                    'p-tab'	 => false
          ),         
      );
 	return $add_on_list;
@@ -1907,6 +1918,7 @@ function pwaforwp_loading_icon_premium_callback(){
 
 function pwaforwp_features_settings(){
 	$settings = pwaforwp_defaultSettings();
+	$addonLists = pwaforwp_list_addons();
 	//print_r($settings );die;
 	$feturesArray = array(
 				'notification' => array(
@@ -1938,6 +1950,15 @@ function pwaforwp_features_settings(){
 									'section_name' => 'pwaforwp_loaders_setting_section',
 									'setting_title' => 'Loader',
 									),
+				'dataAnalytics' => array(
+									'enable_field' => 'data_analytics',
+									'section_name' => 'pwaforwp_data_analytics_setting_section',
+									'setting_title' => 'Data Analytics',
+									'is_premium'	=> true,
+									'pro_link'		=> $addonLists['dafp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (deactivate_plugins($addonLists['dafp']['p-slug'])? 1: 0),
+									),
 								);
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
@@ -1961,21 +1982,32 @@ function pwaforwp_features_settings(){
 	        </span>';
 	    }
 
-		$featuresHtml .= sprintf('<li class="pwaforwp-card-wrap %6$s">
+	    $premium_alert  = '<div class="card-action">
+				<label class="switch">
+				  <input type="checkbox" %3$s name="pwaforwp_settings[%4$s]" value="1">
+				  <span class="slider round"></span>
+				</label>
+				<div class="card-action-settings" data-content="%2$s-contents" '.$settingsHtml.'>
+					<span class="pwaforwp-change-data pwaforwp-setting-icon-tab dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
+				</div>
+			</div>';
+
+	    $pro_link = '';
+	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && !$featureVal['pro_deactive']){
+	    	//$Plugins = get_transient( 'plugin_slugs');
+	    	$premium_alert = '<span class="pro">Deactivated</span>';
+	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
+	    	$premium_alert = '<span class="pro">PRO</span>';
+	    	$pro_link = 'onclick="window.open(\''.$featureVal['pro_link'].'\', \'_blank\')"';
+		}
+
+		$featuresHtml .= sprintf('<li class="pwaforwp-card-wrap %6$s" %7$s>
 								<div class="pwaforwp-card-content">
 									<div class="pwaforwp-tlt-sw">
 										<h2>%1$s 
 											'.$tooltipHtml.'
 										</h2>
-										<div class="card-action">
-											<label class="switch">
-											  <input type="checkbox" %3$s name="pwaforwp_settings[%4$s]" value="1">
-											  <span class="slider round"></span>
-											</label>
-											<div class="card-action-settings" data-content="%2$s-contents" '.$settingsHtml.'>
-												<span class="pwaforwp-change-data dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
-											</div>
-										</div>
+										'.$premium_alert.'
 									</div>
 									
 								</div>
@@ -1985,11 +2017,10 @@ function pwaforwp_features_settings(){
 							$settings[$featureVal['enable_field']]? esc_html("checked") : '',
 							$featureVal['enable_field'],
 							isset($featureVal['tooltip_option'])? esc_html($featureVal['tooltip_option']): '',
-							($settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : '')
+							($settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : ''),
+							$pro_link
 
-
-
-			);
+						);
 	}
 	echo '<ul class="pwaforwp-feature-cards">
 			'.$featuresHtml.'
@@ -2063,6 +2094,7 @@ function pwaforwp_update_features_options(){
 			$actualFields['precaching_feature'] = $actualFields['precaching_automatic'];
 		}
 
+		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
 		update_option( 'pwaforwp_settings', $actualFields ) ;
 		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));

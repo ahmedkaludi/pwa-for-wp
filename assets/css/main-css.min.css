@@ -560,3 +560,15 @@ margin-top: 25px;
     float: left;
     margin-bottom: 20px;
 }
+
+.pwaforwp-feature-cards li.pwaforwp-card-wrap .pro{
+    background: #4CAF50;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-left: 1px;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    right: 9px;
+}
