@@ -572,3 +572,6 @@ margin-top: 25px;
     position: relative;
     right: 9px;
 }
+.pwaforwp-feature-cards li.pwaforwp-card-wrap .deactivated{
+    background: #989696;
+}

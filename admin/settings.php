@@ -1919,7 +1919,10 @@ function pwaforwp_loading_icon_premium_callback(){
 function pwaforwp_features_settings(){
 	$settings = pwaforwp_defaultSettings();
 	$addonLists = pwaforwp_list_addons();
-	//print_r($settings );die;
+	$allplugins = get_transient( 'plugin_slugs');
+	if($allplugins){
+		$allplugins = array_flip($allplugins);
+	}
 	$feturesArray = array(
 				'notification' => array(
 									'enable_field' => 'notification_feature',
@@ -1957,7 +1960,7 @@ function pwaforwp_features_settings(){
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['dafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (deactivate_plugins($addonLists['dafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									),
 								);
 	$featuresHtml = '';
@@ -1993,9 +1996,9 @@ function pwaforwp_features_settings(){
 			</div>';
 
 	    $pro_link = '';
-	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && !$featureVal['pro_deactive']){
+	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1){
 	    	//$Plugins = get_transient( 'plugin_slugs');
-	    	$premium_alert = '<span class="pro">Deactivated</span>';
+	    	$premium_alert = '<span class="pro deactivated">Deactivated</span>';
 	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
 	    	$premium_alert = '<span class="pro">PRO</span>';
 	    	$pro_link = 'onclick="window.open(\''.$featureVal['pro_link'].'\', \'_blank\')"';
