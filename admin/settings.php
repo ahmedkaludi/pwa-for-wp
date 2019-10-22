@@ -1084,7 +1084,7 @@ function pwaforwp_custom_banner_design_callback(){
             <tr><th><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#fff"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
-            <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#D5E0EB'; ?>" data-default-color="#fdc309"></td></tr>                         
+            <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#006dda'; ?>" data-default-color="#006dda"></td></tr>                         
         </table>
         <?php
 }
@@ -2017,10 +2017,10 @@ function pwaforwp_features_settings(){
 							</li>',
 							esc_html($featureVal['setting_title']),
 							esc_attr($key),
-							$settings[$featureVal['enable_field']]? esc_html("checked") : '',
+							(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']] ) ? esc_html("checked") : '',
 							$featureVal['enable_field'],
 							isset($featureVal['tooltip_option'])? esc_html($featureVal['tooltip_option']): '',
-							($settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : ''),
+							(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : ''),
 							$pro_link
 
 						);

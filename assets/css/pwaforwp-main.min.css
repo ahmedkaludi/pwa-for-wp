@@ -128,13 +128,15 @@ z-index: 500;
 /** Add to home screen CSS **/
 #pwaforwp-add-to-home-click h3{
   font-size: 20px;
+  font-weight: 600;
   margin: 0px;
   line-height: 1.4;
+  font-family: sans-serif;
 }
 
 @media(max-width:425px){
   #pwaforwp-add-to-home-click h3 {
-    font-size: 18px;
+    font-size: 16px;
   }
   .pwaforwp-btn{
     font-size: 14px;
