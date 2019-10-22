@@ -22,7 +22,7 @@ and open the template in the editor.
     text-align: center;
     text-decoration: none;    
     min-height: 10%;
-    padding-top:20px;
+    padding:15px 0px 15px 0px;
     position: fixed;
     bottom: 0;
     justify-content: flex-end;
@@ -30,19 +30,23 @@ and open the template in the editor.
     flex-grow: 1;
     animation-duration: 1s;
     animation-fill-mode: both;
-    z-index: 999;
+    z-index: 9999;
 }
-.pwaforwp-footer-prompt .pwaforwp-prompt-close{
+.pwaforwp-footer-prompt .pwaforwp-prompt-close:after{
+  content: "✖";
+  color: #d5e0eb;
   position: absolute;
-  right: 5px;
-  top: -4px;
-  width: 25px;
-  font-weight: 400;
-  color: #656060bf;
-  font-size: 20px;
-  z-index: 9999;
+  right: 10px;
+  top: 10px;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.40);
+  border-radius: 30px;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 22px;
   cursor: pointer;
-}
+} 
 .pwaforwp-bounceInUp{
     animation-name: bounceInUp;
 }
@@ -51,27 +55,17 @@ and open the template in the editor.
     animation-fill-mode: both;
 }
 .pwaforwp-btn{
-        border: none;   
-    text-transform: uppercase;
-    vertical-align: middle;
-    -webkit-tap-highlight-color: transparent;
-    outline: 0;
-    text-decoration: none;
-    color: #fff;
-    background-color: #2247ce;
-    letter-spacing: .5px;
-    -webkit-transition: .2s ease-out;
-    transition: .2s ease-out;
-    cursor: pointer;
-    padding: 10px 12px;
+    border: none;   
+    display: inline-block;
+    border-radius: 4px;
+    height: auto;
+    line-height: 1;
+    min-width: auto;
+    padding: 8px 16px;
     font-size: 16px;
-    line-height: 24px;
-    height: 46px;
-    min-width: 160px;
-    text-align: center;
-    border-radius: 0;
-    text-transform: uppercase;
-    margin: 10px 0;
+    margin: 10px 0px 0px 0px;
+    font-family: sans-serif;
+    text-transform: none;
     transition: all .2s ease-in-out;
 }
 /* Center the loader */
@@ -129,4 +123,27 @@ z-index: 500;
 @keyframes animatebottom { 
   from{ bottom:-100px; opacity:0 } 
   to{ bottom:0; opacity:1 }
+}
+
+/** Add to home screen CSS **/
+#pwaforwp-add-to-home-click h3{
+  font-size: 20px;
+  margin: 0px;
+  line-height: 1.4;
+}
+
+@media(max-width:425px){
+  #pwaforwp-add-to-home-click h3 {
+    font-size: 18px;
+  }
+  .pwaforwp-btn{
+    font-size: 14px;
+  }
+  .pwaforwp-footer-prompt{
+    padding:15px 0px 10px 0px;
+  }
+  .pwaforwp-footer-prompt .pwaforwp-prompt-close:after {
+    right: 5px;
+    top: 5px;
+  }
 }
