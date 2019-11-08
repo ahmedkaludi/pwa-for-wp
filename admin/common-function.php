@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
-    if(isset($settings['loading_icon'])){
+    if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
         
         echo '<div id="pwaforwp_loading_div"></div>';
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
