@@ -1317,8 +1317,20 @@ function pwaforpw_orientation_callback(){
 			<option value="landscape" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape' ); } ?>>
 				<?php echo esc_html__( 'Landscape', 'pwa-for-wp' ); ?>
 			</option>
-			<option value="auto" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'auto' ); } ?>>
+			<option value="any" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'any' ); selected( $settings['orientation'], 'auto' ); } ?>>
 				<?php echo esc_html__( 'Auto', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="landscape-primary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape-primary' ); } ?>>
+				<?php echo esc_html__( 'Landscape-primary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="landscape-secondary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape-secondary' ); } ?>>
+				<?php echo esc_html__( 'Landscape-secondary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="portrait-primary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait-primary' ); } ?>>
+				<?php echo esc_html__( 'Portrait-primary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="portrait-secondary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait-secondary' ); } ?>>
+				<?php echo esc_html__( 'Portrait-secondary', 'pwa-for-wp' ); ?>
 			</option>
 		</select>
 	</label>
