@@ -2044,9 +2044,9 @@ function pwaforwp_update_features_options(){
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
-				$actualFields[$varArray[0]][$varArray[1]] = $field['var_value'];
+				$actualFields[$varArray[0]][$varArray[1]] = sanitize_textarea_field($field['var_value']);
 			}else{
-				$actualFields[$variable] = $field['var_value'];
+				$actualFields[$variable] = sanitize_textarea_field($field['var_value']);
 			}
 		}
 		if(isset($actualFields['precaching_feature'])){
@@ -2079,6 +2079,9 @@ function pwaforwp_update_features_options(){
 			}elseif($actualFields['utmtracking_feature']==0){
 				$actualFields['utm_setting'] = 0;
 			}
+		}
+		if($actualFields['fcm_config']){
+			$actualFields['fcm_config'] = wp_unslash($actualFields['fcm_config']);
 		}
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
