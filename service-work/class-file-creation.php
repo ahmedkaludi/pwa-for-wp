@@ -355,6 +355,9 @@ class pwaforwpFileCreation{
                 
                 if(isset($settings['force_update_sw_setting']) && $settings['force_update_sw_setting'] !=''){
                   $cache_version =   $settings['force_update_sw_setting'];
+                  if(!version_compare($cache_version,PWAFORWP_PLUGIN_VERSION, '>=') ){
+                    $cache_version = PWAFORWP_PLUGIN_VERSION;
+                  }
                 }
                 if(isset($settings['offline_google_setting'])){
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
