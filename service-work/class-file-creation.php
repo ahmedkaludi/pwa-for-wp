@@ -19,12 +19,12 @@ class pwaforwpFileCreation{
             $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
           }
 		        		
-			$swHtmlContentbody 	        = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.html");
+      $swHtmlContentbody          = $this->pwaforwp_getlayoutfiles("layouts/sw.html");
                         
                         $swHtmlContent = '';
                         
-                        if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
-                            $swHtmlContent                      = $swHtmlContentbody['body'];
+                        if( isset($swHtmlContentbody) && $swHtmlContentbody){
+                            $swHtmlContent                      = $swHtmlContentbody;
                             $swHtmlContent 			= str_replace(array(
                                                                   "{{serviceWorkerFile}}",
                                                                   "{{scope_url}}"
@@ -49,12 +49,12 @@ class pwaforwpFileCreation{
                 $config     = $settings['fcm_config'];
             }
                 
-            $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn-template.js"); 
+            $swHtmlContentbody  = $this->pwaforwp_getlayoutfiles("layouts/pn-template.js"); 
             $swHtmlContent      = '';
             
-            if(is_array($swHtmlContentbody) && isset($swHtmlContentbody['body'])){
+            if(isset($swHtmlContentbody) && $swHtmlContentbody){
                 
-                $swHtmlContent       = $swHtmlContentbody['body'];
+                $swHtmlContent       = $swHtmlContentbody;
                 $firebase_config     = 'var config='.$config.';';
                 $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
                                 
@@ -209,13 +209,13 @@ class pwaforwpFileCreation{
     }
        
 		
-		$swHtmlContentbody 		= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw_non_amp.js");                                                               
+    $swHtmlContentbody    = $this->pwaforwp_getlayoutfiles("layouts/sw_non_amp.js");                                                               
                 
                 $swHtmlContent = '';
                 
-                if(is_array($swHtmlContentbody) && $swHtmlContentbody['body']){
+                if(isset($swHtmlContentbody) && $swHtmlContentbody){
                     
-                 $swHtmlContent         = $swHtmlContentbody['body'];
+                 $swHtmlContent         = $swHtmlContentbody;
                     
                  if($server_key !='' && $config !=''){
                  $firebaseconfig   = 'var config ='.$config.';'
@@ -265,10 +265,10 @@ class pwaforwpFileCreation{
                     $config   = $settings['fcm_config'];
                 }
                                                                    
-                $swHtmlContentbody  = @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/pn_background.js");
+                $swHtmlContentbody  = $this->pwaforwp_getlayoutfiles("layouts/pn_background.js");
                                                 
-                if(is_array($swHtmlContentbody)&& isset($swHtmlContentbody['body'])){
-                    $swHtmlContent          = $swHtmlContentbody['body'];
+                if(isset($swHtmlContentbody) && $swHtmlContentbody){
+                    $swHtmlContent          = $swHtmlContentbody;
                     $swHtmlContent 	    = str_replace(array("{{config}}"),array($config),$swHtmlContent);
                 }
                                                                                                                                                  
@@ -277,11 +277,11 @@ class pwaforwpFileCreation{
        
     public function pwaforwp_swjs($is_amp = false){
             
-		$swJsContentbody 	= @wp_remote_get(PWAFORWP_PLUGIN_URL."layouts/sw.js");
+    $swJsContentbody  = $this->pwaforwp_getlayoutfiles("layouts/sw.js");
                 
-                if(is_array($swJsContentbody) && isset($swJsContentbody['body'])){
+                if(isset($swJsContentbody) && $swJsContentbody){
                  
-                $swJsContent            = $swJsContentbody['body'];
+                $swJsContent            = $swJsContentbody;
 		$settings 		= pwaforwp_defaultSettings();   
                 
                 $external_links ='';
@@ -545,4 +545,26 @@ class pwaforwpFileCreation{
 		
                 return json_encode($manifest, JSON_PRETTY_PRINT);					
 	}        
+
+  public function pwaforwp_getlayoutfiles($filePath){
+    $fileContentResponse = @wp_remote_get(PWAFORWP_PLUGIN_URL.$filePath);
+    if(wp_remote_retrieve_response_code($fileContentResponse)!=200){
+      $access_type = get_filesystem_method();
+      if($access_type === 'direct')
+      {
+         $creds = request_filesystem_credentials(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js", '', false, false, array());
+        if ( ! WP_Filesystem($creds) ) {
+          return false;
+        }   
+        global $wp_filesystem;
+        $htmlContentbody = $wp_filesystem->get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
+        return $htmlContentbody;
+      }
+      return false;
+    }else{
+      return wp_remote_retrieve_body( $fileContentResponse );
+    }
+  }
+
+
 }
