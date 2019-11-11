@@ -443,7 +443,7 @@ class PWAFORWP_Service_Worker{
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
-            echo '<meta name=" " content="'.esc_attr($settings['app_blog_name']).'">
+            echo '<meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
