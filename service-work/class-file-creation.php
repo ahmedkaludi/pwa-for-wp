@@ -555,12 +555,12 @@ class pwaforwpFileCreation{
       $access_type = get_filesystem_method();
       if($access_type === 'direct')
       {
-         $creds = request_filesystem_credentials(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js", '', false, false, array());
+         $creds = request_filesystem_credentials(PWAFORWP_PLUGIN_DIR.$filePath, '', false, false, array());
         if ( ! WP_Filesystem($creds) ) {
           return false;
         }   
         global $wp_filesystem;
-        $htmlContentbody = $wp_filesystem->get_contents(PWAFORWP_PLUGIN_DIR."layouts/sw_non_amp.js");
+        $htmlContentbody = $wp_filesystem->get_contents(PWAFORWP_PLUGIN_DIR.$filePath);
         return $htmlContentbody;
       }
       return false;
