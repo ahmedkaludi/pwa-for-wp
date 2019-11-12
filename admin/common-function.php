@@ -591,3 +591,26 @@ function pwaforwp_is_file_inroot(){
     return false;
   }
 }
+
+/**
+* only for Automattic amp Support
+* When user enabled Standard & Transitional mode 
+* it will check and give respective values
+*/
+
+function pwaforwp_is_automattic_amp($case=null){
+    //Check if current theme support amp
+    switch ($case) {
+        case 'amp_support':
+            if(class_exists('AMP_Theme_Support')){
+                return current_theme_supports( AMP_Theme_Support::SLUG );
+            }
+            break;
+        default:
+            if ( current_theme_supports( 'amp' ) && function_exists('is_amp_endpoint') && is_amp_endpoint() ) {
+                return true;
+            }
+            break;
+    }
+    return false;
+}

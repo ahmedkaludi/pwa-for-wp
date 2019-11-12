@@ -8,9 +8,12 @@ class pwaforwpFileCreation{
           $url = pwaforwp_site_url();
           $home_url = pwaforwp_home_url();
           $scope_url = trailingslashit($home_url).AMP_QUERY_VAR;
-                 if(function_exists('ampforwp_url_controller')){
-                    $scope_url = ampforwp_url_controller($home_url);
-                 }
+
+          if(pwaforwp_is_automattic_amp( 'amp_support' )){
+             $scope_url = trailingslashit($home_url);
+          }elseif(function_exists('ampforwp_url_controller')){
+            $scope_url = ampforwp_url_controller($home_url);
+          }
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
@@ -299,9 +302,11 @@ class pwaforwpFileCreation{
                 //icons cache
                 if(isset($settings['icon'])){
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['icon']))."',\n";
+                  $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['icon']))."',\n";
                 }
                 if(isset($settings['splash_icon'])){
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
+                  $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
                 }
                 
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
@@ -326,14 +331,14 @@ class pwaforwpFileCreation{
                         
                        $pre_cache_urls .= "'".trim(get_permalink($post_id))."',\n"; 
                                               
-                       if ( is_plugin_active('accelerated-mobile-pages/accelerated-moblie-pages.php')) {
+                       if ( function_exists('ampforwp_url_controller') ) {
 				
-                           $pre_cache_urls_amp .= "'".user_trailingslashit(trim(get_permalink($post_id))).'amp'. "',\n"; 
+                           $pre_cache_urls_amp .= "'".ampforwp_url_controller($post_id). "',\n"; 
 			}
                         
-                        if (is_plugin_active('amp/amp.php')) {
+                        if (function_exists('amp_get_permalink')) {
 				
-                           $pre_cache_urls_amp .= "'".user_trailingslashit(trim(get_permalink($post_id))). "',\n"; 
+                           $pre_cache_urls_amp .= "'".amp_get_permalink($post_id). "',\n"; 
 			}
                                                                                                                    
                     }
@@ -388,8 +393,13 @@ class pwaforwpFileCreation{
 
 		if( $is_amp ){
                         $firebasejs ='';
-			$offline_page 	= pwaforwp_https( $offline_page ).'?amp=1';
-			$page404 	= pwaforwp_https( $page404 ).'?amp=1';  
+      if(pwaforwp_is_automattic_amp('amp_support') && function_exists('amp_get_permalink')){
+        $offline_page   = amp_get_permalink( pwaforwp_https( $offline_page ) );
+        $page404        = amp_get_permalink( pwaforwp_https( $page404 ) );
+      }else{
+        $offline_page   = pwaforwp_https( $offline_page ).'?amp=1';
+        $page404        = pwaforwp_https( $page404 ).'?amp=1';    
+      }
 			$swJsContent 	= str_replace(array(
                                                         "{{PRE_CACHE_URLS}}", 
 							"{{OFFLINE_PAGE}}", 
