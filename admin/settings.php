@@ -551,7 +551,18 @@ function pwaforwp_list_addons(){
                     'p-background-color'=> '#84dbff',
                     'p-desc' => 'Data Analytics for PWA installation growth and traffic analysis',
                     'p-tab'	 => false
-         ),         
+         ),
+         'ptrfp'  => array(
+                    'p-slug' => 'pull-to-refresh-for-pwa/pull-to-refresh-for-pwa.php',
+                    'p-name' => 'Pull to Refresh for PWA',
+                    'p-short-prefix'=> 'PTRFP',
+                    'p-title' => 'Pull to Refresh for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pull-to-refresh-for-pwa.png',
+                    'p-background-color'=> '#7d8c92',
+                    'p-desc' => 'Pull to Refresh for PWA extension help users to refresh the page inside PWA app',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -1980,6 +1991,15 @@ function pwaforwp_features_settings(){
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									),
+				'pulltorefresh' => array(
+                                    'enable_field' => 'pull_to_refresh',
+                                    'section_name' => 'pwaforwp_pull_to_refresh_setting_section',
+                                    'setting_title' => 'Pull To Refresh',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptrfp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    ),
 								);
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
