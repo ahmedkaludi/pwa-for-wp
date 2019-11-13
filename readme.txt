@@ -35,7 +35,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Set Device Orientation easily.
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/) and [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/) and [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/) and [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/) extensions
 
 **We Act Fast on Feedback!**
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
