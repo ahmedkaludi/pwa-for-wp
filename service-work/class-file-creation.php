@@ -562,6 +562,9 @@ class pwaforwpFileCreation{
   public function pwaforwp_getlayoutfiles($filePath){
     $fileContentResponse = @wp_remote_get(PWAFORWP_PLUGIN_URL.$filePath);
     if(wp_remote_retrieve_response_code($fileContentResponse)!=200){
+      if(!function_exists('get_filesystem_method')){
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+      }
       $access_type = get_filesystem_method();
       if($access_type === 'direct')
       {
