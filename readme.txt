@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.2
-Stable tag: 1.7.2
+Stable tag: 1.7.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -62,6 +62,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.2.1 (13 November 2019) =
+* BugFixed : Meta title name not appears #243
+* Added    : Compatibity With amp by automatic plugin in all mode #237
+* BugFixed : Resolved fatal Error of Call to undefined function get_filesystem_method() Realted to #217 
+
 = 1.7.2 (9 November 2019) =
 * Improved : Loader disable is not working #228
 * Improved : Service worker template file not readable #238
