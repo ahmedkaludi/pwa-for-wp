@@ -16,7 +16,9 @@ class PWAFORWP_Service_Worker{
         }        
                 
         if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
-         add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));      
+         add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
+         //Automattic AMP will be done here
+         add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
         }  
         
         $this->pwaforwp_is_amp_activated();
@@ -27,7 +29,7 @@ class PWAFORWP_Service_Worker{
 		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
         
         /*
-        load manifest on using Rest API
+        * load manifest on using Rest API
         * This change for manifest
         */
         add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
@@ -284,8 +286,8 @@ class PWAFORWP_Service_Worker{
                 if(isset($settings['precaching_post_count']) && $settings['precaching_post_count'] !=''){
                    $post_count =$settings['precaching_post_count']; 
                 }                
-                $post_args = array( 'numberposts' => $post_count  );                      
-                $page_args = array( 'number'       => $post_count );
+                $post_args = array( 'numberposts' => $post_count, 'post_status'=> 'publish', 'post_type'=> 'post'  );                      
+                $page_args = array( 'number'       => $post_count, 'post_status'=> 'publish', 'post_type'=> 'page' );
                                         
                 if(isset($settings['precaching_automatic_post']) && $settings['precaching_automatic_post']==1){
                     $postslist = get_posts( $post_args );
@@ -304,16 +306,24 @@ class PWAFORWP_Service_Worker{
                        }               
                     }         
                 }   
-                    
+                $previousIds = get_transient('pwaforwp_pre_cache_post_ids');
                 if($post_ids){
-                     set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));    
-                     update_option('pwaforwp_update_pre_cache_list', 'enable');
-                    $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-                    $result = $file_creation_init_obj->pwaforwp_swjs_init();
-                    $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
-
-                    update_option('pwaforwp_update_pre_cache_list', 'disable'); 
-                    delete_transient( 'pwaforwp_pre_cache_post_ids' );
+                    if($previousIds){
+                        $previousIds = json_decode($previousIds);
+                        if(array_diff($post_ids, $previousIds)){
+                            set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));
+                            update_option('pwaforwp_update_pre_cache_list', 'enable');
+                            $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
+                            $result = $file_creation_init_obj->pwaforwp_swjs_init();
+                            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                            update_option('pwaforwp_update_pre_cache_list', 'disable');
+                        }
+                    }else{
+                        set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));
+                        $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
+                        $result = $file_creation_init_obj->pwaforwp_swjs_init();
+                        $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                    }
                 }
 
                               
@@ -347,6 +357,14 @@ class PWAFORWP_Service_Worker{
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
             add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+            
+        }
+        public function pwaforwp_automattic_amp_entry_point(){  
+            if ( pwaforwp_is_automattic_amp() ) {
+                add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
+                add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+            }
             
         }	        
 	public function pwaforwp_service_worker(){ 
@@ -443,7 +461,7 @@ class PWAFORWP_Service_Worker{
                       <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
-            echo '<meta name=" " content="'.esc_attr($settings['app_blog_name']).'">
+            echo '<meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">

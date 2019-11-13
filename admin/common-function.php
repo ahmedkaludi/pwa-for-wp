@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
-    if(isset($settings['loading_icon'])){
+    if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
         
         echo '<div id="pwaforwp_loading_div"></div>';
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
@@ -590,4 +590,27 @@ function pwaforwp_is_file_inroot(){
   }else{
     return false;
   }
+}
+
+/**
+* only for Automattic amp Support
+* When user enabled Standard & Transitional mode 
+* it will check and give respective values
+*/
+
+function pwaforwp_is_automattic_amp($case=null){
+    //Check if current theme support amp
+    switch ($case) {
+        case 'amp_support':
+            if(class_exists('AMP_Theme_Support')){
+                return current_theme_supports( AMP_Theme_Support::SLUG );
+            }
+            break;
+        default:
+            if ( current_theme_supports( 'amp' ) && function_exists('is_amp_endpoint') && is_amp_endpoint() ) {
+                return true;
+            }
+            break;
+    }
+    return false;
 }

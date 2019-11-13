@@ -1,18 +1,19 @@
 <!doctype html>
-			<html>
-			    <head>
-			        <title>Installing service worker</title>
-			        <script type="text/javascript">
-			            var swsource = "{{serviceWorkerFile}}";
-			            if("serviceWorker" in navigator) {			               
-			                navigator.serviceWorker.register(swsource, {scope: '{{scope_url}}'}).then(function(reg){
-			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
-			                }).catch(function(err) {
-			                    console.log('ServiceWorker registration failed: ', err);
-			                });			                			                                                                                                                                    
-			            };
-			        </script>
-			    </head>
-			    <body>
-			    </body>
-			</html>
+<html>
+    <head>
+        <title>Installing service worker</title>
+        <script type="text/javascript">
+            var swsource = "{{serviceWorkerFile}}";
+            if("serviceWorker" in navigator) {			               
+                navigator.serviceWorker.register(swsource, {scope: '{{scope_url}}'}).then(function(reg){
+                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
+                }).catch(function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });			                			                                                                                                                                    
+            };
+        </script>
+    </head>
+    <body>
+    	Installing service worker...
+    </body>
+</html>

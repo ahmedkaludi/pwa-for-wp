@@ -551,7 +551,18 @@ function pwaforwp_list_addons(){
                     'p-background-color'=> '#84dbff',
                     'p-desc' => 'Data Analytics for PWA installation growth and traffic analysis',
                     'p-tab'	 => false
-         ),         
+         ),
+         'ptrfp'  => array(
+                    'p-slug' => 'pull-to-refresh-for-pwa/pull-to-refresh-for-pwa.php',
+                    'p-name' => 'Pull to Refresh for PWA',
+                    'p-short-prefix'=> 'PTRFP',
+                    'p-title' => 'Pull to Refresh for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pull-to-refresh-for-pwa.png',
+                    'p-background-color'=> '#7d8c92',
+                    'p-desc' => 'Pull to Refresh for PWA extension help users to refresh the page inside PWA app',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -883,7 +894,13 @@ function pwaforwp_force_update_sw_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ echo esc_attr($settings['force_update_sw_setting']);}else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>        
+        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ 
+        	if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
+				$settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
+			}
+        	echo esc_attr($settings['force_update_sw_setting']);
+        }else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>      
+        <code>Current Version <?php echo PWAFORWP_PLUGIN_VERSION; ?></code>  
 	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1317,8 +1334,20 @@ function pwaforpw_orientation_callback(){
 			<option value="landscape" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape' ); } ?>>
 				<?php echo esc_html__( 'Landscape', 'pwa-for-wp' ); ?>
 			</option>
-			<option value="auto" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'auto' ); } ?>>
+			<option value="any" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'any' ); selected( $settings['orientation'], 'auto' ); } ?>>
 				<?php echo esc_html__( 'Auto', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="landscape-primary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape-primary' ); } ?>>
+				<?php echo esc_html__( 'Landscape-primary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="landscape-secondary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape-secondary' ); } ?>>
+				<?php echo esc_html__( 'Landscape-secondary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="portrait-primary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait-primary' ); } ?>>
+				<?php echo esc_html__( 'Portrait-primary', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="portrait-secondary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'portrait-secondary' ); } ?>>
+				<?php echo esc_html__( 'Portrait-secondary', 'pwa-for-wp' ); ?>
 			</option>
 		</select>
 	</label>
@@ -1962,6 +1991,15 @@ function pwaforwp_features_settings(){
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									),
+				'pulltorefresh' => array(
+                                    'enable_field' => 'pull_to_refresh',
+                                    'section_name' => 'pwaforwp_pull_to_refresh_setting_section',
+                                    'setting_title' => 'Pull To Refresh',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptrfp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    ),
 								);
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
