@@ -48,7 +48,7 @@ jQuery(document).ready(function($){
                     }
                 };
                                 
-                wp_pointers_tour_opts = $.extend (wp_pointers_tour_opts, {
+                wp_pointers_tour_opts = jQuery.extend (wp_pointers_tour_opts, {
                         buttons: function (event, t) {
                                 button= jQuery ('<a id="pointer-close" class="button-secondary">' + pwaforwp_obj.button1 + '</a>');
                                 button_2= jQuery ('#pointer-close.button');
@@ -61,7 +61,7 @@ jQuery(document).ready(function($){
                                 return button;
                         },
                         close: function () {
-                                $.post (pwaforwp_obj.ajax_url, {
+                                jQuery.post (pwaforwp_obj.ajax_url, {
                                         pointer: 'pwaforwp_subscribe_pointer',
                                         action: 'dismiss-wp-pointer'
                                 });
@@ -71,14 +71,14 @@ jQuery(document).ready(function($){
                       }                                               
                 });
                 setup = function () {
-                        $(pwaforwp_obj.displayID).pointer(wp_pointers_tour_opts).pointer('open');
+                        jQuery(pwaforwp_obj.displayID).pointer(wp_pointers_tour_opts).pointer('open');
                          if (pwaforwp_obj.button2) {
                                 jQuery ('#pointer-close').after ('<a id="pointer-primary" class="button-primary">' + pwaforwp_obj.button2+ '</a>');
                                 jQuery ('#pointer-primary').click (function () {
                                         pwaforwp_obj.function_name;
                                 });
                                 jQuery ('#pointer-close').click (function () {
-                                        $.post (pwaforwp_obj.ajax_url, {
+                                        jQuery.post (pwaforwp_obj.ajax_url, {
                                                 pointer: 'pwaforwp_subscribe_pointer',
                                                 action: 'dismiss-wp-pointer'
                                         });
@@ -86,7 +86,7 @@ jQuery(document).ready(function($){
                          }
                 };
                 if (wp_pointers_tour_opts.position && wp_pointers_tour_opts.position.defer_loading) {
-                        $(window).bind('load.wp-pointers', setup);
+                        jQuery(window).bind('load.wp-pointers', setup);
                 }
                 else {
                         setup ();
@@ -96,8 +96,8 @@ jQuery(document).ready(function($){
                 
     /* Newletters js ends here */ 
     
-    $(".pwaforwp-colorpicker").wpColorPicker(); // Color picker
-    $(".pwaforwp-fcm-push-icon-upload").click(function(e) { // Application Icon upload
+    jQuery(".pwaforwp-colorpicker").wpColorPicker(); // Color picker
+    jQuery(".pwaforwp-fcm-push-icon-upload").click(function(e) { // Application Icon upload
         e.preventDefault();
         var pwaforwpMediaUploader = wp.media({
             title: pwaforwp_obj.uploader_title,
@@ -109,11 +109,11 @@ jQuery(document).ready(function($){
         })
         .on("select", function() {
             var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
-            $(".pwaforwp-fcm-push-icon").val(attachment.url);
+            jQuery(".pwaforwp-fcm-push-icon").val(attachment.url);
         })
         .open();
     });
-    $(".pwaforwp-icon-upload").click(function(e) {  // Application Icon upload
+    jQuery(".pwaforwp-icon-upload").click(function(e) {  // Application Icon upload
         e.preventDefault();
         var pwaforwpMediaUploader = wp.media({
             title: pwaforwp_obj.uploader_title,
@@ -125,11 +125,11 @@ jQuery(document).ready(function($){
         })
         .on("select", function() {
             var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
-            $(".pwaforwp-icon").val(attachment.url);
+            jQuery(".pwaforwp-icon").val(attachment.url);
         })
         .open();
     });
-    $(".pwaforwp-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
+    jQuery(".pwaforwp-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
         e.preventDefault();
         var pwaforwpMediaUploader = wp.media({
             title: pwaforwp_obj.splash_uploader_title,
@@ -141,59 +141,59 @@ jQuery(document).ready(function($){
         })
         .on("select", function() {
             var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
-            $(".pwaforwp-splash-icon").val(attachment.url);
+            jQuery(".pwaforwp-splash-icon").val(attachment.url);
         })
         .open();
     });
 
-    $(".pwaforwp-tabs a").click(function(e){
-        var href = $(this).attr("href");
+    jQuery(".pwaforwp-tabs a").click(function(e){
+        var href = jQuery(this).attr("href");
         var currentTab = pwaforwpGetParamByName("tab",href);
         if(!currentTab){
             currentTab = "dashboard";
         }
-        $(this).siblings().removeClass("nav-tab-active");
-        $(this).addClass("nav-tab-active");
-        $(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
-        $(".form-wrap .pwaforwp-"+currentTab).show();       
+        jQuery(this).siblings().removeClass("nav-tab-active");
+        jQuery(this).addClass("nav-tab-active");
+        jQuery(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
+        jQuery(".form-wrap .pwaforwp-"+currentTab).show();       
         window.history.pushState("", "", href);
         if(currentTab=='help' || currentTab=='features'){
-            $('.pwaforwp-help').find("tr th:first").hide()
-            $('.pwaforwp-settings-form').find('p.submit').hide();
+            jQuery('.pwaforwp-help').find("tr th:first").hide()
+            jQuery('.pwaforwp-settings-form').find('p.submit').hide();
         }else{
-             $('.pwaforwp-settings-form').find('p.submit').show();
+             jQuery('.pwaforwp-settings-form').find('p.submit').show();
         }
         return false;
     });
     var url      = window.location.href;     // Returns full URL
     var currentTab = pwaforwpGetParamByName("tab",url);
     if(currentTab=='help' || currentTab=='features'){
-        $('.pwaforwp-help').find("tr th:first").hide()
-        $('.pwaforwp-settings-form').find('p.submit').hide();
+        jQuery('.pwaforwp-help').find("tr th:first").hide()
+        jQuery('.pwaforwp-settings-form').find('p.submit').hide();
     }
         
-        $(".pwaforwp-activate-service").on("click", function(e){
-            $(".pwaforwp-settings-form #submit").click();
-            $(this).hide();
+        jQuery(".pwaforwp-activate-service").on("click", function(e){
+            jQuery(".pwaforwp-settings-form #submit").click();
+            jQuery(this).hide();
         });
-        $(".pwaforwp-service-activate").on("click", function(){  
+        jQuery(".pwaforwp-service-activate").on("click", function(){  
             
-        var filetype = $(this).attr("data-id");                
+        var filetype = jQuery(this).attr("data-id");                
         
         if(filetype){
             
-            $.ajax({
+            jQuery.ajax({
                     url:ajaxurl,
                     dataType: "json",
                     data:{filetype:filetype, action:"pwaforwp_download_setup_files", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){
                         if(response["status"]=="t"){
-                            $(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
-                            $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
-                            $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
-                            $(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
+                            jQuery(".pwaforwp-service-activate[data-id="+filetype+"]").hide();
+                            jQuery(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").removeClass("dashicons-no-alt");
+                            jQuery(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").addClass("dashicons-yes");
+                            jQuery(".pwaforwp-service-activate[data-id="+filetype+"]").siblings(".dashicons").css("color", "#46b450");
                         }else{
-                            $(".pwaforwp-service-activate[data-id="+filetype+"]").parent().next().removeClass("pwaforwp-hide");
+                            jQuery(".pwaforwp-service-activate[data-id="+filetype+"]").parent().next().removeClass("pwaforwp-hide");
                         }  
                     }                
                 });
@@ -204,21 +204,21 @@ jQuery(document).ready(function($){
     });
         
     //Help Query
-    $(".pwa-send-query").on("click", function(e){
+    jQuery(".pwa-send-query").on("click", function(e){
         e.preventDefault();   
-        var message = $("#pwaforwp_query_message").val();           
-                    $.ajax({
+        var message = jQuery("#pwaforwp_query_message").val();           
+                    jQuery.ajax({
                         type: "POST",    
                         url: ajaxurl,                    
                         dataType: "json",
                         data:{action:"pwaforwp_send_query_message", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                         success:function(response){                       
                           if(response['status'] =='t'){
-                            $(".pwa-query-success").show();
-                            $(".pwa-query-error").hide();
+                            jQuery(".pwa-query-success").show();
+                            jQuery(".pwa-query-error").hide();
                           }else{
-                            $(".pwa-query-success").hide();  
-                            $(".pwa-query-error").show();
+                            jQuery(".pwa-query-success").hide();  
+                            jQuery(".pwa-query-error").show();
                           }
                         },
                         error: function(response){                    
@@ -228,14 +228,14 @@ jQuery(document).ready(function($){
         
     });
         
-        $(document).on("click",".pwaforwp-reset-settings", function(e){
+        jQuery(document).on("click",".pwaforwp-reset-settings", function(e){
                 e.preventDefault();
              
                 var reset_confirm = confirm("Are you sure?");
              
                 if(reset_confirm == true){
                     
-                $.ajax({
+                jQuery.ajax({
                             type: "POST",    
                             url:ajaxurl,                    
                             dataType: "json",
@@ -254,16 +254,16 @@ jQuery(document).ready(function($){
         });
         
         
-         $(".pwaforwp-feedback-notice-close").on("click", function(e){
+         jQuery(".pwaforwp-feedback-notice-close").on("click", function(e){
           e.preventDefault();               
-                $.ajax({
+                jQuery.ajax({
                     type: "POST",    
                     url:ajaxurl,                    
                     dataType: "json",
                     data:{action:"pwaforwp_review_notice_close", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
-                       $(".pwaforwp-feedback-notice").hide();
+                       jQuery(".pwaforwp-feedback-notice").hide();
                       }
                     },
                     error: function(response){                    
@@ -273,16 +273,16 @@ jQuery(document).ready(function($){
     
         });
         
-        $(".pwaforwp-feedback-notice-remindme").on("click", function(e){
+        jQuery(".pwaforwp-feedback-notice-remindme").on("click", function(e){
                   e.preventDefault();               
-                $.ajax({
+                jQuery.ajax({
                     type: "POST",    
                     url:pwaforwp_obj.ajax_url,                    
                     dataType: "json",
                     data:{action:"pwaforwp_review_notice_remindme", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                     success:function(response){                       
                       if(response['status'] =='t'){
-                       $(".pwaforwp-feedback-notice").hide();
+                       jQuery(".pwaforwp-feedback-notice").hide();
                       }
                     },
                     error: function(response){                    
@@ -291,15 +291,15 @@ jQuery(document).ready(function($){
                     });    
         });
         
-        $(".pwaforwp-manual-notification").on("click", function(e){
+        jQuery(".pwaforwp-manual-notification").on("click", function(e){
         e.preventDefault();   
-        var message = $("#pwaforwp_notification_message").val(); 
-        var pn_title   = $("#pwaforwp_notification_message_title").val(); 
-        var pn_url   = $("#pwaforwp_notification_message_url").val(); 
+        var message = jQuery("#pwaforwp_notification_message").val(); 
+        var pn_title   = jQuery("#pwaforwp_notification_message_title").val(); 
+        var pn_url   = jQuery("#pwaforwp_notification_message_url").val(); 
             
-            if($.trim(message) !=''){
+            if(jQuery.trim(message) !=''){
                 
-                $.ajax({
+                jQuery.ajax({
                         type: "POST",    
                         url: ajaxurl,                    
                         dataType: "json",
@@ -308,12 +308,12 @@ jQuery(document).ready(function($){
                           if(response['status'] =='t'){
                                 var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
                                     //html +='<span style="color:red;">Failure: '+response['failure']+'</span>';
-                            $(".pwaforwp-notification-success").show();
-                                $(".pwaforwp-notification-success").html(html);
-                            $(".pwaforwp-notification-error").hide();
+                            jQuery(".pwaforwp-notification-success").show();
+                                jQuery(".pwaforwp-notification-success").html(html);
+                            jQuery(".pwaforwp-notification-error").hide();
                           }else{
-                            $(".pwaforwp-notification-success").hide();  
-                            $(".pwaforwp-notification-error").show();
+                            jQuery(".pwaforwp-notification-success").hide();  
+                            jQuery(".pwaforwp-notification-error").show();
                           }
                         },
                         error: function(response){                    
@@ -329,38 +329,38 @@ jQuery(document).ready(function($){
         
     });
         
-    $("#pwaforwp_settings_utm_setting").click(function(){
+    jQuery("#pwaforwp_settings_utm_setting").click(function(){
         
-        if($(this).prop("checked")){
-            $('.pwawp_utm_values_class').fadeIn();
+        if(jQuery(this).prop("checked")){
+            jQuery('.pwawp_utm_values_class').fadeIn();
         }else{
-            $('.pwawp_utm_values_class').fadeOut(200);
+            jQuery('.pwawp_utm_values_class').fadeOut(200);
         }
     });
         
         
-        $("#pwaforwp_settings_precaching_automatic").change(function(){ 
-        if($(this).prop("checked")){
-            $("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn(); 
-                        $(".pwaforwp-pre-cache-table").parent().parent().fadeIn(); 
+        jQuery("#pwaforwp_settings_precaching_automatic").change(function(){ 
+        if(jQuery(this).prop("checked")){
+            jQuery("#pwaforwp_settings_precaching_post_count").parent().parent().fadeIn(); 
+                        jQuery(".pwaforwp-pre-cache-table").parent().parent().fadeIn(); 
         }else{
-            $("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);
-                        $(".pwaforwp-pre-cache-table").parent().parent().fadeOut(200);
+            jQuery("#pwaforwp_settings_precaching_post_count").parent().parent().fadeOut(200);
+                        jQuery(".pwaforwp-pre-cache-table").parent().parent().fadeOut(200);
         }
     }).change();
         
-        $("#pwaforwp_settings_precaching_manual").change(function(){    
-        if($(this).prop("checked")){
-            $("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeIn();                                                
+        jQuery("#pwaforwp_settings_precaching_manual").change(function(){    
+        if(jQuery(this).prop("checked")){
+            jQuery("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeIn();                                                
         }else{
-            $("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeOut(200);;
+            jQuery("#pwaforwp_settings_precaching_urls").parent().parent().parent().fadeOut(200);;
         }
     }).change();
         
-        $(document).on("click", ".pwaforwp-update-pre-caching-urls", function(e){
+        jQuery(document).on("click", ".pwaforwp-update-pre-caching-urls", function(e){
             e.preventDefault();
-            var current = $(this);
-             $.ajax({
+            var current = jQuery(this);
+             jQuery.ajax({
                     url:ajaxurl,
                     dataType: "json",
                     data:{action:"pwaforwp_update_pre_caching_urls", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
@@ -375,104 +375,104 @@ jQuery(document).ready(function($){
             
         })
         
-        $("#pwaforwp_precaching_method_selector").change(function(){
+        jQuery("#pwaforwp_precaching_method_selector").change(function(){
     
-        if($(this).val() === 'automatic'){
-            $('.pwaforwp_precaching_table tr').eq(1).fadeIn();
-                        $('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
+        if(jQuery(this).val() === 'automatic'){
+            jQuery('.pwaforwp_precaching_table tr').eq(1).fadeIn();
+                        jQuery('.pwaforwp_precaching_table tr').eq(2).fadeOut(200);
         }else{
-                        $('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
-                        $('.pwaforwp_precaching_table tr').eq(2).fadeIn();
+                        jQuery('.pwaforwp_precaching_table tr').eq(1).fadeOut(200);
+                        jQuery('.pwaforwp_precaching_table tr').eq(2).fadeIn();
             
         }
     });
         
-        $(".pwaforwp-add-to-home-banner-settings").click(function(){
+        jQuery(".pwaforwp-add-to-home-banner-settings").click(function(){
         
-        if($(this).prop("checked")){
-            $('.pwaforwp-enable-on-desktop').removeClass('afw_hide');
+        if(jQuery(this).prop("checked")){
+            jQuery('.pwaforwp-enable-on-desktop').removeClass('afw_hide');
         }else{
-            $('.pwaforwp-enable-on-desktop').addClass('afw_hide');
-                        $('#enable_add_to_home_desktop_setting').prop('checked', false); // Checks it
+            jQuery('.pwaforwp-enable-on-desktop').addClass('afw_hide');
+                        jQuery('#enable_add_to_home_desktop_setting').prop('checked', false); // Checks it
 
         }
     });
-        $(".pwaforwp-onesignal-support").click(function(){      
-        if($(this).prop("checked")){
-            $('.pwaforwp-onesignal-instruction').fadeIn();
+        jQuery(".pwaforwp-onesignal-support").click(function(){      
+        if(jQuery(this).prop("checked")){
+            jQuery('.pwaforwp-onesignal-instruction').fadeIn();
         }else{
-            $('.pwaforwp-onesignal-instruction').fadeOut(200);
+            jQuery('.pwaforwp-onesignal-instruction').fadeOut(200);
         }
     });
-    $('.pwawp_utm_values_class').find('input').focusout(function(){
-        if($(this).attr('data-val')!==$(this).val()){
-            $("#pwa-utm_change_track").val('1');
+    jQuery('.pwawp_utm_values_class').find('input').focusout(function(){
+        if(jQuery(this).attr('data-val')!==jQuery(this).val()){
+            jQuery("#pwa-utm_change_track").val('1');
         }
     });
         
-        $(".pwaforwp-fcm-checkbox").click(function(){
+        jQuery(".pwaforwp-fcm-checkbox").click(function(){
             
-                if($(this).prop("checked")){
-                    $(this).parent().find('p').removeClass('pwaforwp-hide');
+                if(jQuery(this).prop("checked")){
+                    jQuery(this).parent().find('p').removeClass('pwaforwp-hide');
         }else{
-                    $(this).parent().find('p').addClass('pwaforwp-hide');
+                    jQuery(this).parent().find('p').addClass('pwaforwp-hide');
         }
             
         });
-    $('.pwaforwp-checkbox-tracker').change(function(e){
-        var respectiveId = $(this).attr('data-id');
+    jQuery('.pwaforwp-checkbox-tracker').change(function(e){
+        var respectiveId = jQuery(this).attr('data-id');
         var chval = 0;
-        if($(this).is(":checked")){
-            chval = $(this).val();
+        if(jQuery(this).is(":checked")){
+            chval = jQuery(this).val();
         }
-        console.log($(this).parent('label').find('#'+respectiveId), chval);
-        $(this).parent('label').find('input[name="'+respectiveId+'"]').val(chval);
+        console.log(jQuery(this).parent('label').find('#'+respectiveId), chval);
+        jQuery(this).parent('label').find('input[name="'+respectiveId+'"]').val(chval);
     })
         
         //Licensing jquery starts here
-    $(document).on("click",".pwaforwp_license_activation", function(e){
+    jQuery(document).on("click",".pwaforwp_license_activation", function(e){
                 e.preventDefault();
-                var current = $(this);
+                var current = jQuery(this);
                 current.addClass('updating-message');
-                var license_status = $(this).attr('license-status');
-                var add_on         = $(this).attr('add-on');
-                var license_key    = $("#"+add_on+"_addon_license_key").val();
+                var license_status = jQuery(this).attr('license-status');
+                var add_on         = jQuery(this).attr('add-on');
+                var license_key    = jQuery("#"+add_on+"_addon_license_key").val();
                
             if(license_status && add_on && license_key){
                 
-                $.ajax({
+                jQuery.ajax({
                             type: "POST",    
                             url:ajaxurl,                    
                             dataType: "json",
                             data:{action:"pwaforwp_license_status_check",license_key:license_key,license_status:license_status, add_on:add_on, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                             success:function(response){                               
                                
-                               $("#"+add_on+"_addon_license_key_status").val(response['status']);
+                               jQuery("#"+add_on+"_addon_license_key_status").val(response['status']);
                                                                 
                               if(response['status'] =='active'){  
-                               $(".saswp-"+add_on+"-dashicons").addClass('dashicons-yes');
-                               $(".saswp-"+add_on+"-dashicons").removeClass('dashicons-no-alt');
-                               $(".saswp-"+add_on+"-dashicons").css("color", "green");
+                               jQuery(".saswp-"+add_on+"-dashicons").addClass('dashicons-yes');
+                               jQuery(".saswp-"+add_on+"-dashicons").removeClass('dashicons-no-alt');
+                               jQuery(".saswp-"+add_on+"-dashicons").css("color", "green");
                                
-                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "inactive");
-                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Deactivate");
+                               jQuery(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "inactive");
+                               jQuery(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Deactivate");
                                
-                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text('Activated');
+                               jQuery(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text('Activated');
                                
-                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "green");                                
-                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
+                               jQuery(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "green");                                
+                               jQuery(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
                                                                                              
                               }else{
                                   
-                               $(".saswp-"+add_on+"-dashicons").addClass('dashicons-no-alt');
-                               $(".saswp-"+add_on+"-dashicons").removeClass('dashicons-yes');
-                               $(".saswp-"+add_on+"-dashicons").css("color", "red");
+                               jQuery(".saswp-"+add_on+"-dashicons").addClass('dashicons-no-alt');
+                               jQuery(".saswp-"+add_on+"-dashicons").removeClass('dashicons-yes');
+                               jQuery(".saswp-"+add_on+"-dashicons").css("color", "red");
                                
-                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "active");
-                               $(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Activate");
+                               jQuery(".pwaforwp_license_activation[add-on='" + add_on + "']").attr("license-status", "active");
+                               jQuery(".pwaforwp_license_activation[add-on='" + add_on + "']").text("Activate");
                                
-                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "red"); 
-                               $(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
+                               jQuery(".pwaforwp_license_status_msg[add-on='" + add_on + "']").css("color", "red"); 
+                               jQuery(".pwaforwp_license_status_msg[add-on='" + add_on + "']").text(response['message']);
                               }
                                current.removeClass('updating-message');                                                           
                             },
@@ -489,37 +489,37 @@ jQuery(document).ready(function($){
         });
         //Licensing jquery ends here
         
-        $('.pwaforwp-sub-tab-headings span').click(function(){
-            var tabId = $(this).attr('data-tab-id');
-            $(this).parents('.pwaforwp-subheading-wrap').find('.pwaforwp-subheading').find('div.selected').removeClass('selected').addClass('pwaforwp-hide');
-            $(this).parents('.pwaforwp-subheading-wrap').find('.pwaforwp-subheading').find('#'+tabId).removeClass('pwaforwp-hide').addClass('selected');
+        jQuery('.pwaforwp-sub-tab-headings span').click(function(){
+            var tabId = jQuery(this).attr('data-tab-id');
+            jQuery(this).parents('.pwaforwp-subheading-wrap').find('.pwaforwp-subheading').find('div.selected').removeClass('selected').addClass('pwaforwp-hide');
+            jQuery(this).parents('.pwaforwp-subheading-wrap').find('.pwaforwp-subheading').find('#'+tabId).removeClass('pwaforwp-hide').addClass('selected');
             //tab head
-            $(this).parent('.pwaforwp-sub-tab-headings').find('span.selected').removeClass('selected');
-            $(this).addClass('selected');
+            jQuery(this).parent('.pwaforwp-sub-tab-headings').find('span.selected').removeClass('selected');
+            jQuery(this).addClass('selected');
         });
 
-        $(".pwaforwp-checkbox").click(function(){
+        jQuery(".pwaforwp-checkbox").click(function(){
             
-                    var data_id = $(this).attr('data-id');
+                    var data_id = jQuery(this).attr('data-id');
                     console.log(data_id);
-            if($(this).prop("checked")){
-                $('.pwaforwp_'+data_id).removeClass('pwaforwp-hide');
+            if(jQuery(this).prop("checked")){
+                jQuery('.pwaforwp_'+data_id).removeClass('pwaforwp-hide');
             }else{
-                $('.pwaforwp_'+data_id).addClass('pwaforwp-hide');
+                jQuery('.pwaforwp_'+data_id).addClass('pwaforwp-hide');
             }
         });
 
     //ios splash screen start
-    $(".switch_apple_splash_screen").click(function(){
-        if($(this).is(':checked')){
-            $('.ios-splash-images').show();
+    jQuery(".switch_apple_splash_screen").click(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('.ios-splash-images').show();
         }else{
-            $('.ios-splash-images').hide();
+            jQuery('.ios-splash-images').hide();
         }
     });
-    $(".pwaforwp-ios-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
+    jQuery(".pwaforwp-ios-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
         e.preventDefault();
-        var self = $(this);
+        var self = jQuery(this);
         var splash_uploader_title = self.parent('.ios-splash-images-field').find('label').text();
         var pwaforwpMediaUploader = wp.media({
             title: splash_uploader_title,
@@ -539,28 +539,28 @@ jQuery(document).ready(function($){
 
 
 
-    $('.pwaforwp-change-data').click(function(e){
+    jQuery('.pwaforwp-change-data').click(function(e){
         e.preventDefault();
-        if(!$(this).parents('.card-action').find('label').find('input[type="checkbox"]').prop('checked')){
+        if(!jQuery(this).parents('.card-action').find('label').find('input[type="checkbox"]').prop('checked')){
             return false;
         }
-        var opt = $(this).attr('data-option');
-        var optTitle = $(this).attr('title');
+        var opt = jQuery(this).attr('data-option');
+        var optTitle = jQuery(this).attr('title');
         tb_show(optTitle, "#TB_inline?width=800&height=400&inlineId="+opt);
         datafeatureSubmit();
     });
 
-    $('.card-action input[type="checkbox"]').change(function(){
+    jQuery('.card-action input[type="checkbox"]').change(function(){
         var value = 0;
-        if($(this).is(':checked')){
-            $(this).parents('.card-action').find('.card-action-settings').css({opacity: 1})
+        if(jQuery(this).is(':checked')){
+            jQuery(this).parents('.card-action').find('.card-action-settings').css({opacity: 1})
             var value = 1;
-            //$(this).parents('.card-action').find('.pwaforwp-change-data').click();
+            //jQuery(this).parents('.card-action').find('.pwaforwp-change-data').click();
         }else{
-            $(this).parents('.card-action').find('.card-action-settings').css({opacity: 0});
+            jQuery(this).parents('.card-action').find('.card-action-settings').css({opacity: 0});
         }
         fields = [];
-        var name = $(this).attr('name');
+        var name = jQuery(this).attr('name');
         pwaforwp_dependent_features_section(name, value);
         fields.push({var_name: name, var_value: value});
         pwaforwp_ajaxcall_submitdata(pwaforwp_obj, fields);
@@ -569,24 +569,24 @@ jQuery(document).ready(function($){
 });
 
 var datafeatureSubmit = function(){
-        $('.pwaforwp-submit-feature-opt').click(function(){
-            /*$('#TB_closeWindowButton').click();
+        jQuery('.pwaforwp-submit-feature-opt').click(function(){
+            /*jQuery('#TB_closeWindowButton').click();
             setTimeout(1000, function(){
-                $('.pwaforwp-main-wrapper').find('form').find('#submit').click();
+                jQuery('.pwaforwp-main-wrapper').find('form').find('#submit').click();
 
             })*/
-            var self = $(this);
+            var self = jQuery(this);
             var fields = [];
             self.parents('.thickbox-fetures-wrap')
                 .find('input').each( function(k,v){
-                    var type = $(this).attr('type').toLowerCase();
-                    var name = $(this).attr('name');//.replace(/pwaforwp_settings\[/,'').replace(/\]/, '');
+                    var type = jQuery(this).attr('type').toLowerCase();
+                    var name = jQuery(this).attr('name');//.replace(/pwaforwp_settings\[/,'').replace(/\]/, '');
 
                     if(type=='checkbox'){
-                        if($(this).is(':checked')){
-                            var value = $(this).val();
+                        if(jQuery(this).is(':checked')){
+                            var value = jQuery(this).val();
                         }else{
-                            var value = ($(this).attr('data-uncheck-val')) ? $(this).attr('data-uncheck-val') : 0;
+                            var value = (jQuery(this).attr('data-uncheck-val')) ? jQuery(this).attr('data-uncheck-val') : 0;
                         }
                         if(name){
                             pwaforwp_dependent_features_section(name, value)
@@ -594,17 +594,17 @@ var datafeatureSubmit = function(){
                         }
                     }
                     if(type=='radio'){
-                        if($(this).is(':checked')){
-                            var value = $(this).val();
+                        if(jQuery(this).is(':checked')){
+                            var value = jQuery(this).val();
                         }else{
-                            var value = ($(this).attr('data-uncheck-val')) ? $(this).attr('data-uncheck-val') : 0;
+                            var value = (jQuery(this).attr('data-uncheck-val')) ? jQuery(this).attr('data-uncheck-val') : 0;
                         }
                         if(name){
                             fields.push({var_name: name, var_value: value});
                         }
                     }
                     if(type!='checkbox' && type!='radio' ){
-                       var value = $(this).val();
+                       var value = jQuery(this).val();
                         if(name){
                             fields.push({var_name: name, var_value: value});
                         }
@@ -613,16 +613,16 @@ var datafeatureSubmit = function(){
                 });
             self.parents('.thickbox-fetures-wrap')
                 .find('textarea').each( function(k,v){
-                    var name = $(this).attr('name');
-                    var value = $(this).val();
+                    var name = jQuery(this).attr('name');
+                    var value = jQuery(this).val();
                     if(name){
                         fields.push({var_name: name, var_value: value});
                     }
                 })
             self.parents('.thickbox-fetures-wrap')
                 .find('select').each( function(k,v){
-                    var name = $(this).attr('name');
-                    var value = $(this).val();
+                    var name = jQuery(this).attr('name');
+                    var value = jQuery(this).val();
                     if(name){
                         fields.push({var_name: name, var_value: value});
                     }
@@ -640,7 +640,7 @@ var datafeatureSubmit = function(){
         }
         if(staticAjaxCalled){
             var data = {action:"pwaforwp_update_features_options", pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce,fields_data: fields};
-                $.ajax({
+                jQuery.ajax({
                     url:ajaxurl,
                     method:'post',
                     dataType: "json",
@@ -662,18 +662,18 @@ var datafeatureSubmit = function(){
         if(type=='success'){
             classes="pwaforwp-toast-success"
         }
-        if($('.pwaforwp-toast-wrap').length){
-            $('.pwaforwp-toast-wrap').remove();
+        if(jQuery('.pwaforwp-toast-wrap').length){
+            jQuery('.pwaforwp-toast-wrap').remove();
         }
 
         var messageDiv = '<div class="pwaforwp-toast-wrap bottom-left"><div class="pwaforwp-toast-single '+classes+'" style="text-align: left;"><span class="pwaforwp-toast-loader pwaforwp-toast-loaded" style="-webkit-transition: width 2.6s ease-in;                       -o-transition: width 2.6s ease-in;                       transition: width 2.6s ease-in;                       background-color: #9EC600;"></span>'+message+'<span class="close-pwaforwp-toast-single">×</span></div></div>';
-        $('body').append(messageDiv);
+        jQuery('body').append(messageDiv);
 
         setTimeout(function(){
-            $('.pwaforwp-toast-wrap').remove();
+            jQuery('.pwaforwp-toast-wrap').remove();
         }, 3000);
-        $('.close-pwaforwp-toast-single').click(function(){
-            $(this).parents('.pwaforwp-toast-wrap').remove();
+        jQuery('.close-pwaforwp-toast-single').click(function(){
+            jQuery(this).parents('.pwaforwp-toast-wrap').remove();
         })
     }
 
@@ -682,77 +682,77 @@ var pwaforwp_dependent_features_section = function(fieldname, fieldValue){
     switch(fieldname){
         case 'pwaforwp_settings[precaching_feature]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[precaching_automatic]"]').trigger('click');
-                $('input[name="pwaforwp_settings[precaching_automatic_post]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[precaching_automatic]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[precaching_automatic_post]"]').trigger('click');
             }else{
-                $('input[name="pwaforwp_settings[precaching_automatic]"]').trigger('click');
-                $('input[name="pwaforwp_settings[precaching_automatic_post]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[precaching_automatic]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[precaching_automatic_post]"]').trigger('click');
             }
 
         break;
 
         case 'pwaforwp_settings[precaching_automatic]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[precaching_feature]"]').prop('checked', true);
+                jQuery('input[name="pwaforwp_settings[precaching_feature]"]').prop('checked', true);
             }else{
-                $('input[name="pwaforwp_settings[precaching_feature]"]').prop('checked', false);
-                $('input[name="pwaforwp_settings[precaching_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
+                jQuery('input[name="pwaforwp_settings[precaching_feature]"]').prop('checked', false);
+                jQuery('input[name="pwaforwp_settings[precaching_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
             }
 
         break;
 
         case 'pwaforwp_settings[addtohomebanner_feature]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[custom_add_to_home_setting]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[custom_add_to_home_setting]"]').trigger('click');
             }else{
-                $('input[name="pwaforwp_settings[custom_add_to_home_setting]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[custom_add_to_home_setting]"]').trigger('click');
             }
 
         break;
 
         case 'pwaforwp_settings[custom_add_to_home_setting]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[addtohomebanner_feature]"]').prop('checked', true);
+                jQuery('input[name="pwaforwp_settings[addtohomebanner_feature]"]').prop('checked', true);
             }else{
-                $('input[name="pwaforwp_settings[addtohomebanner_feature]"]').prop('checked', false);
-                $('input[name="pwaforwp_settings[addtohomebanner_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
+                jQuery('input[name="pwaforwp_settings[addtohomebanner_feature]"]').prop('checked', false);
+                jQuery('input[name="pwaforwp_settings[addtohomebanner_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
             }
 
         break;
 
         case 'pwaforwp_settings[loader_feature]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[loading_icon]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[loading_icon]"]').trigger('click');
             }else{
-                $('input[name="pwaforwp_settings[loading_icon]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[loading_icon]"]').trigger('click');
             }
 
         break;
 
         case 'pwaforwp_settings[loading_icon]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[loader_feature]"]').prop('checked', true);
+                jQuery('input[name="pwaforwp_settings[loader_feature]"]').prop('checked', true);
             }else{
-                $('input[name="pwaforwp_settings[loader_feature]"]').prop('checked', false);
-                $('input[name="pwaforwp_settings[loader_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
+                jQuery('input[name="pwaforwp_settings[loader_feature]"]').prop('checked', false);
+                jQuery('input[name="pwaforwp_settings[loader_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
             }
 
         break;
 
         case 'pwaforwp_settings[utmtracking_feature]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[utm_setting]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[utm_setting]"]').trigger('click');
             }else{
-                $('input[name="pwaforwp_settings[utm_setting]"]').trigger('click');
+                jQuery('input[name="pwaforwp_settings[utm_setting]"]').trigger('click');
             }
 
         break;
         case 'pwaforwp_settings[utm_setting]': 
             if(fieldValue==1){
-                $('input[name="pwaforwp_settings[utmtracking_feature]"]').prop('checked', true);
+                jQuery('input[name="pwaforwp_settings[utmtracking_feature]"]').prop('checked', true);
             }else{
-                $('input[name="pwaforwp_settings[utmtracking_feature]"]').prop('checked', false);
-                $('input[name="pwaforwp_settings[utmtracking_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
+                jQuery('input[name="pwaforwp_settings[utmtracking_feature]"]').prop('checked', false);
+                jQuery('input[name="pwaforwp_settings[utmtracking_feature]"]').parents('.card-action').find('.card-action-settings').css({opacity: 0});
             }
 
         break;
