@@ -32,6 +32,13 @@ const MAX_TTL = {
     jpg: {{CSS_CACHE_TIME}},
 };
 
+const CACHE_STRATEGY = {
+    default: '{{DEFAULT_CACHE_STRATEGY}}',
+    css_js: '{{CSS_JS_CACHE_STRATEGY}}',
+    images: '{{IMAGES_CACHE_STRATEGY}}',
+    fonts: '{{FONTS_CACHE_STRATEGY}}',
+}
+
 const CACHE_BLACKLIST =  [
 //    (str) => {
 //        return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
@@ -268,6 +275,195 @@ function pwaForWpprecacheUrl(url) {
     }
 }
 
+var fetchRengeData = function(event){
+    var pos = Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
+            console.log('Range request for', event.request.url, ', starting position:', pos);
+            event.respondWith(
+              caches.open(CACHE_VERSIONS.content)
+              .then(function(cache) {
+                return cache.match(event.request.url);
+              }).then(function(res) {
+                if (!res) {
+                  return fetch(event.request)
+                  .then(res => {
+                    return res.arrayBuffer();
+                  });
+                }
+                return res.arrayBuffer();
+              }).then(function(ab) {
+                return new Response(
+                  ab.slice(pos),
+                  {
+                    status: 206,
+                    statusText: 'Partial Content',
+                    headers: [
+                      // ['Content-Type', 'video/webm'],
+                      ['Content-Range', 'bytes ' + pos + '-' +
+                        (ab.byteLength - 1) + '/' + ab.byteLength]]
+                  });
+              }));
+}
+
+let cachingStrategy = {
+        notGetMethods: function(event){
+            // If non-GET request, try the network first, fall back to the offline page
+            if (event.request.method !== 'GET') {
+                event.respondWith(
+                    fetch(request)
+                        .catch(error => {
+                            return caches.match(offlinePage);
+                        })
+                );
+                return;
+            }
+        },
+
+        fetchFromCache: function(event){
+           /* return new Promise(
+                            (resolve) => {*/
+                            return caches.open(CACHE_VERSIONS.content)
+                .then(
+                    (cache) => {
+
+                        return cache.match(event.request)
+                            .then(
+                                (response) => {
+
+                                    if (response) {
+
+                                        let headers = response.headers.entries();
+                                        let date = null;
+
+                                        for (let pair of headers) {
+                                            if (pair[0] === 'date') {
+                                                date = new Date(pair[1]);
+                                            }
+                                        }
+
+                                        if (date) {
+                                            let age = parseInt((new Date().getTime() - date.getTime()));
+                                            let ttl = pwaForWpgetTTL(event.request.url);
+
+                                            if (age > ttl) {
+
+                                               return cachingStrategy.fetchnetwork(event, response)
+                                            } else {
+                                                return response;
+                                            }
+
+                                        } else {
+                                            return response;
+                                        }
+
+                                    } else {
+                                        return null;
+                                    }
+                                }
+                            )
+                            .then(
+                                (response) => {
+                                    if (response) {
+                                        return response;
+                                    } else {
+                                        return fetch(event.request.clone())
+                                            .then(
+                                                (response) => {
+
+                                                    if (response.status < 300) {
+                                                        if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                                            cache.put(event.request, response.clone());
+                                                        }
+                                                        return response;
+                                                    } else {
+                                                        return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
+                                                            return cache.match(NOT_FOUND_PAGE);
+                                                        })
+                                                    }
+                                                }
+                                            )
+                                            .then((response) => {
+                                                if (response) {
+                                                    return response;
+                                                }
+                                            })
+                                            .catch(
+                                                () => {
+
+                                                    return caches.open(CACHE_VERSIONS.offline)
+                                                        .then(
+                                                            (offlineCache) => {
+                                                                return offlineCache.match(OFFLINE_PAGE)
+                                                            }
+                                                        )
+
+                                                }
+                                            );
+                                    }
+                                }
+                            )
+                            .catch(
+                                (error) => {
+                                    console.error('  Error in fetch handler:', error);
+                                    throw error;
+                                }
+                            );
+                    }
+                )
+            /*})*/
+
+        },
+        fetchnetwork: function(event, response){
+            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                                                return cache.match(OFFLINE_PAGE);
+                                            })
+             return fetch(event.request).then(function (response) {
+                return response.ok ? response : offlineCache;
+              })
+              .catch(function () {
+                return this.fetchFromCache(event);
+              });  
+        },
+        addCache: function(event,updatedResponse){
+            cache.put(event.request, updatedResponse.clone());
+             resolve(updatedResponse);
+        },
+        /*Strategies*/
+        networkOnlyStrategy: function(events){
+            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                                                return cache.match(OFFLINE_PAGE);
+                                            })
+            return cachingStrategy.fetchnetwork(events, offlineCache)
+                                .catch(
+                                    (err) => {
+                                        return offlineCache;
+                                    }
+                                );
+        },
+        cacheFirstStrategy: function(events){
+            return cachingStrategy.fetchFromCache(events)
+                           .catch(
+                                (err) => {
+                                    return caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                                        return cache.match(OFFLINE_PAGE);
+                                    })
+                                }
+                            );
+        },
+        NeworkFirstStrategy: function(events){
+            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                                                return cache.match(OFFLINE_PAGE);
+                                            })
+            return cachingStrategy.fetchnetwork(events, offlineCache)
+                    .catch(
+                        (err) => {
+                            return cachingStrategy.cacheFirstStrategy(events);
+                        }
+                    );
+        }
+
+
+}
+
 
 self.addEventListener(
     'install', event => {
@@ -311,156 +507,51 @@ self.addEventListener(
         // Return if request url protocal isn't http or https
         if ( ! event.request.url.match(/^(http|https):\/\//i) )
             return;
+        if ( event.request.referrer.match(/^(wp-admin):\/\//i) )
+            return;
                        
         {{EXTERNAL_LINKS}}
 
 
         if (event.request.headers.get('range')) {
-            var pos =
-            Number(/^bytes\=(\d+)\-$/g.exec(event.request.headers.get('range'))[1]);
-            console.log('Range request for', event.request.url, ', starting position:', pos);
-            event.respondWith(
-              caches.open(CACHE_VERSIONS.content)
-              .then(function(cache) {
-                return cache.match(event.request.url);
-              }).then(function(res) {
-                if (!res) {
-                  return fetch(event.request)
-                  .then(res => {
-                    return res.arrayBuffer();
-                  });
-                }
-                return res.arrayBuffer();
-              }).then(function(ab) {
-                return new Response(
-                  ab.slice(pos),
-                  {
-                    status: 206,
-                    statusText: 'Partial Content',
-                    headers: [
-                      // ['Content-Type', 'video/webm'],
-                      ['Content-Range', 'bytes ' + pos + '-' +
-                        (ab.byteLength - 1) + '/' + ab.byteLength]]
-                  });
-              }));
+            fetchRengeData(event);
         } else {
-                
-            event.respondWith(
-                caches.open(CACHE_VERSIONS.content)
-                    .then(
-                        (cache) => {
+            //cachingStrategy.notGetMethods(event);
+             const destination = event.request.destination;
+            switch (destination) {
+                case 'style':
+                case 'script':
+                  cachingStrategyType = CACHE_STRATEGY.css_js;
+                  break;
+                case 'document':
+                case 'image': 
+                    cachingStrategyType = CACHE_STRATEGY.images;
+                  break;
+                case 'font': 
+                    cachingStrategyType = CACHE_STRATEGY.fonts;
+                break;
+                // All `XMLHttpRequest` or `fetch()` calls where
+                // `Request.destination` is the empty string default value
+                default: 
+                  cachingStrategyType = CACHE_STRATEGY.default
+            }
+            var cache = null;
 
-                            return cache.match(event.request)
-                                .then(
-                                    (response) => {
-
-                                        if (response) {
-
-                                            let headers = response.headers.entries();
-                                            let date = null;
-
-                                            for (let pair of headers) {
-                                                if (pair[0] === 'date') {
-                                                    date = new Date(pair[1]);
-                                                }
-                                            }
-
-                                            if (date) {
-                                                let age = parseInt((new Date().getTime() - date.getTime()));
-                                                let ttl = pwaForWpgetTTL(event.request.url);
-
-                                                if (age > ttl) {
-
-                                                    return new Promise(
-                                                        (resolve) => {
-
-                                                            return fetch(event.request.clone())
-                                                                .then(
-                                                                    (updatedResponse) => {
-                                                                        if (updatedResponse) {
-                                                                            cache.put(event.request, updatedResponse.clone());
-                                                                            resolve(updatedResponse);
-                                                                        } else {
-                                                                            resolve(response)
-                                                                        }
-                                                                    }
-                                                                )
-                                                                .catch(
-                                                                    () => {
-                                                                        resolve(response);
-                                                                    }
-                                                                );
-
-                                                        }
-                                                    )
-                                                        .catch(
-                                                            (err) => {
-                                                                return response;
-                                                            }
-                                                        );
-                                                } else {
-                                                    return response;
-                                                }
-
-                                            } else {
-                                                return response;
-                                            }
-
-                                        } else {
-                                            return null;
-                                        }
-                                    }
-                                )
-                                .then(
-                                    (response) => {
-                                        if (response) {
-                                            return response;
-                                        } else {
-                                            return fetch(event.request.clone())
-                                                .then(
-                                                    (response) => {
-
-                                                        if(response.status < 300) {
-                                                            if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
-                                                                cache.put(event.request, response.clone());
-                                                            }
-                                                                return response;
-                                                        } else {
-                                                            return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
-                                                                return cache.match(NOT_FOUND_PAGE);
-                                                            })
-                                                        }
-                                                    }
-                                                )
-                                                .then((response) => {
-                                                    if(response) {
-                                                        return response;
-                                                    }
-                                                })
-                                                .catch(
-                                                    () => {
-
-                                                        return caches.open(CACHE_VERSIONS.offline)
-                                                            .then(
-                                                                (offlineCache) => {
-                                                                    return offlineCache.match(OFFLINE_PAGE)
-                                                                }
-                                                            )
-
-                                                    }
-                                                );
-                                        }
-                                    }
-                                )
-                                .catch(
-                                    (error) => {
-                                        console.error('  Error in fetch handler:', error);
-                                        throw error;
-                                    }
-                                );
-                        }
-                    )
-            );
+            switch(cachingStrategyType){
+                case "networkFirst":
+                   cache = cachingStrategy.NeworkFirstStrategy(event)
+                break;
+                case "networkOnly":
+                   cache = cachingStrategy.networkOnlyStrategy(event)
+                break;
+                //break;
+                case "cacheFirst":
+                case "staleWhileRevalidate": 
+                default:
+                   cache = cachingStrategy.cacheFirstStrategy(event)
+                break;
+            }
+            event.respondWith(cache);
         
         }
 

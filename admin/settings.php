@@ -2118,7 +2118,7 @@ function pwaforwp_update_features_options(){
 				$actualFields['utm_setting'] = 0;
 			}
 		}
-		if($actualFields['fcm_config']){
+		if(isset($actualFields['fcm_config']) && $actualFields['fcm_config']){
 			$actualFields['fcm_config'] = wp_unslash($actualFields['fcm_config']);
 		}
 		$pre_settings = pwaforwp_defaultSettings();
@@ -2141,6 +2141,7 @@ function pwaforwp_update_features_options(){
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
 		update_option( 'pwaforwp_settings', $actualFields ) ;
+		pwaforwp_required_file_creation();
 		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));
 			die;
 	}else{

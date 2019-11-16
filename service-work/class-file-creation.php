@@ -391,6 +391,13 @@ class pwaforwpFileCreation{
 			$cacheTimerCss = $settings['cached_timer']['css'];
 		}
 
+    /*Caching Strategy*/
+    $defaultStrategy  = $settings['default_caching'];
+    $cssjsStrategy    = $settings['default_caching_js_css'];
+    $imageStrategy    = $settings['default_caching_images'];
+    $fontStrategy     = $settings['default_caching_fonts'];
+
+
 		if( $is_amp ){
                         $firebasejs ='';
       if(pwaforwp_is_automattic_amp('amp_support') && function_exists('amp_get_permalink')){
@@ -412,7 +419,11 @@ class pwaforwpFileCreation{
                                                         "{{EXCLUDE_FROM_CACHE}}", 
                                                         "{{OFFLINE_GOOGLE}}",
                                                         "{{EXTERNAL_LINKS}}",
-                                                        "{{REGEX}}"
+                                                        "{{REGEX}}",
+                                                        "{{DEFAULT_CACHE_STRATEGY}}",
+                                                        "{{CSS_JS_CACHE_STRATEGY}}",
+                                                        "{{IMAGES_CACHE_STRATEGY}}",
+                                                        "{{FONTS_CACHE_STRATEGY}}"
                                                             ), 
                                                      array(
                                                          $pre_cache_urls_amp,
@@ -426,7 +437,11 @@ class pwaforwpFileCreation{
                                                          $exclude_from_cache, 
                                                          $offline_google,
                                                          $external_links,
-                                                         '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g'
+                                                         '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g',
+                                                         $defaultStrategy,
+                                                         $cssjsStrategy,
+                                                         $imageStrategy,
+                                                         $fontStrategy
                                                         ),
 							 $swJsContent
                                                         );                		
@@ -445,7 +460,11 @@ class pwaforwpFileCreation{
                                                             "{{EXCLUDE_FROM_CACHE}}", 
                                                             "{{OFFLINE_GOOGLE}}",
                                                             "{{EXTERNAL_LINKS}}",
-                                                            "{{REGEX}}"
+                                                            "{{REGEX}}",
+                                                            "{{DEFAULT_CACHE_STRATEGY}}",
+                                                            "{{CSS_JS_CACHE_STRATEGY}}",
+                                                            "{{IMAGES_CACHE_STRATEGY}}",
+                                                            "{{FONTS_CACHE_STRATEGY}}"
                                                             ),
                                                       array(
                                                             $pre_cache_urls,
@@ -459,7 +478,11 @@ class pwaforwpFileCreation{
                                                             $exclude_from_cache, 
                                                             $offline_google,
                                                             $external_links,
-                                                            '/<img[^>]+src="(https:\/\/[^">]+)"/g'
+                                                            '/<img[^>]+src="(https:\/\/[^">]+)"/g',
+                                                            $defaultStrategy,
+                                                            $cssjsStrategy,
+                                                            $imageStrategy,
+                                                            $fontStrategy
                                                             ), 
                                                             $swJsContent);                		
 		} 

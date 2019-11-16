@@ -1,23 +1,23 @@
 jQuery(document).ready(function($){
     
-  $('#pwaforwp_loading_div').hide();
-  $('#pwaforwp_loading_icon').hide();   
-  $('.pwaforwp-loading-wrapper').hide();   
+  jQuery('#pwaforwp_loading_div').hide();
+  jQuery('#pwaforwp_loading_icon').hide();   
+  jQuery('.pwaforwp-loading-wrapper').hide();   
   
-  $(window).on('beforeunload', function() {
-     $('#pwaforwp_loading_div').show();
-     $('#pwaforwp_loading_icon').show();   
-     $('.pwaforwp-loading-wrapper').show();   
+  jQuery(window).on('beforeunload', function() {
+     jQuery('#pwaforwp_loading_div').show();
+     jQuery('#pwaforwp_loading_icon').show();   
+     jQuery('.pwaforwp-loading-wrapper').show();   
   });
         
-    $(".pwaforwp_add_home_close").on("click", function(){
-        $(this).parent().hide();
+    jQuery(".pwaforwp_add_home_close").on("click", function(){
+        jQuery(this).parent().hide();
     });
     
-    if($('.pwaforwp-add-via-class').is(':hidden')){
-        $(".pwaforwp-sticky-banner").hide();
+    if(jQuery('.pwaforwp-add-via-class').is(':hidden')){
+        jQuery(".pwaforwp-sticky-banner").hide();
     }else{
-        $(".pwaforwp-sticky-banner").show();
+        jQuery(".pwaforwp-sticky-banner").show();
     }
     
 });
