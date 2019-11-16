@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.2
-Stable tag: 1.7.2.1
+Tested up to: 5.3
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -62,6 +62,10 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.3 (16 November 2019) =
+* Fixed 	: PWA options are not Save in wordpress version 5.3 #253
+* Improved  : Improve the Caching Strategies #246
+
 = 1.7.2.1 (13 November 2019) =
 * BugFixed : Meta title name not appears #243
 * Added    : Compatibity With amp by automatic plugin in all mode #237
