@@ -109,7 +109,7 @@ function pwaforwp_frontend_enqueue(){
             $config     = $settings['fcm_config'];
         }
                         
-         if(($server_key !='' && $config !='')){             
+         if(isset($pwaforwp_settings['notification_feature']) && $pwaforwp_settings['notification_feature']==1 && ($server_key !='' && $config !='')){             
                                                                          
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
@@ -287,10 +287,6 @@ function pwaforwp_defaultSettings(){
 }
 
 function pwaforwp_migration_setup_fetures($pwaforwp_settings){
-    if(isset($pwaforwp_settings['notification_feature']) && $pwaforwp_settings['notification_feature']==0 && isset($pwaforwp_settings['fcm_server_key']) && !empty($pwaforwp_settings['fcm_server_key'])){
-        $pwaforwp_settings['notification_feature'] = 1;
-    }
-
     if(isset($pwaforwp_settings['precaching_feature']) && $pwaforwp_settings['precaching_feature']==0 && isset($pwaforwp_settings['precaching_automatic']) && $pwaforwp_settings['precaching_automatic'] == 1 ){
         $pwaforwp_settings['precaching_feature'] = 1;
     }

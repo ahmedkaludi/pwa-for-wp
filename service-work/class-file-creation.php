@@ -48,7 +48,7 @@ class pwaforwpFileCreation{
         
             $settings   = pwaforwp_defaultSettings();
                        
-            if(isset($settings['fcm_config'])){
+            if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['fcm_config'])){
                 $config     = $settings['fcm_config'];
             }
                 
@@ -69,8 +69,11 @@ class pwaforwpFileCreation{
     public function pwaforwp_swr($is_amp = false){	
         
         $settings                       = pwaforwp_defaultSettings();
-        $server_key                     = $settings['fcm_server_key'];
-        $config                         = $settings['fcm_config'];
+        $server_key = $config = '';
+        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 ){
+          $server_key                   = $settings['fcm_server_key'];
+          $config                       = $settings['fcm_config'];
+        }
         $addtohomemanually              = '';
         
         if(isset($settings['add_to_home_selector'])){
@@ -264,7 +267,7 @@ class pwaforwpFileCreation{
                 $config = $swHtmlContent = '';
                 $settings = pwaforwp_defaultSettings();  
                                 
-                if(isset($settings['fcm_config'])){
+                if( isset($settings['notification_feature']) && $settings['notification_feature']==1 &&isset($settings['fcm_config'])){
                     $config   = $settings['fcm_config'];
                 }
                                                                    
