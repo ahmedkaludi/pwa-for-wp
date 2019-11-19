@@ -213,6 +213,12 @@ class pwaforwpFileCreation{
     }else{
       $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
     }
+    /*Default Bar will be disabled if custom add to home banners are enabled*/
+    $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+    $swdefaultaddtohomebar = '';
+    if($showPwaDefaultbar==0){
+      $swdefaultaddtohomebar = "e.preventDefault();";
+    }
        
 		
     $swHtmlContentbody    = $this->pwaforwp_getlayoutfiles("layouts/sw_non_amp.js");                                                               
@@ -243,7 +249,8 @@ class pwaforwpFileCreation{
                                                 "{{addtohomeshortcode}}",
                                                 "{{addtohomebanner}}",
                                                 "{{addtohomefunction}}",
-                                                "{{home_url}}"
+                                                "{{home_url}}",
+                                                "{{swdefaultaddtohomebar}}",
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
@@ -253,7 +260,8 @@ class pwaforwpFileCreation{
                                                 $addtohomeshortcode,
                                                 $addtohomebanner,
                                                 $addtohomefunction,
-                                                $home_url
+                                                $home_url,
+                                                $swdefaultaddtohomebar,
                                             ), 
                                     $swHtmlContent);
                     
