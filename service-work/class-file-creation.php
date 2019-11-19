@@ -375,7 +375,7 @@ class pwaforwpFileCreation{
                 $server_key = $settings['fcm_server_key'];
                 $config     = $settings['fcm_config'];
                 
-                if($server_key !='' && $config !=''){
+                if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && $server_key !='' && $config !=''){
                  $firebasejs = $this->pwaforwp_firebase_js();  
                 }else{
                  $firebasejs = '';    
