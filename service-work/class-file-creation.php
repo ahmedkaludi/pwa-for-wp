@@ -216,7 +216,7 @@ class pwaforwpFileCreation{
     /*Default Bar will be disabled if custom add to home banners are enabled*/
     $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
     $swdefaultaddtohomebar = '';
-    if($showPwaDefaultbar==0){
+    if($showPwaDefaultbar==1){
       $swdefaultaddtohomebar = "e.preventDefault();";
     }
        
