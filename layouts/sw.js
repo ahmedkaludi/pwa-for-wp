@@ -420,7 +420,7 @@ let cachingStrategy = {
                 return response.ok ? response : offlineCache;
               })
               .catch(function () {
-                return this.fetchFromCache(event);
+                return cachingStrategy.fetchFromCache(event);
               });  
         },
         addCache: function(event,updatedResponse){
