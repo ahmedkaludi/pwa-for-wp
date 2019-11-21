@@ -333,7 +333,7 @@ class pwaforwpFileCreation{
                                               
                        if ( function_exists('ampforwp_url_controller') ) {
 				
-                           $pre_cache_urls_amp .= "'".ampforwp_url_controller($post_id). "',\n"; 
+                           $pre_cache_urls_amp .= "'".ampforwp_url_controller(get_the_permalink($post_id)). "',\n"; 
 			}
                         
                         if (function_exists('amp_get_permalink')) {

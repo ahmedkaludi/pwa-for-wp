@@ -5,7 +5,8 @@ class pushNotification{
      public function pwaforwp_push_notification_hooks(){
          
             add_action('publish_post', array($this, 'pwaforwp_send_notification_on_post_save'));                          
-            add_action('wp_head', array($this, 'pwaforwp_load_pushnotification_script'), 35);                 
+            add_action('wp_head', array($this, 'pwaforwp_load_pn_manifest'), 35); 
+            add_action('wp_enqueue_scripts', array($this, 'pwaforwp_load_pn_script_add'), 34);
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
             add_action('wp_ajax_pwaforwp_store_token', array($this, 'pwaforwp_store_token'));             
             add_action('wp_ajax_pwaforwp_send_notification_manually', array($this, 'pwaforwp_send_notification_manually'));
@@ -117,7 +118,7 @@ class pushNotification{
                               
      }
      
-     public function pwaforwp_load_pushnotification_script(){	
+     public function pwaforwp_load_pn_manifest(){	
          
             $url 	  = pwaforwp_home_url();
             $settings     = pwaforwp_defaultSettings();      
@@ -131,12 +132,32 @@ class pushNotification{
                 $config       = $settings['fcm_config'];
             }                        
                                                               
-            if(!empty($server_key) && !empty($config) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
-                
-                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-app.min.js').'"></script>';	
-                echo '<script src="'.esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-messaging.min.js').'"></script>';	             
+            if(!empty($server_key) && !empty($config) && isset($settings['normal_enable']) && $settings['normal_enable']==1){	             
                 echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
              
+            }                    
+     }  
+     public function pwaforwp_load_pn_script_add(){  
+         
+            $url    = pwaforwp_home_url();
+            $settings     = pwaforwp_defaultSettings();      
+            
+            $server_key = $config = '';
+            
+            if(isset($settings['fcm_server_key'])){
+                $server_key   = $settings['fcm_server_key'];
+            }
+            if(isset($settings['fcm_config'])){
+                $config       = $settings['fcm_config'];
+            }                        
+                                                              
+            if( isset($settings['notification_feature']) && $settings['notification_feature']==1 && !empty($server_key) && !empty($config) && isset($settings['normal_enable']) && $settings['normal_enable']==1 ){
+                wp_register_script( "pwa-main-firebase-script", esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-app.min.js'), array(), PWAFORWP_PLUGIN_VERSION, true );
+                wp_register_script( "pwa-main-firebase-message-script", esc_url(PWAFORWP_PLUGIN_URL.'assets/vendor/js/firebase-messaging.min.js'), array('pwa-main-firebase-script'), PWAFORWP_PLUGIN_VERSION, true );
+
+             
+                wp_enqueue_script( "pwa-main-firebase-script"); 
+                wp_enqueue_script( "pwa-main-firebase-message-script"); 
             }                    
      }         
      public function pwaforwp_store_token(){

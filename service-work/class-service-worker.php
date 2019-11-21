@@ -244,7 +244,7 @@ class PWAFORWP_Service_Worker{
                 
                if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
-                 add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+                 add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35);    
                  add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
                  
                } 
@@ -412,8 +412,10 @@ class PWAFORWP_Service_Worker{
             $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
-                  
-            echo '<script src="'.esc_url($url).'"></script>'; 
+             
+             wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
+            wp_enqueue_script( "pwa-main-script");     
+            //echo '<script src="'.esc_url($url).'"></script>'; 
                
 		}  
                 
