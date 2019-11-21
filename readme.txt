@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.3
+Stable tag: 1.7.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -62,6 +62,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.3.1 (21 November 2019) =
+* Improved 	: Disable Default Add to Home bar #241
+* BugFixed  : After deactivating switch of push notification remove all code of push notification #231
+* BugFixed  : loader Icon not shows in IOS (JS event not working) #244
+* BugFixed  : CTA Bar will disable for 5 min when click on cross the button #248
+* BugFixed  : Cache strategies & service worker loading as per the wordpress standard #260
+
 = 1.7.3 (16 November 2019) =
 * Fixed 	: PWA options are not Save in wordpress version 5.3 #253
 * Improved  : Improve the Caching Strategies #246
