@@ -5,7 +5,7 @@ class pushNotification{
      public function pwaforwp_push_notification_hooks(){
          
             add_action('publish_post', array($this, 'pwaforwp_send_notification_on_post_save'));                          
-            add_action('wp_head', array($this, 'pwaforwp_load_pn_manifest'), 35); 
+            add_filter('pwaforwp_manifest', array($this, 'pwaforwp_load_pn_manifest'), 35); 
             add_action('wp_enqueue_scripts', array($this, 'pwaforwp_load_pn_script_add'), 34);
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
             add_action('wp_ajax_pwaforwp_store_token', array($this, 'pwaforwp_store_token'));             
@@ -118,9 +118,7 @@ class pushNotification{
                               
      }
      
-     public function pwaforwp_load_pn_manifest(){	
-         
-            $url 	  = pwaforwp_home_url();
+     public function pwaforwp_load_pn_manifest($manifest){	
             $settings     = pwaforwp_defaultSettings();      
             
             $server_key = $config = '';
@@ -133,9 +131,9 @@ class pushNotification{
             }                        
                                                               
             if(!empty($server_key) && !empty($config) && isset($settings['normal_enable']) && $settings['normal_enable']==1){	             
-                echo '<link rel="manifest" href="'. esc_url($url.'pwa-push-notification-manifest'.pwaforwp_multisite_postfix().'.json').'">';	
-             
-            }                    
+                $manifest['gcm_sender_id'] = '103953800507';
+            }
+          return $manifest;
      }  
      public function pwaforwp_load_pn_script_add(){  
          

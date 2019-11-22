@@ -7,6 +7,8 @@ class PWAFORWP_Service_Worker{
             
         public function __construct() {
         
+        if ( class_exists( 'WP_Service_Workers' ) ) { return; }
+        
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
         $settings = pwaforwp_defaultSettings();
