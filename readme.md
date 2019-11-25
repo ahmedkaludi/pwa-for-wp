@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.3.1
+Stable tag: 1.7.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -20,6 +20,7 @@ You can give the APP-like experience to your audience which will get your websit
 * NEW: OneSignal support with multisite
 * NEW: Easily change start URL
 * NEW: Caching Strategy for PWA enabled assets
+* NEW: Added Support with PWA By PWA Plugin Contributors
 * Cache Expire option added
 * <strong>Service Worker </strong>: We have developed a service worker which automatically gets installed in the background and performs the necessary actions such as caching the external objects to reduce the requests and more.
 * <strong>APP Banners in Home-screen</strong>: Automatically notifies your visitor to get the APP version of the website which directly gets added with the list of Apps and Home-screen. You can customize the icons for this as well.
@@ -62,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.3.2 (25 November 2019) =
+* Feature 	: Added support with `pwa By PWA Plugin Contributors` #107
+
 = 1.7.3.1 (21 November 2019) =
 * Improved 	: Disable Default Add to Home bar #241
 * BugFixed  : After deactivating switch of push notification remove all code of push notification #231
