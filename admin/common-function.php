@@ -610,3 +610,14 @@ function pwaforwp_is_automattic_amp($case=null){
     }
     return false;
 }
+
+/**
+* PWA WP Enabled
+*/
+function pwaforwp_is_enabled_pwa_wp(){
+    if ( class_exists( 'WP_Service_Workers' ) ) {
+        return true;
+    }
+    return false;
+    
+}

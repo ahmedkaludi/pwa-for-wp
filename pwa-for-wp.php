@@ -21,16 +21,18 @@ define('PWAFORWP_PLUGIN_VERSION', '1.7.3.1');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
+require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
 add_action('plugins_loaded', 'pwaforwp_init_plugin');
 function pwaforwp_init_plugin(){
-    require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
     require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
     require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
     require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
     require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
     require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
     require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
+    if ( class_exists( 'WP_Service_Workers' ) ) { 
     require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
+     }
 
           
     if( pwaforwp_is_admin() ){

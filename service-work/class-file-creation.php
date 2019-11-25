@@ -118,7 +118,7 @@ class pwaforwpFileCreation{
          $addtohomemanually ='';
         }
         
-        if(isset($settings['custom_add_to_home_setting'])){
+        if(isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1){
           
             if(isset($settings['enable_add_to_home_desktop_setting'])){
                 $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");

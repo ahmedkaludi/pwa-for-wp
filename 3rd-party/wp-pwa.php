@@ -1,11 +1,125 @@
 <?php
 class PWAforWP_wppwa{
+	
+	const INSTALL_SERVICE_WORKER_AMP_QUERY_VAR = 'pwa_amp_install_service_worker_iframe';
 	function init(){
+		if(class_exists('WP_Web_App_Manifest')){
+			$wp_web_app_manifest = new WP_Web_App_Manifest();
+			add_action( 'amp_post_template_head', array( $wp_web_app_manifest, 'manifest_link_and_meta' ) );
+
+		}
 		add_filter("web_app_manifest", array($this, 'manifest_submit'), 10, 1);
 		add_action( 'wp_front_service_worker', array( $this, 'add_cdn_script_caching' ) );
+		add_action("wp", array($this, 'remove_all_pwa_wp_actions'));
+		if(defined('AMPFORWP_VERSION')){
+			add_filter( 'query_vars', [ __CLASS__, 'add_query_var' ] );
+			
+			add_action( 'parse_request', [ __CLASS__, 'handle_service_worker_iframe_install' ] );
+			add_action( 'wp', [ __CLASS__, 'add_install_hooks' ] );
+			add_action( 'wp_front_service_worker', [ __CLASS__, 'add_amp_cdn_script_caching' ] );
+		}
+	}
+	public function remove_all_pwa_wp_actions(){
+		foreach ( [ 'wp_print_scripts', 'wp_print_footer_scripts' ] as $action ) {
+				$priority = has_action( $action, 'wp_print_service_workers' );
+				if ( false !== $priority ) {
+					remove_action( $action, 'wp_print_service_workers', $priority );
+				}
+			}
+
+		add_filter( 'wp_print_scripts', array($this, 'wp_print_service_workers'), 9 );
+	}
+	public static function add_query_var( $vars ) {
+		$vars[] = self::INSTALL_SERVICE_WORKER_AMP_QUERY_VAR;
+		return $vars;
+	}
+	
+	public static function add_install_hooks() {
+		// Reader mode integration.
+		add_action( 'amp_post_template_footer', [ __CLASS__, 'install_service_worker' ] );
+		add_filter(
+			'amp_post_template_data',
+			static function ( $data ) {
+				$data['amp_component_scripts']['amp-install-serviceworker'] = 'https://cdn.ampproject.org/v0/amp-install-serviceworker-latest.js';
+				return $data;
+			}
+		);
+	}
+	public static function install_service_worker() {
+		if ( ! function_exists( 'wp_service_workers' ) || ! function_exists( 'wp_get_service_worker_url' ) ) {
+			return;
+		}
+
+		$src        = wp_get_service_worker_url( WP_Service_Workers::SCOPE_FRONT );
+		$iframe_src = add_query_arg(
+			self::INSTALL_SERVICE_WORKER_AMP_QUERY_VAR,
+			WP_Service_Workers::SCOPE_FRONT,
+			home_url( '/', 'https' )
+		);
+		?>
+		<amp-install-serviceworker
+			src="<?php echo esc_url( $src ); ?>"
+			data-iframe-src="<?php echo esc_url( $iframe_src ); ?>"
+			layout="nodisplay"
+		>
+		</amp-install-serviceworker>
+		<?php
+	}
+	public static function handle_service_worker_iframe_install() {
+		if ( ! isset( $GLOBALS['wp']->query_vars[ self::INSTALL_SERVICE_WORKER_AMP_QUERY_VAR ] ) ) {
+			return;
+		}
+
+		$scope = (int) $GLOBALS['wp']->query_vars[ self::INSTALL_SERVICE_WORKER_AMP_QUERY_VAR ];
+		if ( WP_Service_Workers::SCOPE_ADMIN !== $scope && WP_Service_Workers::SCOPE_FRONT !== $scope ) {
+			wp_die(
+				esc_html__( 'No service workers registered for the requested scope.', 'amp' ),
+				esc_html__( 'Service Worker Installation', 'amp' ),
+				[ 'response' => 404 ]
+			);
+		}
+
+		$front_scope = home_url( '/amp', 'relative' );
+
+		?>
+		<!DOCTYPE html>
+		<html>
+			<head>
+				<meta charset="utf-8">
+				<title><?php esc_html_e( 'Service Worker Installation', 'amp' ); ?></title>
+			</head>
+			<body>
+				<?php esc_html_e( 'Installing service worker...', 'amp' ); ?>
+				<?php
+				printf(
+					'<script>navigator.serviceWorker.register( %s, %s );</script>',
+					wp_json_encode( wp_get_service_worker_url( $scope ) ),
+					wp_json_encode( [ 'scope' => $front_scope ] )
+				);
+				?>
+			</body>
+		</html>
+		<?php
+
+		// Die in a way that can be unit tested.
+		add_filter(
+			'wp_die_handler',
+			static function() {
+				return static function() {
+					die();
+				};
+			},
+			1
+		);
+		wp_die();
 	}
 
 	function add_cdn_script_caching( $service_workers ){
+		if ( ! ( $service_workers instanceof WP_Service_Worker_Scripts ) ) {
+			/* translators: %s: WP_Service_Worker_Cache_Registry. */
+			_doing_it_wrong( __METHOD__, sprintf( esc_html__( 'Please update to PWA v0.2. Expected argument to be %s.', 'pwa-forwp' ), 'WP_Service_Worker_Cache_Registry' ), '1.1' );
+			return;
+		}
 		$swJsContentbody  = $this->pwaforwp_getlayoutfiles("layouts/sw.js");
 		if(isset($swJsContentbody) && $swJsContentbody){
             $swJsContent            = $swJsContentbody;
@@ -114,46 +228,96 @@ class PWAforWP_wppwa{
 		    $fontStrategy     = $settings['default_caching_fonts'];
 
 
-			$offline_page 	    = pwaforwp_https( $offline_page );
-			$page404 			= pwaforwp_https( $page404 );    
-			$swJsContent 	    = str_replace(array(
-                                            "{{PRE_CACHE_URLS}}",     
-                                            "{{OFFLINE_PAGE}}", 
-                                            "{{404_PAGE}}", 
-                                            "{{CACHE_VERSION}}",
-                                            "{{SITE_URL}}", 
-                                            "{{HTML_CACHE_TIME}}",
-                                            "{{CSS_CACHE_TIME}}", 
-                                            "{{FIREBASEJS}}", 
-                                            "{{EXCLUDE_FROM_CACHE}}", 
-                                            "{{OFFLINE_GOOGLE}}",
-                                            "{{EXTERNAL_LINKS}}",
-                                            "{{REGEX}}",
-                                            "{{DEFAULT_CACHE_STRATEGY}}",
-                                            "{{CSS_JS_CACHE_STRATEGY}}",
-                                            "{{IMAGES_CACHE_STRATEGY}}",
-                                            "{{FONTS_CACHE_STRATEGY}}"
-                                            ),
-                                      array(
-                                            $pre_cache_urls,
-                                            $offline_page, 
-                                            $page404, 
-                                            $cache_version, 
-                                            $site_url, 
-                                            $cacheTimerHtml, 
-                                            $cacheTimerCss, 
-                                            $firebasejs, 
-                                            $exclude_from_cache, 
-                                            $offline_google,
-                                            $external_links,
-                                            '/<img[^>]+src="(https:\/\/[^">]+)"/g',
-                                            $defaultStrategy,
-                                            $cssjsStrategy,
-                                            $imageStrategy,
-                                            $fontStrategy
-                                            ), 
-                                            $swJsContent
-                                        );                		
+		    if( ( function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() ) || ( function_exists('is_amp_endpoint') && is_amp_endpoint() ) ){
+                        $firebasejs ='';
+				if(pwaforwp_is_automattic_amp('amp_support') && function_exists('amp_get_permalink')){
+				$offline_page   = amp_get_permalink( pwaforwp_https( $offline_page ) );
+				$page404        = amp_get_permalink( pwaforwp_https( $page404 ) );
+				}else{
+				$offline_page   = pwaforwp_https( $offline_page ).'?amp=1';
+				$page404        = pwaforwp_https( $page404 ).'?amp=1';    
+				}
+					$swJsContent 	= str_replace(array(
+				                                                "{{PRE_CACHE_URLS}}", 
+									"{{OFFLINE_PAGE}}", 
+				                                                "{{404_PAGE}}", 
+				                                                "{{CACHE_VERSION}}",
+				                                                "{{SITE_URL}}", 
+				                                                "{{HTML_CACHE_TIME}}",
+				                                                "{{CSS_CACHE_TIME}}", 
+				                                                "{{FIREBASEJS}}" , 
+				                                                "{{EXCLUDE_FROM_CACHE}}", 
+				                                                "{{OFFLINE_GOOGLE}}",
+				                                                "{{EXTERNAL_LINKS}}",
+				                                                "{{REGEX}}",
+				                                                "{{DEFAULT_CACHE_STRATEGY}}",
+				                                                "{{CSS_JS_CACHE_STRATEGY}}",
+				                                                "{{IMAGES_CACHE_STRATEGY}}",
+				                                                "{{FONTS_CACHE_STRATEGY}}"
+				                                                    ), 
+				                                             array(
+				                                                 $pre_cache_urls_amp,
+				                                                 $offline_page, 
+				                                                 $page404, 
+				                                                 $cache_version,
+				                                                 $site_url, 
+				                                                 $cacheTimerHtml, 
+				                                                 $cacheTimerCss, 
+				                                                 $firebasejs, 
+				                                                 $exclude_from_cache, 
+				                                                 $offline_google,
+				                                                 $external_links,
+				                                                 '/<amp-img[^>]+src="(https:\/\/[^">]+)"/g',
+				                                                 $defaultStrategy,
+				                                                 $cssjsStrategy,
+				                                                 $imageStrategy,
+				                                                 $fontStrategy
+				                                                ),
+									 $swJsContent
+				                                                );                		
+				} else {
+
+					$offline_page 	    = pwaforwp_https( $offline_page );
+					$page404 			= pwaforwp_https( $page404 );    
+					$swJsContent 	    = str_replace(array(
+		                                            "{{PRE_CACHE_URLS}}",     
+		                                            "{{OFFLINE_PAGE}}", 
+		                                            "{{404_PAGE}}", 
+		                                            "{{CACHE_VERSION}}",
+		                                            "{{SITE_URL}}", 
+		                                            "{{HTML_CACHE_TIME}}",
+		                                            "{{CSS_CACHE_TIME}}", 
+		                                            "{{FIREBASEJS}}", 
+		                                            "{{EXCLUDE_FROM_CACHE}}", 
+		                                            "{{OFFLINE_GOOGLE}}",
+		                                            "{{EXTERNAL_LINKS}}",
+		                                            "{{REGEX}}",
+		                                            "{{DEFAULT_CACHE_STRATEGY}}",
+		                                            "{{CSS_JS_CACHE_STRATEGY}}",
+		                                            "{{IMAGES_CACHE_STRATEGY}}",
+		                                            "{{FONTS_CACHE_STRATEGY}}"
+		                                            ),
+		                                      array(
+		                                            $pre_cache_urls,
+		                                            $offline_page, 
+		                                            $page404, 
+		                                            $cache_version, 
+		                                            $site_url, 
+		                                            $cacheTimerHtml, 
+		                                            $cacheTimerCss, 
+		                                            $firebasejs, 
+		                                            $exclude_from_cache, 
+		                                            $offline_google,
+		                                            $external_links,
+		                                            '/<img[^>]+src="(https:\/\/[^">]+)"/g',
+		                                            $defaultStrategy,
+		                                            $cssjsStrategy,
+		                                            $imageStrategy,
+		                                            $fontStrategy
+		                                            ), 
+		                                            $swJsContent
+		                                        );         
+		        }       		
 		}
 
         $service_workers->register(
@@ -165,6 +329,9 @@ class PWAforWP_wppwa{
 		);
 	}
 
+	/**
+	* Add the fire base contents in PWA js
+	*/
 	public function pwaforwp_firebase_js(){
                 $config = $swHtmlContent = '';
                 $settings = pwaforwp_defaultSettings();  
@@ -181,6 +348,10 @@ class PWAforWP_wppwa{
 		return $swHtmlContent;		    
     }
 
+    /**
+    * To grab the Template files content use this function
+    * @filePath is the name of file path after plugin folder
+    */
 	public function pwaforwp_getlayoutfiles($filePath){
 	    $fileContentResponse = @wp_remote_get(PWAFORWP_PLUGIN_URL.$filePath);
 	    if(wp_remote_retrieve_response_code($fileContentResponse)!=200){
@@ -204,6 +375,10 @@ class PWAforWP_wppwa{
 	    }
 	}
 
+	/**
+	* Updated Manifest of PWA-WP 
+	* Added Our custom options value related with option panel 
+	*/
 	function manifest_submit($manifest){
 		$defaults = pwaforwp_defaultSettings();  
 		$is_amp = false;
@@ -277,6 +452,105 @@ class PWAforWP_wppwa{
         $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 
 		return $manifest;
+	}
+
+	public function wp_print_service_workers() {
+		/*
+		 * Similar to PWA-WP but Removed serviceworker registeraation in admin section 
+		 * because its not shows live saved data
+		 * and cause issue in admin-login screen 
+		 */
+		if ( is_embed() ) {
+			return;
+		}
+
+		global $pagenow;
+		$scopes = array();
+
+		$home_port  = wp_parse_url( home_url(), PHP_URL_PORT );
+		$admin_port = wp_parse_url( admin_url(), PHP_URL_PORT );
+
+		$home_host  = wp_parse_url( home_url(), PHP_URL_HOST );
+		$admin_host = wp_parse_url( admin_url(), PHP_URL_HOST );
+
+		$home_url  = ( $home_port ) ? "$home_host:$home_port" : $home_host;
+		$admin_url = ( $admin_port ) ? "$admin_host:$admin_port" : $admin_host;
+
+		$on_front_domain = isset( $_SERVER['HTTP_HOST'] ) && $home_url === $_SERVER['HTTP_HOST'];
+		$on_admin_domain = isset( $_SERVER['HTTP_HOST'] ) && $admin_url === $_SERVER['HTTP_HOST'];
+
+		// Install the front service worker if currently on the home domain.
+		if ( $on_front_domain ) {
+			$scopes[ WP_Service_Workers::SCOPE_FRONT ] = home_url( '/', 'relative' ); // The home_url() here will account for subdirectory installs.
+		}
+		if( ( function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() ) || ( function_exists('is_amp_endpoint') && is_amp_endpoint() ) ){
+			$scopes[ WP_Service_Workers::SCOPE_FRONT.'/amp' ] = home_url( '/amp', 'relative' ); // The 
+		}
+
+		if ( empty( $scopes ) ) {
+			return;
+		}
+
+		?>
+		<script>
+			if ( navigator.serviceWorker ) {
+				window.addEventListener( 'load', function() {
+					<?php foreach ( $scopes as $name => $scope ) : ?>
+						{
+							let updatedSw;
+							navigator.serviceWorker.register(
+								<?php echo wp_json_encode( wp_get_service_worker_url( $name ) ); ?>,
+								<?php echo wp_json_encode( compact( 'scope' ) ); ?>
+							).then( reg => {
+								<?php if ( WP_Service_Workers::SCOPE_ADMIN === $name ) : ?>
+									document.cookie = <?php echo wp_json_encode( sprintf( 'wordpress_sw_installed=1; path=%s; expires=Fri, 31 Dec 9999 23:59:59 GMT; secure; samesite=strict', $scope ) ); ?>;
+								<?php endif; ?>
+								<?php if ( ! wp_service_worker_skip_waiting() ) : ?>
+									reg.addEventListener( 'updatefound', () => {
+										if ( ! reg.installing ) {
+											return;
+										}
+										updatedSw = reg.installing;
+
+										/* If new service worker is available, show notification. */
+										updatedSw.addEventListener( 'statechange', () => {
+											if ( 'installed' === updatedSw.state && navigator.serviceWorker.controller ) {
+												const notification = document.getElementById( 'wp-admin-bar-pwa-sw-update-notice' );
+												if ( notification ) {
+													notification.style.display = 'block';
+												}
+											}
+										} );
+									} );
+								<?php endif; ?>
+							} );
+
+							<?php if ( is_admin_bar_showing() && ! wp_service_worker_skip_waiting() ) : ?>
+								/* Post message to Service Worker for skipping the waiting phase. */
+								const reloadBtn = document.getElementById( 'wp-admin-bar-pwa-sw-update-notice' );
+								if ( reloadBtn ) {
+									reloadBtn.addEventListener( 'click', ( event ) => {
+										event.preventDefault();
+										if ( updatedSw ) {
+											updatedSw.postMessage( { action: 'skipWaiting' } );
+										}
+									} );
+								}
+							<?php endif; ?>
+						}
+					<?php endforeach; ?>
+
+					let refreshedPage = false;
+					navigator.serviceWorker.addEventListener( 'controllerchange', () => {
+						if ( ! refreshedPage ) {
+							refreshedPage = true;
+							window.location.reload();
+						}
+					} );
+				} );
+			}
+		</script>
+		<?php
 	}
 }
 $PWAforWP_wppwa = new PWAforWP_wppwa();

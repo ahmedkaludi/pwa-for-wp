@@ -7,7 +7,8 @@ class PWAFORWP_Service_Worker{
             
         public function __construct() {
         
-        if ( class_exists( 'WP_Service_Workers' ) ) { return; }
+        $this->pwaforwp_is_amp_activated();
+        if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
         
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
@@ -23,7 +24,6 @@ class PWAFORWP_Service_Worker{
          add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
         }  
         
-        $this->pwaforwp_is_amp_activated();
             	                                                                                                                                  
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
