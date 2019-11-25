@@ -233,7 +233,7 @@ class PWAFORWP_Service_Worker{
         }
         
         public function pwaforwp_service_worker_init(){
-            
+             if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
             $settings = pwaforwp_defaultSettings();
             
             if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
