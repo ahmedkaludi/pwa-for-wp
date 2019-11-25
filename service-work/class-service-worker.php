@@ -8,7 +8,6 @@ class PWAFORWP_Service_Worker{
         public function __construct() {
         
         $this->pwaforwp_is_amp_activated();
-        if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
         
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
@@ -233,8 +232,9 @@ class PWAFORWP_Service_Worker{
         }
         
         public function pwaforwp_service_worker_init(){
-             if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
+            
             $settings = pwaforwp_defaultSettings();
+			 if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
             
             if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
                 
