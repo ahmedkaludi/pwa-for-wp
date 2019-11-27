@@ -85,9 +85,9 @@ class PWAFORWP_Service_Worker{
                     echo $content;
                     exit;
                 }
-                if( strpos($filename, '-js', -3) !== false ){
+                if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
-                }if( strpos($filename, '-html', -5) !== false ){
+                }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
                 }
@@ -109,9 +109,9 @@ class PWAFORWP_Service_Worker{
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
-                    if( strpos($fileRawName, '-js', -3) !== false ){
+                    if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
-                    }if( strpos($filename, '-html', -5) !== false ){
+                    }if( strrpos($filename, '-html', -5) !== false ){
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
@@ -165,9 +165,9 @@ class PWAFORWP_Service_Worker{
                     echo $content;
                     exit;
                 }
-                if( strpos($filename, '-js', -3) !== false ){
+                if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
-                }if( strpos($filename, '-html', -5) !== false ){
+                }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
                 }
@@ -187,9 +187,9 @@ class PWAFORWP_Service_Worker{
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
-                    if( strpos($fileRawName, '-js', -3) !== false ){
+                    if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
-                    }if( strpos($filename, '-html', -5) !== false ){
+                    }if( strrpos($filename, '-html', -5) !== false ){
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
