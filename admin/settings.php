@@ -1474,9 +1474,12 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                    $swUrl = esc_url(pwaforwp_manifest_json_url());
-                    $file_headers = @checkStatus($swUrl);
-                  if(!$file_headers) {
+                   $file_headers = true;
+                  	if(!pwaforwp_is_enabled_pwa_wp()){
+	                    $swUrl = esc_url(pwaforwp_manifest_json_url());
+	                    $file_headers = @checkStatus($swUrl);
+	                }
+                  	if(!$file_headers) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
                                 .'<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                  }else{
@@ -1487,8 +1490,11 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
-                    $file_headers = @checkStatus($swUrl);
+                  	$file_headers = true;
+                  	if(!pwaforwp_is_enabled_pwa_wp()){
+	                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
+	                    $file_headers = @checkStatus($swUrl);
+	                }
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                                 . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
@@ -1508,9 +1514,12 @@ function pwaforwp_files_status_callback(){
                  <td>
                     <?php
                       $swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
-                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
-                      $swUrl = service_workerUrls($swUrl, $swFile);
-                      $file_headers = @checkStatus($swUrl);
+                      $file_headers = true;
+                      if(!pwaforwp_is_enabled_pwa_wp()){
+	                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
+	                      $swUrl = service_workerUrls($swUrl, $swFile);
+	                      $file_headers = @checkStatus($swUrl);
+	                  }
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                               . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
@@ -1523,9 +1532,12 @@ function pwaforwp_files_status_callback(){
                   <?php
                   if($is_amp){
                     $swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
-                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
-                    $swUrl = service_workerUrls($swUrl, $swFile);
-                    $file_headers = @checkStatus($swUrl);  
+                    $file_headers = true;
+                    if(!pwaforwp_is_enabled_pwa_wp()){
+	                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
+	                    $swUrl = service_workerUrls($swUrl, $swFile);
+	                    $file_headers = @checkStatus($swUrl);
+                    }  
                     
                     if(!$file_headers) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'

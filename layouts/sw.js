@@ -44,7 +44,7 @@ const CACHE_BLACKLIST =  [
 //        return !str.includes('/wp-admin/') || !str.startsWith('{{SITE_URL}}/wp-admin/');
 //    },
 ];
-const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/,{{EXCLUDE_FROM_CACHE}}];
+const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/,/\/cart/,/ajax/,/login/,{{EXCLUDE_FROM_CACHE}}];
 
 
 const SUPPORTED_METHODS = [
@@ -229,39 +229,30 @@ function pwaForWpprecacheUrl(url) {
                     .then((response) => {
                         if(response) {						                                                     
                              fetch(url).then(dataWrappedByPromise => dataWrappedByPromise.text())									
-                                                    .then(data => {
-												
-							if(data){
+                             .then(data => {
+							 if(data){
+                                const regex = {{REGEX}};
+                                let m;
+                                while ((m = regex.exec(data)) !== null) {
+                                    if (m.index === regex.lastIndex) {
+                                            regex.lastIndex++;
+                                    }
+                                    m.forEach((match, groupIndex) => {
+                                            if(groupIndex == 1){
+                                                if(new URL(match).origin == location.origin){
+                                                    fetch(match).
+                                                            then((imagedata) => {
+                                                                    //console.log(imagedata);
+                                                                    cache.put(match, imagedata.clone());
 
-                                                                const regex = {{REGEX}};
-
-                                                                let m;
-
-                                                                        while ((m = regex.exec(data)) !== null) {
-
-                                                                                if (m.index === regex.lastIndex) {
-                                                                                        regex.lastIndex++;
-                                                                                }
-
-                                                                                m.forEach((match, groupIndex) => {
-                                                                                        if(groupIndex == 1){
-                                                                                                 if(new URL(match).origin == location.origin){
-                                                                                                        fetch(match).
-                                                                                                                then((imagedata) => {
-                                                                                                                        console.log(imagedata);
-                                                                                                                        cache.put(match, imagedata.clone());
-
-                                                                                                        });
-                                                                                                    }
-
-                                                                                        }
+                                                    });
+                                                }
+                                            }
+                                    });
+                                }
 
 
-                                                                                });
-                                                                        }
-
-
-                                                        }
+                            }
 
 
 					});
@@ -321,106 +312,134 @@ let cachingStrategy = {
         fetchFromCache: function(event){
            /* return new Promise(
                             (resolve) => {*/
-                            return caches.open(CACHE_VERSIONS.content)
-                .then(
-                    (cache) => {
+                return caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
 
-                        return cache.match(event.request)
-                            .then(
-                                (response) => {
+                            return cache.match(event.request)
+                                .then(
+                                    (response) => {
 
-                                    if (response) {
+                                        if (response) {
 
-                                        let headers = response.headers.entries();
-                                        let date = null;
+                                            let headers = response.headers.entries();
+                                            let date = null;
 
-                                        for (let pair of headers) {
-                                            if (pair[0] === 'date') {
-                                                date = new Date(pair[1]);
+                                            for (let pair of headers) {
+                                                if (pair[0] === 'date') {
+                                                    date = new Date(pair[1]);
+                                                }
                                             }
-                                        }
 
-                                        if (date) {
-                                            let age = parseInt((new Date().getTime() - date.getTime()));
-                                            let ttl = pwaForWpgetTTL(event.request.url);
+                                            if (date) {
+                                                let age = parseInt((new Date().getTime() - date.getTime()));
+                                                let ttl = pwaForWpgetTTL(event.request.url);
 
-                                            if (age > ttl) {
+                                                if (age > ttl) {
 
-                                               return cachingStrategy.fetchnetwork(event, response)
+                                                    return new Promise(
+                                                        (resolve) => {
+
+                                                            return fetch(event.request.clone())
+                                                                .then(
+                                                                    (updatedResponse) => {
+                                                                        if (updatedResponse) {
+                                                                            cache.put(event.request, updatedResponse.clone());
+                                                                            resolve(updatedResponse);
+                                                                        } else {
+                                                                            resolve(response)
+                                                                        }
+                                                                    }
+                                                                )
+                                                                .catch(
+                                                                    () => {
+                                                                        resolve(response);
+                                                                    }
+                                                                );
+
+                                                        }
+                                                    )
+                                                        .catch(
+                                                            (err) => {
+                                                                return response;
+                                                            }
+                                                        );
+                                                } else {
+                                                    return response;
+                                                }
+
                                             } else {
                                                 return response;
                                             }
 
                                         } else {
-                                            return response;
+                                            return null;
                                         }
-
-                                    } else {
-                                        return null;
                                     }
-                                }
-                            )
-                            .then(
-                                (response) => {
-                                    if (response) {
-                                        return response;
-                                    } else {
-                                        return fetch(event.request.clone())
-                                            .then(
-                                                (response) => {
+                                )
+                                .then(
+                                    (response) => {
+                                        if (response) {
+                                            return response;
+                                        } else {
+                                            return fetch(event.request.clone())
+                                                .then(
+                                                    (response) => {
 
-                                                    if (response.status < 300) {
-                                                        if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
-                                                            cache.put(event.request, response.clone());
-                                                        }
-                                                        return response;
-                                                    } else {
-                                                        return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
-                                                            return cache.match(NOT_FOUND_PAGE);
-                                                        })
-                                                    }
-                                                }
-                                            )
-                                            .then((response) => {
-                                                if (response) {
-                                                    return response;
-                                                }
-                                            })
-                                            .catch(
-                                                () => {
-
-                                                    return caches.open(CACHE_VERSIONS.offline)
-                                                        .then(
-                                                            (offlineCache) => {
-                                                                return offlineCache.match(OFFLINE_PAGE)
+                                                        if(response.status < 300) {
+                                                            if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                                                cache.put(event.request, response.clone());
                                                             }
-                                                        )
+                                                                return response;
+                                                        } else {
+                                                            return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
+                                                                return cache.match(NOT_FOUND_PAGE);
+                                                            })
+                                                        }
+                                                    }
+                                                )
+                                                .then((response) => {
+                                                    if(response) {
+                                                        return response;
+                                                    }
+                                                })
+                                                .catch(
+                                                    () => {
 
-                                                }
-                                            );
+                                                        return caches.open(CACHE_VERSIONS.offline)
+                                                            .then(
+                                                                (offlineCache) => {
+                                                                    return offlineCache.match(OFFLINE_PAGE)
+                                                                }
+                                                            )
+
+                                                    }
+                                                );
+                                        }
                                     }
-                                }
-                            )
-                            .catch(
-                                (error) => {
-                                    console.error('  Error in fetch handler:', error);
-                                    throw error;
-                                }
-                            );
-                    }
-                )
+                                )
+                                .catch(
+                                    (error) => {
+                                        console.error('  Error in fetch handler:', error);
+                                        throw error;
+                                    }
+                                );
+                        }
+                    )
             /*})*/
 
         },
-        fetchnetwork: function(event, response){
-            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                                return cache.match(OFFLINE_PAGE);
-                                            })
+        fetchnetwork: function(event, response_cached){
              return fetch(event.request).then(function (response) {
-                return response.ok ? response : offlineCache;
+                 if(response.ok){
+                    cache.put(event.request, response.clone());
+                    return  response
+                 }else{
+                    return cache.match(event.request)
+                }
               })
               .catch(function () {
-                return this.fetchFromCache(event);
+                return response_cached;
               });  
         },
         addCache: function(event,updatedResponse){
@@ -429,34 +448,30 @@ let cachingStrategy = {
         },
         /*Strategies*/
         networkOnlyStrategy: function(events){
-            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                                return cache.match(OFFLINE_PAGE);
-                                            })
-            return cachingStrategy.fetchnetwork(events, offlineCache)
-                                .catch(
-                                    (err) => {
-                                        return offlineCache;
-                                    }
-                                );
-        },
-        cacheFirstStrategy: function(events){
-            return cachingStrategy.fetchFromCache(events)
-                           .catch(
-                                (err) => {
-                                    return caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                        return cache.match(OFFLINE_PAGE);
-                                    })
-                                }
-                            );
-        },
-        NeworkFirstStrategy: function(events){
-            var offlineCache = caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                                return cache.match(OFFLINE_PAGE);
-                                            })
+            var offlineCache = cachingStrategy.fetchFromCache(events)
             return cachingStrategy.fetchnetwork(events, offlineCache)
                     .catch(
                         (err) => {
-                            return cachingStrategy.cacheFirstStrategy(events);
+                           return offlineCache
+                        }
+                    );
+        },
+        cacheFirstStrategy: function(events){
+            return cachingStrategy.fetchFromCache(events)
+                   .catch(
+                        (err) => {
+                            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                                return cache.match(OFFLINE_PAGE);
+                            })
+                        }
+                    );
+        },
+        NeworkFirstStrategy: function(events){
+            var offlineCache = cachingStrategy.fetchFromCache(events)
+            return cachingStrategy.fetchnetwork(events, offlineCache)
+                    .catch(
+                        (err) => {
+                            return offlineCache
                         }
                     );
         }
@@ -500,8 +515,12 @@ self.addEventListener(
     'fetch', event => {
         // Return if the current request url is in the never cache list
         if ( ! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.url) ) {
-          //console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' );
+           //console.log( 'PWA ServiceWorker: URL exists in excluded list of cache.' + event.request.url);
           return;
+        }
+        if(! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.referrer) ){
+           //console.log( 'PWA ServiceWorker: Ref-URL exists in excluded list of cache.' + event.request.referrer);
+            return;
         }
         
         // Return if request url protocal isn't http or https

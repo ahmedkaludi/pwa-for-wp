@@ -91,8 +91,8 @@ class PWAFORWP_File_Creation_Init {
         $swjsContent    = $this->fileCreation->pwaforwp_swr();
         $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent, $action);
         
-        $swjsContent    = '{"gcm_sender_id": "103953800507"}';
-        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent, $action);
+        /*$swjsContent    = '{"gcm_sender_id": "103953800507"}';
+        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent, $action);*/
                          
         //Dummy file to work FCM perfectly 
         

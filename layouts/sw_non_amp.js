@@ -11,7 +11,7 @@
                                                                                                                                                                                                                                                                               
 			                var deferredPrompt;                                                                                                                                                                                                                                                                                                                        
                                                 window.addEventListener('beforeinstallprompt', (e) => {
-							  /*e.preventDefault();*/
+							  {{swdefaultaddtohomebar}}
 							  deferredPrompt = e;
                                                           
                                                             if(deferredPrompt != null || deferredPrompt != undefined){
@@ -24,7 +24,7 @@
                                                                 }
                                                                 
                                                                 var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
-                                                                if(a2hsviashortcode !== null){
+                                                                if(a2hsviashortcode !== null && checkbarClosedOrNot()){
                                                                     for (var i = 0; i < a2hsviashortcode.length; i++) {
                                                                       a2hsviashortcode[i].style.display="flex"; 
                                                                   }
@@ -33,6 +33,29 @@
                                                              }
                                                                                                                     
 							});			    
+              function checkbarClosedOrNot(){
+                var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
+                  if(closedTime){
+                    var today = new Date();
+                    var closedTime = new Date(closedTime);
+                    var diffMs = (today-closedTime);
+                    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+                    if(diffMins<4){
+                      return false;
+                    }
+                  }
+                  return true;
+              }
+              function PWAforwpreadCookie(name) {
+                  var nameEQ = name + "=";
+                  var ca = document.cookie.split(";");
+                  for(var i=0;i < ca.length;i++) {
+                      var c = ca[i];
+                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
+                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                  }
+                  return null;
+              }
               // Safari 3.0+ "[object HTMLElementConstructor]" 
               var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
               if( isSafari ){

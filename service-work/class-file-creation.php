@@ -48,7 +48,7 @@ class pwaforwpFileCreation{
         
             $settings   = pwaforwp_defaultSettings();
                        
-            if(isset($settings['fcm_config'])){
+            if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['fcm_config'])){
                 $config     = $settings['fcm_config'];
             }
                 
@@ -69,8 +69,11 @@ class pwaforwpFileCreation{
     public function pwaforwp_swr($is_amp = false){	
         
         $settings                       = pwaforwp_defaultSettings();
-        $server_key                     = $settings['fcm_server_key'];
-        $config                         = $settings['fcm_config'];
+        $server_key = $config = '';
+        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 ){
+          $server_key                   = $settings['fcm_server_key'];
+          $config                       = $settings['fcm_config'];
+        }
         $addtohomemanually              = '';
         
         if(isset($settings['add_to_home_selector'])){
@@ -115,7 +118,7 @@ class pwaforwpFileCreation{
          $addtohomemanually ='';
         }
         
-        if(isset($settings['custom_add_to_home_setting'])){
+        if(isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1){
           
             if(isset($settings['enable_add_to_home_desktop_setting'])){
                 $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
@@ -132,18 +135,7 @@ class pwaforwpFileCreation{
                                                     }   
                                         }';     
             }                                                        
-           $addtohomebanner ='function PWAforwpreadCookie(name) {
-                                  var nameEQ = name + "=";
-                                  var ca = document.cookie.split(";");
-                                  for(var i=0;i < ca.length;i++) {
-                                      var c = ca[i];
-                                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
-                                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-                                  }
-                                  return null;
-                              }
-
-                              var lastScrollTop = 0;                                        
+           $addtohomebanner ='var lastScrollTop = 0;                                        
                               window.addEventListener("scroll", (evt) => {
                                 var st = document.documentElement.scrollTop;
                                 var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
@@ -210,6 +202,12 @@ class pwaforwpFileCreation{
     }else{
       $ServiceWorkerfileName   = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');   
     }
+    /*Default Bar will be disabled if custom add to home banners are enabled*/
+    $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+    $swdefaultaddtohomebar = '';
+    if($showPwaDefaultbar==1){
+      $swdefaultaddtohomebar = "e.preventDefault();";
+    }
        
 		
     $swHtmlContentbody    = $this->pwaforwp_getlayoutfiles("layouts/sw_non_amp.js");                                                               
@@ -240,7 +238,8 @@ class pwaforwpFileCreation{
                                                 "{{addtohomeshortcode}}",
                                                 "{{addtohomebanner}}",
                                                 "{{addtohomefunction}}",
-                                                "{{home_url}}"
+                                                "{{home_url}}",
+                                                "{{swdefaultaddtohomebar}}",
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
@@ -250,7 +249,8 @@ class pwaforwpFileCreation{
                                                 $addtohomeshortcode,
                                                 $addtohomebanner,
                                                 $addtohomefunction,
-                                                $home_url
+                                                $home_url,
+                                                $swdefaultaddtohomebar,
                                             ), 
                                     $swHtmlContent);
                     
@@ -264,7 +264,7 @@ class pwaforwpFileCreation{
                 $config = $swHtmlContent = '';
                 $settings = pwaforwp_defaultSettings();  
                                 
-                if(isset($settings['fcm_config'])){
+                if( isset($settings['notification_feature']) && $settings['notification_feature']==1 &&isset($settings['fcm_config'])){
                     $config   = $settings['fcm_config'];
                 }
                                                                    
@@ -333,7 +333,7 @@ class pwaforwpFileCreation{
                                               
                        if ( function_exists('ampforwp_url_controller') ) {
 				
-                           $pre_cache_urls_amp .= "'".ampforwp_url_controller($post_id). "',\n"; 
+                           $pre_cache_urls_amp .= "'".ampforwp_url_controller(get_the_permalink($post_id)). "',\n"; 
 			}
                         
                         if (function_exists('amp_get_permalink')) {
@@ -372,7 +372,7 @@ class pwaforwpFileCreation{
                 $server_key = $settings['fcm_server_key'];
                 $config     = $settings['fcm_config'];
                 
-                if($server_key !='' && $config !=''){
+                if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && $server_key !='' && $config !=''){
                  $firebasejs = $this->pwaforwp_firebase_js();  
                 }else{
                  $firebasejs = '';    

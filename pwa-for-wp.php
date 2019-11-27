@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.7.3
+Version: 1.7.3.2
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,35 +17,40 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.3');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.3.2');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
-        
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
+add_action('plugins_loaded', 'pwaforwp_init_plugin');
+function pwaforwp_init_plugin(){
+    
+    if ( class_exists( 'WP_Service_Workers' ) ) { 
+    require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
+     }
 
-      
-if( pwaforwp_is_admin() ){
-	add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
-	require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
+          
+    if( pwaforwp_is_admin() ){
+    	add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
+    	require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
+    }
+    //For CDN CODES
+    if ( !is_admin() ) { 
+            $settings = pwaforwp_defaultSettings(); 
+            if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
+                ob_start('pwaforwp_revert_src');
+            }
+    }
 }
 function pwaforwp_add_action_links($links){
     $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
     return array_merge( $links, $mylinks );
-}
-//For CDN CODES
-if ( !is_admin() ) { 
-
-        $settings = pwaforwp_defaultSettings(); 
-        if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){                                            
-                ob_start('pwaforwp_revert_src');
-        }
 }
 
 function pwaforwp_revert_src($content){

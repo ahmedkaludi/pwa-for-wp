@@ -7,6 +7,8 @@ class PWAFORWP_Service_Worker{
             
         public function __construct() {
         
+        $this->pwaforwp_is_amp_activated();
+        
         add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 
         $settings = pwaforwp_defaultSettings();
@@ -21,7 +23,6 @@ class PWAFORWP_Service_Worker{
          add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
         }  
         
-        $this->pwaforwp_is_amp_activated();
             	                                                                                                                                  
         add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
@@ -84,9 +85,9 @@ class PWAFORWP_Service_Worker{
                     echo $content;
                     exit;
                 }
-                if( strpos($filename, '-js', -3) !== false ){
+                if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
-                }if( strpos($filename, '-html', -5) !== false ){
+                }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
                 }
@@ -108,9 +109,9 @@ class PWAFORWP_Service_Worker{
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
-                    if( strpos($fileRawName, '-js', -3) !== false ){
+                    if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
-                    }if( strpos($filename, '-html', -5) !== false ){
+                    }if( strrpos($filename, '-html', -5) !== false ){
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
@@ -164,9 +165,9 @@ class PWAFORWP_Service_Worker{
                     echo $content;
                     exit;
                 }
-                if( strpos($filename, '-js', -3) !== false ){
+                if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
-                }if( strpos($filename, '-html', -5) !== false ){
+                }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
                 }
@@ -186,9 +187,9 @@ class PWAFORWP_Service_Worker{
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
-                    if( strpos($fileRawName, '-js', -3) !== false ){
+                    if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
-                    }if( strpos($filename, '-html', -5) !== false ){
+                    }if( strrpos($filename, '-html', -5) !== false ){
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
@@ -233,6 +234,7 @@ class PWAFORWP_Service_Worker{
         public function pwaforwp_service_worker_init(){
             
             $settings = pwaforwp_defaultSettings();
+			 if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
             
             if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
                 
@@ -244,7 +246,7 @@ class PWAFORWP_Service_Worker{
                 
                if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
-                 add_action('wp_footer',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+                 add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35);    
                  add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
                  
                } 
@@ -412,8 +414,10 @@ class PWAFORWP_Service_Worker{
             $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
-                  
-            echo '<script src="'.esc_url($url).'"></script>'; 
+             
+             wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
+            wp_enqueue_script( "pwa-main-script");     
+            //echo '<script src="'.esc_url($url).'"></script>'; 
                
 		}  
                 
