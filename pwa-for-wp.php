@@ -28,17 +28,15 @@ require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php";
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
+if( pwaforwp_is_admin() ){
+    add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
+    require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
+}
 add_action('plugins_loaded', 'pwaforwp_init_plugin');
 function pwaforwp_init_plugin(){
     
     if ( class_exists( 'WP_Service_Workers' ) ) { 
     require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
-     }
-
-          
-    if( pwaforwp_is_admin() ){
-    	add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
-    	require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
     }
     //For CDN CODES
     if ( !is_admin() ) { 

@@ -103,6 +103,7 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
+                $file_data = '';
                 if( file_exists($filename) ){
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
@@ -117,22 +118,18 @@ class PWAFORWP_Service_Worker{
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $swjsContent = $fileCreation->pwaforwp_swjs();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swr();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
@@ -183,6 +180,7 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
+                 $file_data = '';
                 if( file_exists($filename) ){
                     $file_data = file_get_contents( $filename );
                 }else{
@@ -194,21 +192,19 @@ class PWAFORWP_Service_Worker{
                     }
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swjs();
-                            echo $swjsContent;
+                            header("Service-Worker-Allowed: /");
+                            $file_data = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swr();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
-                            echo $swjsContent;
+                            header("Service-Worker-Allowed: /");
+                            $file_data = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
