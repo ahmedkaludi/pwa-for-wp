@@ -142,15 +142,16 @@ and open the template in the editor.
     text-decoration: none;
 }
 .pwaforwp-sts-btn{
-    box-sizing: border-box;    
-    margin-top: 37px;
+    box-sizing: border-box;
+    margin-top: 15px;
     padding: 11px 11px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    width: 100%;
 }
 .pwaforwp-ext-active span{
     vertical-align: sub;
@@ -283,11 +284,11 @@ and open the template in the editor.
 /** Promo code CSS **/
 .pwaforwp-upgrade-pro.promo-cpn{
     box-sizing: border-box;
-    border: 2px solid #52c556;
+    border: 1px solid #558B2F;
 }
 .pwaforwp-upgrade-pro.promo-cpn h2{
-    color: #43A047;
-    font-size: 24px;
+    color: #2E7D32;
+    font-size: 26px;
     text-align: center;
     margin: 0px 0px 20px 0px;
 }
@@ -308,16 +309,16 @@ and open the template in the editor.
     text-align: center;
 }
 .pwaforwp-upgrade-pro.promo-cpn .pwa-promo .prm-cpn{
-    border: 2px dotted #63c767;
-    padding: 3px 15px;
+    border: 1px dashed #1B5E20;
     border-radius: 100px;
-    margin-top: 10px;
-    color: #43A047;
+    margin-top: 5px;
+    color: #388E3C;
     font-size: 20px;
-    line-height: 1.2;
+    padding: 2px 15px 2px 15px;
 }
 .pwaforwp-upgrade-pro.promo-cpn .prm-txt{
-    display:block;
+    display: block;
+    line-height: 1;
 }
 
 
