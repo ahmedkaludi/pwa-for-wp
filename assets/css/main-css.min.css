@@ -230,14 +230,13 @@ and open the template in the editor.
 .pwaforwp-upgrade-pro {
     background: #fff;
     top: 32px;
-    padding: 30px 25px;
+    padding: 30px;
     border: 1px solid #cecece;
     display: inline-block;
     color: #111;
     margin-top: 10px;
     border-radius: 8px;
     position: relative;
-    width:280px;
     box-sizing: border-box;
 }
 .pwaforwp-upgrade-pro h2 {
@@ -284,11 +283,10 @@ and open the template in the editor.
 .pwaforwp-upgrade-pro.promo-cpn{
     box-sizing: border-box;
     border: 2px solid #52c556;
-    width: 280px;
 }
 .pwaforwp-upgrade-pro.promo-cpn h2{
     color: #43A047;
-    font-size: 27px;
+    font-size: 24px;
     text-align: center;
     margin: 0px 0px 20px 0px;
 }
