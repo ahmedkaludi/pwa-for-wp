@@ -231,8 +231,7 @@ and open the template in the editor.
     background: #fff;
     top: 32px;
     padding: 30px 25px;
-    /*border: 1px solid #cecece;*/
-    border: 2px solid #52c556;
+    border: 1px solid #cecece;
     display: inline-block;
     color: #111;
     margin-top: 10px;
