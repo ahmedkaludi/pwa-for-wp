@@ -175,6 +175,19 @@ function pwaforwp_admin_interface_render(){
 			</div>
 			<div class="pwaforwp-settings-second-div">
 		        <?php if(!pwaforwp_addons_is_active()) { ?>
+		         <div class="pwaforwp-upgrade-pro promo-cpn">
+		        	<h2><?php echo esc_html__('50% OFF on PRO','pwa-for-wp') ?></h2>
+		        	<span><?php echo esc_html__('Limited Time Offer for this festive season','pwa-for-wp') ?></span>
+		        	<div class="pwa-promo">
+		        		<span class="prm-txt">Promo:</span>
+		        		<span class="prm-cpn">BFCM2019</span>
+		        	</div>
+		        </div>
+		        <?php  } ?>
+
+		    </div>
+			<div class="pwaforwp-settings-second-div">
+		        <?php if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
 		        	<ul>
