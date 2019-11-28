@@ -238,6 +238,7 @@ and open the template in the editor.
     border-radius: 8px;
     position: relative;
     box-sizing: border-box;
+    width:100%;
 }
 .pwaforwp-upgrade-pro h2 {
     margin: 0;
