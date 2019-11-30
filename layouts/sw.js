@@ -300,12 +300,12 @@ let cachingStrategy = {
             // If non-GET request, try the network first, fall back to the offline page
             if (event.request.method !== 'GET') {
                 event.respondWith(
-                    fetch(request)
+                    fetch(event.request)
                         .catch(error => {
                             return caches.match(offlinePage);
                         })
                 );
-                return;
+                return false;
             }
         },
 
@@ -535,7 +535,9 @@ self.addEventListener(
         if (event.request.headers.get('range')) {
             fetchRengeData(event);
         } else {
-            //cachingStrategy.notGetMethods(event);
+            if(!cachingStrategy.notGetMethods(event)){
+                return ;
+            }
              const destination = event.request.destination;
             switch (destination) {
                 case 'style':
