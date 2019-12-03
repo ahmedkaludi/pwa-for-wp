@@ -429,49 +429,65 @@ let cachingStrategy = {
             /*})*/
 
         },
-        fetchnetwork: function(event, response_cached){
-             return fetch(event.request).then(function (response) {
-                 if(response.ok){
-                    cache.put(event.request, response.clone());
-                    return  response
-                 }else{
-                    return cache.match(event.request)
-                }
-              })
-              .catch(function () {
-                return response_cached;
-              });  
+        fetchnetwork: function(event){
+            return caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
+                           return fetch(event.request).then(function (response) {
+                                 if(response.ok){
+                                    cache.put(event.request, response.clone());
+                                    return response
+                                 }else{
+                                    return cache.match(event.request)
+                                }
+                              }).catch(
+                                   (err) => {
+                                        return cache.match(event.request)
+                                    }
+                              )
+                        }
+                    ).catch(
+                           (err) => {
+                                return cachingStrategy.Offlinepage();
+                            }
+                      )
         },
         addCache: function(event,updatedResponse){
             cache.put(event.request, updatedResponse.clone());
              resolve(updatedResponse);
         },
+        Offlinepage: function(){
+            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                return cache.match(OFFLINE_PAGE);
+            })
+        },
         /*Strategies*/
         networkOnlyStrategy: function(events){
-            var offlineCache = cachingStrategy.fetchFromCache(events)
-            return cachingStrategy.fetchnetwork(events, offlineCache)
-                    .catch(
+            return cachingStrategy.fetchnetwork(events).catch(
                         (err) => {
-                           return offlineCache
+                            return cachingStrategy.fetchFromCache(events)
+                        }
+                    ).catch(
+                        (err) => {
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         },
         cacheFirstStrategy: function(events){
-            return cachingStrategy.fetchFromCache(events)
-                   .catch(
+            return cachingStrategy.fetchFromCache(events).catch(
                         (err) => {
-                            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                return cache.match(OFFLINE_PAGE);
-                            })
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         },
         NeworkFirstStrategy: function(events){
-            var offlineCache = cachingStrategy.fetchFromCache(events)
-            return cachingStrategy.fetchnetwork(events, offlineCache)
-                    .catch(
+            return cachingStrategy.fetchnetwork(events).catch(
                         (err) => {
-                            return offlineCache
+                            return cachingStrategy.fetchFromCache(events)
+                        }
+                    ).catch(
+                        (err) => {
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         }
@@ -510,6 +526,35 @@ self.addEventListener(
         );
     }
 );
+self.addEventListener('online', event => {
+    if (navigator.onLine && navigator.standalone === true) {
+        isReachable(event.request.url).then(function(online) {
+          if (online) {
+            //handle online status
+            caches.delete(event.request.url);
+            console.log('online');
+          } else {
+            console.log('no connectivity');
+          }
+        });
+    } else {
+        //handle offline status
+        console.log('offline');
+    }
+});
+// function isReachable(url) {
+  // /**
+   // * Note: fetch() still "succeeds" for 404s on subdirectories,
+   // * which is ok when only testing for domain reachability.
+   // */
+  // return fetch(url, { method: 'HEAD', mode: 'no-cors' })
+    // .then(function(resp) {
+      // return resp && (resp.ok || resp.type === 'opaque');
+    // })
+    // .catch(function(err) {
+      // console.warn('[conn test failure]:', err);
+    // });
+// }
 
 self.addEventListener(
     'fetch', event => {
@@ -535,10 +580,16 @@ self.addEventListener(
         if (event.request.headers.get('range')) {
             fetchRengeData(event);
         } else {
-            if(!cachingStrategy.notGetMethods(event)){
-                return ;
+            if(event.request.method !== 'GET' ){
+                event.respondWith(
+                    fetch(event.request)
+                        .catch(error => {
+                            return caches.match(offlinePage);
+                        })
+                );
+                return false;
             }
-             const destination = event.request.destination;
+            const destination = event.request.destination;
             switch (destination) {
                 case 'style':
                 case 'script':
