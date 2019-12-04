@@ -546,19 +546,19 @@ self.addEventListener('online', event => {
         console.log('offline');
     }
 });
-// function isReachable(url) {
-  // /**
-   // * Note: fetch() still "succeeds" for 404s on subdirectories,
-   // * which is ok when only testing for domain reachability.
-   // */
-  // return fetch(url, { method: 'HEAD', mode: 'no-cors' })
-    // .then(function(resp) {
-      // return resp && (resp.ok || resp.type === 'opaque');
-    // })
-    // .catch(function(err) {
-      // console.warn('[conn test failure]:', err);
-    // });
-// }
+function isReachable(url) {
+  /**
+   * Note: fetch() still "succeeds" for 404s on subdirectories,
+   * which is ok when only testing for domain reachability.
+   */
+  return fetch(url, { method: 'HEAD', mode: 'no-cors' })
+    .then(function(resp) {
+      return resp && (resp.ok || resp.type === 'opaque');
+    })
+    .catch(function(err) {
+      console.warn('[conn test failure]:', err);
+    });
+}
 
 self.addEventListener(
     'fetch', event => {
