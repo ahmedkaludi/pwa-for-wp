@@ -2184,3 +2184,69 @@ add_action( 'deactivated_plugin', 'pwaforwp_deactivate_update_transient' );
 function pwaforwp_deactivate_update_transient($plugin){
 	delete_transient( 'pwaforwp_restapi_check' ); 
 }
+
+/**
+* Function Create images dynamically
+* @param Array $old_value previous values
+* @param Array $new_value new updated values of save
+*/
+add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 2);
+function pwaforwp_resize_images( $old_value, $new_value ){
+	
+	if( isset($new_value['icon']) && !empty($new_value['icon']) && strrpos($new_value['icon'], 'uploads/') ){
+		$uploadPath = wp_upload_dir();
+		$filename = str_replace($uploadPath['baseurl'], $uploadPath['basedir'], $new_value['icon']);
+		
+		//$filename = '/Users/tommcfarlin/Projects/acme/wp-content/uploads/2018/06/original-image.jpg';
+		if( file_exists($filename) ){
+			//Check there is need of file creation
+			$createImage = array();
+			foreach ($new_value['ios_splash_icon'] as $key => $value) {
+				if(empty($value)){
+					$createImage[$key] = '';
+				}
+			}
+			if(count($createImage)>0){
+				$editor = wp_get_image_editor( $filename, array() );
+				foreach ($createImage as $newkey => $newimages) {
+					
+					// Grab the editor for the file and the size of the original image.
+					if ( !is_wp_error($editor) ) {
+					   // Get the dimensions for the size of the current image.
+						$dimensions = $editor->get_size();
+						$width = $dimensions['width'];
+						$height = $dimensions['height'];
+						
+
+						// Calculate the new dimensions for the image.
+						$keyDim = explode('x', $newkey);
+						$newWidth = $keyDim[0];
+						$newHeight = $keyDim[1];
+
+						// Resize the image.
+						$result = $editor->resize($newWidth, $newHeight, true);
+
+						// If there's no problem, save it; otherwise, print the problem.
+						if (!is_wp_error($result)) {
+						  $newImage = $editor->save($editor->generate_filename());
+						  $newfilename = str_replace($uploadPath['basedir'], $uploadPath['baseurl'], $newImage['path']);
+						  $new_value['ios_splash_icon'][$newkey] = $newfilename;
+						}else{
+							error_log($result->get_error_message()." Width: ".$newWidth." Height:".$newHeight);
+						}
+					}
+
+				}//Foreach closed
+				update_option( 'pwaforwp_settings', $new_value);
+
+			}
+		}
+	}
+
+    
+
+/* else {
+	   // Handle the problem however you deem necessary.
+	}
+*/	
+}
