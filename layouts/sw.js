@@ -444,6 +444,10 @@ let cachingStrategy = {
                                    (err) => {
                                         return cache.match(event.request)
                                     }
+                              ).catch(
+                                (err) => {
+                                        return cachingStrategy.Offlinepage();
+                                    }
                               )
                         }
                     ).catch(
