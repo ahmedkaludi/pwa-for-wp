@@ -40,7 +40,7 @@
                     var closedTime = new Date(closedTime);
                     var diffMs = (today-closedTime);
                     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-                    if(diffMins<4){
+                    if(diffMs){//diffMins<4
                       return false;
                     }
                   }
