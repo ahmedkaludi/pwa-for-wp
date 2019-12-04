@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.3.2
+Stable tag: 1.7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.4 (4 December 2019) =
+* Improved 	: Caching Strategy for network first and network only #263
+* Bug Fixed : Form submit or any post Request check Added #271
+* Added 	: Auto icon cropping feature automatically. if 192x192 icon added #224
+
+= 1.7.3.3 (28 November 2019) =
+* Fixed 	: Fixed SW file serve dynamically with ngnix servers #239
+
 = 1.7.3.2 (25 November 2019) =
 * Feature 	: Added support with `pwa By PWA Plugin Contributors` #107
 
