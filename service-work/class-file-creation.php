@@ -574,8 +574,8 @@ class pwaforwpFileCreation{
                 $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
                 $manifest['orientation']      = esc_html( $orientation );
-                $manifest['start_url']        = esc_url($homeUrl);
-                $manifest['scope']            = esc_url($scope_url);                             
+                $manifest['start_url']        = esc_url_raw($homeUrl);
+                $manifest['scope']            = esc_url_raw($scope_url);                             
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
