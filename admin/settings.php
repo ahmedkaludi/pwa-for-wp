@@ -2193,9 +2193,9 @@ function pwaforwp_deactivate_update_transient($plugin){
 add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 2);
 function pwaforwp_resize_images( $old_value, $new_value ){
 	
-	if( isset($new_value['icon']) && !empty($new_value['icon']) && strrpos($new_value['icon'], 'uploads/') ){
+	if( isset($new_value['ios_splash_icon']['2048x1496']) && !empty($new_value['ios_splash_icon']['2048x1496']) && strrpos($new_value['ios_splash_icon']['2048x1496'], 'uploads/') ){
 		$uploadPath = wp_upload_dir();
-		$filename = str_replace($uploadPath['baseurl'], $uploadPath['basedir'], $new_value['icon']);
+		$filename = str_replace($uploadPath['baseurl'], $uploadPath['basedir'], $new_value['ios_splash_icon']['2048x1496']);
 		
 		//$filename = '/Users/tommcfarlin/Projects/acme/wp-content/uploads/2018/06/original-image.jpg';
 		if( file_exists($filename) ){

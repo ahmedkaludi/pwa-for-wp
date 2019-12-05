@@ -325,7 +325,7 @@ class pwaforwpFileCreation{
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
                 
-                if(!empty($store_post_id) && isset($settings['precaching_automatic'])){
+                if(!empty($store_post_id) && isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
                     
                     foreach ($store_post_id as $post_id){
                         
@@ -334,12 +334,12 @@ class pwaforwpFileCreation{
                        if ( function_exists('ampforwp_url_controller') ) {
 				
                            $pre_cache_urls_amp .= "'".ampforwp_url_controller(get_the_permalink($post_id)). "',\n"; 
-			}
+			                 }
                         
                         if (function_exists('amp_get_permalink')) {
 				
                            $pre_cache_urls_amp .= "'".amp_get_permalink($post_id). "',\n"; 
-			}
+                        }
                                                                                                                    
                     }
                 }
@@ -364,7 +364,7 @@ class pwaforwpFileCreation{
                     $cache_version = PWAFORWP_PLUGIN_VERSION;
                   }
                 }
-                if(isset($settings['offline_google_setting'])){
+                if(isset($settings['offline_google_setting']) && $settings['offline_google_setting']==1){
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
                                     workbox.googleAnalytics.initialize();';    
                 }
