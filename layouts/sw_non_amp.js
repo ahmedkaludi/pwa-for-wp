@@ -24,7 +24,8 @@
                                                                 }
                                                                 
                                                                 var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
-                                                                if(a2hsviashortcode !== null && checkbarClosedOrNot()){
+                                                                var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+                                                                if(a2hsviashortcode !== null && checkbarClosedOrNot() && (pwa_cta_assets.a2h_sticky_on_desktop_cta==1 || isMobile)){
                                                                     for (var i = 0; i < a2hsviashortcode.length; i++) {
                                                                       a2hsviashortcode[i].style.display="flex"; 
                                                                   }
@@ -67,7 +68,8 @@
                   }
                   
                   var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
-                  if(a2hsviashortcode !== null){
+                  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+                  if(a2hsviashortcode !== null && checkbarClosedOrNot() && (pwa_cta_assets.a2h_sticky_on_desktop_cta==1 || isMobile) ){
                       for (var i = 0; i < a2hsviashortcode.length; i++) {
                         a2hsviashortcode[i].style.display="flex"; 
                     }
