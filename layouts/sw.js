@@ -101,10 +101,10 @@ function pwaForWpgetTTL(url) {
         if (typeof MAX_TTL[extension] === 'number') {
             return MAX_TTL[extension];
         } else {
-            return null;
+            return MAX_TTL["/"];
         }
     } else {
-        return null;
+        return MAX_TTL["/"];
     }
 }
 
@@ -332,7 +332,7 @@ let cachingStrategy = {
                                             }
 
                                             if (date) {
-                                                let age = parseInt((new Date().getTime() - date.getTime()));
+                                                let age = parseInt((new Date().getTime() - date.getTime())/1000);
                                                 let ttl = pwaForWpgetTTL(event.request.url);
 
                                                 if (age > ttl) {
@@ -466,10 +466,22 @@ let cachingStrategy = {
             })
         },
         /*Strategies*/
-        networkOnlyStrategy: function(events){
-            return cachingStrategy.fetchnetwork(events).catch(
-                        (err) => {
-                            return cachingStrategy.fetchFromCache(events)
+        networkOnlyStrategy: function(event){
+            return caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
+                           return fetch(event.request).then(function (response) {
+                                 if(response.ok){
+                                    cache.put(event.request, response.clone());
+                                    return response
+                                 }else{
+                                    return cache.match(event.request)
+                                }
+                              }).catch(
+                                (err) => {
+                                        return cachingStrategy.Offlinepage();
+                                    }
+                              )
                         }
                     ).catch(
                         (err) => {
@@ -612,7 +624,6 @@ self.addEventListener(
                   cachingStrategyType = CACHE_STRATEGY.default
             }
             var cache = null;
-
             switch(cachingStrategyType){
                 case "networkFirst":
                    cache = cachingStrategy.NeworkFirstStrategy(event)
