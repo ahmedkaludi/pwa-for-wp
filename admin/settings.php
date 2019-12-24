@@ -1,5 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+require_once PWAFORWP_PLUGIN_DIR.'/admin/pwa-utility.php';
 function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
@@ -975,20 +977,41 @@ function pwaforwp_background_color_callback(){
 function pwaforwp_push_notification_callback(){	
     
 	$settings = pwaforwp_defaultSettings(); 
-        
+	$selectedService = 'pushnotifications_io';
+	$pushnotifications_style = 'style="display:block;"';
+	$fcm_service_style = 'style="display:none;"'; 
+    if( isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key']) ){
+    	$selectedService = "fcm_push";
+    	$pushnotifications_style = 'style="display:none;"';
+		$fcm_service_style = 'style="display:block;"';
+    }
+    if( isset($settings['notification_options']) && !empty($settings['notification_options']) ){
+    	$selectedService = $settings['notification_options'];
+    }
         ?>        
         
         <div class="pwafowwp-server-key-section">
-            <table class="pwaforwp-push-notificatoin-table">
+        	<table class="pwaforwp-pn-options">
+        		<tbody>
+        			<th>Push notification option</th>
+        			<td>
+        				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
+        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>pushnotifications.io (Recommended)</option>
+        					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> >FCM push notification</option>
+        				</select>
+        			</td>
+        		</tbody>
+        	</table>
+            <table class="pwaforwp-push-notificatoin-table" <?php echo $fcm_service_style; ?>>
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
-                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
+                        <td><input class="regular-text" type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
-                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
+                            <textarea class="regular-text" placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
@@ -1005,6 +1028,48 @@ function pwaforwp_push_notification_callback(){
                     </tr>                                                            
                 </tbody>   
             </table>                   
+            <table class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
+            	<tbody>
+            		<th colspan="2" class="notification-banner">
+            			<?php if(class_exists('Push_Notification_Frontend')){ ?>
+            			<p>
+            				<a href="<?php echo admin_url('admin.php?page=push-notification'); ?>">Go to the settings</a>
+            			</p>
+            		<?php }else{
+            			$plugin = array(
+            				'name'=>'Akismet Anti-Spam',
+            				'slug'=>'akismet',
+            				'download_link'=>'https://downloads.wordpress.org/plugin/akismet.4.1.3.zip'
+            			);
+            			$allplugins = get_transient( 'plugin_slugs');
+						if($allplugins){
+							$allplugins = array_flip($allplugins);
+						}
+
+            			$activate_url ='';
+            			$class = 'not-exist';
+            			if(isset($allplugins['akismet/akismet.php']) && !is_plugin_active('akismet/akismet.php') ){
+            				//plugin deactivated
+            				$class = '';
+            				$plugin = 'akismet/akismet.php';
+            				$action = 'activate';
+            				if ( strpos( $plugin, '/' ) ) {
+								$plugin = str_replace( '\/', '%2F', $plugin );
+							}
+							$url = sprintf( admin_url( 'plugins.php?action=' . $action . '&plugin=%s&plugin_status=all&paged=1&s' ), $plugin );
+							$activate_url = wp_nonce_url( $url, $action . '-plugin_' . $plugin );
+            			 }
+            			?>
+            			<span data-activate-url="<?php echo $activate_url; ?>" 
+            				 class="pwaforwp-install-require-plugin button <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
+            				id="pushnotification">
+            				Click here to install
+            			</span>
+            			<?php
+            		} ?>
+            		</th>
+            	</tbody>
+            </table>
         </div>
         <div class="pwaforwp-notification-condition-section" <?php echo ( (isset($settings['fcm_server_key']) && $settings['fcm_server_key'] !='') ? 'style="display:block;"' : 'style="display:none;"'); ?>>
         <div>
@@ -1697,7 +1762,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
-        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'plugin-install', 'wp-util', 'wp-a11y' ), PWAFORWP_PLUGIN_VERSION, true);
         
         $object_name = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),

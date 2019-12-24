@@ -566,6 +566,27 @@ jQuery(document).ready(function($){
         pwaforwp_ajaxcall_submitdata(pwaforwp_obj, fields);
     })
 
+    /**
+    * Push notification options selection
+    */
+    jQuery(".pwaforwp-pn-service").change(function(){
+        var self = jQuery(this);
+        var currentSelected = self.val();
+        console.log(currentSelected);
+        switch(currentSelected){
+            case 'pushnotification.io':
+                jQuery('.pwaforwp-push-notificatoin-table').hide();
+                jQuery('.pwaforwp-pn-recommended-options').show();
+            break;
+            case 'fcm_push':
+                jQuery('.pwaforwp-push-notificatoin-table').show();
+                jQuery('.pwaforwp-pn-recommended-options').hide();
+            break;
+            default:
+            break
+        }
+    });
+
 });
 
 var datafeatureSubmit = function(){
