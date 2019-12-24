@@ -27,18 +27,18 @@ class PWA_Utility{
 	            $nonceUrl = add_query_arg(
 	                                    array(
 	                                        'action'        => 'activate',
-	                                        'plugin'        => 'akismet',
+	                                        'plugin'        => 'push-notification',
 	                                        'plugin_status' => 'all',
 	                                        'paged'         => '1',
-	                                        '_wpnonce'      => wp_create_nonce( 'activate-plugin_akismet' ),
+	                                        '_wpnonce'      => wp_create_nonce( 'activate-plugin_push-notification' ),
 	                                    ),
 	                        esc_url(network_admin_url( 'plugins.php' ))
 	                        );
 	            $plugins[] = array(
-	                            'name' => 'akismet',
-	                            'path_' => 'https://downloads.wordpress.org/plugin/akismet.zip',
+	                            'name' => 'push-notification',
+	                            'path_' => 'https://downloads.wordpress.org/plugin/push-notification.zip',
 	                            'path' => $nonceUrl,
-	                            'install' => 'akismet/akismet.php',
+	                            'install' => 'push-notification/push-notification.php',
 	                        );
 	            $redirectSettingsUrl = admin_url('admin.php?page=push-notification&reference=pwaforwp');
 	        break;

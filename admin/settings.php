@@ -1048,10 +1048,10 @@ function pwaforwp_push_notification_callback(){
 
             			$activate_url ='';
             			$class = 'not-exist';
-            			if(isset($allplugins['akismet/akismet.php']) && !is_plugin_active('akismet/akismet.php') ){
+            			if(isset($allplugins['push-notification/push-notification.php']) && !is_plugin_active('push-notification/push-notification.php') ){
             				//plugin deactivated
             				$class = '';
-            				$plugin = 'akismet/akismet.php';
+            				$plugin = 'push-notification/push-notification.php';
             				$action = 'activate';
             				if ( strpos( $plugin, '/' ) ) {
 								$plugin = str_replace( '\/', '%2F', $plugin );
