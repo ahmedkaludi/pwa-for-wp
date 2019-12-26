@@ -985,8 +985,13 @@ function pwaforwp_push_notification_callback(){
     	$pushnotifications_style = 'style="display:none;"';
 		$fcm_service_style = 'style="display:block;"';
     }
-    if( isset($settings['notification_options']) && !empty($settings['notification_options']) ){
+    if( isset($settings['notification_options']) ){
     	$selectedService = $settings['notification_options'];
+    	if(empty($selectedService)){
+    		$selectedService = "";
+	    	$pushnotifications_style = 'style="display:none;"';
+			$fcm_service_style = 'style="display:none;"';
+    	}
     }
         ?>        
         
@@ -996,6 +1001,7 @@ function pwaforwp_push_notification_callback(){
         			<th>Push notification option</th>
         			<td>
         				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
+        					<option value="">Select Service</option>
         					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>pushnotifications.io (Recommended)</option>
         					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> >FCM push notification</option>
         				</select>
@@ -1063,7 +1069,7 @@ function pwaforwp_push_notification_callback(){
             			<span data-activate-url="<?php echo $activate_url; ?>" 
             				 class="pwaforwp-install-require-plugin button <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
             				id="pushnotification">
-            				Click here to install
+            				Install Plugin
             			</span>
             			</p>
             			<?php
@@ -2101,7 +2107,10 @@ function pwaforwp_features_settings(){
 				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
 		echo '</div>';
-		$settingsHtml = $tooltipHtml = '';
+		$settingsHtml = $tooltipHtml = $warnings = '';
+		if($key=='notification' && empty($settings['notification_options'])){
+			$warnings = "<i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;'></i>";
+		}
 		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
 			$settingsHtml = 'style="opacity:1;"';
 		}else{
@@ -2138,7 +2147,7 @@ function pwaforwp_features_settings(){
 								<div class="pwaforwp-card-content">
 									<div class="pwaforwp-tlt-sw">
 										<h2>%1$s 
-											'.$tooltipHtml.'
+											'.$tooltipHtml.' %8$s
 										</h2>
 										'.$premium_alert.'
 									</div>
@@ -2151,7 +2160,8 @@ function pwaforwp_features_settings(){
 							$featureVal['enable_field'],
 							isset($featureVal['tooltip_option'])? esc_html($featureVal['tooltip_option']): '',
 							(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : ''),
-							$pro_link
+							$pro_link,
+							$warnings
 
 						);
 	}

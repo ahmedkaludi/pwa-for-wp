@@ -238,6 +238,8 @@ function pwaforwp_get_default_settings_array(){
         'default_caching_fonts' => 'cacheFirst',
         'on_add_post_notification_title' => '',
 
+    /*Push notification services*/
+        'notification_options'  => '',
     /*Features settings*/
         'notification_feature'  => 0,
         'precaching_feature'    => 0,
