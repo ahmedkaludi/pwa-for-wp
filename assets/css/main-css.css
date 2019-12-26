@@ -618,3 +618,6 @@ margin-top: 25px;
 .pwaforwp-feature-cards li.pwaforwp-card-wrap .deactivated{
     background: #989696;
 }
+.pwaforwp-center{
+    text-align: center;
+}
