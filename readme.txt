@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.4.1
+Stable tag: 1.7.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.4.2 (26 December 2019) =
+* Feature 	: pushnotification.io Compatibility added #281 #283
+* Bug Fixed : "Uncaught ReferenceError: pwa_cta_assets is not defined" in console #279
+* Bug Fixed : PWA service worker time taking to load the page (Cache strategy) #276
+
 = 1.7.4.1 (7 December 2019) =
 * Improved 	: Display PWA CTA in Mobile version only #252
 * Bug Fixed : UTM tracking referral not set for PWA APP #262
