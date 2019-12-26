@@ -1028,19 +1028,18 @@ function pwaforwp_push_notification_callback(){
                     </tr>                                                            
                 </tbody>   
             </table>                   
-            <table class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
-            	<tbody>
-            		<th colspan="2" class="notification-banner">
-            			<?php if(class_exists('Push_Notification_Frontend')){ ?>
-            			<p>
-            				<a href="<?php echo admin_url('admin.php?page=push-notification'); ?>">Go to the settings</a>
-            			</p>
+            <div class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
+            	<div class="notification-banner" style="width:90%">
+            			<?php if(class_exists('Push_Notification_Frontend')){ 
+            				$auth_settings = push_notification_auth_settings();
+            				if(!isset($auth_settings['user_token'])){
+            					echo '<p>This feature requires to setup Push Notification , <a href="'.admin_url('admin.php?page=push-notification').'" target="_blank">Go to setup.</p>';
+            				}else{
+            					echo '<p>Push notifications has it\'s separate options view<a href="'. admin_url('admin.php?page=push-notification').'"> View Settings</a></p>';
+            				}
+            			?>
+            			
             		<?php }else{
-            			$plugin = array(
-            				'name'=>'Akismet Anti-Spam',
-            				'slug'=>'akismet',
-            				'download_link'=>'https://downloads.wordpress.org/plugin/akismet.4.1.3.zip'
-            			);
             			$allplugins = get_transient( 'plugin_slugs');
 						if($allplugins){
 							$allplugins = array_flip($allplugins);
@@ -1050,7 +1049,7 @@ function pwaforwp_push_notification_callback(){
             			$class = 'not-exist';
             			if(isset($allplugins['push-notification/push-notification.php']) && !is_plugin_active('push-notification/push-notification.php') ){
             				//plugin deactivated
-            				$class = '';
+            				$class = 'pushnotification';
             				$plugin = 'push-notification/push-notification.php';
             				$action = 'activate';
             				if ( strpos( $plugin, '/' ) ) {
@@ -1060,16 +1059,18 @@ function pwaforwp_push_notification_callback(){
 							$activate_url = wp_nonce_url( $url, $action . '-plugin_' . $plugin );
             			 }
             			?>
+            			<p>This feature requires a Free plugin which integrates with a Free Push Notification service
             			<span data-activate-url="<?php echo $activate_url; ?>" 
             				 class="pwaforwp-install-require-plugin button <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
             				id="pushnotification">
             				Click here to install
             			</span>
+            			</p>
             			<?php
             		} ?>
-            		</th>
-            	</tbody>
-            </table>
+	            	
+            	</div>
+            </div>
         </div>
         <div class="pwaforwp-notification-condition-section" <?php echo ( (isset($settings['fcm_server_key']) && $settings['fcm_server_key'] !='') ? 'style="display:block;"' : 'style="display:none;"'); ?>>
         <div>
