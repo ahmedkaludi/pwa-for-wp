@@ -229,6 +229,9 @@ class pwaforwpFileCreation{
                 } 
                 
                 $addtohomeshortcode = apply_filters('pwaforwp_add_home_shortcode_modify', '');
+                $firebaseconfig = apply_filters('pwaforwp_pn_config', $firebaseconfig);
+                $useserviceworker = apply_filters('pwaforwp_pn_use_sw', $useserviceworker);
+
                                 
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
@@ -255,7 +258,8 @@ class pwaforwpFileCreation{
                                     $swHtmlContent);
                     
                     
-                }                                                
+                }        
+        $swHtmlContent = apply_filters("pwaforwp_sw_register_template", $swHtmlContent);
 		return $swHtmlContent;		    
     }
         
