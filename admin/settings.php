@@ -998,11 +998,11 @@ function pwaforwp_push_notification_callback(){
         <div class="pwafowwp-server-key-section">
         	<table class="pwaforwp-pn-options">
         		<tbody>
-        			<th>Push notification option</th>
+        			<th>Push notification integration</th>
         			<td>
         				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
-        					<option value="">Select Service</option>
-        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>pushnotifications.io (Recommended)</option>
+        					<option value="">Select</option>
+        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>PushNotifications.io (Recommended)</option>
         					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> >FCM push notification</option>
         				</select>
         			</td>
@@ -1039,9 +1039,9 @@ function pwaforwp_push_notification_callback(){
             			<?php if(class_exists('Push_Notification_Frontend')){ 
             				$auth_settings = push_notification_auth_settings();
             				if(!isset($auth_settings['user_token'])){
-            					echo '<p>This feature requires to setup Push Notification , <a href="'.admin_url('admin.php?page=push-notification').'" target="_blank">Go to setup.</p>';
+            					echo '<div class="pwaforwp-center"><p>This feature requires to setup Push Notification </p> <a href="'.admin_url('admin.php?page=push-notification').'" target="_blank" class="button button-primary">Go to setup</a></div>';
             				}else{
-            					echo '<p>Push notifications has it\'s separate options view<a href="'. admin_url('admin.php?page=push-notification').'"> View Settings</a></p>';
+            					echo '<div class="pwaforwp-center"><p>Push notifications has it\'s separate options view</p><a href="'. admin_url('admin.php?page=push-notification').'" class="button button-primary"> View Settings</a></div>';
             				}
             			?>
             			
@@ -1065,13 +1065,15 @@ function pwaforwp_push_notification_callback(){
 							$activate_url = wp_nonce_url( $url, $action . '-plugin_' . $plugin );
             			 }
             			?>
-            			<p>This feature requires a Free plugin which integrates with a Free Push Notification service
-            			<span data-activate-url="<?php echo $activate_url; ?>" 
-            				 class="pwaforwp-install-require-plugin button <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
-            				id="pushnotification">
-            				Install Plugin
-            			</span>
-            			</p>
+            			<div class="pwaforwp-center">
+	            			<p>This feature requires a Free plugin which integrates with a Free Push Notification service
+	            			</p>
+	            			<span data-activate-url="<?php echo $activate_url; ?>" 
+	            				 class="pwaforwp-install-require-plugin button button-primary <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
+	            				id="pushnotification">
+	            				Install Plugin
+	            			</span>
+	            		</div>
             			<?php
             		} ?>
 	            	
@@ -2109,7 +2111,7 @@ function pwaforwp_features_settings(){
 		echo '</div>';
 		$settingsHtml = $tooltipHtml = $warnings = '';
 		if($key=='notification' && empty($settings['notification_options'])){
-			$warnings = "<i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;'></i>";
+			$warnings = "<span class='pwafw-tooltip'><i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;' title=''></i><span class='pwafw-help-subtitle'>Need integration</span></span>";
 		}
 		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
 			$settingsHtml = 'style="opacity:1;"';
