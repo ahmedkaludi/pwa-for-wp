@@ -1053,7 +1053,7 @@ function pwaforwp_push_notification_callback(){
 
             			$activate_url ='';
             			$class = 'not-exist';
-            			if(isset($allplugins['push-notification/push-notification.php']) && !is_plugin_active('push-notification/push-notification.php') ){
+            			if(file_exists( PWAFORWP_PLUGIN_DIR."/../'push-notification/push-notification.php'") && !is_plugin_active('push-notification/push-notification.php') ){
             				//plugin deactivated
             				$class = 'pushnotification';
             				$plugin = 'push-notification/push-notification.php';
@@ -1767,11 +1767,13 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();   
         add_thickbox();     
+        include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+        wp_update_plugins();
 	
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
-        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'plugin-install', 'wp-util', 'wp-a11y' ), PWAFORWP_PLUGIN_VERSION, true);
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'plugin-install', 'wp-util', 'wp-a11y','updates' ), PWAFORWP_PLUGIN_VERSION, true);
         
         $object_name = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
