@@ -980,7 +980,9 @@ function pwaforwp_push_notification_callback(){
 	$selectedService = 'pushnotifications_io';
 	$pushnotifications_style = 'style="display:block;"';
 	$fcm_service_style = 'style="display:none;"'; 
-    if( isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key']) ){
+    if( (isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key'])) 
+    	|| (isset($settings['notification_options']) && $settings['notification_options']=="fcm_push")
+    ){
     	$selectedService = "fcm_push";
     	$pushnotifications_style = 'style="display:none;"';
 		$fcm_service_style = 'style="display:block;"';
@@ -1039,9 +1041,9 @@ function pwaforwp_push_notification_callback(){
             			<?php if(class_exists('Push_Notification_Frontend')){ 
             				$auth_settings = push_notification_auth_settings();
             				if(!isset($auth_settings['user_token'])){
-            					echo '<div class="pwaforwp-center"><p>This feature requires to setup Push Notification </p> <a href="'.admin_url('admin.php?page=push-notification').'" target="_blank" class="button button-primary">Go to setup</a></div>';
+            					echo '<div class="pwaforwp-center"><p>This feature requires to setup Push Notification </p> <a href="'.esc_url_raw(admin_url('admin.php?page=push-notification')).'" target="_blank" class="button button-primary">'.esc_html__('Go to setup', 'pwa-for-wp').'</a></div>';
             				}else{
-            					echo '<div class="pwaforwp-center"><p>Push notifications has it\'s separate options view</p><a href="'. admin_url('admin.php?page=push-notification').'" class="button button-primary"> View Settings</a></div>';
+            					echo '<div class="pwaforwp-center"><p>'.esc_html__('Push notifications has it\'s separate options view','pwa-for-wp').'</p><a href="'. esc_url_raw(admin_url('admin.php?page=push-notification') ).'" class="button button-primary">'.esc_html__(' View Settings', 'pwa-for-wp').'</a></div>';
             				}
             			?>
             			
