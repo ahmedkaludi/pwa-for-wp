@@ -433,12 +433,17 @@ let cachingStrategy = {
             return caches.open(CACHE_VERSIONS.content)
                     .then(
                         (cache) => {
-                           return fetch(event.request).then(function (response) {
-                                 if(response.ok){
-                                    cache.put(event.request, response.clone());
-                                    return response
-                                 }else{
-                                    return cache.match(event.request)
+                           return fetch(event.request.clone()).then(function (response) {
+
+                                if(response.status < 300) {
+                                    if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                        cache.put(event.request, response.clone());
+                                    }
+                                        return response;
+                                } else if( cache.match(event.request) ){
+                                    return cache.match(event.request);
+                                }else {
+                                    return cachingStrategy.Offlinepage();
                                 }
                               }).catch(
                                    (err) => {
@@ -470,12 +475,16 @@ let cachingStrategy = {
             return caches.open(CACHE_VERSIONS.content)
                     .then(
                         (cache) => {
-                           return fetch(event.request).then(function (response) {
-                                 if(response.ok){
-                                    cache.put(event.request, response.clone());
-                                    return response
-                                 }else{
+                           return fetch(event.request.clone()).then(function (response) {
+                                if(response.status < 300) {
+                                    if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                        cache.put(event.request, response.clone());
+                                    }
+                                    return response;
+                                } else if(cache.match(event.request)){
                                     return cache.match(event.request)
+                                } else {
+                                    return cachingStrategy.Offlinepage();
                                 }
                               }).catch(
                                 (err) => {
@@ -582,6 +591,9 @@ self.addEventListener(
         if(! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.referrer) ){
            //console.log( 'PWA ServiceWorker: Ref-URL exists in excluded list of cache.' + event.request.referrer);
             return;
+        }
+        if(pwaForWpisBlackListed(event.request.url)){
+            return;   
         }
         
         // Return if request url protocal isn't http or https
