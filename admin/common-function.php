@@ -397,7 +397,7 @@ function pwaforwp_amp_takeover_status(){
     
        $amp_take_over = false;
         
-        if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )) {
+        if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) && !defined('AMP_WP_DIR_PATH')) {
          
             global $redux_builder_amp;
 
