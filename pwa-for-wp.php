@@ -22,6 +22,23 @@ define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
+if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
+  require_once PWAFORWP_PLUGIN_DIR. '/admin/class-pwaforwp-plugin-usage-tracker.php';
+}
+if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
+  function pwaforwp_start_plugin_tracking() {
+    $settings = get_option( 'pwaforwp_settings');
+    $wisdom = new PWAFORWP_Plugin_Usage_Tracker(
+      __FILE__,
+      'https://data.ampforwp.com/pwaforwp',
+      (array) $settings,
+      true,
+      true,
+      0
+    );
+  }
+  pwaforwp_start_plugin_tracking();
+} 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
