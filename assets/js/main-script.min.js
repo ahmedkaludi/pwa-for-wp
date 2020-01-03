@@ -207,11 +207,13 @@ jQuery(document).ready(function($){
     jQuery(".pwa-send-query").on("click", function(e){
         e.preventDefault();   
         var message = jQuery("#pwaforwp_query_message").val();           
+        var customer = jQuery("#pwaforwp_query_customer").val();    
+        if($.trim(message) !='' && customer){       
                     jQuery.ajax({
                         type: "POST",    
                         url: ajaxurl,                    
                         dataType: "json",
-                        data:{action:"pwaforwp_send_query_message", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                        data:{action:"pwaforwp_send_query_message", customer_type: customer, message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                         success:function(response){                       
                           if(response['status'] =='t'){
                             jQuery(".pwa-query-success").show();
@@ -225,6 +227,21 @@ jQuery(document).ready(function($){
                         console.log(response);
                         }
                         });
+        }else{
+            if($.trim(message) =='' && customer ==''){
+                alert('Please enter the message and select customer type');
+            }else{
+            
+            if(customer ==''){
+                alert('Select Customer type');
+            }
+            if($.trim(message) == ''){
+                alert('Please enter the message');
+            }
+                
+            }
+            
+        }                   
         
     });
         

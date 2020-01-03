@@ -149,8 +149,15 @@ function pwaforwp_admin_interface_render(){
 			        	                   	<h3><?php echo esc_html__('Ask for Technical Support', 'pwa-for-wp') ?></h3>
 			        	                   	<p><?php echo esc_html__('We are always available to help you with anything', 'pwa-for-wp') ?></p>
 						            <ul>
+						                <li><label for="pwaforwp_query_customer"><?php echo esc_html__('Are you existing Premium Customer?', 'pwa-for-wp'); ?></label>
+						                    <select class="regular-select" rows="5" cols="60" id="pwaforwp_query_customer" name="pwaforwp_query_customer">
+						                    	<option value="">Select</option>
+						                    	<option value="Yes"><?php echo esc_html__('Yes', 'pwa-for-wp'); ?></option>
+						                    	<option value="No"><?php echo esc_html__('No', 'pwa-for-wp'); ?></option>
+						                    </select>
+						                </li> 
 						                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
-						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
+						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message" class="regular-textarea"></textarea>
 						                    <br>
 						                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
 						                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
@@ -1809,8 +1816,11 @@ function pwaforwp_send_query_message(){
         }
         
         $message    = sanitize_textarea_field($_POST['message']);        
+        $customer_type    = sanitize_text_field($_POST['customer_type']);        
+        $customer_type = empty($customer_type)? $customer_type : 'No';
         $message .= "<table>
-        				<tr><td>Plugin</td><td>PWA for wp</td></tr>
+        				<tr><td>Are you existing Premium Customer?</td><td>".$customer_type."</td></tr>
+        				<tr><td>Plugin</td><td>PWA for wp </td></tr>
         				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>
         			</table>";
         $user       = wp_get_current_user();
