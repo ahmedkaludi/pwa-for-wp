@@ -368,7 +368,7 @@ class PWAFORWP_Service_Worker{
             
         }
         public function pixelative_amp_entry_point(){  
-            if ( is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
+            if ( function_exists('is_amp_endpoint') && is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
                 add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'));
                 amp_wp_enqueue_script( 'amp-install-serviceworker', 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js' );
                 add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),20); 
