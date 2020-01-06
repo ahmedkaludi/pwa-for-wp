@@ -63,7 +63,7 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.4.3 (6 January 2019) =
+= 1.7.4.3 (6 January 2020) =
 * Feature   : Compatibility with AMP-WP by Pixelative #273
 * Bug Fixed : Minor bug fixed #15 #274
 * Bug Fixed : Resolve issue of 301 redirection pages on Network Only and Network First caching strategy #277
