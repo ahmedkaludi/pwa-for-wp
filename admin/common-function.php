@@ -409,7 +409,7 @@ function pwaforwp_amp_takeover_status(){
                                 
             }else{
                 
-                if(function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() && is_front_page()||is_home() ){
+                if(function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() && (is_front_page()||is_home()) ){
                     $amp_take_over = true;
                 }
                 
