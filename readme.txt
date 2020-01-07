@@ -65,6 +65,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.4.4 (7 January 2020) =
 * Minor changes
+* Bug Fixed : PWA not shows on home/front page with amp by Automattic  #288
 
 = 1.7.4.3 (6 January 2020) =
 * Feature   : Compatibility with AMP-WP by Pixelative #273
