@@ -1,5 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+require_once PWAFORWP_PLUGIN_DIR.'/admin/pwa-utility.php';
 function pwaforpw_add_menu_links() {	
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
@@ -147,8 +149,15 @@ function pwaforwp_admin_interface_render(){
 			        	                   	<h3><?php echo esc_html__('Ask for Technical Support', 'pwa-for-wp') ?></h3>
 			        	                   	<p><?php echo esc_html__('We are always available to help you with anything', 'pwa-for-wp') ?></p>
 						            <ul>
+						                <li><label for="pwaforwp_query_customer"><?php echo esc_html__('Are you existing Premium Customer?', 'pwa-for-wp'); ?></label>
+						                    <select class="regular-select" rows="5" cols="60" id="pwaforwp_query_customer" name="pwaforwp_query_customer">
+						                    	<option value="">Select</option>
+						                    	<option value="Yes"><?php echo esc_html__('Yes', 'pwa-for-wp'); ?></option>
+						                    	<option value="No"><?php echo esc_html__('No', 'pwa-for-wp'); ?></option>
+						                    </select>
+						                </li> 
 						                <li><label for="pwaforwp_query_message"><?php echo esc_html__('Message', 'pwa-for-wp'); ?></label>
-						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message"> </textarea>
+						                    <textarea rows="5" cols="60" id="pwaforwp_query_message" name="pwaforwp_query_message" class="regular-textarea"></textarea>
 						                    <br>
 						                    <p class="pwa-query-success pwa_hide"><?php echo esc_html__('Message sent successfully, Please wait we will get back to you shortly', 'pwa-for-wp'); ?></p>
 						                    <p class="pwa-query-error pwa_hide"><?php echo esc_html__('Message not sent. please check your network connection', 'pwa-for-wp'); ?></p>
@@ -961,20 +970,49 @@ function pwaforwp_background_color_callback(){
 function pwaforwp_push_notification_callback(){	
     
 	$settings = pwaforwp_defaultSettings(); 
-        
+	$selectedService = 'pushnotifications_io';
+	$pushnotifications_style = 'style="display:block;"';
+	$fcm_service_style = 'style="display:none;"'; 
+    if( (isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key'])) 
+    	|| (isset($settings['notification_options']) && $settings['notification_options']=="fcm_push")
+    ){
+    	$selectedService = "fcm_push";
+    	$pushnotifications_style = 'style="display:none;"';
+		$fcm_service_style = 'style="display:block;"';
+    }
+    if( isset($settings['notification_options']) ){
+    	$selectedService = $settings['notification_options'];
+    	if(empty($selectedService)){
+    		$selectedService = "";
+	    	$pushnotifications_style = 'style="display:none;"';
+			$fcm_service_style = 'style="display:none;"';
+    	}
+    }
         ?>        
         
         <div class="pwafowwp-server-key-section">
-            <table class="pwaforwp-push-notificatoin-table">
+        	<table class="pwaforwp-pn-options">
+        		<tbody>
+        			<th>Push notification integration</th>
+        			<td>
+        				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
+        					<option value="">Select</option>
+        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>PushNotifications.io (Recommended)</option>
+        					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> >FCM push notification</option>
+        				</select>
+        			</td>
+        		</tbody>
+        	</table>
+            <table class="pwaforwp-push-notificatoin-table" <?php echo $fcm_service_style; ?>>
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
-                        <td><input type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
+                        <td><input class="regular-text" type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
                     </tr>
                     <tr>
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
-                            <textarea placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
+                            <textarea class="regular-text" placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
@@ -991,6 +1029,51 @@ function pwaforwp_push_notification_callback(){
                     </tr>                                                            
                 </tbody>   
             </table>                   
+            <div class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
+            	<div class="notification-banner" style="width:90%">
+            			<?php if(class_exists('Push_Notification_Frontend')){ 
+            				$auth_settings = push_notification_auth_settings();
+            				if(!isset($auth_settings['user_token'])){
+            					echo '<div class="pwaforwp-center"><p>This feature requires to setup Push Notification </p> <a href="'.esc_url_raw(admin_url('admin.php?page=push-notification')).'" target="_blank" class="button button-primary">'.esc_html__('Go to setup', 'pwa-for-wp').'</a></div>';
+            				}else{
+            					echo '<div class="pwaforwp-center"><p>'.esc_html__('Push notifications has it\'s separate options view','pwa-for-wp').'</p><a href="'. esc_url_raw(admin_url('admin.php?page=push-notification') ).'" class="button button-primary">'.esc_html__(' View Settings', 'pwa-for-wp').'</a></div>';
+            				}
+            			?>
+            			
+            		<?php }else{
+            			$allplugins = get_transient( 'plugin_slugs');
+						if($allplugins){
+							$allplugins = array_flip($allplugins);
+						}
+
+            			$activate_url ='';
+            			$class = 'not-exist';
+            			if(file_exists( PWAFORWP_PLUGIN_DIR."/../'push-notification/push-notification.php'") && !is_plugin_active('push-notification/push-notification.php') ){
+            				//plugin deactivated
+            				$class = 'pushnotification';
+            				$plugin = 'push-notification/push-notification.php';
+            				$action = 'activate';
+            				if ( strpos( $plugin, '/' ) ) {
+								$plugin = str_replace( '\/', '%2F', $plugin );
+							}
+							$url = sprintf( admin_url( 'plugins.php?action=' . $action . '&plugin=%s&plugin_status=all&paged=1&s' ), $plugin );
+							$activate_url = wp_nonce_url( $url, $action . '-plugin_' . $plugin );
+            			 }
+            			?>
+            			<div class="pwaforwp-center">
+	            			<p>This feature requires a Free plugin which integrates with a Free Push Notification service
+	            			</p>
+	            			<span data-activate-url="<?php echo $activate_url; ?>" 
+	            				 class="pwaforwp-install-require-plugin button button-primary <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
+	            				id="pushnotification">
+	            				Install Plugin
+	            			</span>
+	            		</div>
+            			<?php
+            		} ?>
+	            	
+            	</div>
+            </div>
         </div>
         <div class="pwaforwp-notification-condition-section" <?php echo ( (isset($settings['fcm_server_key']) && $settings['fcm_server_key'] !='') ? 'style="display:block;"' : 'style="display:none;"'); ?>>
         <div>
@@ -1679,11 +1762,13 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	// Everything needed for media upload
         wp_enqueue_media();   
         add_thickbox();     
+        include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+        wp_update_plugins();
 	
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
-        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true);
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'plugin-install', 'wp-util', 'wp-a11y','updates' ), PWAFORWP_PLUGIN_VERSION, true);
         
         $object_name = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
@@ -1717,8 +1802,11 @@ function pwaforwp_send_query_message(){
         }
         
         $message    = sanitize_textarea_field($_POST['message']);        
+        $customer_type    = sanitize_text_field($_POST['customer_type']);        
+        $customer_type = empty($customer_type)? $customer_type : 'No';
         $message .= "<table>
-        				<tr><td>Plugin</td><td>PWA for wp</td></tr>
+        				<tr><td>Are you existing Premium Customer?</td><td>".$customer_type."</td></tr>
+        				<tr><td>Plugin</td><td>PWA for wp </td></tr>
         				<tr><td>Version</td><td>".PWAFORWP_PLUGIN_VERSION."</td></tr>
         			</table>";
         $user       = wp_get_current_user();
@@ -2021,7 +2109,10 @@ function pwaforwp_features_settings(){
 				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
 		echo '</div>';
-		$settingsHtml = $tooltipHtml = '';
+		$settingsHtml = $tooltipHtml = $warnings = '';
+		if($key=='notification' && empty($settings['notification_options'])){
+			$warnings = "<span class='pwafw-tooltip'><i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;' title=''></i><span class='pwafw-help-subtitle'>Need integration</span></span>";
+		}
 		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
 			$settingsHtml = 'style="opacity:1;"';
 		}else{
@@ -2058,7 +2149,7 @@ function pwaforwp_features_settings(){
 								<div class="pwaforwp-card-content">
 									<div class="pwaforwp-tlt-sw">
 										<h2>%1$s 
-											'.$tooltipHtml.'
+											'.$tooltipHtml.' %8$s
 										</h2>
 										'.$premium_alert.'
 									</div>
@@ -2071,7 +2162,8 @@ function pwaforwp_features_settings(){
 							$featureVal['enable_field'],
 							isset($featureVal['tooltip_option'])? esc_html($featureVal['tooltip_option']): '',
 							(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]? esc_attr('pwaforwp-feature-enabled') : ''),
-							$pro_link
+							$pro_link,
+							$warnings
 
 						);
 	}
@@ -2169,4 +2261,70 @@ function pwaforwp_active_update_transient($plugin){
 add_action( 'deactivated_plugin', 'pwaforwp_deactivate_update_transient' );
 function pwaforwp_deactivate_update_transient($plugin){
 	delete_transient( 'pwaforwp_restapi_check' ); 
+}
+
+/**
+* Function Create images dynamically
+* @param Array $old_value previous values
+* @param Array $new_value new updated values of save
+*/
+add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 2);
+function pwaforwp_resize_images( $old_value, $new_value ){
+	
+	if( isset($new_value['ios_splash_icon']['2048x1496']) && !empty($new_value['ios_splash_icon']['2048x1496']) && strrpos($new_value['ios_splash_icon']['2048x1496'], 'uploads/') ){
+		$uploadPath = wp_upload_dir();
+		$filename = str_replace($uploadPath['baseurl'], $uploadPath['basedir'], $new_value['ios_splash_icon']['2048x1496']);
+		
+		//$filename = '/Users/tommcfarlin/Projects/acme/wp-content/uploads/2018/06/original-image.jpg';
+		if( file_exists($filename) ){
+			//Check there is need of file creation
+			$createImage = array();
+			foreach ($new_value['ios_splash_icon'] as $key => $value) {
+				if(empty($value)){
+					$createImage[$key] = '';
+				}
+			}
+			if(count($createImage)>0){
+				$editor = wp_get_image_editor( $filename, array() );
+				foreach ($createImage as $newkey => $newimages) {
+					
+					// Grab the editor for the file and the size of the original image.
+					if ( !is_wp_error($editor) ) {
+					   // Get the dimensions for the size of the current image.
+						$dimensions = $editor->get_size();
+						$width = $dimensions['width'];
+						$height = $dimensions['height'];
+						
+
+						// Calculate the new dimensions for the image.
+						$keyDim = explode('x', $newkey);
+						$newWidth = $keyDim[0];
+						$newHeight = $keyDim[1];
+
+						// Resize the image.
+						$result = $editor->resize($newWidth, $newHeight, true);
+
+						// If there's no problem, save it; otherwise, print the problem.
+						if (!is_wp_error($result)) {
+						  $newImage = $editor->save($editor->generate_filename());
+						  $newfilename = str_replace($uploadPath['basedir'], $uploadPath['baseurl'], $newImage['path']);
+						  $new_value['ios_splash_icon'][$newkey] = $newfilename;
+						}else{
+							error_log($result->get_error_message()." Width: ".$newWidth." Height:".$newHeight);
+						}
+					}
+
+				}//Foreach closed
+				update_option( 'pwaforwp_settings', $new_value);
+
+			}
+		}
+	}
+
+    
+
+/* else {
+	   // Handle the problem however you deem necessary.
+	}
+*/	
 }

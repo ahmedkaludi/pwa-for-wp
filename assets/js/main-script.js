@@ -15,7 +15,7 @@ jQuery(document).ready(function($){
             if(pwaforwp_obj.do_tour){
                 
                 var content = '<h3>You are awesome for using PWA for WP!</h3>';
-            content += '<p>Do you want the latest on <b>PWA update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>';
+                content += '<p>Do you want the latest on <b>PWA update</b> before others and some best resources on monetization in a single email? - Free just for users of ADS!</p>';
                         content += '<style type="text/css">';
                         content += '.wp-pointer-buttons{ padding:0; overflow: hidden; }';
                         content += '.wp-pointer-content .button-secondary{  left: -25px;background: transparent;top: 5px; border: 0;position: relative; padding: 0; box-shadow: none;margin: 0;color: #0085ba;} .wp-pointer-content .button-primary{ display:none}  #afw_mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; }';
@@ -207,11 +207,13 @@ jQuery(document).ready(function($){
     jQuery(".pwa-send-query").on("click", function(e){
         e.preventDefault();   
         var message = jQuery("#pwaforwp_query_message").val();           
+        var customer = jQuery("#pwaforwp_query_customer").val();    
+        if($.trim(message) !='' && customer){       
                     jQuery.ajax({
                         type: "POST",    
                         url: ajaxurl,                    
                         dataType: "json",
-                        data:{action:"pwaforwp_send_query_message", message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
+                        data:{action:"pwaforwp_send_query_message", customer_type: customer, message:message, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
                         success:function(response){                       
                           if(response['status'] =='t'){
                             jQuery(".pwa-query-success").show();
@@ -225,6 +227,21 @@ jQuery(document).ready(function($){
                         console.log(response);
                         }
                         });
+        }else{
+            if($.trim(message) =='' && customer ==''){
+                alert('Please enter the message and select customer type');
+            }else{
+            
+            if(customer ==''){
+                alert('Select Customer type');
+            }
+            if($.trim(message) == ''){
+                alert('Please enter the message');
+            }
+                
+            }
+            
+        }                   
         
     });
         
@@ -546,8 +563,8 @@ jQuery(document).ready(function($){
         }
         var opt = jQuery(this).attr('data-option');
         var optTitle = jQuery(this).attr('title');
-        tb_show(optTitle, "#TB_inline?width=800&height=400&inlineId="+opt);
-        datafeatureSubmit();
+        tb_show(optTitle, "#TB_inline?width=750&height=450&inlineId="+opt);
+        datafeatureSubmit(opt);
     });
 
     jQuery('.card-action input[type="checkbox"]').change(function(){
@@ -566,9 +583,99 @@ jQuery(document).ready(function($){
         pwaforwp_ajaxcall_submitdata(pwaforwp_obj, fields);
     })
 
-});
+    /**
+    * Push notification options selection
+    */
+    jQuery(document).on("change", ".pwaforwp-pn-service", function(){
+        var self = jQuery(this);
+        var currentSelected = self.val();
+        pushnotificationIntegrationLogic('notification-contents');
+        switch(currentSelected){
+            case 'pushnotifications_io':
+                jQuery('.pwaforwp-push-notificatoin-table').hide();
+                jQuery('.pwaforwp-notification-condition-section').hide();
+                jQuery('.pwaforwp-pn-recommended-options').show();
+                //self.parents('.pwaforwp-wrap').find('.footer').hide();
+            break;
+            case 'fcm_push':
+                jQuery('.pwaforwp-push-notificatoin-table').show();
+                jQuery('.pwaforwp-notification-condition-section').show();
+                jQuery('.pwaforwp-pn-recommended-options').hide();
+                //self.parents('.pwaforwp-wrap').find('.footer').show();
+            break;
+            default:
+                jQuery('.pwaforwp-push-notificatoin-table').hide();
+                jQuery('.pwaforwp-notification-condition-section').hide();
+                jQuery('.pwaforwp-pn-recommended-options').hide();
+            break
+        }
+        jQuery('.notification-wrap-tb').find('.footer button').trigger('click')
+    });
 
-var datafeatureSubmit = function(){
+    jQuery('.pwaforwp-install-require-plugin').on("click", function(e){
+        e.preventDefault();
+        /*var result = confirm("This required a free plugin to install in your WordPress");
+        if (!result) {
+
+        }*/
+        var self = jQuery(this);
+        self.html('Installing..').addClass('updating-message');
+        var nonce = self.attr('data-secure');
+        var activate_url = self.attr('data-activate-url');
+        var currentId = self.attr('id');
+        var activate = '';
+         if (currentId == 'pushnotification') {
+                activate = '&activate=pushnotification';
+            }
+
+        console.log(wp.updates);
+
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: 'action=pwafowp_enable_modules_upgread' + activate + '&verify_nonce=' + nonce,
+            dataType: 'json',
+            success: function (response) {
+                if (response.status == 200) {
+                    if (self.hasClass('not-exist')) {
+
+                        //To installation
+                        wp.updates.installPlugin(
+                            {
+                                slug: response.slug,
+                                success: function (pluginresponse) {
+                                    console.log(pluginresponse.activateUrl);
+                                    pwaforwp_Activate_Modules_Upgrade(pluginresponse.activateUrl, self, response, nonce)
+                                }
+                            }
+                        );
+
+                    } else {
+                        var activateUrl = self.attr('data-activate-url');
+                        pwaforwp_Activate_Modules_Upgrade(activateUrl, self, response, nonce)
+                    }
+                } else {
+                    alert(response.message)
+                }
+
+            }
+        });
+    });
+
+});
+var pushnotificationIntegrationLogic = function(opt){
+    if(opt==='notification-contents'){
+            var optNotif = jQuery('.pwaforwp-pn-service').val()
+            if(optNotif==='' || optNotif==='pushnotifications_io'){
+                jQuery('.notification-wrap-tb').find('.footer').hide()
+            }else{
+                jQuery('.notification-wrap-tb').find('.footer').show()
+            }
+        }
+}
+var datafeatureSubmit = function(opt){
+        pushnotificationIntegrationLogic(opt)
         jQuery('.pwaforwp-submit-feature-opt').click(function(){
             /*jQuery('#TB_closeWindowButton').click();
             setTimeout(1000, function(){
@@ -625,6 +732,14 @@ var datafeatureSubmit = function(){
                     var value = jQuery(this).val();
                     if(name){
                         fields.push({var_name: name, var_value: value});
+                        /*only for push notificatio opt*/
+                        if( name==='pwaforwp_settings[notification_options]' ){
+                            if(value!==''){
+                                jQuery('#notification-opt-stat').hide();
+                            }else{
+                                jQuery('#notification-opt-stat').show();
+                            }
+                        }
                     }
                 })
 
@@ -758,3 +873,52 @@ var pwaforwp_dependent_features_section = function(fieldname, fieldValue){
         break;
     }
 }
+
+
+
+var pwaforwp_Activate_Modules_Upgrade = function(url, self, response, nonce){
+        if (typeof url === 'undefined' || !url) {
+            return;
+        }
+         console.log( 'Activating...' );
+         self.html('Activating...');
+         jQuery.ajax(
+            {
+                async: true,
+                type: 'GET',
+                //data: dataString,
+                url: url,
+                success: function () {
+                    var msgplug = '';
+                    if(self.attr('id')=='pushnotification'){
+                        msgplug = 'push notification';
+                        console.log("push notification Activated");
+                        self.removeClass('updating-message')
+                        self.removeClass("button")
+                        self.removeClass('pwaforwp-install-require-plugin')
+                        self.unbind('click');
+                        self.html('<a target="_blank" href="'+response.redirect_url+'" style="color:#fff;text-decoration:none;">View Settings</a>');
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status === 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status === 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                    }
+                    console.log(msg);
+                },
+            }
+        );
+    }

@@ -9,28 +9,29 @@
 			                    console.log('ServiceWorker registration failed: ', err);
 			                });	
                                                                                                                                                                                                                                                                               
-			                var deferredPrompt;                                                                                                                                                                                                                                                                                                                        
-                                                window.addEventListener('beforeinstallprompt', (e) => {
+			                var deferredPrompt;                           
+                      window.addEventListener('beforeinstallprompt', (e) => {
 							  {{swdefaultaddtohomebar}}
 							  deferredPrompt = e;
                                                           
-                                                            if(deferredPrompt != null || deferredPrompt != undefined){
+                    if(deferredPrompt != null || deferredPrompt != undefined){
 
-                                                                var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
-                                                                if(a2hsviashortcode !== null){
-                                                                    for (var i = 0; i < a2hsviashortcode.length; i++) {
-                                                                      a2hsviashortcode[i].style.display="block"; 
-                                                                  }
-                                                                }
-                                                                
-                                                                var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
-                                                                if(a2hsviashortcode !== null && checkbarClosedOrNot()){
-                                                                    for (var i = 0; i < a2hsviashortcode.length; i++) {
-                                                                      a2hsviashortcode[i].style.display="flex"; 
-                                                                  }
-                                                                }
+                        var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
+                        if(a2hsviashortcode !== null){
+                            for (var i = 0; i < a2hsviashortcode.length; i++) {
+                              a2hsviashortcode[i].style.display="block"; 
+                          }
+                        }
+                        
+                        var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
+                        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+                        if(a2hsviashortcode !== null && checkbarClosedOrNot() && (typeof pwa_cta_assets !== 'undefined') && (pwa_cta_assets.a2h_sticky_on_desktop_cta==1 || isMobile)){
+                            for (var i = 0; i < a2hsviashortcode.length; i++) {
+                              a2hsviashortcode[i].style.display="flex"; 
+                          }
+                        }
 
-                                                             }
+                     }
                                                                                                                     
 							});			    
               function checkbarClosedOrNot(){
@@ -40,7 +41,7 @@
                     var closedTime = new Date(closedTime);
                     var diffMs = (today-closedTime);
                     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-                    if(diffMins<4){
+                    if(diffMs){//diffMins<4
                       return false;
                     }
                   }
@@ -67,7 +68,8 @@
                   }
                   
                   var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
-                  if(a2hsviashortcode !== null){
+                  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
+                  if(a2hsviashortcode !== null && checkbarClosedOrNot() && (typeof pwa_cta_assets !== 'undefined') && (pwa_cta_assets.a2h_sticky_on_desktop_cta==1 || isMobile) ){
                       for (var i = 0; i < a2hsviashortcode.length; i++) {
                         a2hsviashortcode[i].style.display="flex"; 
                     }

@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.3.2
+Stable tag: 1.7.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,34 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.4.4 (7 January 2020) =
+* Minor changes
+* Bug Fixed : PWA not shows on home/front page with amp by Automattic  #288
+
+= 1.7.4.3 (6 January 2020) =
+* Feature   : Compatibility with AMP-WP by Pixelative #273
+* Bug Fixed : Minor bug fixed #15 #274
+* Bug Fixed : Resolve issue of 301 redirection pages on Network Only and Network First caching strategy #277
+* Bug Fixed : Issue fixed with buddy press message not sending #286
+
+
+= 1.7.4.2 (26 December 2019) =
+* Feature 	: pushnotification.io Compatibility added #281 #283
+* Bug Fixed : "Uncaught ReferenceError: pwa_cta_assets is not defined" in console #279
+* Bug Fixed : PWA service worker time taking to load the page (Cache strategy) #276
+
+= 1.7.4.1 (7 December 2019) =
+* Improved 	: Display PWA CTA in Mobile version only #252
+* Bug Fixed : UTM tracking referral not set for PWA APP #262
+
+= 1.7.4 (4 December 2019) =
+* Improved 	: Caching Strategy for network first and network only #263
+* Bug Fixed : Form submit or any post Request check Added #271
+* Added 	: Auto icon cropping feature automatically. if 192x192 icon added #224
+
+= 1.7.3.3 (28 November 2019) =
+* Fixed 	: Fixed SW file serve dynamically with ngnix servers #239
+
 = 1.7.3.2 (25 November 2019) =
 * Feature 	: Added support with `pwa By PWA Plugin Contributors` #107
 

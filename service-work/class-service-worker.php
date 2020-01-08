@@ -21,6 +21,8 @@ class PWAFORWP_Service_Worker{
          add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
          //Automattic AMP will be done here
          add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
+         //pixelative Amp 
+         add_action('wp', array($this, 'pixelative_amp_entry_point'));      
         }  
         
             	                                                                                                                                  
@@ -103,6 +105,7 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
+                $file_data = '';
                 if( file_exists($filename) ){
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
@@ -117,22 +120,18 @@ class PWAFORWP_Service_Worker{
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $swjsContent = $fileCreation->pwaforwp_swjs();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swr();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
@@ -183,6 +182,7 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
+                 $file_data = '';
                 if( file_exists($filename) ){
                     $file_data = file_get_contents( $filename );
                 }else{
@@ -194,21 +194,19 @@ class PWAFORWP_Service_Worker{
                     }
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swjs();
-                            echo $swjsContent;
+                            header("Service-Worker-Allowed: /");
+                            $file_data = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swr();
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
-                            $swjsContent = $fileCreation->pwaforwp_swjs(true);
-                            echo $swjsContent;
+                            header("Service-Worker-Allowed: /");
+                            $file_data = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $swjsContent = $fileCreation->pwaforwp_swhtml(true);
-                            echo $swjsContent;
+                            $file_data = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
@@ -366,6 +364,14 @@ class PWAFORWP_Service_Worker{
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+            }
+            
+        }
+        public function pixelative_amp_entry_point(){  
+            if ( function_exists('is_amp_endpoint') && is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
+                add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'));
+                amp_wp_enqueue_script( 'amp-install-serviceworker', 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js' );
+                add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),20); 
             }
             
         }	        

@@ -101,10 +101,10 @@ function pwaForWpgetTTL(url) {
         if (typeof MAX_TTL[extension] === 'number') {
             return MAX_TTL[extension];
         } else {
-            return null;
+            return MAX_TTL["/"];
         }
     } else {
-        return null;
+        return MAX_TTL["/"];
     }
 }
 
@@ -300,12 +300,12 @@ let cachingStrategy = {
             // If non-GET request, try the network first, fall back to the offline page
             if (event.request.method !== 'GET') {
                 event.respondWith(
-                    fetch(request)
+                    fetch(event.request)
                         .catch(error => {
                             return caches.match(offlinePage);
                         })
                 );
-                return;
+                return false;
             }
         },
 
@@ -332,7 +332,7 @@ let cachingStrategy = {
                                             }
 
                                             if (date) {
-                                                let age = parseInt((new Date().getTime() - date.getTime()));
+                                                let age = parseInt((new Date().getTime() - date.getTime())/1000);
                                                 let ttl = pwaForWpgetTTL(event.request.url);
 
                                                 if (age > ttl) {
@@ -429,49 +429,90 @@ let cachingStrategy = {
             /*})*/
 
         },
-        fetchnetwork: function(event, response_cached){
-             return fetch(event.request).then(function (response) {
-                 if(response.ok){
-                    cache.put(event.request, response.clone());
-                    return  response
-                 }else{
-                    return cache.match(event.request)
-                }
-              })
-              .catch(function () {
-                return response_cached;
-              });  
+        fetchnetwork: function(event){
+            return caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
+                           return fetch(event.request.clone()).then(function (response) {
+
+                                if(response.status < 300) {
+                                    if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                        cache.put(event.request, response.clone());
+                                    }
+                                        return response;
+                                } else if( cache.match(event.request) ){
+                                    return cache.match(event.request);
+                                }else {
+                                    return cachingStrategy.Offlinepage();
+                                }
+                              }).catch(
+                                   (err) => {
+                                        return cache.match(event.request)
+                                    }
+                              ).catch(
+                                (err) => {
+                                        return cachingStrategy.Offlinepage();
+                                    }
+                              )
+                        }
+                    ).catch(
+                           (err) => {
+                                return cachingStrategy.Offlinepage();
+                            }
+                      )
         },
         addCache: function(event,updatedResponse){
             cache.put(event.request, updatedResponse.clone());
              resolve(updatedResponse);
         },
+        Offlinepage: function(){
+            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
+                return cache.match(OFFLINE_PAGE);
+            })
+        },
         /*Strategies*/
-        networkOnlyStrategy: function(events){
-            var offlineCache = cachingStrategy.fetchFromCache(events)
-            return cachingStrategy.fetchnetwork(events, offlineCache)
-                    .catch(
+        networkOnlyStrategy: function(event){
+            return caches.open(CACHE_VERSIONS.content)
+                    .then(
+                        (cache) => {
+                           return fetch(event.request.clone()).then(function (response) {
+                                if(response.status < 300) {
+                                    if (~SUPPORTED_METHODS.indexOf(event.request.method) && !pwaForWpisBlackListed(event.request.url)) {
+                                        cache.put(event.request, response.clone());
+                                    }
+                                    return response;
+                                } else if(cache.match(event.request)){
+                                    return cache.match(event.request)
+                                } else {
+                                    return cachingStrategy.Offlinepage();
+                                }
+                              }).catch(
+                                (err) => {
+                                        return cachingStrategy.Offlinepage();
+                                    }
+                              )
+                        }
+                    ).catch(
                         (err) => {
-                           return offlineCache
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         },
         cacheFirstStrategy: function(events){
-            return cachingStrategy.fetchFromCache(events)
-                   .catch(
+            return cachingStrategy.fetchFromCache(events).catch(
                         (err) => {
-                            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                                return cache.match(OFFLINE_PAGE);
-                            })
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         },
         NeworkFirstStrategy: function(events){
-            var offlineCache = cachingStrategy.fetchFromCache(events)
-            return cachingStrategy.fetchnetwork(events, offlineCache)
-                    .catch(
+            return cachingStrategy.fetchnetwork(events).catch(
                         (err) => {
-                            return offlineCache
+                            return cachingStrategy.fetchFromCache(events)
+                        }
+                    ).catch(
+                        (err) => {
+                           return cachingStrategy.Offlinepage()
                         }
                     );
         }
@@ -510,6 +551,35 @@ self.addEventListener(
         );
     }
 );
+self.addEventListener('online', event => {
+    if (navigator.onLine && navigator.standalone === true) {
+        isReachable(event.request.url).then(function(online) {
+          if (online) {
+            //handle online status
+            caches.delete(event.request.url);
+            console.log('online');
+          } else {
+            console.log('no connectivity');
+          }
+        });
+    } else {
+        //handle offline status
+        console.log('offline');
+    }
+});
+function isReachable(url) {
+  /**
+   * Note: fetch() still "succeeds" for 404s on subdirectories,
+   * which is ok when only testing for domain reachability.
+   */
+  return fetch(url, { method: 'HEAD', mode: 'no-cors' })
+    .then(function(resp) {
+      return resp && (resp.ok || resp.type === 'opaque');
+    })
+    .catch(function(err) {
+      console.warn('[conn test failure]:', err);
+    });
+}
 
 self.addEventListener(
     'fetch', event => {
@@ -521,6 +591,9 @@ self.addEventListener(
         if(! neverCacheUrls.every(pwaForWpcheckNeverCacheList, event.request.referrer) ){
            //console.log( 'PWA ServiceWorker: Ref-URL exists in excluded list of cache.' + event.request.referrer);
             return;
+        }
+        if(pwaForWpisBlackListed(event.request.url)){
+            return;   
         }
         
         // Return if request url protocal isn't http or https
@@ -535,8 +608,16 @@ self.addEventListener(
         if (event.request.headers.get('range')) {
             fetchRengeData(event);
         } else {
-            //cachingStrategy.notGetMethods(event);
-             const destination = event.request.destination;
+            if(event.request.method !== 'GET' ){
+                event.respondWith(
+                    fetch(event.request)
+                        .catch(error => {
+                            return caches.match(offlinePage);
+                        })
+                );
+                return false;
+            }
+            const destination = event.request.destination;
             switch (destination) {
                 case 'style':
                 case 'script':
@@ -555,7 +636,6 @@ self.addEventListener(
                   cachingStrategyType = CACHE_STRATEGY.default
             }
             var cache = null;
-
             switch(cachingStrategyType){
                 case "networkFirst":
                    cache = cachingStrategy.NeworkFirstStrategy(event)

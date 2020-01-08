@@ -122,7 +122,7 @@ class pwaforwpFileCreation{
           
             if(isset($settings['enable_add_to_home_desktop_setting'])){
                 $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
-                                    if(a2hsdesk !== null){
+                                    if(a2hsdesk !== null && checkbarClosedOrNot()){
                                         a2hsdesk.style.display = "block";
                                     }'; 
                         
@@ -130,7 +130,7 @@ class pwaforwpFileCreation{
             }else{
                 $banner_on_desktop ='var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);   if(isMobile){                                                    
                                             var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
-                                                    if(a2hsdesk !== null){
+                                                    if(a2hsdesk !== null  && checkbarClosedOrNot()){
                                                         a2hsdesk.style.display = "block";
                                                     }   
                                         }';     
@@ -229,6 +229,9 @@ class pwaforwpFileCreation{
                 } 
                 
                 $addtohomeshortcode = apply_filters('pwaforwp_add_home_shortcode_modify', '');
+                $firebaseconfig = apply_filters('pwaforwp_pn_config', $firebaseconfig);
+                $useserviceworker = apply_filters('pwaforwp_pn_use_sw', $useserviceworker);
+
                                 
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
@@ -255,7 +258,8 @@ class pwaforwpFileCreation{
                                     $swHtmlContent);
                     
                     
-                }                                                
+                }        
+        $swHtmlContent = apply_filters("pwaforwp_sw_register_template", $swHtmlContent);
 		return $swHtmlContent;		    
     }
         
@@ -325,7 +329,7 @@ class pwaforwpFileCreation{
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
                 
-                if(!empty($store_post_id) && isset($settings['precaching_automatic'])){
+                if(!empty($store_post_id) && isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
                     
                     foreach ($store_post_id as $post_id){
                         
@@ -334,12 +338,12 @@ class pwaforwpFileCreation{
                        if ( function_exists('ampforwp_url_controller') ) {
 				
                            $pre_cache_urls_amp .= "'".ampforwp_url_controller(get_the_permalink($post_id)). "',\n"; 
-			}
+			                 }
                         
                         if (function_exists('amp_get_permalink')) {
 				
                            $pre_cache_urls_amp .= "'".amp_get_permalink($post_id). "',\n"; 
-			}
+                        }
                                                                                                                    
                     }
                 }
@@ -364,7 +368,7 @@ class pwaforwpFileCreation{
                     $cache_version = PWAFORWP_PLUGIN_VERSION;
                   }
                 }
-                if(isset($settings['offline_google_setting'])){
+                if(isset($settings['offline_google_setting']) && $settings['offline_google_setting']==1){
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
                                     workbox.googleAnalytics.initialize();';    
                 }
@@ -574,8 +578,8 @@ class pwaforwpFileCreation{
                 $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
                 $manifest['orientation']      = esc_html( $orientation );
-                $manifest['start_url']        = esc_url($homeUrl);
-                $manifest['scope']            = esc_url($scope_url);                             
+                $manifest['start_url']        = esc_url_raw($homeUrl);
+                $manifest['scope']            = esc_url_raw($scope_url);                             
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		

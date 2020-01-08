@@ -109,7 +109,7 @@ function pwaforwp_frontend_enqueue(){
             $config     = $settings['fcm_config'];
         }
                         
-         if(isset($pwaforwp_settings['notification_feature']) && $pwaforwp_settings['notification_feature']==1 && ($server_key !='' && $config !='')){             
+         if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && ($server_key !='' && $config !='')){             
                                                                          
             wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
 
@@ -146,7 +146,7 @@ function pwaforwp_frontend_enqueue(){
         }
         
 }
-add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue' );
+add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue', 35 );
 
 if(!function_exists('pwaforwp_is_admin')){
     
@@ -238,6 +238,8 @@ function pwaforwp_get_default_settings_array(){
         'default_caching_fonts' => 'cacheFirst',
         'on_add_post_notification_title' => '',
 
+    /*Push notification services*/
+        'notification_options'  => '',
     /*Features settings*/
         'notification_feature'  => 0,
         'precaching_feature'    => 0,
@@ -395,7 +397,7 @@ function pwaforwp_amp_takeover_status(){
     
        $amp_take_over = false;
         
-        if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )) {
+        if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) && !defined('AMP_WP_DIR_PATH')) {
          
             global $redux_builder_amp;
 
@@ -407,7 +409,7 @@ function pwaforwp_amp_takeover_status(){
                                 
             }else{
                 
-                if(function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() && is_front_page()||is_home() ){
+                if(function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() && (is_front_page()||is_home()) ){
                     $amp_take_over = true;
                 }
                 
