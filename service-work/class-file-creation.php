@@ -23,17 +23,26 @@ class pwaforwpFileCreation{
           }
 		        		
       $swHtmlContentbody          = $this->pwaforwp_getlayoutfiles("layouts/sw.html");
+      $settings                       = pwaforwp_defaultSettings();
                         
                         $swHtmlContent = '';
-                        
+                        /*Default Bar will be disabled if custom add to home banners are enabled*/
+                        $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+                        $swdefaultaddtohomebar = '';
+                        if($showPwaDefaultbar==1){
+                          $swdefaultaddtohomebar = "e.preventDefault();";
+                        }
                         if( isset($swHtmlContentbody) && $swHtmlContentbody){
                             $swHtmlContent                      = $swHtmlContentbody;
                             $swHtmlContent 			= str_replace(array(
                                                                   "{{serviceWorkerFile}}",
-                                                                  "{{scope_url}}"
+                                                                  "{{scope_url}}",
+                                                                  "{{swdefaultaddtohomebar}}"
                                                                   ), 
                                                                   array($ServiceWorkerfileName,
-                                                                    $scope_url), 
+                                                                    $scope_url,
+                                                                    $swdefaultaddtohomebar
+                                                                  ), 
                                                                   $swHtmlContent);
                         }                                                
 			

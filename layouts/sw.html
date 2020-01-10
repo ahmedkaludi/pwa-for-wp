@@ -11,6 +11,11 @@
                     console.log('ServiceWorker registration failed: ', err);
                 });			                			                                                                                                                                    
             };
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                {{swdefaultaddtohomebar}}
+                deferredPrompt = e;
+            }
         </script>
     </head>
     <body>
