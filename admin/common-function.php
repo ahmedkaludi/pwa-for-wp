@@ -529,7 +529,8 @@ function pwaforwp_query_var($key=''){
 
 function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
-  if ( false === ( $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ) ) ) {
+    $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ); 
+  if ( $restApiEnabled===false || empty($restApiEnabled) ) {
     $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
     $restApiEnabled = wp_remote_retrieve_response_code($response);
     set_transient( "pwaforwp_restapi_check", $restApiEnabled );
