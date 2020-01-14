@@ -988,11 +988,6 @@ function pwaforwp_push_notification_callback(){
 			$fcm_service_style = 'style="display:none;"';
     	}
     }
-    /*echo $selectedService;
-    echo "<br/>";
-    echo $pushnotifications_style;
-    echo "<br/>";
-    echo $fcm_service_style;die;*/
 
 
         ?>        
