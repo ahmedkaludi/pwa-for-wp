@@ -973,7 +973,7 @@ function pwaforwp_push_notification_callback(){
 	$selectedService = 'pushnotifications_io';
 	$pushnotifications_style = 'style="display:block;"';
 	$fcm_service_style = 'style="display:none;"'; 
-    if( (isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key'])) 
+    if( (isset($settings['fcm_server_key']) && !empty($settings['fcm_server_key']) && !isset($settings['notification_options'])) 
     	|| (isset($settings['notification_options']) && $settings['notification_options']=="fcm_push")
     ){
     	$selectedService = "fcm_push";
@@ -988,6 +988,13 @@ function pwaforwp_push_notification_callback(){
 			$fcm_service_style = 'style="display:none;"';
     	}
     }
+    /*echo $selectedService;
+    echo "<br/>";
+    echo $pushnotifications_style;
+    echo "<br/>";
+    echo $fcm_service_style;die;*/
+
+
         ?>        
         
         <div class="pwafowwp-server-key-section">
@@ -1075,7 +1082,7 @@ function pwaforwp_push_notification_callback(){
             	</div>
             </div>
         </div>
-        <div class="pwaforwp-notification-condition-section" <?php echo ( (isset($settings['fcm_server_key']) && $settings['fcm_server_key'] !='') ? 'style="display:block;"' : 'style="display:none;"'); ?>>
+        <div class="pwaforwp-notification-condition-section" <?php echo $fcm_service_style; ?> >
         <div>
             <h2><?php echo esc_html__('Send Notification On', 'pwa-for-wp') ?></h2>
             <table class="pwaforwp-push-notificatoin-table">
@@ -1764,7 +1771,8 @@ function pwaforwp_enqueue_style_js( $hook ) {
         add_thickbox();     
         include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
         wp_update_plugins();
-	
+        //wp_enqueue_script('thickbox', null, array('jquery'));
+
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
