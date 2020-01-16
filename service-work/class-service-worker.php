@@ -591,7 +591,7 @@ class PWAFORWP_Service_Worker{
                 
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
-	new PWAFORWP_Service_Worker;
+	$pwaServiceWorker = new PWAFORWP_Service_Worker;
     if( wp_doing_ajax() ){
         PWAFORWP_Service_Worker::loadalernative_script_load_method();
     }
