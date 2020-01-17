@@ -423,6 +423,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_disallow_data_tracking_setting',							// ID
+			esc_html__('Contribute to update', 'pwa-for-wp'),	// Title
+			'pwaforwp_disallow_data_tracking_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_section('pwaforwp_loaders_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -724,7 +731,33 @@ function pwaforwp_serve_cache_method_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
-	<p>Enable(check) it when PWA with OneSignal functionality not working because of Cache</p>
+	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal functionality not working because of Cache','pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_disallow_data_tracking_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	$allow_tracking = get_option( 'wisdom_allow_tracking' );
+	$plugin = basename( PWAFORWP_PLUGIN_FILE, '.php' );
+
+
+	if(isset($allow_tracking[$plugin])){
+		$url_no = add_query_arg( array(
+					'plugin' 		=> $plugin,
+					'plugin_action'	=> 'no'
+				) );
+	?>
+		<a href="<?php echo esc_url_raw( $url_no ); ?>" class="button-secondary"><?php echo esc_html__( 'Disallow', 'pwa-for-wp' ); ?></a>
+	<?php }else{
+		$yes_args = add_query_arg(array(
+					'plugin' 		=> $plugin,
+					'plugin_action'	=> 'yes'
+				));
+		?>
+		<a href="<?php echo esc_url_raw( $yes_args ); ?>" class="button-secondary"><?php echo esc_html__( 'Allow', 'pwa-for-wp' ); ?></a>
+	<?php }
+	?>
+	<p><?php echo esc_html__('We guarantee no sensitive data is collected', 'pwa-for-wp'); ?>. <a href="https://pwa-for-wp.com/docs/article/usage-data-tracking/"><?php echo esc_html__('Learn more', 'pwa-for-wp'); ?></a>.</p>
 	<?php
 }
 
