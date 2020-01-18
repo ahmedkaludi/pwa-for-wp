@@ -1712,7 +1712,7 @@ function checkStatus($swUrl){
         }	
     
 	if($manualfileSetup){
-		if(!pwaforwp_is_file_inroot()){
+		if( !pwaforwp_is_file_inroot() || is_multisite() ){
 			$response = wp_remote_get( esc_url_raw( $swUrl ) );
 			$response_code       = wp_remote_retrieve_response_code( $response );
 			$response_message = wp_remote_retrieve_response_message( $response );
