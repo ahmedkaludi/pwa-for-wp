@@ -252,6 +252,7 @@ class pwaforwpFileCreation{
                                                 "{{addtohomefunction}}",
                                                 "{{home_url}}",
                                                 "{{swdefaultaddtohomebar}}",
+                                                "{{HTML_DEFAULTCACHING}}"
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
@@ -263,6 +264,7 @@ class pwaforwpFileCreation{
                                                 $addtohomefunction,
                                                 $home_url,
                                                 $swdefaultaddtohomebar,
+                                                $settings['default_caching']
                                             ), 
                                     $swHtmlContent);
                     
