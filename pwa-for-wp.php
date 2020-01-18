@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3
-Version: 1.7.5
+Version: 1.7.6
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -27,7 +27,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 }
 if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
   function pwaforwp_start_plugin_tracking() {
-    $settings = get_option( 'pwaforwp_settings');
+    $settings = array('pwaforwp_settings' );
     $wisdom = new PWAFORWP_Plugin_Usage_Tracker(
       __FILE__,
       'https://data.ampforwp.com/pwaforwp',

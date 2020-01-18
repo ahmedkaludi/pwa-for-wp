@@ -213,7 +213,7 @@ function pwaforwp_settings_init(){
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle">'.esc_html__('PWA status verification', 'pwa-for-wp').' <a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
+	                    <span class="pwafw-help-subtitle">'.esc_html__('PWA status verification', 'pwa-for-wp').' <a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
 	                </span>', '__return_false', 'pwaforwp_dashboard_section');
 		// Manifest status
 		add_settings_field(
@@ -425,7 +425,7 @@ function pwaforwp_settings_init(){
 		);
 		add_settings_field(
 			'pwaforwp_disallow_data_tracking_setting',							// ID
-			esc_html__('Contribute to update', 'pwa-for-wp'),	// Title
+			esc_html__('Share Anonymous data for improving the UX', 'pwa-for-wp'),	// Title
 			'pwaforwp_disallow_data_tracking_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -445,7 +445,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_caching_strategies_setting',							// ID
 			'<h2>'.esc_html__('Caching Strategies', 'pwa-for-wp').'
 			<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle">Caching preferences <a href="'.esc_url('https://pwa-for-wp.com/docs/article/what-is-caching-strategies-in-pwa-and-how-to-use-it/').'">Learn more</a></span>
+	                    <span class="pwafw-help-subtitle">Caching preferences <a href="'.esc_url('https://pwa-for-wp.com/docs/article/what-is-caching-strategies-in-pwa-and-how-to-use-it/').'" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
 	                </span>
 			</h2>',	// Title
 			'pwaforwp_caching_strategies_setting_callback',							// CB
@@ -740,24 +740,24 @@ function pwaforwp_disallow_data_tracking_setting_callback(){
 	$allow_tracking = get_option( 'wisdom_allow_tracking' );
 	$plugin = basename( PWAFORWP_PLUGIN_FILE, '.php' );
 
+	$checked = "";$tracker_url = '';
 
+	$live_url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	if(isset($allow_tracking[$plugin])){
-		$url_no = add_query_arg( array(
+		$checked = "checked";
+		$tracker_url = $url_no = add_query_arg( array(
 					'plugin' 		=> $plugin,
-					'plugin_action'	=> 'no'
-				) );
-	?>
-		<a href="<?php echo esc_url_raw( $url_no ); ?>" class="button-secondary"><?php echo esc_html__( 'Disallow', 'pwa-for-wp' ); ?></a>
-	<?php }else{
-		$yes_args = add_query_arg(array(
+					'plugin_action'	=> 'no',
+				), $live_url);
+	}else{
+		$tracker_url = $yes_args = add_query_arg(array(
 					'plugin' 		=> $plugin,
 					'plugin_action'	=> 'yes'
-				));
-		?>
-		<a href="<?php echo esc_url_raw( $yes_args ); ?>" class="button-secondary"><?php echo esc_html__( 'Allow', 'pwa-for-wp' ); ?></a>
-	<?php }
+				), $live_url);
+	}
 	?>
-	<p><?php echo esc_html__('We guarantee no sensitive data is collected', 'pwa-for-wp'); ?>. <a href="https://pwa-for-wp.com/docs/article/usage-data-tracking/"><?php echo esc_html__('Learn more', 'pwa-for-wp'); ?></a>.</p>
+	<input type="checkbox" <?php echo $checked; ?> onclick="window.location = '<?php echo $tracker_url; ?>'">
+	<p><?php echo esc_html__('We guarantee no sensitive data is collected', 'pwa-for-wp'); ?>. <a target="_blank" href="https://pwa-for-wp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__('Learn more', 'pwa-for-wp'); ?></a>.</p>
 	<?php
 }
 
@@ -1595,7 +1595,7 @@ function pwaforwp_files_status_callback(){
                    $file_headers = true;
                   	if(!pwaforwp_is_enabled_pwa_wp()){
 	                    $swUrl = esc_url(pwaforwp_manifest_json_url());
-	                    $file_headers = @checkStatus($swUrl);
+	                    $file_headers = @pwaforwp_checkStatus($swUrl);
 	                }
                   	if(!$file_headers) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
@@ -1611,7 +1611,7 @@ function pwaforwp_files_status_callback(){
                   	$file_headers = true;
                   	if(!pwaforwp_is_enabled_pwa_wp()){
 	                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
-	                    $file_headers = @checkStatus($swUrl);
+	                    $file_headers = @pwaforwp_checkStatus($swUrl);
 	                }
                     if(!$file_headers) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
@@ -1636,7 +1636,7 @@ function pwaforwp_files_status_callback(){
                       if(!pwaforwp_is_enabled_pwa_wp()){
 	                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
 	                      $swUrl = service_workerUrls($swUrl, $swFile);
-	                      $file_headers = @checkStatus($swUrl);
+	                      $file_headers = @pwaforwp_checkStatus($swUrl);
 	                  }
                     if(!$file_headers) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
@@ -1654,7 +1654,7 @@ function pwaforwp_files_status_callback(){
                     if(!pwaforwp_is_enabled_pwa_wp()){
 	                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
 	                    $swUrl = service_workerUrls($swUrl, $swFile);
-	                    $file_headers = @checkStatus($swUrl);
+	                    $file_headers = @pwaforwp_checkStatus($swUrl);
                     }  
                     
                     if(!$file_headers) {
@@ -1693,7 +1693,7 @@ function pwaforwp_files_status_callback(){
 function pwaforwp_amp_status_callback(){
     	        
         $swUrl        = esc_url(site_url()."/sw".pwaforwp_multisite_postfix().".js");
-	$file_headers = @checkStatus($swUrl);	
+	$file_headers = @pwaforwp_checkStatus($swUrl);	
         
 	if(!$file_headers) {
 		printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p>' );
@@ -1702,7 +1702,7 @@ function pwaforwp_amp_status_callback(){
 	}
 }
 
-function checkStatus($swUrl){
+function pwaforwp_checkStatus($swUrl){
     
         $settings = pwaforwp_defaultSettings();
         $manualfileSetup = "";
@@ -2157,7 +2157,7 @@ function pwaforwp_features_settings(){
 		if(isset($featureVal['tooltip_option'])) {
 			$tooltipHtml = '<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
 	            <span class="pwafw-help-subtitle">%5$s
-	            '.(isset($featureVal['tooltip_link']) && !empty($featureVal['tooltip_link'])? '<a href="'.esc_url($featureVal['tooltip_link']).'">Learn More</a>': '').'
+	            '.(isset($featureVal['tooltip_link']) && !empty($featureVal['tooltip_link'])? '<a href="'.esc_url($featureVal['tooltip_link']).'" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a>': '').'
 	            </span>
 	        </span>';
 	    }
