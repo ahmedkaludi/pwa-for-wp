@@ -90,7 +90,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			// If not, then tracking is allowed
 			if( ! $this->require_optin ) {
 				$this->set_can_collect_email( true, $this->plugin_name );
-				//$this->set_is_tracking_allowed( true );
+				$this->set_is_tracking_allowed( true );
 				$this->update_block_notice();
 				$this->do_tracking();
 			}
@@ -633,10 +633,10 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$plugin = sanitize_text_field( $_GET['plugin'] );
 				$action = sanitize_text_field( $_GET['plugin_action'] );
 				if( $action == 'yes' ) {
-					//$this->set_is_tracking_allowed( true, $plugin );
+					$this->set_is_tracking_allowed( true, $plugin );
 					$this->do_tracking( true ); // Run this straightaway
 				} else {
-					//$this->set_is_tracking_allowed( false, $plugin );
+					$this->set_is_tracking_allowed( false, $plugin );
 				}
 				$this->update_block_notice( $plugin );
 			}
@@ -700,8 +700,8 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$notice_text = apply_filters( 'wisdom_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
 
 				<div class="notice notice-info updated put-dismiss-notice">
-					<p><?php echo '<strong>Love using Schema & Structured Data for WP & AMP?</strong>'; ?></p>
-					<p><?php echo esc_html( $notice_text ); ?> <a href="https://structured-data-for-wp.com/docs/article/how-to-set-up-schema-for-local-business/" target="_blank"><?php echo esc_html__( 'Learn more.', 'singularity' ); ?></a></p>
+					<p><?php echo '<strong>Love using PWA for WP & AMP?</strong>'; ?></p>
+					<p><?php echo esc_html( $notice_text ); ?> <a href="https://pwa-for-wp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__( 'Learn more.', 'singularity' ); ?></a></p>
 					<p>
 						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php echo _e( 'Sure! I\'d love to help', 'singularity' ); ?></a>&nbsp;&nbsp;
 						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php echo _e( 'No thanks', 'singularity' ); ?></a>

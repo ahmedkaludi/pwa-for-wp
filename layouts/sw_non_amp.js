@@ -1,5 +1,15 @@
                                  var swsource = "{{swfile}}";                                          
                                  {{config}}                                 
+              function PWAforwpreadCookie(name) {
+                  var nameEQ = name + "=";
+                  var ca = document.cookie.split(";");
+                  for(var i=0;i < ca.length;i++) {
+                      var c = ca[i];
+                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
+                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                  }
+                  return null;
+              }
 			         if("serviceWorker" in navigator) {
                                      window.addEventListener('load', function() {			         		
 			                navigator.serviceWorker.register(swsource, {scope: '{{home_url}}'}).then(function(reg){                                                                                        
@@ -47,16 +57,7 @@
                   }
                   return true;
               }
-              function PWAforwpreadCookie(name) {
-                  var nameEQ = name + "=";
-                  var ca = document.cookie.split(";");
-                  for(var i=0;i < ca.length;i++) {
-                      var c = ca[i];
-                      while (c.charAt(0)==" ") c = c.substring(1,c.length);
-                      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-                  }
-                  return null;
-              }
+              
               // Safari 3.0+ "[object HTMLElementConstructor]" 
               var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
               if( isSafari ){
@@ -139,4 +140,13 @@
                                                      });
 			                             }  
                                                      
-                                                     
+    var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if((window.matchMedia('(display-mode: standalone)').matches) || (window.matchMedia('(display-mode: fullscreen)').matches) || (isSafari && iOS && window.navigator.standalone ) ){
+      if(PWAforwpreadCookie('reloadInAPP')!='Yes' && '{{HTML_DEFAULTCACHING}}'=='networkFirst'){
+        var date = new Date();
+        date.setTime(date.getTime() + (30 * 1000));
+        document.cookie = "reloadInAPP=Yes;expires= "+date.toGMTString();
+        window.location.reload();
+      }
+    }
