@@ -68,9 +68,9 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed   : After Selection of pushnotification.io also shows options of FCM if user previously using FCM integration #304
 * Improvement : AMP proper support with pushnotification.io version 1.6 support #303 
 * Resolved    : Wordpress Multi site always show Service worker status "Click here to setup" #298
-* Fixed       : Refresh the content when default strategy is Network first from Inside APP first opening
+* Fixed       : Refresh the content when default strategy is Network first from Inside APP first opening #306
 * Added       : Option to user can stop or allow to share data #297
-* Resolved	  : Add to Home screen custom banner is not showing in Samsung default browsers(Dependent on PWA Support > 10.89.13.21) #296
+* Resolved	  : Add to Home screen custom banner is not showing in Samsung default browsers(PWA Support Dependent) #296
 
 = 1.7.5 (11 January 2020) =
 * Bug Fixed : PWA CTA bar shows behind default browser banner due in AMP #275
