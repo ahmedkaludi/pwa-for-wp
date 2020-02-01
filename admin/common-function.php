@@ -284,6 +284,7 @@ function pwaforwp_defaultSettings(){
     if($cdnUrl){
         $pwaforwp_settings['external_links_setting'] = 1;
     }
+    $pwaforwp_settings = apply_filters("pwaforwp_final_settings_vals",$pwaforwp_settings);
 	return $pwaforwp_settings;
         
 }

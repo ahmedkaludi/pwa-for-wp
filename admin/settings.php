@@ -604,21 +604,8 @@ function pwaforwp_premium_features_callback(){
          
          $tabs      = '';
          $container = '';
-         
-         foreach($add_on_list as $key => $on){
-                          
-             if(is_plugin_active($on['p-slug']) && isset($on['p-tab']) && $on['p-tab']==true){
-                                  
-                 $tabs .=' <span data-tab-id="pwaforwp-'.$key.'">'.$on['p-name'].'</span> |'; 
-                 $container .= '<div class="pwaforwp-ext-container pwaforwp-hide" id="pwaforwp-'.$key.'">'
-                            . apply_filters('pwaforwp_add_ons_options',$key)  
-                            .'<p><a target="_blank" href="http://pwa-for-wp.com/docs">View Documentation</a></p>'
-                            . '</div>';
-                                 
-             }
-             
-             
-         }
+         $tabs = apply_filters("pwaforwp_premium_features_tabs", $tabs);
+         $container = apply_filters("pwaforwp_premium_features_tabs", $container);
          
         ?> 
         <div class="pwaforwp-subheading-wrap">
@@ -2117,6 +2104,15 @@ function pwaforwp_features_settings(){
 									'enable_field' => 'loader_feature',
 									'section_name' => 'pwaforwp_loaders_setting_section',
 									'setting_title' => 'Loader',
+									),
+				'calltoaction'	=> array(
+									'enable_field' => 'call_to_action',
+									'section_name' => 'pwaforwp_call_to_action_setting_section',
+									'setting_title' => 'Call to action',
+									'is_premium'	=> true,
+									'pro_link'		=> $addonLists['ctafp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (isset($allplugins[$addonLists['ctafp']['p-slug']]) && !is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
 									),
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
