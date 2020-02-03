@@ -79,7 +79,7 @@ class pwaforwpFileCreation{
         
         $settings                       = pwaforwp_defaultSettings();
         $server_key = $config = '';
-        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 ){
+        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push'){
           $server_key                   = $settings['fcm_server_key'];
           $config                       = $settings['fcm_config'];
         }
