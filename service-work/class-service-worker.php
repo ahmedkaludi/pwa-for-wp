@@ -421,7 +421,7 @@ class PWAFORWP_Service_Worker{
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
              
-             wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
+             wp_register_script( "pwa-main-script", esc_url_raw($url), array('jquery','thickbox'), PWAFORWP_PLUGIN_VERSION, true );
             wp_enqueue_script( "pwa-main-script");     
             //echo '<script src="'.esc_url($url).'"></script>'; 
                

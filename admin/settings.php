@@ -2138,7 +2138,7 @@ function pwaforwp_features_settings(){
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
 			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap '.$key.'-wrap-tb">';
 				do_settings_sections( $featureVal['section_name'] );
-				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
+				echo '<div class="footer tab_view_submitbtn" style=""><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
 		echo '</div>';
 		$settingsHtml = $tooltipHtml = $warnings = '';

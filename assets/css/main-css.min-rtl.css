@@ -142,15 +142,16 @@ and open the template in the editor.
     text-decoration: none;
 }
 .pwaforwp-sts-btn{
-    box-sizing: border-box;    
-    margin-top: 37px;
+    box-sizing: border-box;
+    margin-top: 15px;
     padding: 11px 11px;
     border: 1px solid #e5e5e5;
     border-radius: 3px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
+    width: 100%;
 }
 .pwaforwp-ext-active span{
     vertical-align: sub;
@@ -230,13 +231,15 @@ and open the template in the editor.
 .pwaforwp-upgrade-pro {
     background: #fff;
     top: 32px;
-    padding: 30px 25px;
+    padding: 30px;
     border: 1px solid #cecece;
     display: inline-block;
     color: #111;
     margin-top: 10px;
     border-radius: 8px;
     position: relative;
+    box-sizing: border-box;
+    width:100%;
 }
 .pwaforwp-upgrade-pro h2 {
     margin: 0;
@@ -278,6 +281,46 @@ and open the template in the editor.
     letter-spacing: 1px;
     border-radius: 5px;
 }
+/** Promo code CSS **/
+.pwaforwp-upgrade-pro.promo-cpn{
+    box-sizing: border-box;
+    border: 1px solid #558B2F;
+}
+.pwaforwp-upgrade-pro.promo-cpn h2{
+    color: #2E7D32;
+    font-size: 24px;
+    text-align: center;
+    margin: 0px 0px 20px 0px;
+}
+.pwaforwp-upgrade-pro.promo-cpn span{
+    text-align: center;
+    font-size: 14px;
+    display: inline-block;
+    color: #777;
+    padding: 0px 20px;
+    box-sizing: border-box;
+    line-height: 1.4;
+    font-weight: 400;
+}
+.pwa-promo{
+    font-size: 20px;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+}
+.pwaforwp-upgrade-pro.promo-cpn .pwa-promo .prm-cpn{
+    border: 1px dashed #1B5E20;
+    border-radius: 100px;
+    margin-top: 5px;
+    color: #388E3C;
+    font-size: 20px;
+    padding: 2px 15px 2px 15px;
+}
+.pwaforwp-upgrade-pro.promo-cpn .prm-txt{
+    display: block;
+    line-height: 1;
+}
+
 
 /*TOOltip*/
 
@@ -574,4 +617,11 @@ margin-top: 25px;
 }
 .pwaforwp-feature-cards li.pwaforwp-card-wrap .deactivated{
     background: #989696;
+}
+.pwaforwp-center{
+    text-align: center;
+}
+.tab_view_submitbtn{
+    position: fixed;
+    bottom: 50px;right: 0;left: 0;margin: 0 auto;text-align: center;
 }
