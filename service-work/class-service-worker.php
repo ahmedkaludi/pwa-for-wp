@@ -448,10 +448,9 @@ class PWAFORWP_Service_Worker{
                 $this->iosSplashScreen();
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif; 
-		    if(isset($settings['icon']) && !empty($settings['icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
-		    }
                     
 		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
@@ -479,10 +478,9 @@ class PWAFORWP_Service_Worker{
             $this->iosSplashScreen();
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif; 
-			if(isset($settings['icon']) && !empty($settings['icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
-		    }
 		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
 		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
 		    }
