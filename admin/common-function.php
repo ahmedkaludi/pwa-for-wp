@@ -5,10 +5,13 @@ function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
     if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
-        
+        $color = (isset($settings['loading_icon_color']) && !empty($settings['loading_icon_color']))? $settings['loading_icon_color'] : '';
+        $color_style = '';
+        if($color){
+            $color_style = 'style="border-top-color: '.$color.'"';
+        }
         echo '<div id="pwaforwp_loading_div"></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
-        
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.$color_style.'></div></div>');
     }
         
 }
@@ -264,6 +267,9 @@ function pwaforwp_get_default_settings_array(){
         'precaching_automatic_custom_post'=> 0,
         'precaching_manual'    => 0, 
         'precaching_urls'    => '', 
+    /*loader icon*/
+        'loading_icon'      => 0,
+        'loading_icon_color'=> '#3498db',
 	);
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
