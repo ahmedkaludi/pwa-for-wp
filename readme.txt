@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.6
+Stable tag: 1.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.7 (04 February 2020) =
+* Improvement : Moved Call to action options in Features tabs #313
+* Bug Fixed   : In background service worker when Push notifications is Selected and FCM keys are filled then also only one of either settings should be loaded in PWA not both. #326
+* Resolved    : Features tab modal design issue like contents goes out, submit button not shows #328
+* Added 	  : Option to change color of the 'loader icons' #312
+* Added 	  : Added apple-touch-icon-precomposed rel link in head tag for apple app icon #321
+
 = 1.7.6 (18 January 2020) =
 * Resolved    : Fatal error of Cannot redeclare checkStatus() function #297
 * Bug Fixed   : After Selection of pushnotification.io also shows options of FCM if user previously using FCM integration #304
