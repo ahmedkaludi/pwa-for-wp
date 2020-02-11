@@ -65,10 +65,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.7 (04 February 2020) =
 * Improvement : Moved Call to action options in Features tabs #313
-* Bug Fixed   : In background service worker when Push notifications is Selected and FCM keys are filled then also only one of either settings should be loaded in PWA not both. #326
+* Bug Fixed   : In background service worker when Push notifications are Selected and FCM keys are filled then also only one of either setting should be loaded in PWA, not both. #326
 * Resolved    : Features tab modal design issue like contents goes out, submit button not shows #328
 * Added 	  : Option to change color of the 'loader icons' #312
-* Added 	  : Added apple-touch-icon-precomposed rel link in head tag for apple app icon #321
+* Added 	  : Added apple-touch-icon-precomposed rel link in the head tag for apple app icon #321
 
 = 1.7.6 (18 January 2020) =
 * Resolved    : Fatal error of Cannot redeclare checkStatus() function #297
