@@ -7,7 +7,6 @@ if(pwaforwp_is_mobile() && pwaforwp_js_obj.loader_mobile=="1"){
 }else if(pwaforwp_js_obj.loader_desktop=="1"){
   showLoader  = true;
 }
-console.log(showLoader);
 if(showLoader){
   window.addEventListener("beforeunload", function(){
     if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
@@ -46,7 +45,6 @@ jQuery(document).ready(function($){
   }else if(pwaforwp_js_obj.loader_desktop=="1"){
     showLoader  = true;
   }
-  console.log(showLoader);
   if(showLoader){
     var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
     var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
