@@ -552,11 +552,20 @@ function pwaforwp_query_var($key=''){
 
 function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
+  $multisite_postfix = pwaforwp_multisite_postfix();
+  $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
+  if($is_amp){
+    $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
+  }
+  if($fileCheck){
+    $restApiEnabled = 400;
+  }else{
     $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ); 
-  if ( $restApiEnabled===false || empty($restApiEnabled) ) {
-    $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
-    $restApiEnabled = wp_remote_retrieve_response_code($response);
-    set_transient( "pwaforwp_restapi_check", $restApiEnabled );
+    if ( $restApiEnabled===false || empty($restApiEnabled) ) {
+        $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
+        $restApiEnabled = wp_remote_retrieve_response_code($response);
+        set_transient( "pwaforwp_restapi_check", $restApiEnabled );
+    }
   }
 
   if($restApiEnabled==200){
