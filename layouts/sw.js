@@ -440,6 +440,8 @@ let cachingStrategy = {
                                         cache.put(event.request, response.clone());
                                     }
                                         return response;
+                                }else if(response.status==404){
+                                    return cachingStrategy.Notfoundpage();
                                 } else if( cache.match(event.request) ){
                                     return cache.match(event.request);
                                 }else {
@@ -470,6 +472,11 @@ let cachingStrategy = {
                 return cache.match(OFFLINE_PAGE);
             })
         },
+        Notfoundpage: function(){
+            return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
+                return cache.match(NOT_FOUND_PAGE);
+            })
+        },
         /*Strategies*/
         networkOnlyStrategy: function(event){
             return caches.open(CACHE_VERSIONS.content)
@@ -481,6 +488,8 @@ let cachingStrategy = {
                                         cache.put(event.request, response.clone());
                                     }
                                     return response;
+                                }else if(response.status==404){
+                                    return cachingStrategy.Notfoundpage();
                                 } else if(cache.match(event.request)){
                                     return cache.match(event.request)
                                 } else {
