@@ -445,6 +445,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_loaders_setting_section',						// Page slug
 			'pwaforwp_loaders_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_loading_display_option_setting',							// ID
+			esc_html__('Loader enable on', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_display_setting_callback',							// CB
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
+		);
         do_action("pwaforwp_loading_icon_libraries", 'pwaforwp_loaders_setting_section');
 
                 
@@ -973,6 +980,19 @@ function pwaforwp_loading_color_setting_callback(){
     $settings = pwaforwp_defaultSettings(); ?>
     <input type="text" name="pwaforwp_settings[loading_icon_color]" id="pwaforwp_settings[loading_icon_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['loading_icon_color'] ) ? sanitize_hex_color( $settings['loading_icon_color']) : '#3498db'; ?>" data-default-color="#3498db">
 	<p><?php echo esc_html__('Change the icon color of loader', 'pwa-for-wp'); ?></p><?php
+}
+function pwaforwp_loading_display_setting_callback(){	
+    $settings = pwaforwp_defaultSettings(); 
+    if(!isset($settings['loading_icon_display_desktop']) && $settings['loading_icon']==1){
+    	$settings['loading_icon_display_desktop'] = 1;
+    }
+    if(!isset($settings['loading_icon_display_mobile']) && $settings['loading_icon']==1){
+    	$settings['loading_icon_display_mobile'] = 1;
+    }
+    ?>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_desktop]" id="pwaforwp_settings[loading_icon_display_desktop]" class="" value="1" <?php echo isset( $settings['loading_icon_display_desktop'] ) && $settings['loading_icon_display_desktop']==1 ? 'checked' : ''; ?> >Desktop</label>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_mobile]" id="pwaforwp_settings[loading_icon_display_mobile]" class="" value="1" <?php echo isset( $settings['loading_icon_display_mobile'] ) && $settings['loading_icon_display_mobile']==1 ? 'checked' : ''; ?> >Mobile</label>
+    <?php
 }
 
 function pwaforwp_cache_external_links_setting_callback(){
@@ -1523,11 +1543,11 @@ function pwaforwp_custom_add_to_home_callback(){
         <?php if(isset( $settings['custom_add_to_home_setting'] ) &&  $settings['custom_add_to_home_setting'] == 1) {  ?>
         <div class="pwaforwp-enable-on-desktop">
             <input type="checkbox" name="pwaforwp_settings[enable_add_to_home_desktop_setting]" id="enable_add_to_home_desktop_setting" class="" <?php echo (isset( $settings['enable_add_to_home_desktop_setting'] ) &&  $settings['enable_add_to_home_desktop_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><strong><?php echo esc_html__('Enable On Desktop', 'pwa-for-wp'); ?></strong>
-            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
+            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device, to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
         </div>
         <?php }else{ ?>
         <div class="afw_hide pwaforwp-enable-on-desktop"><input type="checkbox" name="pwaforwp_settings[enable_add_to_home_desktop_setting]" id="enable_add_to_home_desktop_setting" class="" <?php echo (isset( $settings['enable_add_to_home_desktop_setting'] ) &&  $settings['enable_add_to_home_desktop_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><strong><?php echo esc_html__('Enable On Desktop', 'pwa-for-wp'); ?></strong>
-            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
+            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device, to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
         </div>
         <?php } ?>
 	<?php

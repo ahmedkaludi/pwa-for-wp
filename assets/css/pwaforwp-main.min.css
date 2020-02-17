@@ -79,6 +79,7 @@ left: 0;
 background-color: white;
 z-index: 500;
 }
+.pwaforwp-loading-wrapper{display:none;}
 #pwaforwp_loading_icon {
   position: fixed;
   left: 50%;
