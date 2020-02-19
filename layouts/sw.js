@@ -633,6 +633,8 @@ self.addEventListener(
                   cachingStrategyType = CACHE_STRATEGY.css_js;
                   break;
                 case 'document':
+                  cachingStrategyType = CACHE_STRATEGY.default
+                  break;
                 case 'image': 
                     cachingStrategyType = CACHE_STRATEGY.images;
                   break;
