@@ -130,7 +130,7 @@ function pwaforwp_frontend_enqueue(){
                   
         if( (isset($settings['loading_icon']) && $settings['loading_icon']==1) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
             
-            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
             
             $loader_desktop = $loader_mobile = 0;
             //For desktop
@@ -552,11 +552,14 @@ function pwaforwp_query_var($key=''){
 
 function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
+  $fileCheck = false;
   $multisite_postfix = pwaforwp_multisite_postfix();
-  $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
-  if($is_amp){
-    $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
-  }
+  if(!is_admin() && !is_multisite()){
+      $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
+      if($is_amp){
+        $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
+      }
+   }
   if($fileCheck){
     $restApiEnabled = 400;
   }else{
