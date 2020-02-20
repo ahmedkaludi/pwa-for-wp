@@ -65,7 +65,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.8.1 (19 February 2020) =
 * Bug Fixed	  : Html cannot fetch properly #342
-* Bug Fixed   : manifest not working with multisite after performace resolve #341
+* Bug Fixed   : manifest not working with multisite after performance resolve #341
 
 = 1.7.8 (17 February 2020) =
 * Resolved	  : Remove JQuery dependency from Front-end #330
