@@ -79,7 +79,7 @@ class pwaforwpFileCreation{
         
         $settings                       = pwaforwp_defaultSettings();
         $server_key = $config = '';
-        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 ){
+        if( isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push'){
           $server_key                   = $settings['fcm_server_key'];
           $config                       = $settings['fcm_config'];
         }
@@ -383,14 +383,16 @@ class pwaforwpFileCreation{
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
                                     workbox.googleAnalytics.initialize();';    
                 }
-                                                
-                $server_key = $settings['fcm_server_key'];
-                $config     = $settings['fcm_config'];
                 
-                if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && $server_key !='' && $config !=''){
-                 $firebasejs = $this->pwaforwp_firebase_js();  
-                }else{
-                 $firebasejs = '';    
+                $firebasejs = '';
+                if(isset($settings['notification_options']) && $settings['notification_options']=='fcm_push'
+                 && isset($settings['notification_feature']) && $settings['notification_feature']==1
+                ){                                
+                  $server_key = $settings['fcm_server_key'];
+                  $config     = $settings['fcm_config'];
+                  if( $server_key !='' && $config !=''){
+                    $firebasejs = $this->pwaforwp_firebase_js();  
+                  }
                 }
                                 
                 $site_url 		= user_trailingslashit(pwaforwp_https( site_url() ));  

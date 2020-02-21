@@ -438,6 +438,20 @@ function pwaforwp_settings_init(){
 			'pwaforwp_loaders_setting_section',						// Page slug
 			'pwaforwp_loaders_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_loading_color_setting',							// ID
+			esc_html__('Loader color', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_color_setting_callback',							// CB
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
+			'pwaforwp_loading_display_option_setting',							// ID
+			esc_html__('Loader enable on', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_display_setting_callback',							// CB
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
+		);
         do_action("pwaforwp_loading_icon_libraries", 'pwaforwp_loaders_setting_section');
 
                 
@@ -604,21 +618,8 @@ function pwaforwp_premium_features_callback(){
          
          $tabs      = '';
          $container = '';
-         
-         foreach($add_on_list as $key => $on){
-                          
-             if(is_plugin_active($on['p-slug']) && isset($on['p-tab']) && $on['p-tab']==true){
-                                  
-                 $tabs .=' <span data-tab-id="pwaforwp-'.$key.'">'.$on['p-name'].'</span> |'; 
-                 $container .= '<div class="pwaforwp-ext-container pwaforwp-hide" id="pwaforwp-'.$key.'">'
-                            . apply_filters('pwaforwp_add_ons_options',$key)  
-                            .'<p><a target="_blank" href="http://pwa-for-wp.com/docs">View Documentation</a></p>'
-                            . '</div>';
-                                 
-             }
-             
-             
-         }
+         $tabs = apply_filters("pwaforwp_premium_features_tabs", $tabs);
+         $container = apply_filters("pwaforwp_premium_features_tabs", $container);
          
         ?> 
         <div class="pwaforwp-subheading-wrap">
@@ -975,6 +976,24 @@ function pwaforwp_loading_setting_callback(){
         
 	<?php
 }
+function pwaforwp_loading_color_setting_callback(){	
+    $settings = pwaforwp_defaultSettings(); ?>
+    <input type="text" name="pwaforwp_settings[loading_icon_color]" id="pwaforwp_settings[loading_icon_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['loading_icon_color'] ) ? sanitize_hex_color( $settings['loading_icon_color']) : '#3498db'; ?>" data-default-color="#3498db">
+	<p><?php echo esc_html__('Change the icon color of loader', 'pwa-for-wp'); ?></p><?php
+}
+function pwaforwp_loading_display_setting_callback(){	
+    $settings = pwaforwp_defaultSettings(); 
+    if(!isset($settings['loading_icon_display_desktop']) && $settings['loading_icon']==1){
+    	$settings['loading_icon_display_desktop'] = 1;
+    }
+    if(!isset($settings['loading_icon_display_mobile']) && $settings['loading_icon']==1){
+    	$settings['loading_icon_display_mobile'] = 1;
+    }
+    ?>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_desktop]" id="pwaforwp_settings[loading_icon_display_desktop]" class="" value="1" <?php echo isset( $settings['loading_icon_display_desktop'] ) && $settings['loading_icon_display_desktop']==1 ? 'checked' : ''; ?> >Desktop</label>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_mobile]" id="pwaforwp_settings[loading_icon_display_mobile]" class="" value="1" <?php echo isset( $settings['loading_icon_display_mobile'] ) && $settings['loading_icon_display_mobile']==1 ? 'checked' : ''; ?> >Mobile</label>
+    <?php
+}
 
 function pwaforwp_cache_external_links_setting_callback(){
 	// Get Settings
@@ -1083,7 +1102,7 @@ function pwaforwp_push_notification_callback(){
 
             			$activate_url ='';
             			$class = 'not-exist';
-            			if(file_exists( PWAFORWP_PLUGIN_DIR."/../'push-notification/push-notification.php'") && !is_plugin_active('push-notification/push-notification.php') ){
+            			if(file_exists( PWAFORWP_PLUGIN_DIR."/../push-notification/push-notification.php") && !is_plugin_active('push-notification/push-notification.php') ){
             				//plugin deactivated
             				$class = 'pushnotification';
             				$plugin = 'push-notification/push-notification.php';
@@ -1524,11 +1543,11 @@ function pwaforwp_custom_add_to_home_callback(){
         <?php if(isset( $settings['custom_add_to_home_setting'] ) &&  $settings['custom_add_to_home_setting'] == 1) {  ?>
         <div class="pwaforwp-enable-on-desktop">
             <input type="checkbox" name="pwaforwp_settings[enable_add_to_home_desktop_setting]" id="enable_add_to_home_desktop_setting" class="" <?php echo (isset( $settings['enable_add_to_home_desktop_setting'] ) &&  $settings['enable_add_to_home_desktop_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><strong><?php echo esc_html__('Enable On Desktop', 'pwa-for-wp'); ?></strong>
-            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
+            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device, to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
         </div>
         <?php }else{ ?>
         <div class="afw_hide pwaforwp-enable-on-desktop"><input type="checkbox" name="pwaforwp_settings[enable_add_to_home_desktop_setting]" id="enable_add_to_home_desktop_setting" class="" <?php echo (isset( $settings['enable_add_to_home_desktop_setting'] ) &&  $settings['enable_add_to_home_desktop_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1"><strong><?php echo esc_html__('Enable On Desktop', 'pwa-for-wp'); ?></strong>
-            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
+            <p><?php echo esc_html__('Note: By default pop up will appear on mobile device, to appear on desktop check enable on desktop', 'pwa-for-wp'); ?></p>
         </div>
         <?php } ?>
 	<?php
@@ -2118,6 +2137,15 @@ function pwaforwp_features_settings(){
 									'section_name' => 'pwaforwp_loaders_setting_section',
 									'setting_title' => 'Loader',
 									),
+				'calltoaction'	=> array(
+									'enable_field' => 'call_to_action',
+									'section_name' => 'pwaforwp_call_to_action_setting_section',
+									'setting_title' => 'Call to action',
+									'is_premium'	=> true,
+									'pro_link'		=> $addonLists['ctafp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (isset($allplugins[$addonLists['ctafp']['p-slug']]) && !is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									),
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
 									'section_name' => 'pwaforwp_data_analytics_setting_section',
@@ -2142,7 +2170,7 @@ function pwaforwp_features_settings(){
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
 			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap '.$key.'-wrap-tb">';
 				do_settings_sections( $featureVal['section_name'] );
-				echo '<div class="footer"><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
+				echo '<div class="footer tab_view_submitbtn" style=""><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
 			echo '</div>';
 		echo '</div>';
 		$settingsHtml = $tooltipHtml = $warnings = '';

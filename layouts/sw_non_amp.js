@@ -138,15 +138,4 @@
                                                          
                                                         }                                                                                                                                                               
                                                      });
-			                             }  
-                                                     
-    var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
-    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if((window.matchMedia('(display-mode: standalone)').matches) || (window.matchMedia('(display-mode: fullscreen)').matches) || (isSafari && iOS && window.navigator.standalone ) ){
-      if(PWAforwpreadCookie('reloadInAPP')!='Yes' && '{{HTML_DEFAULTCACHING}}'=='networkFirst'){
-        var date = new Date();
-        date.setTime(date.getTime() + (30 * 1000));
-        document.cookie = "reloadInAPP=Yes;expires= "+date.toGMTString();
-        window.location.reload();
-      }
-    }
+			                             }

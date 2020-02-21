@@ -621,3 +621,7 @@ margin-top: 25px;
 .pwaforwp-center{
     text-align: center;
 }
+.tab_view_submitbtn{
+    position: fixed;
+    bottom: 50px;left: 0;right: 0;margin: 0 auto;text-align: center;
+}

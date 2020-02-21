@@ -5,10 +5,13 @@ function pwaforwp_loading_icon() {
     
     $settings = pwaforwp_defaultSettings();
     if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
-        
+        $color = (isset($settings['loading_icon_color']) && !empty($settings['loading_icon_color']))? $settings['loading_icon_color'] : '';
+        $color_style = '';
+        if($color){
+            $color_style = 'style="border-top-color: '.$color.'"';
+        }
         echo '<div id="pwaforwp_loading_div"></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"></div></div>');
-        
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.$color_style.'></div></div>');
     }
         
 }
@@ -109,9 +112,9 @@ function pwaforwp_frontend_enqueue(){
             $config     = $settings['fcm_config'];
         }
                         
-         if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && ($server_key !='' && $config !='')){             
+         if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push' && ($server_key !='' && $config !='')){             
                                                                          
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
               'ajax_url'                  => admin_url( 'admin-ajax.php' ),
@@ -125,14 +128,30 @@ function pwaforwp_frontend_enqueue(){
             
          }  
                   
-        if(isset($settings['loading_icon']) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
+        if( (isset($settings['loading_icon']) && $settings['loading_icon']==1) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
             
-            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array('jquery'), PWAFORWP_PLUGIN_VERSION, true); 
-         
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+            
+            $loader_desktop = $loader_mobile = 0;
+            //For desktop
+            if(isset($settings['loading_icon_display_desktop'])):
+                $loader_desktop = $settings['loading_icon_display_desktop'];
+            elseif(isset($settings['loading_icon']) && $settings['loading_icon']==1) ://Falback for old users
+                $loader_desktop = 1;
+            endif;
+
+            //For mobile
+            if(isset($settings['loading_icon_display_mobile'])):
+                $loader_mobile = $settings['loading_icon_display_mobile'];
+            elseif(isset($settings['loading_icon']) && $settings['loading_icon']==1) ://Falback for old users
+                $loader_mobile = 1;
+            endif;
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
               'pwa_home_url'   => pwaforwp_home_url(),  
+              'loader_desktop' => $loader_desktop,
+              'loader_mobile'  => $loader_mobile,
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
@@ -264,6 +283,9 @@ function pwaforwp_get_default_settings_array(){
         'precaching_automatic_custom_post'=> 0,
         'precaching_manual'    => 0, 
         'precaching_urls'    => '', 
+    /*loader icon*/
+        'loading_icon'      => 0,
+        'loading_icon_color'=> '#3498db',
 	);
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
@@ -284,6 +306,7 @@ function pwaforwp_defaultSettings(){
     if($cdnUrl){
         $pwaforwp_settings['external_links_setting'] = 1;
     }
+    $pwaforwp_settings = apply_filters("pwaforwp_final_settings_vals",$pwaforwp_settings);
 	return $pwaforwp_settings;
         
 }
@@ -529,11 +552,23 @@ function pwaforwp_query_var($key=''){
 
 function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
+  $fileCheck = false;
+  $multisite_postfix = pwaforwp_multisite_postfix();
+  if(!is_admin() && !is_multisite()){
+      $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
+      if($is_amp){
+        $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
+      }
+   }
+  if($fileCheck){
+    $restApiEnabled = 400;
+  }else{
     $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ); 
-  if ( $restApiEnabled===false || empty($restApiEnabled) ) {
-    $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
-    $restApiEnabled = wp_remote_retrieve_response_code($response);
-    set_transient( "pwaforwp_restapi_check", $restApiEnabled );
+    if ( $restApiEnabled===false || empty($restApiEnabled) ) {
+        $response = wp_remote_get( rest_url( 'pwa-for-wp/v2/pwa-manifest-json' ) );
+        $restApiEnabled = wp_remote_retrieve_response_code($response);
+        set_transient( "pwaforwp_restapi_check", $restApiEnabled );
+    }
   }
 
   if($restApiEnabled==200){
