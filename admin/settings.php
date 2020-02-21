@@ -2092,7 +2092,7 @@ function pwaforwp_show_premium_options($section){
 		);
 }
 function pwaforwp_loading_icon_premium_callback(){
-	echo sprintf("%s <a href='%s'>%s</a>",
+	echo sprintf("%s <a target='_blank' href='%s'>%s</a>",
 			esc_html__('This feature requires', 'pwa-for-wp'),
 			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
 			esc_html__("Loading Icon Library for PWA extension", 'pwa-for-wp')
