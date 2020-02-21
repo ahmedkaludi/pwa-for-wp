@@ -2140,7 +2140,7 @@ function pwaforwp_features_settings(){
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',
 									'section_name' => 'pwaforwp_call_to_action_setting_section',
-									'setting_title' => 'Call to action',
+									'setting_title' => 'Call To Action',
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['ctafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
