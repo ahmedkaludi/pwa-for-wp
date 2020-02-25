@@ -1209,6 +1209,15 @@ function pwaforwp_push_notification_callback(){
 			                   
                         </th>  
                         <td></td>
+                    </tr>
+                    <tr>
+                        <th>
+                        	Image Url:<br/>
+                        	<input style="width: 100%" placeholder="Image URL" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
+                            <br>
+			                   
+                        </th>  
+                        <td></td>
                     </tr>   
                     <tr>
                         <th>Message:<br/><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>

@@ -57,7 +57,14 @@
                  notificationTitle = payload.data.title;
                     notificationOptions = {
                     body: payload.data.body,
-                    icon: payload.data.icon
+                    icon: payload.data.icon,
+                    image: payload.data.image,
+                    vibrate: [100, 50, 100],
+                    data: {
+                        dateOfArrival: Date.now(),
+                        primarykey: payload.data.primarykey,
+                        url : payload.data.url
+                      },
                     }
                     var notification = new Notification(notificationTitle, notificationOptions); 
                         notification.onclick = function(event) {
