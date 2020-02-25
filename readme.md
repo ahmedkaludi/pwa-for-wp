@@ -63,7 +63,7 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.9 (19 February 2020) =
+= 1.7.9 (25 February 2020) =
 * Added	  	  : Added Image field in send push notification #342
 * Added	  	  : In Notification while create or update post featured image will send as big image #342
 * Improvement : Minor code improvement
