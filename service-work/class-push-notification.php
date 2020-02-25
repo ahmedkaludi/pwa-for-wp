@@ -108,6 +108,11 @@ class pushNotification{
                     
                     $message['body']  = get_the_title($post)."\n".get_permalink ($post);
                     $message['url']   = get_permalink ($post);
+                    $image_url = '';
+                    if(has_post_thumbnail($post)){
+                      $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
+                    }
+                    $message['image_url']   =  $image_url;
                     $this->pwaforwp_send_push_notification($message);
 
                     break;
@@ -208,7 +213,7 @@ class pushNotification{
                     'icon'  => (isset($settings['fcm_push_icon'])? esc_attr( $settings['fcm_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
                     'url'  => $message['url'],
                     'primarykey'  => uniqid(),
-                    'image' => $message['image_url'],
+                    'image' => isset($message['image_url'])? $message['image_url'] : '',
             ];             
             $payload = [
                     'registration_ids' => $tokens,
