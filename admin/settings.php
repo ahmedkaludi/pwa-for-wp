@@ -589,8 +589,19 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Pull to Refresh for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pull-to-refresh-for-pwa.png',
-                    'p-background-color'=> '#7d8c92',
+                    'p-background-color'=> '#336363',
                     'p-desc' => 'Pull to Refresh for PWA extension help users to refresh the page inside PWA app',
+                    'p-tab'	 => false
+         ),
+         'spbfp'  => array(
+                    'p-slug' => 'scroll-progress-bar-for-pwa/scroll-progress-bar-for-pwa.php',
+                    'p-name' => 'Scroll Progress Bar for PWA',
+                    'p-short-prefix'=> 'SPBFP',
+                    'p-title' => 'Scroll Progress Bar for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/scroll-progress-bar-for-pwa.png',
+                    'p-background-color'=> '#3e3e3e',
+                    'p-desc' => 'Scroll Progress Bar for PWA extension indicator to display the current reading position',
                     'p-tab'	 => false
          ),
      );
@@ -766,7 +777,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="50" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
+        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -1205,6 +1216,15 @@ function pwaforwp_push_notification_callback(){
                         <th>
                         	Redirection Url Onclick of notification:<br/>
                         	<input style="width: 100%" placeholder="URL" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo pwaforwp_home_url(); ?>">
+                            <br>
+			                   
+                        </th>  
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>
+                        	Image Url:<br/>
+                        	<input style="width: 100%" placeholder="Image URL" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
                             <br>
 			                   
                         </th>  
@@ -2092,7 +2112,7 @@ function pwaforwp_show_premium_options($section){
 		);
 }
 function pwaforwp_loading_icon_premium_callback(){
-	echo sprintf("%s <a href='%s'>%s</a>",
+	echo sprintf("%s <a target='_blank' href='%s'>%s</a>",
 			esc_html__('This feature requires', 'pwa-for-wp'),
 			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
 			esc_html__("Loading Icon Library for PWA extension", 'pwa-for-wp')
@@ -2163,6 +2183,15 @@ function pwaforwp_features_settings(){
                                     'pro_link'      => $addonLists['ptrfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    ),
+				'progressbar' => array(
+                                    'enable_field' => 'scroll_progress_bar',
+                                    'section_name' => 'pwaforwp_scroll_progress_bar_setting_section',
+                                    'setting_title' => 'Scroll Progress Bar',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['spbfp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     ),
 								);
 	$featuresHtml = '';

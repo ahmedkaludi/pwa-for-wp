@@ -228,7 +228,7 @@ jQuery(document).ready(function($){
                         }
                         });
         }else{
-            if($.trim(message) =='' && customer ==''){
+            if(jQuery.trim(message) =='' && customer ==''){
                 alert('Please enter the message and select customer type');
             }else{
             
@@ -313,6 +313,7 @@ jQuery(document).ready(function($){
         var message = jQuery("#pwaforwp_notification_message").val(); 
         var pn_title   = jQuery("#pwaforwp_notification_message_title").val(); 
         var pn_url   = jQuery("#pwaforwp_notification_message_url").val(); 
+        var pn_image_url   = jQuery("#pwaforwp_notification_message_image_url").val(); 
             
             if(jQuery.trim(message) !=''){
                 
@@ -320,7 +321,7 @@ jQuery(document).ready(function($){
                         type: "POST",    
                         url: ajaxurl,                    
                         dataType: "json",
-                        data:{action:"pwaforwp_send_notification_manually", message:message, title:pn_title, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce,url:pn_url},
+                        data:{action:"pwaforwp_send_notification_manually", message:message, title:pn_title, pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce,url:pn_url, image_url: pn_image_url},
                         success:function(response){                                 
                           if(response['status'] =='t'){
                                 var html = '<span style="color:green">Success: '+response['success']+'</span><br>';
@@ -563,7 +564,7 @@ jQuery(document).ready(function($){
         }
         var opt = jQuery(this).attr('data-option');
         var optTitle = jQuery(this).attr('title');
-        tb_show(optTitle, "#TB_inline?width=750&height=450&inlineId="+opt);
+        tb_show(optTitle, "#TB_inline?width=740&height=450&inlineId="+opt);
         datafeatureSubmit(opt);
     });
 
