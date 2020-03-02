@@ -7,16 +7,17 @@ class PWAforWP_wppwa{
 			$wp_web_app_manifest = new WP_Web_App_Manifest();
 			add_action( 'amp_post_template_head', array( $wp_web_app_manifest, 'manifest_link_and_meta' ) );
 
-		}
-		add_filter("web_app_manifest", array($this, 'manifest_submit'), 10, 1);
-		add_action( 'wp_front_service_worker', array( $this, 'add_cdn_script_caching' ) );
-		add_action("wp", array($this, 'remove_all_pwa_wp_actions'));
-		if(defined('AMPFORWP_VERSION')){
-			add_filter( 'query_vars', [ __CLASS__, 'add_query_var' ] );
-			
-			add_action( 'parse_request', [ __CLASS__, 'handle_service_worker_iframe_install' ] );
-			add_action( 'wp', [ __CLASS__, 'add_install_hooks' ] );
-			add_action( 'wp_front_service_worker', [ __CLASS__, 'add_amp_cdn_script_caching' ] );
+		
+			add_filter("web_app_manifest", array($this, 'manifest_submit'), 10, 1);
+			add_action( 'wp_front_service_worker', array( $this, 'add_cdn_script_caching' ) );
+			add_action("wp", array($this, 'remove_all_pwa_wp_actions'));
+			if(defined('AMPFORWP_VERSION')){
+				add_filter( 'query_vars', [ __CLASS__, 'add_query_var' ] );
+				
+				add_action( 'parse_request', [ __CLASS__, 'handle_service_worker_iframe_install' ] );
+				add_action( 'wp', [ __CLASS__, 'add_install_hooks' ] );
+				add_action( 'wp_front_service_worker', [ __CLASS__, 'add_amp_cdn_script_caching' ] );
+			}
 		}
 	}
 	public function remove_all_pwa_wp_actions(){
