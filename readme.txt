@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.3
-Stable tag: 1.7.9
+Stable tag: 1.7.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -36,7 +36,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Set Device Orientation easily.
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/) and [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/) and [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/) and [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/) extensions
 
 **We Act Fast on Feedback!**
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
@@ -63,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.9.1 (2 March 2020) =
+* Improvement : Minor bug fixes
+
 = 1.7.9 (25 February 2020) =
 * Added	  	  : Added Image field in send push notification #342
 * Added	  	  : In Notification while create or update post featured image will send as big image #342
