@@ -1830,6 +1830,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	if ( !is_admin() ) {
 		return;
 	}	
+	if($hook!='toplevel_page_pwaforwp'){return ; }
 	// Color picker CSS
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
         wp_enqueue_style( 'wp-color-picker' );	
