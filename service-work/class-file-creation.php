@@ -144,7 +144,10 @@ class pwaforwpFileCreation{
                                                     }   
                                         }';     
             }                                                        
-           $addtohomebanner ='var lastScrollTop = 0;                                        
+            if(isset($settings['show_banner_without_scroll']) && $settings['show_banner_without_scroll']==1){
+              $addtohomebanner = $banner_on_desktop;
+            }else{
+              $addtohomebanner ='var lastScrollTop = 0;                                        
                               window.addEventListener("scroll", (evt) => {
                                 var st = document.documentElement.scrollTop;
                                 var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
@@ -186,7 +189,7 @@ class pwaforwpFileCreation{
                                     addToHome();	
                                 });
                                 }';  
-           
+           }
                                 
         }else{
            $addtohomebanner ='';                   
