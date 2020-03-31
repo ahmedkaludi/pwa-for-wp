@@ -30,7 +30,8 @@ function pwaforwp_reset_all_settings(){
         }
         
         $default = pwaforwp_get_default_settings_array();                        
-        $result  = update_option('pwaforwp_settings', $default);   
+        $result  = update_option('pwaforwp_settings', $default);
+        delete_transient('pwaforwp_restapi_check');   
         
         if($result){    
             
