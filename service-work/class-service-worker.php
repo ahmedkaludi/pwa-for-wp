@@ -175,8 +175,8 @@ class PWAFORWP_Service_Worker{
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
                     || (
-                     (isset($path_info['extension']) && ($path_info['extension']!='js' || $path_info['extension']!='html') ) 
-                        && !in_array($fileRawName , array( 'pwa-amp-sw.html', 'pwa-amp-sw-html' ))
+                     (isset($path_info['extension']) && ($path_info['extension']!=='js' && $path_info['extension']!=='html')) 
+                        
                         )
                 ) {
                     status_header( 304 );
