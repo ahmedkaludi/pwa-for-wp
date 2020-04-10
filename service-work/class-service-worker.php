@@ -98,8 +98,7 @@ class PWAFORWP_Service_Worker{
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
                     || (
-                     (isset($path_info['extension']) && $path_info['extension']!='js') 
-                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
+                     (isset($path_info['extension']) && ($path_info['extension']!=='js' && $path_info['extension']!=='html')) 
                         )
                 ) {
                     status_header( 304 );
@@ -175,8 +174,8 @@ class PWAFORWP_Service_Worker{
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
                     || (
-                     (isset($path_info['extension']) && ($path_info['extension']!=='js' && $path_info['extension']!=='html')) 
-                        
+                     (isset($path_info['extension']) && $path_info['extension']!='js') 
+                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
                         )
                 ) {
                     status_header( 304 );
