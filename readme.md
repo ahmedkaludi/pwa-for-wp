@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.3
-Stable tag: 1.7.9.3.1
+Tested up to: 5.4
+Stable tag: 1.7.9.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.9.3.1 (15 APRIL 2020) =
+* Bug Fixed	  : Custom banners close not working on static scroll banner #357
+
 = 1.7.9.3.1 (31 March 2020) =
 * Bug Fixed   : Security patch: Service worker file read permission updated
 
