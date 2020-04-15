@@ -63,7 +63,7 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.9.3.1 (15 APRIL 2020) =
+= 1.7.9.3.2 (15 APRIL 2020) =
 * Bug Fixed	  : Custom banners close not working on static scroll banner #357
 
 = 1.7.9.3.1 (31 March 2020) =
