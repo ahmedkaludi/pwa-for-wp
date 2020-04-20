@@ -604,6 +604,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'Scroll Progress Bar for PWA extension indicator to display the current reading position',
                     'p-tab'	 => false
          ),
+         'ptafp'  => array(
+                    'p-slug' => 'pwa-to-apk-plugin/pwa-to-apk-plugin.php',
+                    'p-name' => 'PWA to APK Plugin',
+                    'p-short-prefix'=> 'PTAFP',
+                    'p-title' => 'PWA to APK Plugin',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-apk-plugin.png',
+                    'p-background-color'=> '#3e3e3e',
+                    'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2202,6 +2213,15 @@ function pwaforwp_features_settings(){
                                     'pro_link'      => $addonLists['spbfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
+                                    ),
+				'pwatoapkplugin' => array(
+                                    'enable_field' => 'pwa_to_apk_plugin',
+                                    'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
+                                    'setting_title' => 'PWA to APK plugin',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptafp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     ),
 								);
 	$featuresHtml = '';
