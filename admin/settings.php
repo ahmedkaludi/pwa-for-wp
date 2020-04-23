@@ -2391,8 +2391,8 @@ function pwaforwp_deactivate_update_transient($plugin){
 * @param Array $old_value previous values
 * @param Array $new_value new updated values of save
 */
-add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 2);
-function pwaforwp_resize_images( $old_value, $new_value ){
+add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 3);
+function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 	
 	if( isset($new_value['ios_splash_icon']['2048x1496']) && !empty($new_value['ios_splash_icon']['2048x1496']) && strrpos($new_value['ios_splash_icon']['2048x1496'], 'uploads/') ){
 		$uploadPath = wp_upload_dir();
