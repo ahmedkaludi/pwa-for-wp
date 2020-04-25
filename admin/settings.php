@@ -611,7 +611,7 @@ function pwaforwp_list_addons(){
                     'p-title' => 'PWA to APK Plugin',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-apk-plugin.png',
-                    'p-background-color'=> '#3e3e3e',
+                    'p-background-color'=> '#afa173',
                     'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
                     'p-tab'	 => false
          ),
