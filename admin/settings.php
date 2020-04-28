@@ -620,6 +620,7 @@ function pwaforwp_list_addons(){
 }
 function pwaforwp_addons_is_active(){
 	$add_on_list = pwaforwp_list_addons();
+	$add_on_list['pwa_pro'] = array('p-slug' => 'pwa-pro-extension-manager/pwa-pro-extension-manager.php');
 	$ext_is_there = false;
 	foreach($add_on_list as $key => $on){
          if(is_plugin_active($on['p-slug'])){
