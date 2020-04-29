@@ -1851,6 +1851,24 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	if ( !is_admin() ) {
 		return;
 	}	
+
+	wp_register_script('pwaforwp-all-page-js', PWAFORWP_PLUGIN_URL . 'assets/js/all-page-script.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
+        
+        $object_name = array(
+            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            'uploader_title'            => esc_html('Application Icon', 'pwa-for-wp'),
+            'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
+            'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
+            'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+            'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')
+        );
+        
+        $object_name = apply_filters('pwaforwp_localize_filter',$object_name,'pwaforwp_obj');
+        
+        wp_localize_script('pwaforwp-all-page-js', 'pwaforwp_obj', $object_name);
+        wp_enqueue_script('pwaforwp-all-page-js');
+
+
 	if($hook!='toplevel_page_pwaforwp'){return ; }
 	// Color picker CSS
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
