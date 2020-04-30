@@ -665,3 +665,10 @@ function pwaforwp_is_enabled_pwa_wp(){
     return false;
     
 }
+
+function pwa_for_wp_is_user_logged_in() {
+    echo is_user_logged_in()?'yes':'no';
+    die();
+}
+add_action('wp_ajax_pwa_for_wp_is_user_logged_in', 'pwa_for_wp_is_user_logged_in');
+add_action('wp_ajax_nopriv_pwa_for_wp_is_user_logged_in', 'pwa_for_wp_is_user_logged_in');
