@@ -63,7 +63,7 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.11 (02 MAY 2020) =
+= 1.7.11.1 (02 MAY 2020) =
 * minor update
 
 = 1.7.11 (02 MAY 2020) =
