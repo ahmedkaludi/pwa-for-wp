@@ -68,6 +68,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed	  : APP Icons and other data should be load in last. #362
 * Bug Fixed   : window is not UX friendly added scroll css to show scroll bar #361
 * Bug Fixed   : Added more sanitization to block sql injection in alternative method of Service worker serve #376 #364
+* Bug Fixed   : preview not loading in elementor in edit mode #373
 
 = 1.7.10 (25 APRIL 2020) =
 * Bug Fixed	  : Removed debug notice

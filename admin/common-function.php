@@ -98,7 +98,7 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function pwaforwp_frontend_enqueue(){
-    if ( \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
+    if ( class_exists('\Elementor\Plugin') && \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
                                
         $server_key = $config = '';
         
