@@ -71,10 +71,10 @@ class PWAFORWP_Service_Worker{
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                $fileRawName = $filename =  $_GET[pwaforwp_query_var('sw_file_var')];
+                $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
-                    $site_id = $_GET[ pwaforwp_query_var('site_id_var') ];
+                    $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
@@ -98,8 +98,7 @@ class PWAFORWP_Service_Worker{
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
                     || (
-                     (isset($path_info['extension']) && $path_info['extension']!='js') 
-                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
+                     (isset($path_info['extension']) && ($path_info['extension']!=='js' && $path_info['extension']!=='html')) 
                         )
                 ) {
                     status_header( 304 );
@@ -149,10 +148,10 @@ class PWAFORWP_Service_Worker{
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                $fileRawName = $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                $fileRawName = $filename = sanitize_file_name( $query->get( pwaforwp_query_var('sw_file_var') ) );
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
-                    $site_id = $query->get( pwaforwp_query_var('site_id_var') );
+                    $site_id = sanitize_text_field( $query->get( pwaforwp_query_var('site_id_var') ) );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');   
@@ -175,8 +174,7 @@ class PWAFORWP_Service_Worker{
                 $path_info = pathinfo($filename);
                 if ( !isset($path_info['extension']) 
                     || (
-                     (isset($path_info['extension']) && $path_info['extension']!='js') 
-                        && !in_array($fileRawName , array( 'pwa-amp-sw.html'|| 'pwa-amp-sw-html' ))
+                     (isset($path_info['extension']) && ($path_info['extension']!=='js' && $path_info['extension']!=='html')) 
                         )
                 ) {
                     status_header( 304 );
@@ -238,14 +236,14 @@ class PWAFORWP_Service_Worker{
                 
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1);                
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99);                
                 
             }else{
                 
                if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
                  add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35);    
-                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
+                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),99);  
                  
                } 
                
@@ -356,14 +354,14 @@ class PWAFORWP_Service_Worker{
             
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-            add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+            add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
             
         }
         public function pwaforwp_automattic_amp_entry_point(){  
             if ( pwaforwp_is_automattic_amp() ) {
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
             }
             
         }
@@ -371,7 +369,7 @@ class PWAFORWP_Service_Worker{
             if ( function_exists('is_amp_endpoint') && is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
                 add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'));
                 amp_wp_enqueue_script( 'amp-install-serviceworker', 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js' );
-                add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),20); 
+                add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
             }
             
         }	        

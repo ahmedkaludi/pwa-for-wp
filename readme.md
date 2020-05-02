@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.3
-Stable tag: 1.7.9.3
+Tested up to: 5.4.1
+Stable tag: 1.7.11.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -36,7 +36,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Set Device Orientation easily.
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/) and [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/) and [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/) extensions
 
 **We Act Fast on Feedback!**
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
@@ -63,6 +63,25 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.11.1 (02 MAY 2020) =
+* minor update
+
+= 1.7.11 (02 MAY 2020) =
+* Bug Fixed	  : Resolve multiple time occurrence issue with review message #360
+* Bug Fixed	  : APP Icons and other data should be load in last. #362
+* Bug Fixed   : window is not UX friendly added scroll css to show scroll bar #361
+* Bug Fixed   : Added more sanitization to block sql injection in alternative method of Service worker serve #376 #364
+* Bug Fixed   : preview not loading in elementor in edit mode #373
+
+= 1.7.10 (25 APRIL 2020) =
+* Bug Fixed	  : Removed debug notice
+
+= 1.7.9.3.2 (15 APRIL 2020) =
+* Bug Fixed	  : Custom banners close not working on static scroll banner #357
+
+= 1.7.9.3.1 (31 March 2020) =
+* Bug Fixed   : Security patch: Service worker file read permission updated
+
 = 1.7.9.3 (19 March 2020) =
 * Added	  	  : Add to Home screen banner for No scroll view website #346
 * Bug Fixed   : Fixed Upload Theme button in Appearance. #350

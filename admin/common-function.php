@@ -30,7 +30,8 @@ function pwaforwp_reset_all_settings(){
         }
         
         $default = pwaforwp_get_default_settings_array();                        
-        $result  = update_option('pwaforwp_settings', $default);   
+        $result  = update_option('pwaforwp_settings', $default);
+        delete_transient('pwaforwp_restapi_check');   
         
         if($result){    
             
@@ -97,6 +98,7 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function pwaforwp_frontend_enqueue(){
+    if ( class_exists('\Elementor\Plugin') && \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
                                
         $server_key = $config = '';
         

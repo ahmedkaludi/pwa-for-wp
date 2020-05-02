@@ -604,11 +604,23 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'Scroll Progress Bar for PWA extension indicator to display the current reading position',
                     'p-tab'	 => false
          ),
+         'ptafp'  => array(
+                    'p-slug' => 'pwa-to-apk-plugin/pwa-to-apk-plugin.php',
+                    'p-name' => 'PWA to APK Plugin',
+                    'p-short-prefix'=> 'PTAFP',
+                    'p-title' => 'PWA to APK Plugin',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-apk-plugin.png',
+                    'p-background-color'=> '#afa173',
+                    'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
 function pwaforwp_addons_is_active(){
 	$add_on_list = pwaforwp_list_addons();
+	$add_on_list['pwa_pro'] = array('p-slug' => 'pwa-pro-extension-manager/pwa-pro-extension-manager.php');
 	$ext_is_there = false;
 	foreach($add_on_list as $key => $on){
          if(is_plugin_active($on['p-slug'])){
@@ -1839,6 +1851,24 @@ function pwaforwp_enqueue_style_js( $hook ) {
 	if ( !is_admin() ) {
 		return;
 	}	
+
+	wp_register_script('pwaforwp-all-page-js', PWAFORWP_PLUGIN_URL . 'assets/js/all-page-script.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
+        
+        $object_name = array(
+            'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+            'uploader_title'            => esc_html('Application Icon', 'pwa-for-wp'),
+            'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
+            'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
+            'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+            'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')
+        );
+        
+        $object_name = apply_filters('pwaforwp_localize_filter',$object_name,'pwaforwp_obj');
+        
+        wp_localize_script('pwaforwp-all-page-js', 'pwaforwp_obj', $object_name);
+        wp_enqueue_script('pwaforwp-all-page-js');
+
+
 	if($hook!='toplevel_page_pwaforwp'){return ; }
 	// Color picker CSS
 	// @refer https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
@@ -2203,6 +2233,15 @@ function pwaforwp_features_settings(){
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     ),
+				'pwatoapkplugin' => array(
+                                    'enable_field' => 'pwa_to_apk_plugin',
+                                    'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
+                                    'setting_title' => 'PWA to APK plugin',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptafp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    ),
 								);
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
@@ -2371,8 +2410,8 @@ function pwaforwp_deactivate_update_transient($plugin){
 * @param Array $old_value previous values
 * @param Array $new_value new updated values of save
 */
-add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 2);
-function pwaforwp_resize_images( $old_value, $new_value ){
+add_action('update_option_pwaforwp_settings', 'pwaforwp_resize_images', 10, 3);
+function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 	
 	if( isset($new_value['ios_splash_icon']['2048x1496']) && !empty($new_value['ios_splash_icon']['2048x1496']) && strrpos($new_value['ios_splash_icon']['2048x1496'], 'uploads/') ){
 		$uploadPath = wp_upload_dir();

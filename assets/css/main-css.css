@@ -623,5 +623,27 @@ margin-top: 25px;
 }
 .tab_view_submitbtn{
     position: fixed;
+    border-top: 1px solid #3333;
+    padding-top: 21px;
     bottom: 50px;left: 0;right: 0;margin: 0 auto;text-align: center;
 }
+
+/***TO show Scroll bar*/
+#TB_ajaxContent::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+#TB_ajaxContent::-webkit-scrollbar:vertical {
+    width: 12px;
+}
+#TB_ajaxContent::-webkit-scrollbar:horizontal {
+    height: 12px;
+}
+#TB_ajaxContent::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+}
+#TB_ajaxContent::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ffffff;
+}ssss
