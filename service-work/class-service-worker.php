@@ -71,10 +71,10 @@ class PWAFORWP_Service_Worker{
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                $fileRawName = $filename =  $_GET[pwaforwp_query_var('sw_file_var')];
+                $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
-                    $site_id = $_GET[ pwaforwp_query_var('site_id_var') ];
+                    $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
@@ -148,10 +148,10 @@ class PWAFORWP_Service_Worker{
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                $fileRawName = $filename = $query->get( pwaforwp_query_var('sw_file_var') );
+                $fileRawName = $filename = sanitize_file_name( $query->get( pwaforwp_query_var('sw_file_var') ) );
                 if($filename == 'dynamic_onesignal'){//work with onesignal only
                     $home_url = pwaforwp_home_url();
-                    $site_id = $query->get( pwaforwp_query_var('site_id_var') );
+                    $site_id = sanitize_text_field( $query->get( pwaforwp_query_var('site_id_var') ) );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
                     
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');   
