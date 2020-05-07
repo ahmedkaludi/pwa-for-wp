@@ -1108,7 +1108,7 @@ function pwaforwp_push_notification_callback(){
             </table>                   
             <div class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
             	<div class="notification-banner" style="width:90%">
-            			<?php if(class_exists('Push_Notification_Frontend')){ 
+            			<?php if(class_exists('Push_Notification_Admin')){ 
             				$auth_settings = push_notification_auth_settings();
             				if(!isset($auth_settings['user_token'])){
             					echo '<div class="pwaforwp-center"><p>This feature requires to setup Push Notification </p> <a href="'.esc_url_raw(admin_url('admin.php?page=push-notification')).'" target="_blank" class="button button-primary">'.esc_html__('Go to setup', 'pwa-for-wp').'</a></div>';
