@@ -29,7 +29,7 @@
                         var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
                         if(a2hsviashortcode !== null){
                             for (var i = 0; i < a2hsviashortcode.length; i++) {
-                              a2hsviashortcode[i].style.display="block"; 
+                              a2hsviashortcode[i].style.display="inline-block"; 
                           }
                         }
                         
@@ -64,7 +64,7 @@
                 var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
                   if(a2hsviashortcode !== null){
                       for (var i = 0; i < a2hsviashortcode.length; i++) {
-                        a2hsviashortcode[i].style.display="block"; 
+                        a2hsviashortcode[i].style.display="inline-block"; 
                     }
                   }
                   
