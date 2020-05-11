@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.4.1
-Stable tag: 1.7.11.1
+Stable tag: 1.7.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.12 (11 MAY 2020) =
+* Bug Fixed	  : pwa menu is enabled the menu gets aligned to full width #377
+* Bug Fixed	  : pwa Pushnotification.io after installation go to settings link #377
+* Improvement : pwa Endpoint changes #368
+* Bug Fixed	  : Custom add to home screen banner should not appear if it in IOs #382
+
 = 1.7.11.1 (02 MAY 2020) =
 * minor update
 
