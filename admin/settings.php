@@ -521,7 +521,9 @@ function pwaforwp_addon_html(){
 	       $ctafp_active_text =  pwaforwp_get_license_section_html($plugin['p-short-prefix']);                                         
 	    }else{                                            
 	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
-	       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+	       if(!class_exists('PWAFORWPPROExtensionManager')){
+		       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+		   }
 	    }	
 	    $pluginHtml .= '<div class="pwaforwp-ext-wrap">
                 <div class="pwafowp-feature-ext">    
