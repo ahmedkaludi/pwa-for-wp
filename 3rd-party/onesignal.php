@@ -38,7 +38,7 @@ function pwaforwp_use_custom_manifest($action = null){
         
     }
     //update own settings
-    $get_pwaforwp_options   = get_option('pwaforwp_settings');
+    $get_pwaforwp_options   = pwaforwp_defaultSettings();
     $get_pwaforwp_options['one_signal_support_setting'] = 1;
     update_option('pwaforwp_settings', $get_pwaforwp_options);  
     

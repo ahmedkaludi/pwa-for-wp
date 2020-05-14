@@ -296,19 +296,24 @@ function pwaforwp_get_default_settings_array(){
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }
-$pwaforwp_settings;
+$pwaforwp_settings = array();
 function pwaforwp_defaultSettings(){
     
 	global $pwaforwp_settings;
+	if(count($pwaforwp_settings)==0){
         $defaults = pwaforwp_get_default_settings_array();
-	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
-    $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+        $pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+        $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+    }
 
     //Fallback for features tab
     $pwaforwp_settings = pwaforwp_migration_setup_fetures($pwaforwp_settings);
 
     //autoptimize cdn compatibility
-    $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    $cdnUrl = false;
+    if(function_exists('autoptimize_autoload')){
+        $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    }
     if($cdnUrl){
         $pwaforwp_settings['external_links_setting'] = 1;
     }
