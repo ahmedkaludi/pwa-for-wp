@@ -236,14 +236,16 @@ class PWAFORWP_Service_Worker{
                 
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99);                
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1);                
+                add_action('wp_head',array($this, 'apple_icons_support'),99);                
                 
             }else{
                 
                if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
                    
                  add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35);    
-                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),99);  
+                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
+                 add_action('wp_head',array($this, 'apple_icons_support'),99);  
                  
                } 
                
@@ -354,14 +356,16 @@ class PWAFORWP_Service_Worker{
             
             add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-            add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
+            add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+            add_action('amp_post_template_head',array($this, 'apple_icons_support'),99); 
             
         }
         public function pwaforwp_automattic_amp_entry_point(){  
             if ( pwaforwp_is_automattic_amp() ) {
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
-                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
+                add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+                add_action('wp_head',array($this, 'apple_icons_support'),99); 
             }
             
         }
@@ -369,7 +373,8 @@ class PWAFORWP_Service_Worker{
             if ( function_exists('is_amp_endpoint') && is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
                 add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'));
                 amp_wp_enqueue_script( 'amp-install-serviceworker', 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js' );
-                add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),99); 
+                add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
+                add_action('amp_wp_template_head',array($this, 'apple_icons_support'),99); 
             }
             
         }	        
@@ -443,16 +448,6 @@ class PWAFORWP_Service_Worker{
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-                $this->iosSplashScreen();
-            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
-                echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
-                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
-            endif; 
-                    
-		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
-		    }
 
 		}
 	}
@@ -473,20 +468,25 @@ class PWAFORWP_Service_Worker{
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-            $this->iosSplashScreen();
-            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-                echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
-                echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
-                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
-            endif; 
-		    if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-		    	echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
-		    }
                     
 		}
                 
 	}
-        public function pwaforwp_is_amp_activated() {    
+
+    public function apple_icons_support(){
+        $settings        = pwaforwp_defaultSettings();
+        $this->iosSplashScreen();
+        if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+            echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+            echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+            echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+        endif; 
+                
+        if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
+            echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
+        }
+    }
+    public function pwaforwp_is_amp_activated() {    
 		
         if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) ) {
                 $this->is_amp = true;
