@@ -448,6 +448,9 @@ class PWAFORWP_Service_Worker{
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
+                if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                    echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+                endif;
 
 		}
 	}
@@ -468,7 +471,9 @@ class PWAFORWP_Service_Worker{
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-                    
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+            endif;
 		}
                 
 	}
