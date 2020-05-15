@@ -484,7 +484,6 @@ class PWAFORWP_Service_Worker{
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
             echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
-            echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
         endif; 
                 
         if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
