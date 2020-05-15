@@ -64,7 +64,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 = 1.7.13 (15 MAY 2020) =
-Improvement   : pwa-amp-sw.html is able to view in the google anlytics #389
+Improvement   : pwa-amp-sw.html is able to view in the Google analytics #389
 Improvement   : Update the user experience of premium features tab contents on pro extension exists #378
 Improvement   : Improved performance #354
 Improvement   : App Icon should be load in last. #362
