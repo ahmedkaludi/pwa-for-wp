@@ -2272,7 +2272,11 @@ function pwaforwp_features_settings(){
 	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1){
 	    	//$Plugins = get_transient( 'plugin_slugs');
 	    	$premium_alert = '<span class="pro deactivated">Deactivated</span>';
-	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
+	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active'] && class_exists('PWAFORWPPROExtensionManager')){
+		    $premium_alert = '<span class="pro deactivated">Deactivated</span>';
+	    	$pro_link = 'onclick="window.open(\''.admin_url("admin.php?page=pwawp-extension-manager").'\', \'_blank\')"';
+	    }
+	    elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
 	    	$premium_alert = '<span class="pro">PRO</span>';
 	    	$pro_link = 'onclick="window.open(\''.$featureVal['pro_link'].'\', \'_blank\')"';
 		}
