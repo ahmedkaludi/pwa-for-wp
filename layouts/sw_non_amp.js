@@ -102,7 +102,10 @@
                                                                           a2hsviashortcode[i].style.display="none"; 
                                                                       }
                                                                     }
-                                                                                                                    
+                                                          var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click");
+                                                          if(addtohomeBtn !==null){ 
+                                                            addtohomeBtn.style.display="none";
+                                                          }                                           
                                                      });  
                                                                                                           
                                                      function addToHome(){
