@@ -565,10 +565,12 @@ function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
   $fileCheck = false;
   $multisite_postfix = pwaforwp_multisite_postfix();
+  $wppath = ABSPATH;
+  $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
   if(!is_admin() && !is_multisite()){
-      $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
+      $fileCheck = file_exists($wppath .'pwa-manifest'.$multisite_postfix.'.json');
       if($is_amp){
-        $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
+        $fileCheck = file_exists($wppath .'pwa-amp-manifest'.$multisite_postfix.'.json');
       }
    }
   if($fileCheck){
@@ -601,13 +603,16 @@ add_filter("pwaforwp_file_creation_path", "pwaforwp_check_root_writable", 10, 1)
 function pwaforwp_check_root_writable($wppath){
   $uploadArray = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
-  if(!is_writable($uploadBasePath)){
+  if(!is_writable($wppath) && is_writable(realpath(WP_CONTENT_DIR."/../"))){
+      return trailingslashit(realpath(WP_CONTENT_DIR."/../"));
+  }
+  if(!is_writable($wppath) && is_writable($uploadBasePath)){
     $uploadPwaFolder = "pwaforwp";
     $newpath = $uploadBasePath.$uploadPwaFolder;
     wp_mkdir_p($newpath);
     return trailingslashit($newpath);
   }
-  return $wppath;
+  return trailingslashit($wppath);
 }
 
 function service_workerUrls($url, $filename){
@@ -630,7 +635,9 @@ function service_workerUrls($url, $filename){
 }
 
 function pwaforwp_is_file_inroot(){
-  if(is_writable(ABSPATH)){
+    $wppath = ABSPATH;
+    $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
+  if(is_writable($wppath)){
     return true;
   }else{
     return false;
