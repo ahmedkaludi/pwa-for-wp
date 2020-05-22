@@ -61,6 +61,7 @@ jQuery(document).ready(function($){
     });
 
     jQuery(".pwaforwp-tabs a").click(function(e){
+        e.preventDefault();
         var href = jQuery(this).attr("href");
         var currentTab = pwaforwpGetParamByName("tab",href);
         if(!currentTab){
@@ -68,16 +69,20 @@ jQuery(document).ready(function($){
         }
         jQuery(this).siblings().removeClass("nav-tab-active");
         jQuery(this).addClass("nav-tab-active");
-        jQuery(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
-        jQuery(".form-wrap .pwaforwp-"+currentTab).show();       
-        window.history.pushState("", "", href);
-        if(currentTab=='help' || currentTab=='features'){
-            jQuery('.pwaforwp-help').find("tr th:first").hide()
-            jQuery('.pwaforwp-settings-form').find('p.submit').hide();
+        if(currentTab=="premium_features" && jQuery(this).attr('data-extmgr')=='yes'){
+            window.location.href = "admin.php?page=pwawp-extension-manager";
         }else{
-             jQuery('.pwaforwp-settings-form').find('p.submit').show();
+            jQuery(".form-wrap").find(".pwaforwp-"+currentTab).siblings().hide();
+            jQuery(".form-wrap .pwaforwp-"+currentTab).show();       
+            window.history.pushState("", "", href);
+            if(currentTab=='help' || currentTab=='features'){
+                jQuery('.pwaforwp-help').find("tr th:first").hide()
+                jQuery('.pwaforwp-settings-form').find('p.submit').hide();
+            }else{
+                 jQuery('.pwaforwp-settings-form').find('p.submit').show();
+            }
+            return false;
         }
-        return false;
     });
     var url      = window.location.href;     // Returns full URL
     var currentTab = pwaforwpGetParamByName("tab",url);
