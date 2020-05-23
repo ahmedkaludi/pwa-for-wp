@@ -70,8 +70,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed     : Added an option to disable the automatic add to home screen pop #398
 * Bug Fixed     : FCM push notification key generation issue fixed #372
 
-
-
 = 1.7.13 (15 MAY 2020) =
 * Improvement   : pwa-amp-sw.html is able to view in the Google analytics #389
 * Improvement   : Update the user experience of premium features tab contents on pro extension exists #378
