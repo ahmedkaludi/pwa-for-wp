@@ -217,8 +217,13 @@ class pwaforwpFileCreation{
     }
     /*Default Bar will be disabled if custom add to home banners are enabled*/
     $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+    
+    $avoid_default_banner = 0;
+    if(isset($settings['avoid_default_banner']) && ($settings['avoid_default_banner']==1 || $settings['avoid_default_banner']==true) ){
+      $avoid_default_banner = 1;
+    }
     $swdefaultaddtohomebar = '';
-    if($showPwaDefaultbar==1){
+    if($showPwaDefaultbar==1 || ($showPwaDefaultbar==0 && $avoid_default_banner==1)){
       $swdefaultaddtohomebar = "e.preventDefault();";
     }
        
