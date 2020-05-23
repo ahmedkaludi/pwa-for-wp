@@ -417,6 +417,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_avoid_default_banner_setting',							// ID
+			esc_html__('Remove default banner', 'pwa-for-wp'),	// Title
+			'pwaforwp_avoid_default_banner_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
 			esc_html__('PWA alternative method', 'pwa-for-wp'),	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
@@ -752,12 +759,21 @@ function pwaforwp_cache_time_setting_callback(){
 	<?php
 }
 
+function pwaforwp_avoid_default_banner_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[avoid_default_banner]" id="pwaforwp_settings[avoid_default_banner]" class=""  <?php echo (isset( $settings['avoid_default_banner'] ) && ($settings['avoid_default_banner']=='true' || $settings['avoid_default_banner']=='1')? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
+	<p><?php echo esc_html__('Enable(check) it when you don\'t want to load default PWA Banner','pwa-for-wp'); ?></p>
+	<?php
+}
+
 function pwaforwp_serve_cache_method_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
-	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal functionality not working because of Cache','pwa-for-wp'); ?></p>
+	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache','pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_disallow_data_tracking_setting_callback(){
