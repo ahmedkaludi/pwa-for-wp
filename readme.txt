@@ -65,7 +65,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.14 (23 MAY 2020) =
 * Improvement   : Addons are showing require pro even after the extension manager is activated with a key. #381
-* Improvement   : redirect to the "Extension Manager" section after clicking on the "Premium Features" when user have pwa addon manager 
+* Improvement   : redirect to the "Extension Manager" section after clicking on the "Premium Features" when user have pwa addon manager #395
 * Improvement   : flywheel directory path compatibility #399
 * Bug Fixed     : Added an option to disable the automatic add to home screen pop #398
 * Bug Fixed     : FCM push notification key generation issue fixed #372
