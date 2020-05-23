@@ -647,3 +647,9 @@ margin-top: 25px;
     border-radius: 10px;
     background-color: #ffffff;
 }
+
+#TB_ajaxContent .addtohomebanner-wrap-tb p{
+    padding-top:0px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

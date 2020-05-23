@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.4.1
-Stable tag: 1.7.12
+Stable tag: 1.7.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,20 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.14 (23 MAY 2020) =
+* Improvement   : Addons are showing require pro even after the extension manager is activated with a key. #381
+* Improvement   : redirect to the "Extension Manager" section after clicking on the "Premium Features" when user have pwa addon manager 
+* Improvement   : flywheel directory path compatibility #399
+* Bug Fixed     : Added an option to disable the automatic add to home screen pop #398
+* Bug Fixed     : FCM push notification key generation issue fixed #372
+* Bug Fixed     : Add to Home Screen popup should not show after adding PWA app #395
+
+= 1.7.13 (15 MAY 2020) =
+* Improvement   : pwa-amp-sw.html is able to view in the Google analytics #389
+* Improvement   : Update the user experience of premium features tab contents on pro extension exists #378
+* Improvement   : Improved performance #354
+* Improvement   : App Icon should be load in last. #362
+
 = 1.7.12 (11 MAY 2020) =
 * Bug Fixed	  : pwa menu is enabled the menu gets aligned to full width #377
 * Bug Fixed	  : pwa Pushnotification.io after installation go to settings link #377

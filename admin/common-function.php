@@ -116,7 +116,7 @@ function pwaforwp_frontend_enqueue(){
                         
          if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push' && ($server_key !='' && $config !='')){             
                                                                          
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array('pwa-main-script'), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
               'ajax_url'                  => admin_url( 'admin-ajax.php' ),
@@ -296,19 +296,24 @@ function pwaforwp_get_default_settings_array(){
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }
-$pwaforwp_settings;
+$pwaforwp_settings = array();
 function pwaforwp_defaultSettings(){
     
 	global $pwaforwp_settings;
+	if(count($pwaforwp_settings)==0){
         $defaults = pwaforwp_get_default_settings_array();
-	$pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
-    $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+        $pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
+        $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);
+    }
 
     //Fallback for features tab
     $pwaforwp_settings = pwaforwp_migration_setup_fetures($pwaforwp_settings);
 
     //autoptimize cdn compatibility
-    $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    $cdnUrl = false;
+    if(function_exists('autoptimize_autoload')){
+        $cdnUrl = get_option( 'autoptimize_cdn_url', '' );
+    }
     if($cdnUrl){
         $pwaforwp_settings['external_links_setting'] = 1;
     }
@@ -560,10 +565,12 @@ function pwaforwp_manifest_json_url($is_amp=false){
   $link = '';
   $fileCheck = false;
   $multisite_postfix = pwaforwp_multisite_postfix();
+  $wppath = ABSPATH;
+  $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
   if(!is_admin() && !is_multisite()){
-      $fileCheck = file_exists(ABSPATH .'pwa-manifest'.$multisite_postfix.'.json');
+      $fileCheck = file_exists($wppath .'pwa-manifest'.$multisite_postfix.'.json');
       if($is_amp){
-        $fileCheck = file_exists(ABSPATH .'pwa-amp-manifest'.$multisite_postfix.'.json');
+        $fileCheck = file_exists($wppath .'pwa-amp-manifest'.$multisite_postfix.'.json');
       }
    }
   if($fileCheck){
@@ -596,13 +603,16 @@ add_filter("pwaforwp_file_creation_path", "pwaforwp_check_root_writable", 10, 1)
 function pwaforwp_check_root_writable($wppath){
   $uploadArray = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
-  if(!is_writable($uploadBasePath)){
+  if(!is_writable($wppath) && is_writable(realpath(WP_CONTENT_DIR."/../"))){
+      return trailingslashit(realpath(WP_CONTENT_DIR."/../"));
+  }
+  if(!is_writable($wppath) && is_writable($uploadBasePath)){
     $uploadPwaFolder = "pwaforwp";
     $newpath = $uploadBasePath.$uploadPwaFolder;
     wp_mkdir_p($newpath);
     return trailingslashit($newpath);
   }
-  return $wppath;
+  return trailingslashit($wppath);
 }
 
 function service_workerUrls($url, $filename){
@@ -625,7 +635,9 @@ function service_workerUrls($url, $filename){
 }
 
 function pwaforwp_is_file_inroot(){
-  if(is_writable(ABSPATH)){
+    $wppath = ABSPATH;
+    $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
+  if(is_writable($wppath)){
     return true;
   }else{
     return false;

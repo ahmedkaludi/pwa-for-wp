@@ -1,4 +1,4 @@
-		    var config = null;                     
+		    var config=null;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  

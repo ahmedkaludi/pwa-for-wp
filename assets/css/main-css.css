@@ -646,4 +646,10 @@ margin-top: 25px;
 #TB_ajaxContent::-webkit-scrollbar-track {
     border-radius: 10px;
     background-color: #ffffff;
-}ssss
+}
+
+#TB_ajaxContent .addtohomebanner-wrap-tb p{
+    padding-top:0px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

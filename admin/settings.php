@@ -62,7 +62,7 @@ function pwaforwp_admin_interface_render(){
 
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
 		            
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 					echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
@@ -417,6 +417,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_avoid_default_banner_setting',							// ID
+			esc_html__('Remove default banner', 'pwa-for-wp'),	// Title
+			'pwaforwp_avoid_default_banner_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
 			esc_html__('PWA alternative method', 'pwa-for-wp'),	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
@@ -521,7 +528,9 @@ function pwaforwp_addon_html(){
 	       $ctafp_active_text =  pwaforwp_get_license_section_html($plugin['p-short-prefix']);                                         
 	    }else{                                            
 	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
-	       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+	       if(!class_exists('PWAFORWPPROExtensionManager')){
+		       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+		   }
 	    }	
 	    $pluginHtml .= '<div class="pwaforwp-ext-wrap">
                 <div class="pwafowp-feature-ext">    
@@ -750,12 +759,21 @@ function pwaforwp_cache_time_setting_callback(){
 	<?php
 }
 
+function pwaforwp_avoid_default_banner_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[avoid_default_banner]" id="pwaforwp_settings[avoid_default_banner]" class=""  <?php echo (isset( $settings['avoid_default_banner'] ) && ($settings['avoid_default_banner']=='true' || $settings['avoid_default_banner']=='1')? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
+	<p><?php echo esc_html__('Enable(check) it when you don\'t want to load default PWA Banner','pwa-for-wp'); ?></p>
+	<?php
+}
+
 function pwaforwp_serve_cache_method_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
 	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
-	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal functionality not working because of Cache','pwa-for-wp'); ?></p>
+	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache','pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_disallow_data_tracking_setting_callback(){
@@ -2270,7 +2288,11 @@ function pwaforwp_features_settings(){
 	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1){
 	    	//$Plugins = get_transient( 'plugin_slugs');
 	    	$premium_alert = '<span class="pro deactivated">Deactivated</span>';
-	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
+	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active'] && class_exists('PWAFORWPPROExtensionManager')){
+		    $premium_alert = '<span class="pro deactivated">Deactivated</span>';
+	    	$pro_link = 'onclick="window.open(\''.admin_url("admin.php?page=pwawp-extension-manager").'\', \'_blank\')"';
+	    }
+	    elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active']){
 	    	$premium_alert = '<span class="pro">PRO</span>';
 	    	$pro_link = 'onclick="window.open(\''.$featureVal['pro_link'].'\', \'_blank\')"';
 		}
