@@ -116,7 +116,7 @@ function pwaforwp_frontend_enqueue(){
                         
          if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push' && ($server_key !='' && $config !='')){             
                                                                          
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array('pwa-main-script'), PWAFORWP_PLUGIN_VERSION, true);
 
             $object_name = array(
               'ajax_url'                  => admin_url( 'admin-ajax.php' ),
