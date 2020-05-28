@@ -592,9 +592,9 @@ class pwaforwpFileCreation{
                                                              
                 $manifest = array();
                                                 
-                $manifest['name']             = esc_attr($defaults['app_blog_name']);
-                $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
-                $manifest['description']      = esc_attr($defaults['description']);
+                $manifest['name']             = ($defaults['app_blog_name']);
+                $manifest['short_name']       = ($defaults['app_blog_short_name']);
+                $manifest['description']      = ($defaults['description']);
                 $manifest['icons']            = $icons;
                 $manifest['background_color'] = sanitize_hex_color($defaults['background_color']);
                 $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
@@ -605,7 +605,7 @@ class pwaforwpFileCreation{
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
-                return json_encode($manifest, JSON_PRETTY_PRINT);					
+                return json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
 	}        
 
   public function pwaforwp_getlayoutfiles($filePath){
