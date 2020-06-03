@@ -1628,7 +1628,62 @@ function pwaforwp_files_status_callback(){
     
        $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp   = $serviceWorkerObj->is_amp;             
-       $settings = pwaforwp_defaultSettings();
+	   $settings = pwaforwp_defaultSettings();
+
+	   $nonAmpStatusMsg = '';
+	   
+	    $nonamp_manifest_status = true;
+		if(!pwaforwp_is_enabled_pwa_wp()){
+			$swUrl = esc_url(pwaforwp_manifest_json_url());
+			$nonamp_manifest_status = @pwaforwp_checkStatus($swUrl);
+		}
+		if(!$nonamp_manifest_status && $nonAmpStatusMsg==''){
+			$nonAmpStatusMsg = 'Manifest not working';
+		}
+
+		$swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
+		$nonamp_sw_status = true;
+		if(!pwaforwp_is_enabled_pwa_wp()){
+			$swUrl = esc_url(pwaforwp_home_url().$swFile);
+			$swUrl = service_workerUrls($swUrl, $swFile);
+			$nonamp_sw_status = @pwaforwp_checkStatus($swUrl);
+		}
+		if(!$nonamp_sw_status && $nonAmpStatusMsg==''){
+			$nonAmpStatusMsg = 'Service Worker not working';
+		}
+		if ( !is_ssl() && $nonAmpStatusMsg=='' ) {
+			$nonAmpStatusMsg = 'Site not secured';
+		}
+
+		if($nonAmpStatusMsg==''){
+			$nonAmpStatusMsg = 'PWA installed';
+		}
+
+		if($is_amp){
+			$ampStatusMsg = '';
+			$amp_manifest_status = true;
+			if(!pwaforwp_is_enabled_pwa_wp()){
+			  $swUrl = esc_url(pwaforwp_manifest_json_url(true));
+			  $amp_manifest_status = @pwaforwp_checkStatus($swUrl);
+			}
+			if(!$amp_manifest_status && $ampStatusMsg==''){
+				$ampStatusMsg = 'Manifest not working';
+			}
+			
+			$swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
+			$amp_sw_status = true;
+			if(!pwaforwp_is_enabled_pwa_wp()){
+				$swUrl = esc_url(pwaforwp_home_url().$swFile);
+				$swUrl = service_workerUrls($swUrl, $swFile);
+				$amp_sw_status = @pwaforwp_checkStatus($swUrl);
+			}
+			if(!$amp_sw_status && $ampStatusMsg==''){
+				$ampStatusMsg = 'Service Worker not working';
+			}
+			if($ampStatusMsg==''){
+				$ampStatusMsg = 'AMP PWA installed';
+			}
+		}
        
         ?>
         <table class="pwaforwp-files-table">
@@ -1640,11 +1695,18 @@ function pwaforwp_files_status_callback(){
                     <th><?php echo esc_html__( 'AMP', 'pwa-for-wp' ); ?></th>
                 </tr>    
                 <?php } ?>
+				<tr>
+                    <th>Status</th>
+                    <td><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></td>
+					<?php if($is_amp) { ?>
+                    <td><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></td>
+					<?php } ?>
+                </tr>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
+                    <th><?php echo esc_html__( 'Enable/Disable', 'pwa-for-wp' ) ?>
 	                    <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="pwafw-help-subtitle">Status of PWA</span>
+		                    <span class="pwafw-help-subtitle"><?php echo esc_html__( 'on/off PWA', 'pwa-for-wp' ) ?></span>
 		                </span>
 	                </th>
 	                <td> 
@@ -1670,12 +1732,8 @@ function pwaforwp_files_status_callback(){
                 </th>
                 <td>
                    <?php
-                   $file_headers = true;
-                  	if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_manifest_json_url());
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-	                }
-                  	if(!$file_headers) {
+                   
+                  	if(!$nonamp_manifest_status) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
                                 .'<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                  }else{
@@ -1686,12 +1744,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                  	$file_headers = true;
-                  	if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-	                }
-                    if(!$file_headers) {                                                                
+                    if(!$amp_manifest_status) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                                 . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                      }else{
@@ -1709,14 +1762,8 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
-                      $file_headers = true;
-                      if(!pwaforwp_is_enabled_pwa_wp()){
-	                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
-	                      $swUrl = service_workerUrls($swUrl, $swFile);
-	                      $file_headers = @pwaforwp_checkStatus($swUrl);
-	                  }
-                    if(!$file_headers) {
+                      
+                    if(!$nonamp_sw_status) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                               . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                    }else{
@@ -1727,15 +1774,9 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
-                    $file_headers = true;
-                    if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
-	                    $swUrl = service_workerUrls($swUrl, $swFile);
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-                    }  
+                      
                     
-                    if(!$file_headers) {
+                    if(!$amp_sw_status) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
                                     . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                     }else{
