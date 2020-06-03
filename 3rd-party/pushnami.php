@@ -11,7 +11,7 @@ function pwaforwp_pushnami_compatiblity($action = null) {
 		}
 		register_deactivation_hook( PWAFORWP_PLUGIN_FILE, function () {
 			$pn_settings						= \WPPushnami::get_script_options();
-			$pn_settings['use_custom_manifest'] = false;
+			$pn_settings->use_custom_manifest = false;
 			\WPPushnami::save_pushnami_options( $pn_settings );
 		} );
 	}
@@ -68,7 +68,7 @@ function pwaforwp_pushnami_change_sw_name( $name ) {
 
 		if ( class_exists( 'WPPushnami' ) ) {
 
-			$name = 'PushnamiWorker.js';
+			$name = 'service-worker.js';
 
 		}
 
@@ -82,7 +82,7 @@ add_filter( 'pwaforwp_sw_name_modify', 'pwaforwp_pushnami_change_sw_name' );
 function pwaforwp_add_sw_to_pushnami_sw( $action = null ) {
 
 	$abs_path     = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
-	$pn_worker = $abs_path.'PushnamiWorker.js';
+	$pn_worker = $abs_path.'service-worker.js';
 	$url = pwaforwp_site_url();
 	$home_url = pwaforwp_home_url();
 
@@ -127,10 +127,19 @@ function pwaforwp_pushnami_for_multisite() {
 }
 
 function pwaforwp_pushnami_init_pushnami_head() {
+	$url = pwaforwp_site_url();
+	$home_url = pwaforwp_home_url();
+
+	if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()) {
+		$ServiceWorkerfileName = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
+		$ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js'));
+	} else {
+		$ServiceWorkerfileName = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
+	}
 
 	$options = \WPPushnami::get_script_options();
-	$home_url = trailingslashit(pwaforwp_home_url());
-	$options->swPath = $home_url . '?pwa_for_wp_script=1&sw=PushnamiWorker.js';
+	$options->swPath = $ServiceWorkerfileName;
+	$script = \WPPushnami::render_inline_script($options);
 
 	echo PHP_EOL
 		.'<meta name="pushnami" content="wordpress-plugin"/>'.PHP_EOL
