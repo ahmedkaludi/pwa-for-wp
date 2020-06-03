@@ -1690,7 +1690,7 @@ function pwaforwp_files_status_callback(){
 				$ampStatusMsg = 'Service Worker not working';
 			}
 			
-			if ( !is_ssl() && $ampStatusMsg!='') {
+			if ( !is_ssl() && $ampStatusMsg=='') {
 				$ampStatusMsg = '';
 			}elseif($ampStatusMsg==''){
 				$ampStatusMsg = 'AMP PWA is Woking as expected';
