@@ -302,6 +302,13 @@ jQuery(document).ready(function($){
             jQuery('.pwaforwp-onesignal-instruction').fadeOut(200);
         }
     });
+    jQuery(".pwaforwp-pushnami-support").click(function(){
+        if(jQuery(this).prop("checked")){
+            jQuery('.pwaforwp-pushnami-instruction').fadeIn();
+        }else{
+            jQuery('.pwaforwp-pushnami-instruction').fadeOut(200);
+        }
+    });
     jQuery('.pwawp_utm_values_class').find('input').focusout(function(){
         if(jQuery(this).attr('data-val')!==jQuery(this).val()){
             jQuery("#pwa-utm_change_track").val('1');

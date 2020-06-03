@@ -482,7 +482,14 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section',						// Page slug
 			'pwaforwp_compatibility_setting_section'						// Settings Section ID
 		);
-                               
+		add_settings_field(
+			'pwaforwp_pushnami_support',							// ID
+			esc_html__('Pushnami', 'pwa-for-wp'),					// Title
+			'pwaforwp_pushnami_support_callback',					// CB
+			'pwaforwp_compatibility_setting_section',				// Page slug
+			'pwaforwp_compatibility_setting_section'				// Settings Section ID
+		);
+
                 add_settings_section('pwaforwp_precaching_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
 		add_settings_field(
 			'pwaforwp_precaching_setting',							// ID
@@ -1581,6 +1588,14 @@ function pwaforwp_one_signal_support_callback(){
 	?>
 	<input type="checkbox" name="pwaforwp_settings[one_signal_support_setting]" id="pwaforwp_settings[one_signal_support_setting]" class="pwaforwp-onesignal-support" <?php echo (isset( $settings['one_signal_support_setting'] ) &&  $settings['one_signal_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                
+	<?php
+}
+function pwaforwp_pushnami_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	?>
+	<input type="checkbox" name="pwaforwp_settings[pushnami_support_setting]" id="pwaforwp_settings[pushnami_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['pushnami_support_setting'] ) &&  $settings['pushnami_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+
 	<?php
 }
 function pwaforwp_custom_add_to_home_callback(){

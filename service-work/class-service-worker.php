@@ -30,6 +30,7 @@ class PWAFORWP_Service_Worker{
         add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
         add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
 		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
+		add_action( 'init',  array($this,'pwaforwp_pushnami_rewrite' ));
         
         /*
         * load manifest on using Rest API
@@ -61,6 +62,15 @@ class PWAFORWP_Service_Worker{
 
 		}
 
+		function pwaforwp_pushnami_rewrite(){
+			flush_rewrite_rules();
+			// Flushing rewrite urls ONLY on activation
+			global $wp_rewrite;
+			$wp_rewrite->flush_rules();
+			add_rewrite_rule("pushnami_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
+			add_rewrite_rule("pushnami_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
+		}
+
         /*
         * This function will work similar as "pwaforwp_load_service_worker" 
         * Only for Ajax time
@@ -84,6 +94,24 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    echo $content;
+                    exit;
+                }
+                if($filename == 'dynamic_pushnami'){//work with pushnami only
+                    $home_url = pwaforwp_home_url();
+                    $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
+                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
+
+                    $pn_options = \WPPushnami::get_script_options();
+                    $pn_api_key = $pn_options->api_key;
+
+                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
+                    $url = service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
+                    header("Service-Worker-Allowed: /");
+                    header("Content-Type: application/javascript");
+                    header("X-Robots-Tag: none");
+                    $content .= "importScripts('".$url."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
                     echo $content;
                     exit;
                 }
@@ -160,6 +188,20 @@ class PWAFORWP_Service_Worker{
 					header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    echo $content;
+                    exit;
+                }
+                if($filename == 'dynamic_pushnami'){//work with pushnami only
+                    $home_url = pwaforwp_home_url();
+                    $site_id = sanitize_text_field( $query->get( pwaforwp_query_var('site_id_var') ) );
+                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
+
+                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
+					header("Service-Worker-Allowed: /");
+					header("Content-Type: application/javascript");
+					header("X-Robots-Tag: none");
+                    $content .= "importScripts('".$url."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
                     echo $content;
                     exit;
                 }
@@ -419,7 +461,7 @@ class PWAFORWP_Service_Worker{
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
-		if( $manualfileSetup ){//&& !class_exists('OneSignal')
+		if( $manualfileSetup ){//&& !class_exists('OneSignal') && !class_exists('WPPushnami')
             $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
