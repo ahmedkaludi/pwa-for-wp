@@ -1631,6 +1631,10 @@ function pwaforwp_files_status_callback(){
 	   $settings = pwaforwp_defaultSettings();
 
 	   $nonAmpStatusMsg = '';
+
+	   if(!isset( $settings['normal_enable'] ) || (isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) ){
+			$nonAmpStatusMsg = 'PWA is disabled';
+	   }
 	   
 	    $nonamp_manifest_status = true;
 		if(!pwaforwp_is_enabled_pwa_wp()){
@@ -1652,15 +1656,20 @@ function pwaforwp_files_status_callback(){
 			$nonAmpStatusMsg = 'Service Worker not working';
 		}
 		if ( !is_ssl() && $nonAmpStatusMsg=='' ) {
-			$nonAmpStatusMsg = 'Site not secured';
+			$nonAmpStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
 		}
 
 		if($nonAmpStatusMsg==''){
-			$nonAmpStatusMsg = 'PWA installed';
+			$nonAmpStatusMsg = 'PWA is Woking as expected';
 		}
 
 		if($is_amp){
 			$ampStatusMsg = '';
+
+			if(!isset( $settings['amp_enable'] ) || (isset( $settings['amp_enable'] ) && $settings['amp_enable'] != 1) ){
+				$nonAmpStatusMsg = 'PWA is disabled';
+		    }
+
 			$amp_manifest_status = true;
 			if(!pwaforwp_is_enabled_pwa_wp()){
 			  $swUrl = esc_url(pwaforwp_manifest_json_url(true));
@@ -1680,8 +1689,11 @@ function pwaforwp_files_status_callback(){
 			if(!$amp_sw_status && $ampStatusMsg==''){
 				$ampStatusMsg = 'Service Worker not working';
 			}
-			if($ampStatusMsg==''){
-				$ampStatusMsg = 'AMP PWA installed';
+			
+			if ( !is_ssl() && $ampStatusMsg!='') {
+				$ampStatusMsg = '';
+			}elseif($ampStatusMsg==''){
+				$ampStatusMsg = 'AMP PWA is Woking as expected';
 			}
 		}
        
@@ -1691,15 +1703,15 @@ function pwaforwp_files_status_callback(){
                 <?php if($is_amp) { ?>
                 <tr>
                     <th></th>
-                    <th><?php echo esc_html__( 'Wordpress (Non-AMP)', 'pwa-for-wp' ) ?></th>
+                    <th><?php echo esc_html__( 'WordPress (Non-AMP)', 'pwa-for-wp' ) ?></th>
                     <th><?php echo esc_html__( 'AMP', 'pwa-for-wp' ); ?></th>
                 </tr>    
                 <?php } ?>
 				<tr>
                     <th>Status</th>
-                    <td><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></td>
+                    <td><p><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
 					<?php if($is_amp) { ?>
-                    <td><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></td>
+                    <td><p><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
 					<?php } ?>
                 </tr>
                 
@@ -1711,13 +1723,13 @@ function pwaforwp_files_status_callback(){
 	                </th>
 	                <td> 
 	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
-	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
+	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="1" >
 	                	</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox"  <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"  class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[amp_enable]"> 
-                        	<input type="hidden"name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
+                        	<input type="hidden"name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="1" >
                         </label>
                          <?php } ?>
                     </td>    
@@ -1795,7 +1807,7 @@ function pwaforwp_files_status_callback(){
                 <td colspan="2">
                   <?php
                   if ( is_ssl() ) {
-                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' ;
+                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } else {
                             echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
