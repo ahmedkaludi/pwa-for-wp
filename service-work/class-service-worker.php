@@ -354,7 +354,7 @@ class PWAFORWP_Service_Worker{
         }
         public function pwaforwp_amp_entry_point(){  
             
-            add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'));
+            add_action('amp_post_template_footer',array($this, 'pwaforwp_service_worker'), 15);
             add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
             add_action('amp_post_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
             add_action('amp_post_template_head',array($this, 'apple_icons_support'),99); 
@@ -371,7 +371,7 @@ class PWAFORWP_Service_Worker{
         }
         public function pixelative_amp_entry_point(){  
             if ( function_exists('is_amp_endpoint') && is_amp_endpoint() && defined('AMP_WP_DIR_PATH') ) {
-                add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'));
+                add_action('amp_wp_template_footer',array($this, 'pwaforwp_service_worker'), 15);
                 amp_wp_enqueue_script( 'amp-install-serviceworker', 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js' );
                 add_action('amp_wp_template_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1); 
                 add_action('amp_wp_template_head',array($this, 'apple_icons_support'),99); 
