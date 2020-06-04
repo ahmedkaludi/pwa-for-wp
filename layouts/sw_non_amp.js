@@ -139,6 +139,15 @@
                                                              deferredPrompt = null;
                                                          });
                                                          
-                                                        }                                                                                                                                                               
-                                                     });
+                                                        }
+                                          window.addEventListener("offline", pwaforwpOnNetworkChange);   
+                                          function pwaforwpOnNetworkChange(event) {
+                                            if (!navigator.onLine) {
+                                              var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
+                                              if(a2hsdesk !== null){
+                                                a2hsdesk.style.display = "none";
+                                              }
+                                            }
+                                          }            
+                                        });
 			                             }
