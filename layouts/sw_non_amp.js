@@ -41,6 +41,8 @@
                           }
                         }
 
+                        {{addtohomebanner}}
+
                      }
                                                                                                                     
 							});			    
@@ -75,9 +77,7 @@
                         a2hsviashortcode[i].style.display="flex"; 
                     }
                   }
-              }
-                                                                                                                                                   
-                                                     {{addtohomebanner}}                                                         
+              }                                                         
                                                      {{addtohomemanually}}
                                                                                                                                                                
                                                      var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
