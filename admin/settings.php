@@ -1667,7 +1667,7 @@ function pwaforwp_files_status_callback(){
 			$ampStatusMsg = '';
 
 			if(!isset( $settings['amp_enable'] ) || (isset( $settings['amp_enable'] ) && $settings['amp_enable'] != 1) ){
-				$nonAmpStatusMsg = 'PWA is disabled';
+				$ampStatusMsg = 'PWA is disabled';
 		    }
 
 			$amp_manifest_status = true;
@@ -1692,6 +1692,9 @@ function pwaforwp_files_status_callback(){
 			
 			if ( !is_ssl() && $ampStatusMsg=='') {
 				$ampStatusMsg = '';
+				if(isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) {
+					$ampStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
+				}
 			}elseif($ampStatusMsg==''){
 				$ampStatusMsg = 'AMP PWA is Woking as expected';
 			}
@@ -1708,10 +1711,10 @@ function pwaforwp_files_status_callback(){
                 </tr>    
                 <?php } ?>
 				<tr>
-                    <th>Status</th>
-                    <td><p><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
+                    <th style="width:20%">Status</th>
+                    <td style="width:40%"><p><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
 					<?php if($is_amp) { ?>
-                    <td><p><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
+                    <td style="width:40%"><p><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
 					<?php } ?>
                 </tr>
                 
@@ -1723,13 +1726,13 @@ function pwaforwp_files_status_callback(){
 	                </th>
 	                <td> 
 	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
-	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="1" >
+	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
 	                	</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox"  <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"  class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[amp_enable]"> 
-                        	<input type="hidden"name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="1" >
+                        	<input type="hidden" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
                         </label>
                          <?php } ?>
                     </td>    
