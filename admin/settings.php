@@ -322,14 +322,22 @@ function pwaforwp_settings_init(){
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_background_color',							// ID
-			esc_html__('', 'pwa-for-wp'),	// Title
+			esc_html__('Background Color', 'pwa-for-wp'),	// Title
 			'pwaforwp_background_color_callback',							// CB
+			'pwaforwp_design_section',						// Page slug
+			'pwaforwp_design_section'						// Settings Section ID
+		);
+		// Splash Screen Theme Color
+		add_settings_field(
+			'pwaforwp_theme_color',							// ID
+			esc_html__('Theme Color', 'pwa-for-wp'),	// Title
+			'pwaforwp_theme_color_callback',							// CB
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);		
                 
                                                 
-                add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+    add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
                                                 
 		add_settings_field(
 			'pwaforwp_reset_setting',							// ID
@@ -1051,12 +1059,17 @@ function pwaforwp_background_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-        <h2><?php echo esc_html__('Splash Screen', 'pwa-for-wp') ?></h2>
-        <table>
-            <tr><td><strong><?php echo esc_html__('Background Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>
-        <tr><td><strong><?php echo esc_html__('Theme Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>                
-        </table>        	
+        <input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+		<p class="description"></p>
+	<?php
+}
+function pwaforwp_theme_color_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
 	
+	<!-- Background Color -->
+	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+	<p class="description"></p>
 	<?php
 }
 
@@ -1291,18 +1304,6 @@ function pwaforwp_custom_banner_design_callback(){
             <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#006dda'; ?>" data-default-color="#006dda"></td></tr>                         
         </table>
         <?php
-}
-
-function pwaforwp_theme_color_callback(){
-	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
-	<!-- Theme Color -->
-	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
-	
-	<p class="description">
-		
-	</p>
-	<?php
 }
 
 //General settings
