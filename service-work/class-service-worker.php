@@ -337,6 +337,7 @@ class PWAFORWP_Service_Worker{
                         
             if(isset($settings['custom_banner_title']) && $settings['custom_banner_title'] != ''){
                 $banner_title = $settings['custom_banner_title'];
+                $banner_title = preg_replace('/\\\\/', '', $banner_title);
             }
             
             if(isset($settings['custom_banner_button_text']) && $settings['custom_banner_button_text'] !=''){
