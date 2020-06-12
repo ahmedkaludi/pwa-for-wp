@@ -813,7 +813,9 @@ var pwaforwp_showpopup = function(caption, inlineId, submitClass){
     
     //Click on cross button
     jQuery(".pwawp-modal-mask").find(".pwawp-media-modal-close, .pwawp-close-btn-modal").click(function(){
-        jQuery('#' + inlineId).append( jQuery(".pwawp-modal-mask").find(".pwawp-modal-settings").children() ); 
+        var inlineIdData = jQuery(this).parents(".pwawp-modal-mask").attr("data-parent");
+        var submitClassData = jQuery(this).parents(".pwawp-modal-mask").attr("data-parent-submit");
+        jQuery('#' + inlineIdData).append( jQuery(".pwawp-modal-mask").find(".pwawp-modal-settings").children() ); 
         jQuery(".pwawp-modal-mask").addClass("pwaforwp-hide");
     });
     //click  on save button
