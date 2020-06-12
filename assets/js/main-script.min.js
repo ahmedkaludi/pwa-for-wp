@@ -444,7 +444,8 @@ jQuery(document).ready(function($){
         }
         var opt = jQuery(this).attr('data-option');
         var optTitle = jQuery(this).attr('title');
-        tb_show(optTitle, "#TB_inline?width=740&height=450&inlineId="+opt);
+        pwaforwp_showpopup(optTitle, opt, '.pwaforwp-submit-feature-opt');
+        //tb_show(optTitle, "#TB_inline?width=740&height=450&inlineId="+opt);
         datafeatureSubmit(opt);
     });
 
@@ -557,12 +558,8 @@ var pushnotificationIntegrationLogic = function(opt){
 }
 var datafeatureSubmit = function(opt){
         pushnotificationIntegrationLogic(opt)
-        jQuery('.pwaforwp-submit-feature-opt').click(function(){
-            /*jQuery('#TB_closeWindowButton').click();
-            setTimeout(1000, function(){
-                jQuery('.pwaforwp-main-wrapper').find('form').find('#submit').click();
-
-            })*/
+        jQuery('.pwaforwp-submit-feature-opt').click(function(e){
+            e.preventDefault();
             var self = jQuery(this);
             var fields = [];
             self.parents('.thickbox-fetures-wrap')
@@ -803,3 +800,27 @@ var pwaforwp_Activate_Modules_Upgrade = function(url, self, response, nonce){
             }
         );
     }
+
+var pwaforwp_showpopup = function(caption, inlineId, submitClass){
+    if(caption===null){caption="";}
+    jQuery(".pwawp-modal-mask").find(".pwawp-popup-title").html(caption);
+    jQuery(".pwawp-modal-mask").find(".pwawp-modal-settings").append(jQuery('#' + inlineId).children());
+    //to show poup
+    jQuery(".pwawp-modal-mask").attr("data-parent", inlineId);
+    jQuery(".pwawp-modal-mask").attr("data-parent-submit", submitClass);
+    jQuery(".pwawp-modal-mask").find(submitClass).addClass("pwaforwp-hide");
+    jQuery(".pwawp-modal-mask").removeClass("pwaforwp-hide");
+    
+    //Click on cross button
+    jQuery(".pwawp-modal-mask").find(".pwawp-media-modal-close, .pwawp-close-btn-modal").click(function(){
+        jQuery('#' + inlineId).append( jQuery(".pwawp-modal-mask").find(".pwawp-modal-settings").children() ); 
+        jQuery(".pwawp-modal-mask").addClass("pwaforwp-hide");
+    });
+    //click  on save button
+    jQuery(".pwawp-modal-mask").find(".pwawp-save-btn-modal").click(function(e){
+        e.preventDefault();
+        var inlineIdData = jQuery(this).parents(".pwawp-modal-mask").attr("data-parent");
+        var submitClassData = jQuery(this).parents(".pwawp-modal-mask").attr("data-parent-submit");
+        jQuery(".pwawp-modal-mask").find(submitClassData).click();
+    });
+}

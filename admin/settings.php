@@ -318,7 +318,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section'						// Settings Section ID
 		);                                
 
-	add_settings_section('pwaforwp_design_section', '', '__return_false', 'pwaforwp_design_section');
+	add_settings_section('pwaforwp_design_section', 'Splash Screen', '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_background_color',							// ID
@@ -2378,7 +2378,37 @@ function pwaforwp_features_settings(){
 	}
 	echo '<ul class="pwaforwp-feature-cards">
 			'.$featuresHtml.'
-		</ul>';
+		</ul>
+		<div class="pwawp-modal-mask pwaforwp-hide">
+    <div class="pwawp-modal-wrapper">
+        <div class="pwawp-modal-container">
+            <button type="button" class="pwawp-media-modal-close"><span class="pwawp-media-modal-icon"></span></button>
+            <div class="pwawp-modal-content">
+                
+                <div class="pwawp-modal-header">
+                    <h3 class="pwawp-popup-title"></h3>
+                </div>
+                <div class="pwawp-modal-body">
+                    <div class="pwawp-modal-settings">
+                        
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="pwawp-modal-footer">
+                <!---->
+                <button type="button" class="button pwawp-modal-default-button pwawp-save-btn-modal  button-primary">
+                    Save Changes
+                </button>
+                <button type="button" class="button pwawp-close-btn-modal pwawp-modal-default-button">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+		';
 }
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
