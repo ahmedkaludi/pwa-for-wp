@@ -438,7 +438,7 @@ select {
 	left: 35px;
 	max-width: 1px;
 	margin-left: -5px;
-	border-width: 5px;
+	border-width: 9px;
 	border-style: solid;
 	border-color: #111 transparent transparent transparent
 }

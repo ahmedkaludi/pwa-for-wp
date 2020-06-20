@@ -1631,7 +1631,7 @@ function pwaforwp_files_status_callback(){
        $is_amp   = $serviceWorkerObj->is_amp;             
 	   $settings = pwaforwp_defaultSettings();
 
-	   $nonAmpStatusMsg = '';
+	   $nonAmpStatusMsg = $nonampStatusIcon = '';
 
 	   if(!isset( $settings['normal_enable'] ) || (isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) ){
 			$nonAmpStatusMsg = 'PWA is disabled';
@@ -1661,12 +1661,12 @@ function pwaforwp_files_status_callback(){
 		}
 
 		if($nonAmpStatusMsg==''){
-			$nonAmpStatusMsg = 'PWA is Woking as expected';
+			$nonampStatusIcon = '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>';
+			$nonAmpStatusMsg = 'PWA is working';
 		}
 
 		if($is_amp){
-			$ampStatusMsg = '';
-
+			$ampStatusMsg = $ampStatusIcon = '';
 			if(!isset( $settings['amp_enable'] ) || (isset( $settings['amp_enable'] ) && $settings['amp_enable'] != 1) ){
 				$ampStatusMsg = 'PWA is disabled';
 		    }
@@ -1697,7 +1697,8 @@ function pwaforwp_files_status_callback(){
 					$ampStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
 				}
 			}elseif($ampStatusMsg==''){
-				$ampStatusMsg = 'AMP PWA is Woking as expected';
+				$ampStatusIcon = '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>';
+				$ampStatusMsg = 'PWA is working on AMP';
 			}
 		}
        
@@ -1713,14 +1714,14 @@ function pwaforwp_files_status_callback(){
                 <?php } ?>
 				<tr>
                     <th style="width:20%">Status</th>
-                    <td style="width:40%"><p><?php echo esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
+                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
 					<?php if($is_amp) { ?>
-                    <td style="width:40%"><p><?php echo esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
+                    <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
 					<?php } ?>
                 </tr>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Enable/Disable', 'pwa-for-wp' ) ?></th>
+                    <th><?php echo esc_html__( 'Enable / Disable', 'pwa-for-wp' ) ?></th>
 	                <td> 
 	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
 	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
@@ -1801,13 +1802,20 @@ function pwaforwp_files_status_callback(){
                 <th>                 
               <?php echo esc_html__( 'HTTPS', 'pwa-for-wp' ) ?> 
                 </th>
-                <td colspan="2">
+                <td>
                   <?php
                   if ( is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } else {
                             echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
+                  ?>  
+                </td>
+                <td>
+                  <?php
+                  if ( is_ssl() ) {
+                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
+                    } 
                   ?>  
                 </td>
             </tr>
