@@ -249,7 +249,7 @@ function pwaforwp_onesignal_init_onesignal_head(){
                 echo "oneSignal_options['notifyButton']['size'] = '".\OneSignalUtils::html_safe($onesignal_wp_settings['notifyButton_size'])."';\n";
             }
 
-            if ($onesignal_wp_settings['notifyButton_prenotify'] == '1') {
+            if (isset($onesignal_wp_settings['notifyButton_prenotify']) && $onesignal_wp_settings['notifyButton_prenotify'] == '1') {
                 echo "oneSignal_options['notifyButton']['prenotify'] = true;\n";
             } else {
                 echo "oneSignal_options['notifyButton']['prenotify'] = false;\n";
