@@ -1813,7 +1813,7 @@ function pwaforwp_files_status_callback(){
                 </td>
                 <td>
                   <?php
-                  if ( is_ssl() ) {
+                  if ($is_amp && is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } 
                   ?>  
