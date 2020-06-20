@@ -1720,11 +1720,7 @@ function pwaforwp_files_status_callback(){
                 </tr>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Enable/Disable', 'pwa-for-wp' ) ?>
-	                    <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="pwafw-help-subtitle"><?php echo esc_html__( 'on/off PWA', 'pwa-for-wp' ) ?></span>
-		                </span>
-	                </th>
+                    <th><?php echo esc_html__( 'Enable/Disable', 'pwa-for-wp' ) ?></th>
 	                <td> 
 	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
 	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
@@ -1742,9 +1738,6 @@ function pwaforwp_files_status_callback(){
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 
-                 <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle">status of Manifest</span>
-	                </span>
                 </th>
                 <td>
                    <?php
