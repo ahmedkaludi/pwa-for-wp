@@ -300,7 +300,7 @@ $pwaforwp_settings = array();
 function pwaforwp_defaultSettings(){
     
 	global $pwaforwp_settings;
-	if(count($pwaforwp_settings)==0){
+	if( empty($pwaforwp_settings) || (is_array($pwaforwp_settings) && count($pwaforwp_settings)==0) ){
         $defaults = pwaforwp_get_default_settings_array();
         $pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 
         $pwaforwp_settings = wp_parse_args($pwaforwp_settings, $defaults);

@@ -318,18 +318,26 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section'						// Settings Section ID
 		);                                
 
-	add_settings_section('pwaforwp_design_section', '', '__return_false', 'pwaforwp_design_section');
+	add_settings_section('pwaforwp_design_section', 'Splash Screen', '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_background_color',							// ID
-			esc_html__('', 'pwa-for-wp'),	// Title
+			esc_html__('Background Color', 'pwa-for-wp'),	// Title
 			'pwaforwp_background_color_callback',							// CB
+			'pwaforwp_design_section',						// Page slug
+			'pwaforwp_design_section'						// Settings Section ID
+		);
+		// Splash Screen Theme Color
+		add_settings_field(
+			'pwaforwp_theme_color',							// ID
+			esc_html__('Theme Color', 'pwa-for-wp'),	// Title
+			'pwaforwp_theme_color_callback',							// CB
 			'pwaforwp_design_section',						// Page slug
 			'pwaforwp_design_section'						// Settings Section ID
 		);		
                 
                                                 
-                add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+    add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
                                                 
 		add_settings_field(
 			'pwaforwp_reset_setting',							// ID
@@ -1051,12 +1059,17 @@ function pwaforwp_background_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-        <h2><?php echo esc_html__('Splash Screen', 'pwa-for-wp') ?></h2>
-        <table>
-            <tr><td><strong><?php echo esc_html__('Background Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>
-        <tr><td><strong><?php echo esc_html__('Theme Color', 'pwa-for-wp') ?></strong></td><td><input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr>                
-        </table>        	
+        <input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+		<p class="description"></p>
+	<?php
+}
+function pwaforwp_theme_color_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
 	
+	<!-- Background Color -->
+	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+	<p class="description"></p>
 	<?php
 }
 
@@ -1291,18 +1304,6 @@ function pwaforwp_custom_banner_design_callback(){
             <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#006dda'; ?>" data-default-color="#006dda"></td></tr>                         
         </table>
         <?php
-}
-
-function pwaforwp_theme_color_callback(){
-	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
-	<!-- Theme Color -->
-	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
-	
-	<p class="description">
-		
-	</p>
-	<?php
 }
 
 //General settings
@@ -1628,7 +1629,78 @@ function pwaforwp_files_status_callback(){
     
        $serviceWorkerObj = new PWAFORWP_Service_Worker();
        $is_amp   = $serviceWorkerObj->is_amp;             
-       $settings = pwaforwp_defaultSettings();
+	   $settings = pwaforwp_defaultSettings();
+
+	   $nonAmpStatusMsg = $nonampStatusIcon = '';
+
+	   if(!isset( $settings['normal_enable'] ) || (isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) ){
+			$nonAmpStatusMsg = 'PWA is disabled';
+	   }
+	   
+	    $nonamp_manifest_status = true;
+		if(!pwaforwp_is_enabled_pwa_wp()){
+			$swUrl = esc_url(pwaforwp_manifest_json_url());
+			$nonamp_manifest_status = @pwaforwp_checkStatus($swUrl);
+		}
+		if(!$nonamp_manifest_status && $nonAmpStatusMsg==''){
+			$nonAmpStatusMsg = 'Manifest not working';
+		}
+
+		$swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
+		$nonamp_sw_status = true;
+		if(!pwaforwp_is_enabled_pwa_wp()){
+			$swUrl = esc_url(pwaforwp_home_url().$swFile);
+			$swUrl = service_workerUrls($swUrl, $swFile);
+			$nonamp_sw_status = @pwaforwp_checkStatus($swUrl);
+		}
+		if(!$nonamp_sw_status && $nonAmpStatusMsg==''){
+			$nonAmpStatusMsg = 'Service Worker not working';
+		}
+		if ( !is_ssl() && $nonAmpStatusMsg=='' ) {
+			$nonAmpStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
+		}
+
+		if($nonAmpStatusMsg==''){
+			$nonampStatusIcon = '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>';
+			$nonAmpStatusMsg = 'PWA is working';
+		}
+
+		if($is_amp){
+			$ampStatusMsg = $ampStatusIcon = '';
+			if(!isset( $settings['amp_enable'] ) || (isset( $settings['amp_enable'] ) && $settings['amp_enable'] != 1) ){
+				$ampStatusMsg = 'PWA is disabled';
+		    }
+
+			$amp_manifest_status = true;
+			if(!pwaforwp_is_enabled_pwa_wp()){
+			  $swUrl = esc_url(pwaforwp_manifest_json_url(true));
+			  $amp_manifest_status = @pwaforwp_checkStatus($swUrl);
+			}
+			if(!$amp_manifest_status && $ampStatusMsg==''){
+				$ampStatusMsg = 'Manifest not working';
+			}
+			
+			$swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
+			$amp_sw_status = true;
+			if(!pwaforwp_is_enabled_pwa_wp()){
+				$swUrl = esc_url(pwaforwp_home_url().$swFile);
+				$swUrl = service_workerUrls($swUrl, $swFile);
+				$amp_sw_status = @pwaforwp_checkStatus($swUrl);
+			}
+			if(!$amp_sw_status && $ampStatusMsg==''){
+				$ampStatusMsg = 'Service Worker not working';
+			}
+			
+			if ( !is_ssl() && $ampStatusMsg=='') {
+				$ampStatusMsg = '';
+				if(isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) {
+					$ampStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
+				}
+			}elseif($ampStatusMsg==''){
+				$ampStatusIcon = '<span class="dashicons dashicons-yes" style="color: #46b450;"></span>';
+				$ampStatusMsg = 'PWA is working on AMP';
+			}
+		}
        
         ?>
         <table class="pwaforwp-files-table">
@@ -1636,17 +1708,20 @@ function pwaforwp_files_status_callback(){
                 <?php if($is_amp) { ?>
                 <tr>
                     <th></th>
-                    <th><?php echo esc_html__( 'Wordpress (Non-AMP)', 'pwa-for-wp' ) ?></th>
+                    <th><?php echo esc_html__( 'WordPress (Non-AMP)', 'pwa-for-wp' ) ?></th>
                     <th><?php echo esc_html__( 'AMP', 'pwa-for-wp' ); ?></th>
                 </tr>    
                 <?php } ?>
+				<tr>
+                    <th style="width:20%">Status</th>
+                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
+					<?php if($is_amp) { ?>
+                    <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
+					<?php } ?>
+                </tr>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?>
-	                    <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="pwafw-help-subtitle">Status of PWA</span>
-		                </span>
-	                </th>
+                    <th><?php echo esc_html__( 'Enable / Disable', 'pwa-for-wp' ) ?></th>
 	                <td> 
 	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
 	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
@@ -1655,7 +1730,7 @@ function pwaforwp_files_status_callback(){
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox"  <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"  class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[amp_enable]"> 
-                        	<input type="hidden"name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
+                        	<input type="hidden" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
                         </label>
                          <?php } ?>
                     </td>    
@@ -1664,18 +1739,11 @@ function pwaforwp_files_status_callback(){
             <tr>
                 <th>
                  <?php echo esc_html__( 'Manifest', 'pwa-for-wp' ) ?> 
-                 <span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-	                    <span class="pwafw-help-subtitle">status of Manifest</span>
-	                </span>
                 </th>
                 <td>
                    <?php
-                   $file_headers = true;
-                  	if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_manifest_json_url());
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-	                }
-                  	if(!$file_headers) {
+                   
+                  	if(!$nonamp_manifest_status) {
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
                                 .'<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                  }else{
@@ -1686,12 +1754,7 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                  	$file_headers = true;
-                  	if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_manifest_json_url(true));
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-	                }
-                    if(!$file_headers) {                                                                
+                    if(!$amp_manifest_status) {                                                                
                         printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-manifest" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                                 . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                      }else{
@@ -1709,14 +1772,8 @@ function pwaforwp_files_status_callback(){
                 </th>
                  <td>
                     <?php
-                      $swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
-                      $file_headers = true;
-                      if(!pwaforwp_is_enabled_pwa_wp()){
-	                      $swUrl = esc_url(pwaforwp_home_url().$swFile);
-	                      $swUrl = service_workerUrls($swUrl, $swFile);
-	                      $file_headers = @pwaforwp_checkStatus($swUrl);
-	                  }
-                    if(!$file_headers) {
+                      
+                    if(!$nonamp_sw_status) {
                       printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> <a class="pwaforwp-service-activate" data-id="pwa-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a></p>'
                               . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                    }else{
@@ -1727,15 +1784,9 @@ function pwaforwp_files_status_callback(){
                 <td>
                   <?php
                   if($is_amp){
-                    $swFile = "pwa-amp-sw".pwaforwp_multisite_postfix().".js";
-                    $file_headers = true;
-                    if(!pwaforwp_is_enabled_pwa_wp()){
-	                    $swUrl = esc_url(pwaforwp_home_url().$swFile);
-	                    $swUrl = service_workerUrls($swUrl, $swFile);
-	                    $file_headers = @pwaforwp_checkStatus($swUrl);
-                    }  
+                      
                     
-                    if(!$file_headers) {
+                    if(!$amp_sw_status) {
                             printf( '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span><a class="pwaforwp-service-activate" data-id="pwa-amp-sw" href="#">'.esc_html__( 'Click here to setup', 'pwa-for-wp' ).'</a> </p>'
                                     . '<p class="pwaforwp-ins-note pwaforwp-hide">'.esc_html__( 'Change the permission or downlad the file', 'pwa-for-wp' ).' <a target="_blank" href="http://pwa-for-wp.com/docs/article/how-to-download-required-files-manually-and-place-it-in-root-directory-or-change-the-permission/">'.esc_html__( 'Instruction', 'pwa-for-wp' ).'</a></p>' );
                     }else{
@@ -1751,13 +1802,20 @@ function pwaforwp_files_status_callback(){
                 <th>                 
               <?php echo esc_html__( 'HTTPS', 'pwa-for-wp' ) ?> 
                 </th>
-                <td colspan="2">
+                <td>
                   <?php
                   if ( is_ssl() ) {
-                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p><p>'.esc_html__( 'This site is configure with https', 'pwa-for-wp' ).'</p>' ;
+                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } else {
                             echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
                     }
+                  ?>  
+                </td>
+                <td>
+                  <?php
+                  if ($is_amp && is_ssl() ) {
+                            echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
+                    } 
                   ?>  
                 </td>
             </tr>
@@ -2321,7 +2379,37 @@ function pwaforwp_features_settings(){
 	}
 	echo '<ul class="pwaforwp-feature-cards">
 			'.$featuresHtml.'
-		</ul>';
+		</ul>
+		<div class="pwawp-modal-mask pwaforwp-hide">
+    <div class="pwawp-modal-wrapper">
+        <div class="pwawp-modal-container">
+            <button type="button" class="pwawp-media-modal-close"><span class="pwawp-media-modal-icon"></span></button>
+            <div class="pwawp-modal-content">
+                
+                <div class="pwawp-modal-header">
+                    <h3 class="pwawp-popup-title"></h3>
+                </div>
+                <div class="pwawp-modal-body">
+                    <div class="pwawp-modal-settings">
+                        
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="pwawp-modal-footer">
+                <!---->
+                <button type="button" class="button pwawp-modal-default-button pwawp-save-btn-modal  button-primary">
+                    Save Changes
+                </button>
+                <button type="button" class="button pwawp-close-btn-modal pwawp-modal-default-button">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+		';
 }
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
@@ -2338,9 +2426,9 @@ function pwaforwp_update_features_options(){
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
-				$actualFields[$varArray[0]][$varArray[1]] = sanitize_textarea_field($field['var_value']);
+				$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}else{
-				$actualFields[$variable] = sanitize_textarea_field($field['var_value']);
+				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
 		}
 		if(isset($actualFields['precaching_feature'])){

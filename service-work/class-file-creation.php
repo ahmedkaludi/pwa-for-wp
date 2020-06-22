@@ -582,12 +582,14 @@ class pwaforwpFileCreation{
                     'src' 	=> esc_url(pwaforwp_https($defaults['icon'])),
                     'sizes'	=> '192x192', 
                     'type'	=> 'image/png', 
+                    'purpose'=> 'any maskable',
                 );
                 //Splash icon
                 $icons[] = array(
                     'src' 	=> esc_url(pwaforwp_https($defaults['splash_icon'])),
                     'sizes'	=> '512x512', 
                     'type'	=> 'image/png', 
+                    'purpose'=> 'any maskable',
                 );
                                                              
                 $manifest = array();
