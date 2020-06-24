@@ -563,32 +563,35 @@ class PWAFORWP_Service_Worker{
         return (int) strtok( $a['sizes'], 'x' ) - (int) strtok( $b['sizes'], 'x' );
     }  
 
+    /**
+     * 
+     * @return splash screen for header section
+     */
     protected function iosSplashScreen(){
         $settings        = pwaforwp_defaultSettings();
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
-            if( isset( $settings['ios_splash_icon']['320x460'] ) && $settings['ios_splash_icon']['320x460'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['320x460'].'" media="(device-width: 320px)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['640x920'] ) && $settings['ios_splash_icon']['640x920'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['640x920'].'" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['768x1004'] ) && $settings['ios_splash_icon']['768x1004'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['768x1004'].'" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['748x1024'] ) && $settings['ios_splash_icon']['748x1024'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['748x1024'].'" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['1536x2008'] ) && $settings['ios_splash_icon']['1536x2008'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['1536x2008'].'" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['2048x1496'] ) && $settings['ios_splash_icon']['2048x1496'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['2048x1496'].'" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['750x1334'] ) && $settings['ios_splash_icon']['750x1334'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['750x1334'].'" media="(device-width: 375px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-        }
-    }
+            $otherData = array(
+                '640x1136'=>array('device-width'=>'320px' , 'device-height'=> '568px', 'ratio'=>2),
+                '750x1334'=>array('device-width'=>'375px', 'device-height'=> '667px', 'ratio'=>2),
+                '1242x2208'=>array('device-width'=> '621px', 'device-height'=> '1104px', 'ratio'=>3),
+                '1125x2436'=>array('device-width'=> '375px', 'device-height'=> '812px', 'ratio'=>3),
+                '828x1792'=>array('device-width'=> '414px', 'device-height'=> '896px', 'ratio'=>2),
+                '1242x2688'=>array('device-width'=> '414px', 'device-height'=> '896px', 'ratio'=>3),
+                '1536x2048'=>array('device-width'=> '768px', 'device-height'=> '1024px', 'ratio'=>2),
+                '1668x2224'=>array('device-width'=> '834px', 'device-height'=> '1112px', 'ratio'=>2),
+                '1668x2388'=>array('device-width'=> '834px', 'device-height'=> '1194px', 'ratio'=>2),
+                '2048x2732'=>array('device-width'=> '1024px', 'device-height'=> '1366px', 'ratio'=>2),
+                );
+
+            foreach ($settings['ios_splash_icon'] as $key => $value) {
+                if(!empty($value) && !empty($key)){
+                    $screenSize = $otherData[$key];
+                    echo '<link href="'.$value.'" media="(device-width: '.$screenSize['device-width'].') and (device-height: '.$screenSize['device-height'].') and (-webkit-device-pixel-ratio: '.$screenSize['ratio'].')" rel="apple-touch-startup-image" />'."\n";
+                }//if closed
+            }//foreach closed
+
+        }//if closed
+    }//function iosSplashScreen closed
                 
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
