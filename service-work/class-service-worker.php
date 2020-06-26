@@ -447,6 +447,7 @@ class PWAFORWP_Service_Worker{
                 <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
                 <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
                 <meta name="apple-mobile-web-app-capable" content="yes">
+                <meta name="apple-mobile-web-app-status-bar-style" content="default">
                 <meta name="mobile-web-app-capable" content="yes">
                 <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
                 if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
@@ -586,7 +587,7 @@ class PWAFORWP_Service_Worker{
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key)){
                     $screenSize = $otherData[$key];
-                    echo '<link href="'.$value.'" media="(device-width: '.$screenSize['device-width'].') and (device-height: '.$screenSize['device-height'].') and (-webkit-device-pixel-ratio: '.$screenSize['ratio'].')" rel="apple-touch-startup-image" />'."\n";
+                    echo '<link href="'.$value.'" media="screen and (device-width: '.$screenSize['device-width'].') and (device-height: '.$screenSize['device-height'].') and (-webkit-device-pixel-ratio: '.$screenSize['ratio'].') and (orientation: portrait)" rel="apple-touch-startup-image" />'."\n";
                 }//if closed
             }//foreach closed
 

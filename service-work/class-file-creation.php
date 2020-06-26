@@ -332,6 +332,14 @@ class pwaforwpFileCreation{
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
                   $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
                 }
+                if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){
+                  foreach ($settings['ios_splash_icon'] as $key => $value) {
+                    if($value){
+                      $pre_cache_urls .= "'".esc_url(pwaforwp_https($value))."',\n";
+                      $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($value))."',\n";
+                    }
+                  }
+                }
                 
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                     
@@ -591,6 +599,19 @@ class pwaforwpFileCreation{
                     'type'	=> 'image/png', 
                     'purpose'=> 'any maskable',
                 );
+
+                if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1 && is_array($settings['ios_splash_icon'])){
+                  foreach ($settings['ios_splash_icon'] as $key => $value) {
+                    if($value){
+                      $icons[] = array(
+                          'src'   => esc_url(pwaforwp_https($value)),
+                          'sizes' => $key, 
+                          'type'  => 'image/png', 
+                          'purpose'=> 'any maskable',
+                      );
+                    }
+                  }
+                }
                                                              
                 $manifest = array();
                                                 
