@@ -2506,6 +2506,8 @@ function pwaforwp_update_features_options(){
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
 		update_option( 'pwaforwp_settings', $actualFields ) ;
+		global $pwaforwp_settings;
+		$pwaforwp_settings = array();
 		pwaforwp_required_file_creation();
 		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));
 			die;
