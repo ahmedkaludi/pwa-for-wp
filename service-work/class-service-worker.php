@@ -482,7 +482,6 @@ class PWAFORWP_Service_Worker{
 
     public function apple_icons_support(){
         $settings        = pwaforwp_defaultSettings();
-        $this->iosSplashScreen();
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
             echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
@@ -491,6 +490,7 @@ class PWAFORWP_Service_Worker{
         if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
             echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
         }
+        $this->iosSplashScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		
@@ -571,23 +571,12 @@ class PWAFORWP_Service_Worker{
     protected function iosSplashScreen(){
         $settings        = pwaforwp_defaultSettings();
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
-            $otherData = array(
-                '640x1136'=>array('device-width'=>'320px' , 'device-height'=> '568px', 'ratio'=>2),
-                '750x1334'=>array('device-width'=>'375px', 'device-height'=> '667px', 'ratio'=>2),
-                '1242x2208'=>array('device-width'=> '621px', 'device-height'=> '1104px', 'ratio'=>3),
-                '1125x2436'=>array('device-width'=> '375px', 'device-height'=> '812px', 'ratio'=>3),
-                '828x1792'=>array('device-width'=> '414px', 'device-height'=> '896px', 'ratio'=>2),
-                '1242x2688'=>array('device-width'=> '414px', 'device-height'=> '896px', 'ratio'=>3),
-                '1536x2048'=>array('device-width'=> '768px', 'device-height'=> '1024px', 'ratio'=>2),
-                '1668x2224'=>array('device-width'=> '834px', 'device-height'=> '1112px', 'ratio'=>2),
-                '1668x2388'=>array('device-width'=> '834px', 'device-height'=> '1194px', 'ratio'=>2),
-                '2048x2732'=>array('device-width'=> '1024px', 'device-height'=> '1366px', 'ratio'=>2),
-                );
+            $otherData = ios_splashscreen_files_data();
 
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key)){
-                    $screenSize = $otherData[$key];
-                    echo '<link href="'.$value.'" media="screen and (device-width: '.$screenSize['device-width'].') and (device-height: '.$screenSize['device-height'].') and (-webkit-device-pixel-ratio: '.$screenSize['ratio'].') and (orientation: portrait)" rel="apple-touch-startup-image" />'."\n";
+                    $screenData = $otherData[$key];
+                    echo '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
                 }//if closed
             }//foreach closed
 

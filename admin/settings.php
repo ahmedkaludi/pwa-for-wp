@@ -1380,77 +1380,20 @@ function pwaforwp_splash_icon_callback(){
 	<label>
 	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> > Setup splash screen for IOS</label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
-		<div class="ios-splash-images-field">
-			<label>iPhone 5/iPhone SE (640x1136)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][640x1136]" id="pwaforwp_settings[ios_splash_icon][640x1136]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['640x1136'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['640x1136'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPhone 6/7/8 (750x1334)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][750x1334]" id="pwaforwp_settings[ios_splash_icon][750x1334]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['750x1334'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['750x1334'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label> iPhone 6/7/8 Plus (1242x2208)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1242x2208]" id="pwaforwp_settings[ios_splash_icon][1242x2208]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1242x2208'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1242x2208'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPhone X/Xs (1125x2436)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1125x2436]" id="pwaforwp_settings[ios_splash_icon][1125x2436]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1125x2436'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1125x2436'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPhone Xr (828x1792)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][828x1792]" id="pwaforwp_settings[ios_splash_icon][828x1792]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['828x1792'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['828x1792'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPhone Xs Max (1242x2688)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1242x2688]" id="pwaforwp_settings[ios_splash_icon][1242x2688]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1242x2688'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1242x2688'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPad Mini/iPad Air (1536x2048)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1536x2048]" id="pwaforwp_settings[ios_splash_icon][1536x2048]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1536x2048'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1536x2048'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPad Pro 10.5" (1668x2224)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1668x2224]" id="pwaforwp_settings[ios_splash_icon][1668x2224]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1668x2224'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1668x2224'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label>iPad Pro 11" (1668x2388)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][1668x2388]" id="pwaforwp_settings[ios_splash_icon][1668x2388]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['1668x2388'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['1668x2388'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-		<div class="ios-splash-images-field">
-			<label> iPad Pro 12.9" (2048x2732)</label>
-			<input type="text" name="pwaforwp_settings[ios_splash_icon][2048x2732]" id="pwaforwp_settings[ios_splash_icon][2048x2732]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon']['2048x2732'] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon']['2048x2732'])) : ''; ?>">
-			<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
-			</button>
-		</div>
-
+		<?php
+		$splashIcons = ios_splashscreen_files_data();
+		foreach ($splashIcons as $key => $splashValue) {
+			
+		?>
+			<div class="ios-splash-images-field">
+				<label><?php echo $splashValue['name']." ($key) [".ucfirst($splashValue['orientation'])."]" ?></label>
+				<input type="text" name="pwaforwp_settings[ios_splash_icon][<?php echo $key ?>]" id="pwaforwp_settings[ios_splash_icon][<?php echo $key ?>]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon'][$key] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon'][$key])) : ''; ?>">
+				<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
+					<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
+				</button>
+			</div>
+	<?php } ?>
+		
 	</div>
 
 	<?php

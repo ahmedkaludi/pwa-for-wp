@@ -600,18 +600,6 @@ class pwaforwpFileCreation{
                     'purpose'=> 'any maskable',
                 );
 
-                if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1 && is_array($settings['ios_splash_icon'])){
-                  foreach ($settings['ios_splash_icon'] as $key => $value) {
-                    if($value){
-                      $icons[] = array(
-                          'src'   => esc_url(pwaforwp_https($value)),
-                          'sizes' => $key, 
-                          'type'  => 'image/png', 
-                          'purpose'=> 'any maskable',
-                      );
-                    }
-                  }
-                }
                                                              
                 $manifest = array();
                                                 
