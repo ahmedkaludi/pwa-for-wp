@@ -1382,10 +1382,10 @@ function pwaforwp_splash_icon_callback(){
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
 			<label style="display: inline-block;width: 50%;">Upload Images</label>
-			<select name="" id="ios-splash-gen-opt">
+			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
-				<option value="generate-auto">Automatic generation</option>
-				<option  value="manually">Manually</option>
+				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic generation</option>
+				<option  value="manually" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='manually'? 'selected': ''; ?>>Manually</option>
 			</select>
 		</div>
 
@@ -2614,6 +2614,7 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		foreach ($iosdata as $key => $value) {
 			$pwaforwp_settings['ios_splash_icon'][$key] = $pathURL.$value['file'];
 		}
+		$pwaforwp_settings['iosSplashScreenOpt']='generate-auto';
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
 		unlink($zipfilename);
