@@ -1382,6 +1382,21 @@ function pwaforwp_splash_icon_callback(){
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<?php
 		$splashIcons = ios_splashscreen_files_data();
+		echo '<button class="accordion" type="button">Generate Splash Screens </button>
+			<div class="panel">
+				<div class="ios-splash-screen-creator">
+					<div class="field"><label>Select image (Only PNG)</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
+					<div class="field"><label>Background color</label>#<input type="text" id="ios-splash-color" value="FFFFFF"></div>
+					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Create Image">
+					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
+				</div>
+			</div>
+			
+			';
+		?>
+		<button class="accordion active" type="button">Upload Manually</button>
+		<div class="panel" style="max-height: 100%;">
+		<?php
 		foreach ($splashIcons as $key => $splashValue) {
 			
 		?>
@@ -1392,7 +1407,8 @@ function pwaforwp_splash_icon_callback(){
 					<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
 				</button>
 			</div>
-	<?php } ?>
+		<?php } ?>
+		</div>
 		
 	</div>
 
@@ -1900,7 +1916,8 @@ function pwaforwp_enqueue_style_js( $hook ) {
             'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
             'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
             'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
-            'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce')
+            'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce'),
+            'iosSplashIcon'				=> ios_splashscreen_files_data(),
         );
         
         $object_name = apply_filters('pwaforwp_localize_filter',$object_name,'pwaforwp_obj');
@@ -1923,6 +1940,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
+        wp_enqueue_script('pwaforwp-zip-js', PWAFORWP_PLUGIN_URL . 'assets/js/jszip.min.js', array(), PWAFORWP_PLUGIN_VERSION, true);
         wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'plugin-install', 'wp-util', 'wp-a11y','updates' ), PWAFORWP_PLUGIN_VERSION, true);
         
         wp_enqueue_script('pwaforwp-main-js');
@@ -2551,5 +2569,46 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 	    $response = wp_remote_retrieve_body( $response );
 	    echo $response;
 	    die;
+	} 	
+} 
+
+if(!function_exists('pwaforwp_splashscreen_uploader')){
+	add_action('wp_ajax_pwaforwp_splashscreen_uploader','pwaforwp_splashscreen_uploader');
+
+	function pwaforwp_splashscreen_uploader(){
+		if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
+            echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+            die;
+        }
+        if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+           echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+           die;
+        }
+		$pwaforwp_settings = pwaforwp_defaultSettings();
+		
+		$upload = wp_upload_dir();
+		$path = $upload['basedir']."/pwa-splash-screen/";
+		wp_mkdir_p($path);
+		  $zipfilename = $path."file.zip";
+	      $input = fopen('php://input', 'rb');
+		  $file = fopen($zipfilename, 'wb'); 
+
+		  // Note: we don't need open and stream to stream, 
+		  // we could've used file_get_contents and file_put_contents
+		  stream_copy_to_stream($input, $file);
+		  fclose($input);
+		  fclose($file);
+
+		unzip_file($zipfilename, $path);
+		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
+		$iosdata = ios_splashscreen_files_data(); 
+		foreach ($iosdata as $key => $value) {
+			$pwaforwp_settings['ios_splash_icon'][$key] = $pathURL.$value['file'];
+		}
+
+		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
+		unlink($zipfilename);
+		echo json_encode(array("status"=>200, "message"=> "Splash screen uploaded successfully"));
+		  die;
 	} 	
 } 
