@@ -14,7 +14,6 @@
                                      window.addEventListener('load', function() {			         		
 			                navigator.serviceWorker.register(swsource, {scope: '{{home_url}}'}).then(function(reg){                                                                                        
 			                    console.log('Congratulations!!Service Worker Registered ServiceWorker scope: ', reg.scope);
-                          reg.update();
                                             {{userserviceworker}}                                                                        
 			                }).catch(function(err) {
 			                    console.log('ServiceWorker registration failed: ', err);
