@@ -1378,33 +1378,31 @@ function pwaforwp_splash_icon_callback(){
 		?>
 	</p>
 	<label>
-	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> > Setup splash screen for IOS</label>
+	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> > Setup Splash Screen for iOS</label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
-			<label style="display: inline-block;width: 50%;">Upload Images</label>
+			<label style="display: inline-block;width: 50%;">iOS Splash Screen Method</label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
-				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic generation</option>
-				<option  value="manually" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='manually'? 'selected': ''; ?>>Manually</option>
+				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic</option>
+				<option  value="manually" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='manually'? 'selected': ''; ?>>Manual</option>
 			</select>
 		</div>
 
 		<?php
 		$splashIcons = ios_splashscreen_files_data();
-		echo '<button class="accordion active pwaforwp-hide" id="generate-auto-1" type="button">Generate Splash Screens </button>
-			<div class="panel pwaforwp-hide" id="generate-auto-2"  style="max-height: 100%;">
+		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
 				<div class="ios-splash-screen-creator">
 					<div class="field"><label>Select image (Only PNG)</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
-					<div class="field"><label>Background color</label>#<input type="text" id="ios-splash-color" value="FFFFFF"></div>
-					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Create Image">
+					<div class="field"><label>Background color</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
+					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Generate">
 					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
 				</div>
 			</div>
 			
 			';
 		?>
-		<button class="accordion active pwaforwp-hide" id="manually-1" type="button">Upload Manually</button>
-		<div class="panel pwaforwp-hide" id="manually-2" style="max-height: 100%;">
+		<div class="panel pwaforwp-hide" id="manually-1" style="max-height: 100%;">
 		<?php
 		foreach ($splashIcons as $key => $splashValue) {
 			
