@@ -43,7 +43,8 @@ class PWAFORWP_Service_Worker{
                 add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
                 add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
             //}
-                                                  
+                  
+            add_action('wp_login', array($this,'on_user_logged_in'));                                
         }
 
         public static function loadalernative_script_load_method(){
@@ -574,6 +575,18 @@ class PWAFORWP_Service_Worker{
 
         }//if closed
     }//function iosSplashScreen closed
+
+    function on_user_logged_in(){
+        setcookie("pwa-loggedin", true);
+        $settings = pwaforwp_defaultSettings();
+        if($settings['default_caching']=='cacheFirst'){
+            $settings['default_caching'] = 'networkFirst';
+            global $pwaforwp_settings;
+            update_option( 'pwaforwp_settings', $settings ) ;
+            $pwaforwp_settings = $settings;
+            pwaforwp_required_file_creation();
+        }
+    }
                 
 }
 if (class_exists('PWAFORWP_Service_Worker')) {
