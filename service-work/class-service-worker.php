@@ -567,7 +567,7 @@ class PWAFORWP_Service_Worker{
             $otherData = ios_splashscreen_files_data();
 
             foreach ($settings['ios_splash_icon'] as $key => $value) {
-                if(!empty($value) && !empty($key)){
+                if(!empty($value) && !empty($key) && isset($otherData[$key])){
                     $screenData = $otherData[$key];
                     echo '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
                 }//if closed
