@@ -175,9 +175,10 @@ class pwaforwpFileCreation{
                                 });';  
            }
 
-           $addtohomebanner .= 'var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
+           $addtohomebanner .= 'var closeclicked = false; var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
                                 if(addtohomeCloseBtn !==null){
                                   addtohomeCloseBtn.addEventListener("click", (e) => {
+                                      closeclicked = true;
                                       var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
                                       if(bhidescroll !== null){
                                         bhidescroll.style.display = "none";
@@ -188,6 +189,7 @@ class pwaforwpFileCreation{
                               var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click"); 
                                 if(addtohomeBtn !==null){
                                     addtohomeBtn.addEventListener("click", (e) => {
+                                      if(closeclicked){return false;}
                                     addToHome();  
                                 });
                                 }';
