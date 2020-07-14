@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.4.1
-Stable tag: 1.7.17.1
+Stable tag: 1.7.17.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.17.2 (14 JULY 2020) =
+* Bug Fixed     : iOS splash screen resolution issue #453
+
 = 1.7.17.1 (08 JULY 2020) =
 * Bug Fixed     : Issue with 'X' button of custom add to home screen banner. #450
 * Bug Fixed     : Site Icon from Customizer is duplicating the icon meta tag resulting in different icon on homescreen #442
