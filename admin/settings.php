@@ -632,6 +632,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
                     'p-tab'	 => false
          ),
+         'ofpwa'  => array(
+                    'p-slug' => 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php',
+                    'p-name' => 'Offline Forms for PWA for WP',
+                    'p-short-prefix'=> 'OFPWA',
+                    'p-title' => 'Offline Forms for PWA for WP',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/offline-forms-for-pwa-for-wp.png',
+                    'p-background-color'=> '#afa173',
+                    'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2294,6 +2305,15 @@ function pwaforwp_features_settings(){
                                     'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    ),
+				'offlineforms' => array(
+                                    'enable_field' => 'offline_forms',
+                                    'section_name' => 'pwaforwp_offline_forms_setting_section',
+                                    'setting_title' => 'Offline Forms for PWA for WP',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ofpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
                                     ),
 								);
 	$featuresHtml = '';
