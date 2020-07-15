@@ -544,7 +544,7 @@ jQuery(document).ready(function($){
             }
         });
     });
-
+    jQuery("#ios-splash-color").wpColorPicker();
 });
 var pushnotificationIntegrationLogic = function(opt){
     if(opt==='notification-contents'){
@@ -825,4 +825,111 @@ var pwaforwp_showpopup = function(caption, inlineId, submitClass){
         var submitClassData = jQuery(this).parents(".pwawp-modal-mask").attr("data-parent-submit");
         jQuery(".pwawp-modal-mask").find(submitClassData).click();
     });
+}
+
+
+
+    //iosSplashIcon
+    var optSelection=document.getElementById('ios-splash-gen-opt');
+    optSelection.addEventListener('change', onpwaiosOptSelection,false);
+    var event = new Event('change');
+    optSelection.dispatchEvent(event);
+    function onpwaiosOptSelection(e){
+        var selected = e.target.value
+        if(selected==""){
+            document.getElementById('generate-auto-1').setAttribute("class", "panel pwaforwp-hide");
+            document.getElementById('manually-1').setAttribute("class", "panel pwaforwp-hide");
+            return;
+             }
+        if(selected=='generate-auto'){
+            document.getElementById(selected+'-1').setAttribute("class", "panel");
+            document.getElementById('manually-1').setAttribute("class", "panel pwaforwp-hide");
+        }else{
+            document.getElementById(selected+'-1').setAttribute("class", "panel");
+            document.getElementById('generate-auto-1').setAttribute("class", "panel pwaforwp-hide");
+        }
+    }
+    var image='';
+    document.addEventListener('DOMContentLoaded',function(){
+        var elmFileUpload=document.getElementById('file-upload-ios');
+        if(elmFileUpload){
+            elmFileUpload.addEventListener('change',onFileUploadChange,false);
+        }
+    });
+    function onFileUploadChange(e){
+        var file=e.target.files[0];
+        var fr=new FileReader();
+        fr.onload=onFileReaderLoad;
+        fr.readAsDataURL(file);
+    }
+    function onFileReaderLoad(e){
+        image=e.target.result;
+        document.getElementById('thumbnail').src=e.target.result;
+        //console.log(image);
+    };
+    function pwa_getimageZip(e){
+        e.disabled = true;
+        if(image==''){alert("Please Select Image");return;}
+        var imageMessage = document.getElementById("pwa-ios-splashmessage")
+        imageMessage.innerHTML = 'Generating splash screen...';
+        imageMessage.setAttribute("class", "updating-message");
+
+        var zip=new JSZip();
+        var folder=zip.folder('splashscreens');
+        var canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+        var img=new Image();
+        img.src=image;
+        Object.keys(pwaforwp_obj.iosSplashIcon).forEach(function(key, index) {
+            var phone = pwaforwp_obj.iosSplashIcon[key];
+            var ws=key.split("x")[0];
+            var hs=key.split("x")[1];
+            canvas.width=ws;
+            canvas.height=hs;
+            var wi=img.width;
+            var hi=img.height;
+            var wnew=wi;
+            var hnew=hi;
+            
+            ctx.fillStyle = document.getElementById('ios-splash-color').value;
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+            
+            ctx.drawImage(img,(ws-wnew)/2,(hs-hnew)/2,wnew,hnew);
+            var img2=canvas.toDataURL();
+            folder.file(phone.file,img2.split(';base64,')[1],{base64:true});
+        });
+        zip.generateAsync({type:'blob'}).then(function(content){
+            //saveAs(content,'splashscreens.zip');
+            var request = new XMLHttpRequest();
+            request.open("POST", ajaxurl+"?action=pwaforwp_splashscreen_uploader&pwaforwp_security_nonce="+pwaforwp_obj.pwaforwp_security_nonce);
+            request.send(content);
+            request.onreadystatechange = function() {
+                if (request.readyState === 4) {
+                    var reponse = JSON.parse(request.response);
+                  if(reponse.status==200){
+                    imageMessage.innerHTML = 'Splash Screen generated';
+                    imageMessage.setAttribute("class", "dashicons dashicons-yes");
+                    imageMessage.style.color = "#46b450";
+                    setTimeout(function(){
+                        window.location.reload();
+                    }, 1000);
+                  }
+                }
+              }
+        });
+        e.disabled = false;
+    }
+
+var accordion = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < accordion.length; i++) {
+  accordion[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
 }

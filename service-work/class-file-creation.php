@@ -129,7 +129,7 @@ class pwaforwpFileCreation{
         
         if(isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1){
           
-            if(isset($settings['enable_add_to_home_desktop_setting'])){
+            if(isset($settings['enable_add_to_home_desktop_setting']) && $settings['enable_add_to_home_desktop_setting']==1){
                 $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
                                     var isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                                     if(a2hsdesk !== null && checkbarClosedOrNot() && !isMobile){
@@ -175,9 +175,10 @@ class pwaforwpFileCreation{
                                 });';  
            }
 
-           $addtohomebanner .= 'var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
+           $addtohomebanner .= 'var closeclicked = false; var addtohomeCloseBtn = document.getElementById("pwaforwp-prompt-close");
                                 if(addtohomeCloseBtn !==null){
                                   addtohomeCloseBtn.addEventListener("click", (e) => {
+                                      closeclicked = true;
                                       var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
                                       if(bhidescroll !== null){
                                         bhidescroll.style.display = "none";
@@ -188,6 +189,7 @@ class pwaforwpFileCreation{
                               var addtohomeBtn = document.getElementById("pwaforwp-add-to-home-click"); 
                                 if(addtohomeBtn !==null){
                                     addtohomeBtn.addEventListener("click", (e) => {
+                                      if(closeclicked){return false;}
                                     addToHome();  
                                 });
                                 }';
@@ -331,6 +333,14 @@ class pwaforwpFileCreation{
                 if(isset($settings['splash_icon'])){
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
                   $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
+                }
+                if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){
+                  foreach ($settings['ios_splash_icon'] as $key => $value) {
+                    if($value){
+                      $pre_cache_urls .= "'".esc_url(pwaforwp_https($value))."',\n";
+                      $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($value))."',\n";
+                    }
+                  }
                 }
                 
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
@@ -591,6 +601,7 @@ class pwaforwpFileCreation{
                     'type'	=> 'image/png', 
                     'purpose'=> 'any maskable',
                 );
+
                                                              
                 $manifest = array();
                                                 

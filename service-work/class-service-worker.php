@@ -43,7 +43,8 @@ class PWAFORWP_Service_Worker{
                 add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
                 add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
             //}
-                                                  
+                  
+            add_action('wp_login', array($this,'on_user_logged_in'));                                
         }
 
         public static function loadalernative_script_load_method(){
@@ -441,17 +442,7 @@ class PWAFORWP_Service_Worker{
 		if($manualfileSetup){
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
-            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">
-		    	<meta name="pwaforwp" content="wordpress-plugin"/>
-		    	<meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">
-                <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
-                <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
-                <meta name="apple-mobile-web-app-capable" content="yes">
-                <meta name="mobile-web-app-capable" content="yes">
-                <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-                if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-                    echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
-                endif;
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">'.PHP_EOL;
 
 		}
 	}
@@ -462,26 +453,28 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-                    
-           	echo '<meta name="pwaforwp" content="wordpress-plugin"/>
-                      <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">'.PHP_EOL;
+            
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
-            echo '<meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
-            <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
-            <meta name="apple-mobile-web-app-capable" content="yes">
-            <meta name="mobile-web-app-capable" content="yes">
-            <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
-            endif;
 		}
                 
 	}
 
     public function apple_icons_support(){
         $settings        = pwaforwp_defaultSettings();
-        $this->iosSplashScreen();
+
+        echo '<meta name="pwaforwp" content="wordpress-plugin"/>
+        <meta name="theme-color" content="'.sanitize_hex_color($settings['theme_color']).'">
+        <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
+        <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
+        if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+            echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+        endif;
+
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
             echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
@@ -490,6 +483,7 @@ class PWAFORWP_Service_Worker{
         if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
             echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
         }
+        $this->iosSplashScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		
@@ -563,30 +557,34 @@ class PWAFORWP_Service_Worker{
         return (int) strtok( $a['sizes'], 'x' ) - (int) strtok( $b['sizes'], 'x' );
     }  
 
+    /**
+     * 
+     * @return splash screen for header section
+     */
     protected function iosSplashScreen(){
         $settings        = pwaforwp_defaultSettings();
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
-            if( isset( $settings['ios_splash_icon']['320x460'] ) && $settings['ios_splash_icon']['320x460'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['320x460'].'" media="(device-width: 320px)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['640x920'] ) && $settings['ios_splash_icon']['640x920'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['640x920'].'" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['768x1004'] ) && $settings['ios_splash_icon']['768x1004'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['768x1004'].'" media="(device-width: 768px) and (orientation: portrait)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['748x1024'] ) && $settings['ios_splash_icon']['748x1024'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['748x1024'].'" media="(device-width: 768px) and (orientation: landscape)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['1536x2008'] ) && $settings['ios_splash_icon']['1536x2008'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['1536x2008'].'" media="(device-width: 1536px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['2048x1496'] ) && $settings['ios_splash_icon']['2048x1496'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['2048x1496'].'" media="(device-width: 1536px)  and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
-            if( isset( $settings['ios_splash_icon']['750x1334'] ) && $settings['ios_splash_icon']['750x1334'] ){
-                echo '<link href="'.$settings['ios_splash_icon']['750x1334'].'" media="(device-width: 375px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">'.PHP_EOL;
-            }
+            $otherData = ios_splashscreen_files_data();
+
+            foreach ($settings['ios_splash_icon'] as $key => $value) {
+                if(!empty($value) && !empty($key) && isset($otherData[$key])){
+                    $screenData = $otherData[$key];
+                    echo '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
+                }//if closed
+            }//foreach closed
+
+        }//if closed
+    }//function iosSplashScreen closed
+
+    function on_user_logged_in(){
+        setcookie("pwa-loggedin", true);
+        $settings = pwaforwp_defaultSettings();
+        if($settings['default_caching']=='cacheFirst'){
+            $settings['default_caching'] = 'networkFirst';
+            global $pwaforwp_settings;
+            update_option( 'pwaforwp_settings', $settings ) ;
+            $pwaforwp_settings = $settings;
+            pwaforwp_required_file_creation();
         }
     }
                 
