@@ -523,8 +523,17 @@ class pwaforwpFileCreation{
                                                             $swJsContent);                		
 		} 
                     
-                }                                               		
-	        return apply_filters( 'pwaforwp_sw_js_template', $swJsContent );
+                }                                          
+          $swJsContent = apply_filters( 'pwaforwp_sw_js_template', $swJsContent );
+          //fallback remove replacements    
+          $swJsContent = str_replace(array(
+                                    "{{formMessageData}}", 
+                                    "{{fallbackPostRequest}}"
+                                    ), array(
+                                      "",
+                                      "return caches.match(OFFLINE_PAGE);"
+                                    ), $swJsContent); 		
+	        return $swJsContent;
 		
 	}
       
