@@ -2300,7 +2300,7 @@ function pwaforwp_features_settings(){
 				'pwatoapkplugin' => array(
                                     'enable_field' => 'pwa_to_apk_plugin',
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
-                                    'setting_title' => 'PWA to APK plugin',
+                                    'setting_title' => 'PWA to APK',
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
@@ -2309,7 +2309,16 @@ function pwaforwp_features_settings(){
 				'offlineforms' => array(
                                     'enable_field' => 'offline_forms',
                                     'section_name' => 'pwaforwp_offline_forms_setting_section',
-                                    'setting_title' => 'Offline Forms for PWA for WP',
+                                    'setting_title' => 'Offline Forms',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ofpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    ),
+				'autosaveforms' => array(
+                                    'enable_field' => 'autosave_forms',
+                                    'section_name' => 'pwaforwp_autosave_forms_setting_section',
+                                    'setting_title' => 'Auto Save Forms',
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
