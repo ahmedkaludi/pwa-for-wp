@@ -639,7 +639,7 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Offline Forms for PWA for WP',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/offline-forms-for-pwa-for-wp.png',
-                    'p-background-color'=> '#afa173',
+                    'p-background-color'=> '#acb1b5',
                     'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
                     'p-tab'	 => false
          ),
