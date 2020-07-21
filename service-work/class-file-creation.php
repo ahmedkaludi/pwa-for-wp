@@ -531,7 +531,7 @@ class pwaforwpFileCreation{
                                     "{{fallbackPostRequest}}"
                                     ), array(
                                       "",
-                                      "return caches.open(OFFLINE_CACHE).then(function(cache) {
+                                      "return caches.open(CACHE_VERSIONS.offline).then(function(cache) {
                                         return cache.match(OFFLINE_URL);
                                       });"
                                     ), $swJsContent); 		
