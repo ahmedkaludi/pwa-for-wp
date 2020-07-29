@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.4.1
-Stable tag: 1.7.17.2
+Stable tag: 1.7.18.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -36,7 +36,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Set Device Orientation easily.
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/) and [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/) and [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/) extensions
 
 **We Act Fast on Feedback!**
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
@@ -63,6 +63,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.18.1 (29 JULY 2020) =
+* Bug Fixed     : moved apple-touch-icon-precomposed icon with manifest #467  
+
+= 1.7.18 (21 JULY 2020) =
+* Feature added     : Added feature for Offline Forms for PWA for WP 
+
 = 1.7.17.2 (14 JULY 2020) =
 * Bug Fixed     : iOS splash screen resolution issue #453
 
