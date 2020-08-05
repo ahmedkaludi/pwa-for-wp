@@ -2674,8 +2674,8 @@ function pwaforwp_update_force_update($value, $old_value, $option){
 		$version = $value['force_update_sw_setting'];
 		if($version){
 			$version = explode(".", $version);
-			if(count($version)<3){
-				$version = implode(".", $version)."1";
+			if(count($version)<=3){
+				$version = implode(".", $version).".1";
 			}else{
 				$version[count($version)-1] = $version[count($version)-1]+1;
 				$version = implode(".", $version);
