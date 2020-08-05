@@ -2667,3 +2667,21 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		  die;
 	} 	
 } 
+
+add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_update_force_update', 10, 3); 
+function pwaforwp_update_force_update($value, $old_value, $option){
+	if(isset($value['force_update_sw_setting'])){
+		$version = $value['force_update_sw_setting'];
+		if($version){
+			$version = explode(".", $version);
+			if(count($version)<3){
+				$version = implode(".", $version)."1";
+			}else{
+				$version[count($version)-1] = $version[count($version)-1]+1;
+				$version = implode(".", $version);
+			}
+		}
+		$value['force_update_sw_setting'] = $version;
+	}
+	return $value;
+}
