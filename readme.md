@@ -63,7 +63,7 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.19 (29 JULY 2020) =
+= 1.7.19 (05 AUG 2020) =
 * Bug Fixed     : serviceworker version after update option panel #478  
 
 = 1.7.18.1 (29 JULY 2020) =
