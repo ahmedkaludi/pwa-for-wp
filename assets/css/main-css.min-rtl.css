@@ -386,7 +386,8 @@ select {
   position: relative;
   display: inline!important;
   margin-right: 0;
-  color: #d8d8d8!important
+  color: #d8d8d8!important;
+  cursor:pointer;
 }
 
 .pwaforwp-wrap .pwafw-tooltip:hover {

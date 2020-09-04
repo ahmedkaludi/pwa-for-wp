@@ -443,6 +443,9 @@ class PWAFORWP_Service_Worker{
                     
 		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">'.PHP_EOL;
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+            endif;
 
 		}
 	}
@@ -456,6 +459,9 @@ class PWAFORWP_Service_Worker{
             
 			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
+                echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
+            endif;
 		}
                 
 	}
@@ -471,10 +477,7 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-status-bar-style" content="default">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
-        if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-            echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
-        endif;
-
+        
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
             echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;

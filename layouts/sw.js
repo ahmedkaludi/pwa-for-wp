@@ -621,7 +621,7 @@ self.addEventListener(
                 event.respondWith(
                     fetch(event.request)
                         .catch(error => {
-                            return caches.match(offlinePage);
+                            {{fallbackPostRequest}}
                         })
                 );
                 return false;
@@ -679,6 +679,7 @@ self.addEventListener('message', (event) => {
             case 'cache' :               
                 pwaForWpprecacheUrl(event.data.url);
                 break;
+            {{formMessageData}}
             default :
                 console.log('Unknown action: ' + event.data.action);
                 break;

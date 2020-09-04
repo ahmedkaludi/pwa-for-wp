@@ -632,6 +632,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
                     'p-tab'	 => false
          ),
+         'ofpwa'  => array(
+                    'p-slug' => 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php',
+                    'p-name' => 'Offline Forms for PWA for WP',
+                    'p-short-prefix'=> 'OFPWA',
+                    'p-title' => 'Offline Forms for PWA for WP',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/offline-forms-for-pwa-for-wp.png',
+                    'p-background-color'=> '#acb1b5',
+                    'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2244,11 +2255,15 @@ function pwaforwp_features_settings(){
 									'enable_field' => 'utmtracking_feature',
 									'section_name' => 'pwaforwp_utmtracking_setting_section',
 									'setting_title' => 'UTM Tracking',
+									'tooltip_option'=> 'Urchin Traffic Monitor Tracking',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-add-utm-tracking-in-pwa/'
 									),
 				'loader' => array(
 									'enable_field' => 'loader_feature',
 									'section_name' => 'pwaforwp_loaders_setting_section',
 									'setting_title' => 'Loader',
+									'tooltip_option'=> 'Loader for complete website',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-loading-icon-library-for-pwa/'
 									),
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',
@@ -2258,6 +2273,8 @@ function pwaforwp_features_settings(){
 									'pro_link'		=> $addonLists['ctafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (isset($allplugins[$addonLists['ctafp']['p-slug']]) && !is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									'tooltip_option'=> 'CTA feature for PWA',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
@@ -2267,6 +2284,8 @@ function pwaforwp_features_settings(){
 									'pro_link'		=> $addonLists['dafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
+									'tooltip_option'=> 'Analytics for the number of people who are installing PWA',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
 									),
 				'pulltorefresh' => array(
                                     'enable_field' => 'pull_to_refresh',
@@ -2276,6 +2295,8 @@ function pwaforwp_features_settings(){
                                     'pro_link'      => $addonLists['ptrfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'tooltip_option'=> 'Refresh the PWA APP page',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
                                     ),
 				'progressbar' => array(
                                     'enable_field' => 'scroll_progress_bar',
@@ -2285,15 +2306,41 @@ function pwaforwp_features_settings(){
                                     'pro_link'      => $addonLists['spbfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'tooltip_option'=> 'Show Scroll progress bar',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/scroll-progress-bar-for-pwa/'
                                     ),
 				'pwatoapkplugin' => array(
                                     'enable_field' => 'pwa_to_apk_plugin',
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
-                                    'setting_title' => 'PWA to APK plugin',
+                                    'setting_title' => 'PWA to Android APP (APK)',
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'tooltip_option'=> 'Generate APK for website',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
+                                    ),
+				'offlineforms' => array(
+                                    'enable_field' => 'offline_forms',
+                                    'section_name' => 'pwaforwp_offline_forms_setting_section',
+                                    'setting_title' => 'Offline Forms',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ofpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'tooltip_option'=> 'Support forms to work on offline mode',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-offline-forms/'
+                                    ),
+				'autosaveforms' => array(
+                                    'enable_field' => 'autosave_forms',
+                                    'section_name' => 'pwaforwp_autosave_forms_setting_section',
+                                    'setting_title' => 'Auto Save Forms',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ofpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'tooltip_option'=> 'It auto saves the data on the fly',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
 								);
 	$featuresHtml = '';
@@ -2620,3 +2667,21 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		  die;
 	} 	
 } 
+
+add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_update_force_update', 10, 3); 
+function pwaforwp_update_force_update($value, $old_value, $option){
+	if(isset($value['force_update_sw_setting'])){
+		$version = $value['force_update_sw_setting'];
+		if($version){
+			$version = explode(".", $version);
+			if(count($version)<=3){
+				$version = implode(".", $version).".1";
+			}else{
+				$version[count($version)-1] = $version[count($version)-1]+1;
+				$version = implode(".", $version);
+			}
+		}
+		$value['force_update_sw_setting'] = $version;
+	}
+	return $value;
+}
