@@ -51,9 +51,9 @@ class pushNotification{
                     
                     if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
                     
-                      if(isset($settings['on_add_post'])){
+                      if(isset($settings['on_add_post']) && $settings['on_add_post']==1){
                           
-                       if(isset($settings['on_add_post_notification_title'])){
+                       if(isset($settings['on_add_post_notification_title']) && !empty($settings['on_add_post_notification_title'])){
                             $message['title'] = $settings['on_add_post_notification_title']; 
                          }else{
                             $message['title'] = esc_html__('New Post', 'pwa-for-wp');
@@ -62,9 +62,9 @@ class pushNotification{
                         }                        
                     }else{
                         
-                       if(isset($settings['on_update_post'])){
+                       if(isset($settings['on_update_post']) && $settings['on_update_post']==1){
                            
-                         if(isset($settings['on_update_post_notification_title'])){
+                         if(isset($settings['on_update_post_notification_title']) && !empty($settings['on_update_post_notification_title'])){
                             $message['title'] = $settings['on_update_post_notification_title']; 
                          }else{
                             $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
