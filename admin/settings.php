@@ -535,7 +535,7 @@ function pwaforwp_addon_html(){
     	if(is_plugin_active($plugin['p-slug'])){                                           
 	       $ctafp_active_text =  pwaforwp_get_license_section_html($plugin['p-short-prefix']);                                         
 	    }else{                                            
-	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt">Status :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
+	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt">'.esc_html__('Status', 'pwa-for-wp').' :<span>'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
 	       if(!class_exists('PWAFORWPPROExtensionManager')){
 		       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
 		   }
@@ -596,7 +596,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/data-analytics-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/data-analytics-for-pwa.png',
                     'p-background-color'=> '#84dbff',
-                    'p-desc' => 'Data Analytics for PWA installation growth and traffic analysis',
+                    'p-desc' => esc_html__('Data Analytics for PWA installation growth and traffic analysis', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'ptrfp'  => array(
@@ -676,7 +676,7 @@ function pwaforwp_premium_features_callback(){
         <div class="pwaforwp-subheading-wrap">
 	       <div class="pwaforwp-sub-tab-headings" style="margin-top: 10px;">                            
 	           <?php echo $tabs; ?>   
-	           <span data-tab-id="pwaforwp-addon" class="selected">Add Ons</span> 
+	           <span data-tab-id="pwaforwp-addon" class="selected"><?php echo esc_html__('Add Ons', 'pwa-for-wp'); ?></span> 
 	       </div>
 
 	       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading" style="margin-top: 10px;">
@@ -827,7 +827,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	?>
         <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
-        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
+        <p><?php echo esc_html__('Note: Put in comma separated, do not add enter in urls', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
 	<?php
@@ -848,7 +848,7 @@ function pwaforwp_precaching_setting_callback(){
 		<tr>
                     <th><strong><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></strong>
                     	<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/"><?php echo esc_html__('For details click here', 'pwa-for-wp'); ?></a></span>
 		                </span>
 	            	</th>
                         <td>
@@ -890,9 +890,9 @@ function pwaforwp_precaching_setting_callback(){
                    </td>
                 </tr>
                 <tr>
-                    <td><strong> <?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong>
+                    <td><strong><?php echo esc_html__('Manual', 'pwa-for-wp'); ?> </strong>
                     	<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
-		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/">For details click here</a></span>
+		                    <span class="pwafw-help-subtitle"><a href="https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/"><?php echo esc_html__('For details click here','pwa-for-wp'); ?></a></span>
 		                </span>
                     </td>
                         <td>
@@ -1050,8 +1050,8 @@ function pwaforwp_loading_display_setting_callback(){
     	$settings['loading_icon_display_mobile'] = 1;
     }
     ?>
-    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_desktop]" id="pwaforwp_settings[loading_icon_display_desktop]" class="" value="1" <?php echo isset( $settings['loading_icon_display_desktop'] ) && $settings['loading_icon_display_desktop']==1 ? 'checked' : ''; ?> >Desktop</label>
-    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_mobile]" id="pwaforwp_settings[loading_icon_display_mobile]" class="" value="1" <?php echo isset( $settings['loading_icon_display_mobile'] ) && $settings['loading_icon_display_mobile']==1 ? 'checked' : ''; ?> >Mobile</label>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_desktop]" id="pwaforwp_settings[loading_icon_display_desktop]" class="" value="1" <?php echo isset( $settings['loading_icon_display_desktop'] ) && $settings['loading_icon_display_desktop']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Desktop', 'pwa-for-wp'); ?></label>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_mobile]" id="pwaforwp_settings[loading_icon_display_mobile]" class="" value="1" <?php echo isset( $settings['loading_icon_display_mobile'] ) && $settings['loading_icon_display_mobile']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Mobile', 'pwa-for-wp'); ?></label>
     <?php
 }
 
@@ -1112,7 +1112,7 @@ function pwaforwp_push_notification_callback(){
         <div class="pwafowwp-server-key-section">
         	<table class="pwaforwp-pn-options">
         		<tbody>
-        			<th>Push notification integration</th>
+        			<th><?php echo esc_html__('Push notification integration', 'pwa-for-wp');?></th>
         			<td>
         				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
         					<option value="">Select</option>
@@ -1180,12 +1180,12 @@ function pwaforwp_push_notification_callback(){
             			 }
             			?>
             			<div class="pwaforwp-center">
-	            			<p>This feature requires a Free plugin which integrates with a Free Push Notification service
+	            			<p><?php echo esc_html__('This feature requires a Free plugin which integrates with a Free Push Notification service', 'pwa-for-wp'); ?>
 	            			</p>
 	            			<span data-activate-url="<?php echo $activate_url; ?>" 
 	            				 class="pwaforwp-install-require-plugin button button-primary <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
 	            				id="pushnotification">
-	            				Install Plugin
+	            				<?php echo esc_html__('Install Plugin', 'pwa-for-wp'); ?>
 	            			</span>
 	            		</div>
             			<?php
@@ -1260,7 +1260,7 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     
                     <tr>
-                        <th>Title:<br/><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
+                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
                             <br>
 			                   
                         </th>  
@@ -1268,7 +1268,7 @@ function pwaforwp_push_notification_callback(){
                     </tr>
                      <tr>
                         <th>
-                        	Redirection Url Onclick of notification:<br/>
+                        	<?php echo esc_html__('Redirection Url Onclick of notification', 'pwa-for-wp') ?>:<br/>
                         	<input style="width: 100%" placeholder="URL" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo pwaforwp_home_url(); ?>">
                             <br>
 			                   
@@ -1277,7 +1277,7 @@ function pwaforwp_push_notification_callback(){
                     </tr>
                     <tr>
                         <th>
-                        	Image Url:<br/>
+                        	<?php echo esc_html__('Image Url', 'pwa-for-wp') ?>:<br/>
                         	<input style="width: 100%" placeholder="Image URL" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
                             <br>
 			                   
@@ -1285,7 +1285,7 @@ function pwaforwp_push_notification_callback(){
                         <td></td>
                     </tr>   
                     <tr>
-                        <th>Message:<br/><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
+                        <th><?php echo esc_html__('Message', 'pwa-for-wp') ?>:<br/><textarea rows="5" cols="60" id="pwaforwp_notification_message" name="pwaforwp_notification_message"> </textarea>
                             <button class="button pwaforwp-manual-notification"> <?php echo esc_html__('Send', 'pwa-for-wp'); ?> </button>
                             <br>
 			                    <div class="pwaforwp-notification-success pwa_hide"></div>
@@ -1383,16 +1383,16 @@ function pwaforwp_splash_icon_callback(){
 	
 	<p class="description">
 		<?php echo sprintf('%s <strong>%s</strong>',
-			esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly'),
-			esc_html__('512x512 in size.')
+			esc_html__('Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly', 'pwa-for-wp'),
+			esc_html__('512x512 in size.', 'pwa-for-wp')
 				);
 		?>
 	</p>
 	<label>
-	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> > Setup Splash Screen for iOS</label>
+	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
-			<label style="display: inline-block;width: 50%;">iOS Splash Screen Method</label>
+			<label style="display: inline-block;width: 50%;"><?php esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
 				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic</option>
@@ -1404,8 +1404,8 @@ function pwaforwp_splash_icon_callback(){
 		$splashIcons = ios_splashscreen_files_data();
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
 				<div class="ios-splash-screen-creator">
-					<div class="field"><label>Select image (Only PNG)</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
-					<div class="field"><label>Background color</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
+					<div class="field"><label>'.esc_html__('Select image (Only PNG)', 'pwa-for-wp').'</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
+					<div class="field"><label>'.esc_html__('Background color', 'pwa-for-wp').'</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
 					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Generate">
 					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
 				</div>
@@ -1711,7 +1711,7 @@ function pwaforwp_files_status_callback(){
                 </tr>    
                 <?php } ?>
 				<tr>
-                    <th style="width:20%">Status</th>
+                    <th style="width:20%"><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>
                     <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
 					<?php if($is_amp) { ?>
                     <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
@@ -1930,10 +1930,10 @@ function pwaforwp_enqueue_style_js( $hook ) {
         
         $object_name = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
-            'uploader_title'            => esc_html('Application Icon', 'pwa-for-wp'),
-            'splash_uploader_title'     => esc_html('Splash Screen Icon', 'pwa-for-wp'),
-            'uploader_button'           => esc_html('Select Icon', 'pwa-for-wp'),
-            'file_status'               => esc_html('Check permission or download from manual', 'pwa-for-wp'),
+            'uploader_title'            => esc_html__('Application Icon', 'pwa-for-wp'),
+            'splash_uploader_title'     => esc_html__('Splash Screen Icon', 'pwa-for-wp'),
+            'uploader_button'           => esc_html__('Select Icon', 'pwa-for-wp'),
+            'file_status'               => esc_html__('Check permission or download from manual', 'pwa-for-wp'),
             'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce'),
             'iosSplashIcon'				=> ios_splashscreen_files_data(),
         );
@@ -2402,7 +2402,7 @@ function pwaforwp_features_settings(){
 									
 								</div>
 							</li>',
-							esc_html($featureVal['setting_title']),
+							esc_html__($featureVal['setting_title'], 'pwa-for-wp'),
 							esc_attr($key),
 							(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']] ) ? esc_html("checked") : '',
 							$featureVal['enable_field'],
@@ -2435,10 +2435,10 @@ function pwaforwp_features_settings(){
             <div class="pwawp-modal-footer">
                 <!---->
                 <button type="button" class="button pwawp-modal-default-button pwawp-save-btn-modal  button-primary">
-                    Save Changes
+                    '.esc_html__('Save Changes', 'pwa-for-wp').'
                 </button>
                 <button type="button" class="button pwawp-close-btn-modal pwawp-modal-default-button">
-                    Close
+                    '.esc_html__('Close', 'pwa-for-wp').'
                 </button>
             </div>
         </div>
