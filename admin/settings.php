@@ -2670,6 +2670,14 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 
 add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_update_force_update', 10, 3); 
 function pwaforwp_update_force_update($value, $old_value, $option){
+	if(!function_exists('wp_get_current_user')){
+		return $value;
+	}
+	$user = wp_get_current_user();
+	$allowed_roles = array('administrator');
+	if(! array_intersect($allowed_roles, $user->roles ) ) {
+		return $value;
+	}
 	if(isset($value['force_update_sw_setting'])){
 		$version = $value['force_update_sw_setting'];
 		if($version){
