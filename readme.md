@@ -1,19 +1,26 @@
-=== PWA for WP & AMP ===
+# PWA for WP & AMP
+
 Contributors: magazine3
+
 Requires at least: 3.0
+
 Tested up to: 5.5.1
+
 Stable tag: 1.7.19
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
 
 
-== Description ==
+## Description 
 PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 
 You can give the APP-like experience to your audience which will get your website to their home screen and works instantly like an APP with offline support.
 
-= Features: =
+## Features: 
 * <strong>AMP Support</strong>: Full PWA compatibility for AMP.  It works well with AMPforWP & AMP for WordPress by Automattic.
 * NEW: Multi site support
 * NEW: UTM Tracking
@@ -36,33 +43,37 @@ You can give the APP-like experience to your audience which will get your websit
 * Set Device Orientation easily.
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
+
 * **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/) and [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/) extensions
 
 **We Act Fast on Feedback!**
+
 We are actively developing this plugin and our aim is to make this plugin into the #1 solution for PWA in the world. You can [Request a Feature](https://github.com/ahmedkaludi/pwa-for-wp/issues) or [Report a Bug](https://pwa-for-wp.com/contact-us/).
 
 **Technical Support**
+
 Support is provided in [Forum](https://wordpress.org/support/plugin/pwa-for-wp). You can also [Contact us](https://pwa-for-wp.com/contact-us/), our turn around time on email is around 12 hours. 
 
 **Would you like to contribute?**
+
 You may now contribute to this PWA plugin on Github: [View repository](https://github.com/ahmedkaludi/pwa-for-wp) on Github
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions
 
-= How to install and use this PWA plugin? =
+# How to install and use this PWA plugin? 
 After you Active this plugin, and go the PWA Options Dashboard to see the status and setup options accordingly.  
 
-= How do I report bugs and suggest new features? =
+# How do I report bugs and suggest new features? 
 You can report the bugs for this PWA plugin [here](https://github.com/ahmedkaludi/pwa-for-wp/issues)
 
-= Will you include features to my request? =
+# Will you include features to my request? 
 
 Yes, Absolutely! We would suggest you send your feature request by creating an issue in [Github](https://github.com/ahmedkaludi/pwa-for-wp/issues/new/) . It helps us organize the feedback easily.
 
-= How do I get in touch? =
+# How do I get in touch? 
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
-== Changelog ==
+## Changelog
 = 1.7.19 (05 SEPTEMBER 2020) =
 * Bug Fixed     : service worker version after update option panel #478
 * Bug Fixed     : Wrapped all the texts of the pwa-for-wp plugin in the text domain #493
