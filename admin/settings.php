@@ -1392,7 +1392,7 @@ function pwaforwp_splash_icon_callback(){
 	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
-			<label style="display: inline-block;width: 50%;"><?php esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
+			<label style="display: inline-block;width: 50%;"><?php echo esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
 				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic</option>
@@ -1401,13 +1401,21 @@ function pwaforwp_splash_icon_callback(){
 		</div>
 
 		<?php
-		$splashIcons = ios_splashscreen_files_data();
+		$currentpic = $splashIcons = ios_splashscreen_files_data();
+		reset($currentpic);
+		$previewImg = '';
+		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
+			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="50" height="50">';
+		}
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
-				<div class="ios-splash-screen-creator">
+				<div class="ios-splash-screen-creator" style="display:inline-block; width:90%">
 					<div class="field"><label>'.esc_html__('Select image (Only PNG)', 'pwa-for-wp').'</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
 					<div class="field"><label>'.esc_html__('Background color', 'pwa-for-wp').'</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
 					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Generate">
 					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
+				</div>
+				<div class="splash_preview_wrp" style="display:inline-block; width:9%">
+				'.$previewImg.'
 				</div>
 			</div>
 			
