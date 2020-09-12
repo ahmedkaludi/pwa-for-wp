@@ -723,7 +723,13 @@ function pwaforwp_caching_strategies_setting_callback(){
 			}
 			 ?>
 
-		</select></td>
+		</select>
+		<br/>
+		<label>
+		<input type="checkbox" name="pwaforwp_settings[change_default_on_login]" value="1" <?php if( isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1 ){ echo 'checked'; }?>>
+		<?php echo esc_html('If you have a login for normal users (it help users to get updates content)', 'pwa-for-wp'); ?>
+		</label>
+		</td>
 	</tr>
 	<tr>
 		<td><label><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></label></td>
