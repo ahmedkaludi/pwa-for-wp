@@ -1643,7 +1643,7 @@ function pwaforwp_files_status_callback(){
        $is_amp   = $serviceWorkerObj->is_amp;             
 	   $settings = pwaforwp_defaultSettings();
 
-	   $nonAmpStatusMsg = $nonampStatusIcon = '';
+	   $nonAmpStatusMsg = $nonampStatusIcon = $nonAmpLearnMoreLink = '';
 
 	   if(!isset( $settings['normal_enable'] ) || (isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) ){
 			$nonAmpStatusMsg = 'PWA is disabled';
@@ -1670,6 +1670,7 @@ function pwaforwp_files_status_callback(){
 		}
 		if ( !is_ssl() && $nonAmpStatusMsg=='' ) {
 			$nonAmpStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
+			$nonAmpLearnMoreLink = '<a href="https://pwa-for-wp.com/docs/article/site-need-https-for-pwa/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a>';
 		}
 
 		if($nonAmpStatusMsg==''){
@@ -1726,7 +1727,7 @@ function pwaforwp_files_status_callback(){
                 <?php } ?>
 				<tr>
                     <th style="width:20%"><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>
-                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
+                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ). ' '.$nonAmpLearnMoreLink ?></p></td>
 					<?php if($is_amp) { ?>
                     <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
 					<?php } ?>
@@ -1819,7 +1820,7 @@ function pwaforwp_files_status_callback(){
                   if ( is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } else {
-                            echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
+                            echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).' <a href="https://pwa-for-wp.com/docs/article/site-need-https-for-pwa/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></p>';                                     
                     }
                   ?>  
                 </td>
