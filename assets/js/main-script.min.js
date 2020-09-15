@@ -545,6 +545,28 @@ jQuery(document).ready(function($){
         });
     });
     jQuery("#ios-splash-color").wpColorPicker();
+
+    //Activate pro plugin
+    jQuery(".pwa_activate_pro_plugin").click(function(){
+        var self = jQuery(this);
+        if(self.prop("checked")==true){
+            var nonce = self.attr('data-secure'); var data_file = self.attr('data-file');
+            $.ajax({
+                url: ajaxurl,type: 'post',data: 'action=pwafowp_enable_modules_active&target_file=' + data_file + '&verify_nonce=' + nonce,
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == 200) {
+                        pwaforwp_show_message_toast("success", response.message);
+                        location.reload();
+                    }else{
+                        pwaforwp_show_message_toast("error", response.message);
+                        self.prop("checked", false);
+                    }
+                }
+            });
+        }
+    });
+    
 });
 var pushnotificationIntegrationLogic = function(opt){
     if(opt==='notification-contents'){

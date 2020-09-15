@@ -5,6 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class PWA_Utility{
 	public function init(){
 		add_action("wp_ajax_pwafowp_enable_modules_upgread", array($this, 'enable_modules') );
+		add_action("wp_ajax_pwafowp_enable_modules_active", array($this, 'enable_modules_active_dashboard') );
 
 	}
 
@@ -51,6 +52,27 @@ class PWA_Utility{
 	    }
 	    wp_die();
 
+	}
+
+	public function enable_modules_active_dashboard(){
+		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'wp_pro_activate' ) ) {
+	        echo json_encode(array("status"=>300,"message"=>'Request not valid')); die;
+	        exit();
+	    }
+	    if(!current_user_can('activate_plugins')){ echo json_encode(array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') )); die; }
+	    $addonLists = pwaforwp_list_addons();
+	    $target_file = $_POST['target_file'];
+	    $slug = isset($addonLists[$target_file]['p-slug'])? $addonLists[$target_file]['p-slug'] : '';
+	    if( $slug ){ 
+	    	$response = activate_plugin($slug); 
+	    }else{ 
+	    	$response = new WP_Error( 'broke', esc_html__( "invalid slug provided", "my_textdomain" ) );
+	    }
+	    if($response instanceof  WP_Error){
+	    	echo json_encode(array("status"=>500, 'message'=>$response->get_error_message()));die;
+	    }else{
+	    	echo json_encode(array("status"=>200, 'message'=>esc_html__('Plugin Activating. please wait..', 'pwa-for-wp') ));die;
+	    }
 	}
 }
 

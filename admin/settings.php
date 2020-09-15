@@ -2287,7 +2287,8 @@ function pwaforwp_features_settings(){
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['ctafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (isset($allplugins[$addonLists['ctafp']['p-slug']]) && !is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['ctafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ctafp']['p-slug'])? 1: 0),
+									'slug' => 'ctafp',
 									'tooltip_option'=> 'CTA feature for PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
@@ -2298,7 +2299,8 @@ function pwaforwp_features_settings(){
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['dafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['dafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['dafp']['p-slug'])? 1: 0),
+									'slug' => 'dafp',
 									'tooltip_option'=> 'Analytics for the number of people who are installing PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
 									),
@@ -2309,7 +2311,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptrfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptrfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'slug' => 'ptrfp',
                                     'tooltip_option'=> 'Refresh the PWA APP page',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
                                     ),
@@ -2320,7 +2323,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['spbfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['spbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'slug' => 'spbfp',
                                     'tooltip_option'=> 'Show Scroll progress bar',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/scroll-progress-bar-for-pwa/'
                                     ),
@@ -2329,9 +2333,10 @@ function pwaforwp_features_settings(){
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
                                     'setting_title' => 'PWA to Android APP (APK)',
                                     'is_premium'    => true,
-                                    'pro_link'      => $addonLists['ptafp']['p-url'],
+                                    'pro_link'      => 'ptafp',
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'slug' => $addonLists['ptafp']['p-slug'],
                                     'tooltip_option'=> 'Generate APK for website',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
                                     ),
@@ -2342,7 +2347,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'slug' => 'ofpwa',
                                     'tooltip_option'=> 'Support forms to work on offline mode',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-offline-forms/'
                                     ),
@@ -2353,7 +2359,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug']) ? 1: 0),
+                                    'slug' => 'ofpwa',
                                     'tooltip_option'=> 'It auto saves the data on the fly',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
@@ -2394,9 +2401,14 @@ function pwaforwp_features_settings(){
 			</div>';
 
 	    $pro_link = '';
-	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1){
+	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1  && !class_exists('PWAFORWPPROExtensionManager')){
 	    	//$Plugins = get_transient( 'plugin_slugs');
-	    	$premium_alert = '<span class="pro deactivated">Deactivated</span>';
+	    	//<span class="pro deactivated">Deactivated</span>
+	    	$wp_nonce = wp_create_nonce("wp_pro_activate");
+	    	$premium_alert = '<label class="switch">
+				  <input type="checkbox" class="pwa_activate_pro_plugin" value="1" data-secure="'.$wp_nonce.'" data-file="'.$featureVal['slug'].'">
+				  <span class="slider round"></span>
+				</label>';
 	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active'] && class_exists('PWAFORWPPROExtensionManager')){
 		    $premium_alert = '<span class="pro deactivated">Deactivated</span>';
 	    	$pro_link = 'onclick="window.open(\''.admin_url("admin.php?page=pwawp-extension-manager").'\', \'_blank\')"';
