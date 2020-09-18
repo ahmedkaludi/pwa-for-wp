@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.5.1
-Stable tag: 1.7.19
+Stable tag: 1.7.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.20 (17 SEPTEMBER 2020) =
+* Improvement   : Improved the UI of features section #462
+* Improvement   : Added learn more link after the https status message of PWA  #464
+* Improvement   : Provide option to switch default cache strategy for the user if they have login in the front end #461
+* Improvement   : Change the UI of the after adding the splash screen automatically for the IOS #452
+* Improvement   : Pull request for update readme.md #521
+
 = 1.7.19 (05 SEPTEMBER 2020) =
 * Bug Fixed     : service worker version after update option panel #478
 * Bug Fixed     : Wrapped all the texts of the pwa-for-wp plugin in the text domain #493

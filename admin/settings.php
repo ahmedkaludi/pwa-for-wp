@@ -337,7 +337,7 @@ function pwaforwp_settings_init(){
 		);		
                 
                                                 
-    add_settings_section('pwaforwp_tools_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
+    add_settings_section('pwaforwp_tools_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_tools_section');
                                                 
 		add_settings_field(
 			'pwaforwp_reset_setting',							// ID
@@ -348,7 +348,7 @@ function pwaforwp_settings_init(){
 		);
 
 		//Misc tabs
-		add_settings_section('pwaforwp_other_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
+		add_settings_section('pwaforwp_other_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
 		add_settings_field(
 			'pwaforwp_cdn_setting',							// ID
 			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
@@ -378,7 +378,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 
-		add_settings_section('pwaforwp_addtohomescreen_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_addtohomescreen_setting_section');
+		add_settings_section('pwaforwp_addtohomescreen_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_addtohomescreen_setting_section');
         add_settings_field(
 			'pwaforwp_custom_add_to_home',									// ID
 			esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),		// Title
@@ -402,7 +402,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-        add_settings_section('pwaforwp_utmtracking_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_utmtracking_setting_section');
+        add_settings_section('pwaforwp_utmtracking_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_utmtracking_setting_section');
 		add_settings_field(
 			'pwaforwp_utm_setting',							// ID
 			esc_html__('UTM Tracking', 'pwa-for-wp'),	// Title
@@ -445,7 +445,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
-		add_settings_section('pwaforwp_loaders_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
+		add_settings_section('pwaforwp_loaders_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
 			esc_html__('Loader', 'pwa-for-wp'),	// Title
@@ -482,7 +482,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 
-		add_settings_section('pwaforwp_compatibility_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_compatibility_setting_section');
+		add_settings_section('pwaforwp_compatibility_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_compatibility_setting_section');
                 add_settings_field(
 			'pwaforwp_one_signal_support',									// ID
 			esc_html__('OneSignal', 'pwa-for-wp'),		// Title
@@ -491,7 +491,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section'						// Settings Section ID
 		);
                                
-                add_settings_section('pwaforwp_precaching_setting_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
+                add_settings_section('pwaforwp_precaching_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
 		add_settings_field(
 			'pwaforwp_precaching_setting',							// ID
 			'',	
@@ -501,7 +501,7 @@ function pwaforwp_settings_init(){
 		);  
                 
                 
-                add_settings_section('pwaforwp_push_notification_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_push_notification_section');
+                add_settings_section('pwaforwp_push_notification_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_push_notification_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_push_notification',							// ID
@@ -511,7 +511,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_push_notification_section'						// Settings Section ID
 		);
                 
-                add_settings_section('pwaforwp_premium_features_section', esc_html__('','pwa-for-wp'), '__return_false', 'pwaforwp_premium_features_section');
+                add_settings_section('pwaforwp_premium_features_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_premium_features_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_premium_features',							// ID
@@ -723,7 +723,13 @@ function pwaforwp_caching_strategies_setting_callback(){
 			}
 			 ?>
 
-		</select></td>
+		</select>
+		<br/>
+		<label>
+		<input type="checkbox" name="pwaforwp_settings[change_default_on_login]" value="1" <?php if( isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1 ){ echo 'checked'; }?>>
+		<?php echo esc_html('If you have a login for normal users (it help users to get updates content)', 'pwa-for-wp'); ?>
+		</label>
+		</td>
 	</tr>
 	<tr>
 		<td><label><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></label></td>
@@ -1392,7 +1398,7 @@ function pwaforwp_splash_icon_callback(){
 	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
-			<label style="display: inline-block;width: 50%;"><?php esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
+			<label style="display: inline-block;width: 50%;"><?php echo esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
 				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic</option>
@@ -1401,13 +1407,21 @@ function pwaforwp_splash_icon_callback(){
 		</div>
 
 		<?php
-		$splashIcons = ios_splashscreen_files_data();
+		$currentpic = $splashIcons = ios_splashscreen_files_data();
+		reset($currentpic);
+		$previewImg = '';
+		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
+			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="50" height="50">';
+		}
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
-				<div class="ios-splash-screen-creator">
+				<div class="ios-splash-screen-creator" style="display:inline-block; width:90%">
 					<div class="field"><label>'.esc_html__('Select image (Only PNG)', 'pwa-for-wp').'</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
 					<div class="field"><label>'.esc_html__('Background color', 'pwa-for-wp').'</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
 					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Generate">
 					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
+				</div>
+				<div class="splash_preview_wrp" style="display:inline-block; width:9%">
+				'.$previewImg.'
 				</div>
 			</div>
 			
@@ -1629,7 +1643,7 @@ function pwaforwp_files_status_callback(){
        $is_amp   = $serviceWorkerObj->is_amp;             
 	   $settings = pwaforwp_defaultSettings();
 
-	   $nonAmpStatusMsg = $nonampStatusIcon = '';
+	   $nonAmpStatusMsg = $nonampStatusIcon = $nonAmpLearnMoreLink = '';
 
 	   if(!isset( $settings['normal_enable'] ) || (isset( $settings['normal_enable'] ) && $settings['normal_enable'] != 1) ){
 			$nonAmpStatusMsg = 'PWA is disabled';
@@ -1656,6 +1670,7 @@ function pwaforwp_files_status_callback(){
 		}
 		if ( !is_ssl() && $nonAmpStatusMsg=='' ) {
 			$nonAmpStatusMsg = 'PWA failed to initialized, the site is not HTTPS';
+			$nonAmpLearnMoreLink = '<a href="https://pwa-for-wp.com/docs/article/site-need-https-for-pwa/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a>';
 		}
 
 		if($nonAmpStatusMsg==''){
@@ -1712,7 +1727,7 @@ function pwaforwp_files_status_callback(){
                 <?php } ?>
 				<tr>
                     <th style="width:20%"><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>
-                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ) ?></p></td>
+                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html__( $nonAmpStatusMsg, 'pwa-for-wp' ). ' '.$nonAmpLearnMoreLink ?></p></td>
 					<?php if($is_amp) { ?>
                     <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html__( $ampStatusMsg, 'pwa-for-wp' ); ?></p></td>
 					<?php } ?>
@@ -1805,7 +1820,7 @@ function pwaforwp_files_status_callback(){
                   if ( is_ssl() ) {
                             echo '<p><span class="dashicons dashicons-yes" style="color: #46b450;"></span> </p>';
                     } else {
-                            echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).'</p>';                                     
+                            echo '<p><span class="dashicons dashicons-no-alt" style="color: #dc3232;"></span> </p><p>'.esc_html__( 'This site is not configure with https', 'pwa-for-wp' ).' <a href="https://pwa-for-wp.com/docs/article/site-need-https-for-pwa/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></p>';                                     
                     }
                   ?>  
                 </td>
@@ -2272,7 +2287,8 @@ function pwaforwp_features_settings(){
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['ctafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (isset($allplugins[$addonLists['ctafp']['p-slug']]) && !is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['ctafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ctafp']['p-slug'])? 1: 0),
+									'slug' => 'ctafp',
 									'tooltip_option'=> 'CTA feature for PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
@@ -2283,7 +2299,8 @@ function pwaforwp_features_settings(){
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['dafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (isset($allplugins[$addonLists['dafp']['p-slug']]) && !is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['dafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['dafp']['p-slug'])? 1: 0),
+									'slug' => 'dafp',
 									'tooltip_option'=> 'Analytics for the number of people who are installing PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
 									),
@@ -2294,7 +2311,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptrfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptrfp']['p-slug']]) && !is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptrfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptrfp']['p-slug'])? 1: 0),
+                                    'slug' => 'ptrfp',
                                     'tooltip_option'=> 'Refresh the PWA APP page',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
                                     ),
@@ -2305,7 +2323,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['spbfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['spbfp']['p-slug']]) && !is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['spbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['spbfp']['p-slug'])? 1: 0),
+                                    'slug' => 'spbfp',
                                     'tooltip_option'=> 'Show Scroll progress bar',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/scroll-progress-bar-for-pwa/'
                                     ),
@@ -2314,9 +2333,10 @@ function pwaforwp_features_settings(){
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
                                     'setting_title' => 'PWA to Android APP (APK)',
                                     'is_premium'    => true,
-                                    'pro_link'      => $addonLists['ptafp']['p-url'],
+                                    'pro_link'      => 'ptafp',
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ptafp']['p-slug']]) && !is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptafp']['p-slug'])? 1: 0),
+                                    'slug' => $addonLists['ptafp']['p-slug'],
                                     'tooltip_option'=> 'Generate APK for website',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
                                     ),
@@ -2327,7 +2347,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'slug' => 'ofpwa',
                                     'tooltip_option'=> 'Support forms to work on offline mode',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-offline-forms/'
                                     ),
@@ -2338,7 +2359,8 @@ function pwaforwp_features_settings(){
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
-                                    'pro_deactive'    => (isset($allplugins[$addonLists['ofpwa']['p-slug']]) && !is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug']) ? 1: 0),
+                                    'slug' => 'ofpwa',
                                     'tooltip_option'=> 'It auto saves the data on the fly',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
@@ -2379,9 +2401,14 @@ function pwaforwp_features_settings(){
 			</div>';
 
 	    $pro_link = '';
-	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1){
+	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1  && !class_exists('PWAFORWPPROExtensionManager')){
 	    	//$Plugins = get_transient( 'plugin_slugs');
-	    	$premium_alert = '<span class="pro deactivated">Deactivated</span>';
+	    	//<span class="pro deactivated">Deactivated</span>
+	    	$wp_nonce = wp_create_nonce("wp_pro_activate");
+	    	$premium_alert = '<label class="switch">
+				  <input type="checkbox" class="pwa_activate_pro_plugin" value="1" data-secure="'.$wp_nonce.'" data-file="'.$featureVal['slug'].'">
+				  <span class="slider round"></span>
+				</label>';
 	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active'] && class_exists('PWAFORWPPROExtensionManager')){
 		    $premium_alert = '<span class="pro deactivated">Deactivated</span>';
 	    	$pro_link = 'onclick="window.open(\''.admin_url("admin.php?page=pwawp-extension-manager").'\', \'_blank\')"';

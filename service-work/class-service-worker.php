@@ -586,7 +586,7 @@ class PWAFORWP_Service_Worker{
     function on_user_logged_in(){
         setcookie("pwa-loggedin", true);
         $settings = pwaforwp_defaultSettings();
-        if($settings['default_caching']=='cacheFirst'){
+        if($settings['default_caching']=='cacheFirst' && isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1){
             $settings['default_caching'] = 'networkFirst';
             global $pwaforwp_settings;
             update_option( 'pwaforwp_settings', $settings ) ;
