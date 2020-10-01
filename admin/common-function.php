@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function pwaforwp_loading_icon() {
     
+    if( function_exists('is_amp_endpoint') && is_amp_endpoint() ){return false;}
     $settings = pwaforwp_defaultSettings();
     if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
         $color = (isset($settings['loading_icon_color']) && !empty($settings['loading_icon_color']))? $settings['loading_icon_color'] : '';
