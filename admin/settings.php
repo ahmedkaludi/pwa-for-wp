@@ -2062,7 +2062,7 @@ function pwaforwp_get_license_section_html($on){
                     
                 }
                                                 
-                $response.= '<input type="text" placeholder="Enter License Key" id="'.strtolower($on).'_addon_license_key" name="pwaforwp_settings['.strtolower($on).'_addon_license_key]" value="'.esc_attr($license_key).'">';
+                $response.= '<input type="password" placeholder="'.esc_attr__('Enter License Key', 'pwa-for-wp').'" id="'.strtolower($on).'_addon_license_key" name="pwaforwp_settings['.strtolower($on).'_addon_license_key]" value="'.esc_attr($license_key).'">';
                 
                 $response.= '<input type="hidden" id="'.strtolower($on).'_addon_license_key_status" name="pwaforwp_settings['.strtolower($on).'_addon_license_key_status]" value="'.esc_attr($license_status).'">';                
                 
