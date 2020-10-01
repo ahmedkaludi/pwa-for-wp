@@ -461,6 +461,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_loaders_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_loading_background_color_setting',							// ID
+			esc_html__('Loader background color', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_background_color_setting_callback',							// CB
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_loading_display_option_setting',							// ID
 			esc_html__('Loader enable on', 'pwa-for-wp'),	// Title
 			'pwaforwp_loading_display_setting_callback',							// CB
@@ -1045,6 +1052,11 @@ function pwaforwp_loading_setting_callback(){
 function pwaforwp_loading_color_setting_callback(){	
     $settings = pwaforwp_defaultSettings(); ?>
     <input type="text" name="pwaforwp_settings[loading_icon_color]" id="pwaforwp_settings[loading_icon_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['loading_icon_color'] ) ? sanitize_hex_color( $settings['loading_icon_color']) : '#3498db'; ?>" data-default-color="#3498db">
+	<p><?php echo esc_html__('Change the icon color of loader', 'pwa-for-wp'); ?></p><?php
+}
+function pwaforwp_loading_background_color_setting_callback(){	
+    $settings = pwaforwp_defaultSettings(); ?>
+    <input type="text" name="pwaforwp_settings[loading_icon_bg_color]" id="pwaforwp_settings[loading_icon_bg_color]" class="pwaforwp-colorpicker" value="<?php echo isset( $settings['loading_icon_bg_color'] ) ? sanitize_hex_color( $settings['loading_icon_bg_color']) : '#ffffff'; ?>" data-default-color="#ffffff">
 	<p><?php echo esc_html__('Change the icon color of loader', 'pwa-for-wp'); ?></p><?php
 }
 function pwaforwp_loading_display_setting_callback(){	
