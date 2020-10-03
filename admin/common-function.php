@@ -598,7 +598,7 @@ function pwaforwp_manifest_json_url($is_amp=false){
     }
   }else{
     $url       = pwaforwp_site_url(); 
-    $link = parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH);
+    $link = $url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json';
     if($is_amp){
       $link = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
     }
