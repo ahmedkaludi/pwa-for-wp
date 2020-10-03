@@ -67,7 +67,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed     : AMP Pages/post (Automattic) is getting blank page, when Loader feature is enabled #528
 * Improvement 	: Added a option for loader background color change. #533
 * Improvement 	: Issue with the Loading Icon alignment. #535
-* Improvement 	: Hide license key of addons #530WWW
+* Improvement 	: Hide license key of addons #530
 
 = 1.7.20 (17 SEPTEMBER 2020) =
 * Improvement   : Improved the UI of features section #462
