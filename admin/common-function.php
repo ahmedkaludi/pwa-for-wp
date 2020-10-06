@@ -3,14 +3,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function pwaforwp_loading_icon() {
     
+    if( function_exists('is_amp_endpoint') && is_amp_endpoint() ){return false;}
     $settings = pwaforwp_defaultSettings();
     if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
         $color = (isset($settings['loading_icon_color']) && !empty($settings['loading_icon_color']))? $settings['loading_icon_color'] : '';
-        $color_style = '';
+        $bgcolor = (isset($settings['loading_icon_bg_color']) && !empty($settings['loading_icon_bg_color']))? $settings['loading_icon_bg_color'] : '';
+        $color_style = $bg_color_style = '';
         if($color){
             $color_style = 'style="border-top-color: '.$color.'"';
         }
-        echo '<div id="pwaforwp_loading_div"></div>';
+        if($bgcolor!=='#ffffff'){ $bg_color_style = 'style="background-color: '.$bgcolor.'"'; }
+        echo '<div id="pwaforwp_loading_div" '.$bg_color_style.'></div>';
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.$color_style.'></div></div>');
     }
         
@@ -295,6 +298,7 @@ function pwaforwp_get_default_settings_array(){
     /*loader icon*/
         'loading_icon'      => 0,
         'loading_icon_color'=> '#3498db',
+        'loading_icon_bg_color'=> '#ffffff',
 	);
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
@@ -594,7 +598,7 @@ function pwaforwp_manifest_json_url($is_amp=false){
     }
   }else{
     $url       = pwaforwp_site_url(); 
-    $link = parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH);
+    $link = $url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json';
     if($is_amp){
       $link = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
     }

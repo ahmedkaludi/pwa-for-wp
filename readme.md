@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.5.1
 
-Stable tag: 1.7.19
+Stable tag: 1.7.21
 
 License: GPLv2 or later
 
@@ -74,6 +74,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
+= 1.7.21 (3 OCTOBER 2020) =
+* Bug Fixed     : AMP Pages/post (Automattic) is getting blank page, when Loader feature is enabled #528
+* Improvement 	: Added a option for loader background color change. #533
+* Improvement 	: Issue with the Loading Icon alignment. #535
+* Improvement 	: Hide license key of addons #530
+
 = 1.7.20 (17 SEPTEMBER 2020) =
 * Improvement   : Improved the UI of features section #462
 * Improvement   : Added learn more link after the https status message of PWA  #464
