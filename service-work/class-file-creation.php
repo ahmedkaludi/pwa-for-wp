@@ -400,7 +400,11 @@ class pwaforwpFileCreation{
                 }
                 if(isset($settings['offline_google_setting']) && $settings['offline_google_setting']==1){
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
-                                    workbox.googleAnalytics.initialize();';    
+                                if(workbox.googleAnalytics){
+                                  try{
+                                    workbox.googleAnalytics.initialize();
+                                  } catch (e){}
+                                }';    
                 }
                 
                 $firebasejs = '';
