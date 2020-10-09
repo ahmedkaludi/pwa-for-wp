@@ -605,7 +605,7 @@ class PWAFORWP_Service_Worker{
             return $meta_tags;
         }
         foreach ($meta_tags as $key => $value) {
-            if(strpos($value, 'apple-touch-icon')!==false){
+            if(strpos($value, 'apple-touch-icon') !== false){
                 unset($meta_tags[$key]);
             }
         }
