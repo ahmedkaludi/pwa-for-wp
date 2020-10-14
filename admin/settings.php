@@ -209,7 +209,12 @@ function pwaforwp_admin_interface_render(){
 add_action('admin_init', 'pwaforwp_settings_init');
 
 function pwaforwp_settings_init(){
-    
+	$settings = pwaforwp_defaultSettings(); 
+	if(isset($settings['loading_icon_display_admin']) && $settings['loading_icon_display_admin']){
+    	add_action('admin_footer', 'pwaforwp_loading_icon');
+    	add_action('admin_print_footer_scripts', 'pwaforwp_loading_icon_scripts');
+    	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
+	}
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
@@ -1067,9 +1072,13 @@ function pwaforwp_loading_display_setting_callback(){
     if(!isset($settings['loading_icon_display_mobile']) && $settings['loading_icon']==1){
     	$settings['loading_icon_display_mobile'] = 1;
     }
+    if(!isset($settings['loading_icon_display_admin']) && $settings['loading_icon']==1){
+    	$settings['loading_icon_display_admin'] = 0;
+    }
     ?>
     <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_desktop]" id="pwaforwp_settings[loading_icon_display_desktop]" class="" value="1" <?php echo isset( $settings['loading_icon_display_desktop'] ) && $settings['loading_icon_display_desktop']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Desktop', 'pwa-for-wp'); ?></label>
     <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_mobile]" id="pwaforwp_settings[loading_icon_display_mobile]" class="" value="1" <?php echo isset( $settings['loading_icon_display_mobile'] ) && $settings['loading_icon_display_mobile']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Mobile', 'pwa-for-wp'); ?></label>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_admin]" id="pwaforwp_settings[loading_icon_display_admin]" class="" value="1" <?php echo isset( $settings['loading_icon_display_admin'] ) && $settings['loading_icon_display_admin']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Admin', 'pwa-for-wp'); ?></label>
     <?php
 }
 
@@ -2731,4 +2740,44 @@ function pwaforwp_update_force_update($value, $old_value, $option){
 		$value['force_update_sw_setting'] = $version;
 	}
 	return $value;
+}
+
+/**
+ * Show the loaders on admin section
+ * @return Javascript/text [print required javascript to show loader] 
+ */
+function pwaforwp_loading_icon_scripts(){
+	echo "<script type='text/javascript'>window.addEventListener('beforeunload', function(){
+    if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
+      document.getElementsByClassName('pwaforwp-loading-wrapper')[0].style.display = 'flex';
+    }
+    if(document.getElementById('pwaforwp_loading_div')){
+      document.getElementById('pwaforwp_loading_div').style.display = 'flex';
+    }
+    if(document.getElementById('pwaforwp_loading_icon')){
+      document.getElementById('pwaforwp_loading_icon').style.display = 'flex';
+    }
+  });
+  if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
+    document.getElementsByClassName('pwaforwp-loading-wrapper')[0].style.display = 'none';
+  }
+  if(document.getElementById('pwaforwp_loading_div')){
+    document.getElementById('pwaforwp_loading_div').style.display = 'none';
+  }
+  if(document.getElementById('pwaforwp_loading_icon')){
+    document.getElementById('pwaforwp_loading_icon').style.display = 'none';
+  }</script>";
+}
+/**
+ * Show the loaders on admin section
+ * @return css/text [print required styles to show loader] 
+ */
+function pwaforwp_loading_icon_styles(){
+	echo '<style>#pwaforwp_loading_div {width: 100%;height: 200%;position: fixed;top: 0;left: 0;background-color: white;z-index: 9999;}
+	.pwaforwp-loading-wrapper{display:none;}
+	#pwaforwp_loading_icon {position: fixed;left: 50%;top: 50%;z-index: 10000;margin: -60px 0 0 -60px;border: 16px solid #f3f3f3;border-radius: 50%;border-top: 16px solid #3498db;width: 120px;height: 120px;-webkit-animation: spin 2s linear infinite;animation: spin 2s linear infinite;}
+
+	@-webkit-keyframes spin {0% { -webkit-transform: rotate(0deg); }100% { -webkit-transform: rotate(360deg); }}
+	@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
+	</style>';
 }
