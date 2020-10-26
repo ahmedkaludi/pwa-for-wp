@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.5.1
 
-Stable tag: 1.7.22
+Stable tag: 1.7.23
 
 License: GPLv2 or later
 
@@ -74,6 +74,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
+= 1.7.23 (26 OCTOBER 2020) =
+* Bug Fixed     : An option added that would add a custom icon 96x96 for the notifications that are sent for budge(Replace chrome icon).  #517
+* Improvement 	: FCM push notification Sending 2 times with Gutenberg editor & need a hook before sent message #547
+* Improvement 	: Added an class to identify if its PWA "pwaforwp-app-contents", its will show only in PWA APP. #522
+* Improvement 	: Added an option loader icon should also work in the backend #411
+
 = 1.7.22 (12 OCTOBER 2020) =
 * Bug Fixed     : Local video is not caching #444
 * Improvement 	: Debug error fixed #520
