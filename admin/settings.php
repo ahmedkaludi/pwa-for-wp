@@ -1172,6 +1172,16 @@ function pwaforwp_push_notification_callback(){
 							</button>
                             <p><?php echo esc_html__('Change Firebase push notification icon. Default: PWA icon', 'pwa-for-wp') ?> </p>
                         </td>
+                    </tr>
+                    <tr>
+                        <th><?php echo esc_html__('FCM Notification Budge Icon', 'pwa-for-wp') ?></th>  
+                        <td>
+                            <input type="text" name="pwaforwp_settings[fcm_budge_push_icon]" id="pwaforwp_settings[fcm_budge_push_icon]" class="pwaforwp-fcm-push-budge-icon regular-text" value="<?php echo isset( $settings['fcm_budge_push_icon'] ) ? esc_attr( pwaforwp_https($settings['fcm_budge_push_icon'])) : ''; ?>">
+							<button type="button" class="button pwaforwp-fcm-push-budge-icon-upload" data-editor="content">
+								<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?> 
+							</button>
+                            <p><?php echo esc_html__('Change Firebase push notification budge icon 96x96. Default: Chrome icon', 'pwa-for-wp') ?> </p>
+                        </td>
                     </tr>                                                            
                 </tbody>   
             </table>                   

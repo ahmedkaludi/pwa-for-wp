@@ -210,6 +210,7 @@ class pushNotification{
                     'title' => $message['title'],
                     'body'  => $message['body'],
                     'icon'  => (isset($settings['fcm_push_icon'])? esc_attr( $settings['fcm_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
+                    'budge'  => (isset($settings['fcm_budge_push_icon'])? esc_attr( $settings['fcm_budge_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
                     'url'  => $message['url'],
                     'primarykey'  => uniqid(),
                     'image' => isset($message['image_url'])? $message['image_url'] : '',
