@@ -4,7 +4,7 @@ class pushNotification{
             
      public function pwaforwp_push_notification_hooks(){
          
-            add_action('publish_post', array($this, 'pwaforwp_send_notification_on_post_save'));                          
+            add_action('transition_post_status', array($this, 'pwaforwp_send_notification_on_post_save'), 10, 3);                          
             add_filter('pwaforwp_manifest', array($this, 'pwaforwp_load_pn_manifest'), 35); 
             add_action('wp_enqueue_scripts', array($this, 'pwaforwp_load_pn_script_add'), 34);
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
@@ -35,86 +35,85 @@ class pushNotification{
             if(!empty($result)){             
             echo json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
-            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp')));    
+            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
            }
            wp_die();
      }
      
-     public function pwaforwp_send_notification_on_post_save(){
-         
-            global $post;              
+     public function pwaforwp_send_notification_on_post_save($new_status, $old_status, $post){
+            if ( 'publish' !== $new_status ){
+                  return;
+            }
+            //global $post;              
             $settings = pwaforwp_defaultSettings();  
             $message  = array();
             if(is_object($post)){
                 switch ($post->post_type) {
                 case 'post':
                     
-                    if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
-                    
-                      if(isset($settings['on_add_post']) && $settings['on_add_post']==1){
-                          
-                       if(isset($settings['on_add_post_notification_title']) && !empty($settings['on_add_post_notification_title'])){
-                            $message['title'] = $settings['on_add_post_notification_title']; 
-                         }else{
-                            $message['title'] = esc_html__('New Post', 'pwa-for-wp');
-                         } 
-                                                                  	           
-                        }                        
-                    }else{
-                        
-                       if(isset($settings['on_update_post']) && $settings['on_update_post']==1){
-                           
-                         if(isset($settings['on_update_post_notification_title']) && !empty($settings['on_update_post_notification_title'])){
-                            $message['title'] = $settings['on_update_post_notification_title']; 
-                         }else{
-                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
-                         }  
-                                                                        	           
-                        }
+                  $send_notification = false;
+                  //for Edit
+                  if(isset($settings['on_update_post']) && $settings['on_update_post']==1){
+                    if ( $new_status === $old_status) {
+                      $message['title'] = isset($settings['on_update_post_notification_title']) && !empty($settings['on_update_post_notification_title'])? $settings['on_update_post_notification_title']: esc_html__('Post Updated', 'pwa-for-wp'); 
+                      $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                      $message['url']   = get_permalink ($post);
+                      $image_url = '';
+                      if(has_post_thumbnail($post)){
+                        $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
+                      }
+                      $message['image_url']   =  $image_url;
+                      $this->pwaforwp_send_push_notification($message);
+                      $send_notification = true;
                     }
-                    
-                    $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                    $message['url']   = get_permalink ($post);
-                    
-                    $this->pwaforwp_send_push_notification($message);
-                    
+                  }
+                  //for publish
+                  if(!$send_notification && isset($settings['on_add_post']) && $settings['on_add_post']==1){
+                    if ( $new_status !== $old_status) {
+                      $message['title'] = isset($settings['on_add_post_notification_title']) && !empty($settings['on_add_post_notification_title'])? $settings['on_add_post_notification_title']: esc_html__('New Post', 'pwa-for-wp'); 
+                      $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                      $message['url']   = get_permalink ($post);
+                      $image_url = '';
+                      if(has_post_thumbnail($post)){
+                        $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
+                      }
+                      $message['image_url']   =  $image_url;
+                      $this->pwaforwp_send_push_notification($message);
+                    }
+                  }
                     break;
                 case 'page':
-                    
-                    if( strtotime($post->post_modified_gmt) == strtotime($post->post_date_gmt) ){
-                    
-                      if(isset($settings['on_add_page'])){
-                          
-                         if(isset($settings['on_add_page_notification_title'])){
-                            $message['title'] = $settings['on_add_page_notification_title']; 
-                         }else{
-                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
-                         }  
-                        
-                        	           
-                        }                        
-                    }else{
-                        
-                       if(isset($settings['on_update_page'])){
-                           
-                         if(isset($settings['on_update_page_notification_title'])){
-                            $message['title'] = $settings['on_update_page_notification_title']; 
-                         }else{
-                            $message['title'] = esc_html__('Post Updated', 'pwa-for-wp');
-                         }  
-                                                	           
-                        }
-                    }
-                    
-                    $message['body']  = get_the_title($post)."\n".get_permalink ($post);
-                    $message['url']   = get_permalink ($post);
-                    $image_url = '';
-                    if(has_post_thumbnail($post)){
-                      $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
-                    }
-                    $message['image_url']   =  $image_url;
-                    $this->pwaforwp_send_push_notification($message);
 
+                  $send_notification = false;
+                  //for Edit
+                  if(isset($settings['on_update_page']) && $settings['on_update_page']==1){
+                    if ( $new_status === $old_status) {
+                      $message['title'] = isset($settings['on_update_page_notification_title']) && !empty($settings['on_update_page_notification_title'])? $settings['on_update_page_notification_title']: esc_html__('Page Updated', 'pwa-for-wp'); 
+                      $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                      $message['url']   = get_permalink ($post);
+                      $image_url = '';
+                      if(has_post_thumbnail($post)){
+                        $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
+                      }
+                      $message['image_url']   =  $image_url;
+                      $this->pwaforwp_send_push_notification($message);
+                      $send_notification = true;
+                    }
+                  }
+                  //for publish
+                  if(!$send_notification && isset($settings['on_add_page']) && $settings['on_add_page']==1){
+                    if ( $new_status !== $old_status) {
+                      $message['title'] = isset($settings['on_add_page_notification_title']) && !empty($settings['on_add_page_notification_title'])? $settings['on_add_page_notification_title']: esc_html__('New Page', 'pwa-for-wp'); 
+                      $message['body']  = get_the_title($post)."\n".get_permalink ($post);
+                      $message['url']   = get_permalink ($post);
+                      $image_url = '';
+                      if(has_post_thumbnail($post)){
+                        $image_url = esc_url_raw(get_the_post_thumbnail_url($post));
+                      }
+                      $message['image_url']   =  $image_url;
+                      $this->pwaforwp_send_push_notification($message);
+                    }
+                  }
                     break;
 
                 default:
@@ -180,7 +179,7 @@ class pushNotification{
             $token          = sanitize_text_field($_POST['token']);             
             
             if($token){
-                
+                do_action('pwaforwp_before_save_token_action', $token);
                 $get_token_list = (array)json_decode(get_option('pwa_token_list'), true);               
                 array_push($get_token_list, $token);                
                 $result = update_option('pwa_token_list', json_encode($get_token_list));
@@ -201,7 +200,7 @@ class pushNotification{
             $tokens     = (array)json_decode(get_option('pwa_token_list'), true); 
             
             if(empty($tokens) || $server_key ==''){
-                return;
+                return false;
             }            
             $header = [
                     'Authorization: Key='. $server_key,
