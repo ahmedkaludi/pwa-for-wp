@@ -10,8 +10,9 @@
                                  const notificationOptions = {
                                                     body: payload.data.body,
                                                     icon: payload.data.icon,
+                                                    badge: payload.data.budge,
                                                     image: payload.data.image,
-                                                    vibrate: [100, 50, 100],
+                                                    vibrate: [100, 100, 200],
                                                     data: {
                                                         dateOfArrival: Date.now(),
                                                         primarykey: payload.data.primarykey,

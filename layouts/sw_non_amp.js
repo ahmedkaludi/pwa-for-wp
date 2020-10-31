@@ -148,6 +148,12 @@
                                                 a2hsdesk.style.display = "none";
                                               }
                                             }
-                                          }            
+                                          }
+                                          if(window.navigator.standalone === true){
+                                            var appContent = document.getElementsByClassName('pwaforwp-app-contents');
+                                            for(var i=0; i<appContent.length; i++){
+                                              appContent[i].style.display = 'block';
+                                            }
+                                          }
                                         });
 			                             }

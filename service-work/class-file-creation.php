@@ -400,7 +400,11 @@ class pwaforwpFileCreation{
                 }
                 if(isset($settings['offline_google_setting']) && $settings['offline_google_setting']==1){
                 $offline_google = 'importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.1/workbox-sw.js");
-                                    workbox.googleAnalytics.initialize();';    
+                                if(workbox.googleAnalytics){
+                                  try{
+                                    workbox.googleAnalytics.initialize();
+                                  } catch (e){}
+                                }';    
                 }
                 
                 $firebasejs = '';
@@ -544,58 +548,79 @@ class pwaforwpFileCreation{
     	$defaults = pwaforwp_defaultSettings();  
         
         if($is_amp){ 
-                        if(function_exists('ampforwp_url_controller')){
-				$homeUrl = ampforwp_url_controller( pwaforwp_home_url() ) ;
-                                $homeUrl = trailingslashit($homeUrl);
-                                
-                                if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
-                                        $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
-                                        $homeUrl = ampforwp_url_controller( $homeUrl ) ;
-                                }
-          $scope_url    = ampforwp_url_controller(pwaforwp_home_url());
-                                            
-			} else {
-                            
-                                $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
-                                
-                                if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
-                                  $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
-                                }			
-                  $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;	
-           }
+          if(function_exists('ampforwp_url_controller')){
+				      if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
+                $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
+                $homeUrl = ampforwp_url_controller( $homeUrl ) ;
+              }else{
+                $homeUrl = ampforwp_url_controller( pwaforwp_home_url() ) ;
+                $homeUrl = trailingslashit($homeUrl);
+              }
+              $scope_url    = ampforwp_url_controller(pwaforwp_home_url());
+          }elseif(function_exists('amp_is_available')){
+            if ( AMP_Theme_Support::is_paired_available() ) {
+              $homeUrl = add_query_arg( amp_get_slug(), '', pwaforwp_home_url() );
+            } else {
+              if ( ! amp_is_legacy() ) {
+                $homeUrl = pwaforwp_home_url();
+                if ( ! amp_is_canonical() ) {
+                  $homeUrl = add_query_arg( amp_get_slug(), '', $homeUrl );
+                }
+              }else{
+                $homeUrl = pwaforwp_home_url();
+                if ( !amp_is_canonical() ) {
+                    $parsed_url    = wp_parse_url($homeUrl);
+                    $structure     = get_option( 'permalink_structure' );
+                    $use_query_var = (
+                        empty( $structure )
+                        ||
+                        ! empty( $parsed_url['query'] )
+                      );
+                    if ( $use_query_var ) {
+                      $homeUrl = add_query_arg( amp_get_slug(), '', $homeUrl );
+                    } else {
+                      $homeUrl = preg_replace( '/#.*/', '', $homeUrl );
+                      $homeUrl = trailingslashit( $homeUrl ) . user_trailingslashit( amp_get_slug(), 'single_amp' );
+                      if ( ! empty( $parsed_url['fragment'] ) ) {
+                        $homeUrl .= '#' . $parsed_url['fragment'];
+                      }
+                    }
+                }
+              }
+            }
+            $scope_url    = $homeUrl;
+          } else {
+            $homeUrl = amp_get_current_url();
+            $homeUrl = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;
+            if(isset($defaults['start_page']) && $defaults['start_page'] !=0 ){
+              $homeUrl = trailingslashit(get_permalink($defaults['start_page'])).AMP_QUERY_VAR;
+            }			
+            $scope_url    = trailingslashit(pwaforwp_home_url()).AMP_QUERY_VAR;	
+          }
           if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
             $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
               $homeUrl 
             );
           }                         
-                        
-                        
         } else {
-            
-                $homeUrl = pwaforwp_home_url(); 
-                
-                if(isset($defaults['start_page']) && $defaults['start_page'] !=0){                    
-                    $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
-                }
-            
-                if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-                  $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
+          $homeUrl = pwaforwp_home_url(); 
+          if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
+            $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
+          }
+          if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+            $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
                               $homeUrl 
                             );
 	        }
-                
-                $scope_url = pwaforwp_home_url();//Scope Url should be serving url
-                
-        }                                            
-                $homeUrl        = pwaforwp_https($homeUrl);
-                $scope_url      = pwaforwp_https($scope_url);
-		            $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
-                $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
-
-                
-                if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-		   $homeUrl = rtrim($homeUrl, '/\\');
-	        }
+          $scope_url = pwaforwp_home_url();//Scope Url should be serving url      
+        }
+        $homeUrl        = pwaforwp_https($homeUrl);
+        $scope_url      = pwaforwp_https($scope_url);
+        $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
+        $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
+        if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
+		      $homeUrl = rtrim($homeUrl, '/\\');
+	      }
                                 
                 $icons = array();
                 //App icon
