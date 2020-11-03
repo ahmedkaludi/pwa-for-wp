@@ -7,51 +7,55 @@ class PWAFORWP_Service_Worker{
             
         public function __construct() {
         
-        $this->pwaforwp_is_amp_activated();
-        
-        add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
+            $this->pwaforwp_is_amp_activated();
+           
+            $settings = pwaforwp_defaultSettings();
+            if(!isset($settings['avoid_loggedin_users']) || isset($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']!=1 ){
+                add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
+                if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
+                 add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
+                }        
+                    
+                if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
+                 add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
+                 //Automattic AMP will be done here
+                 add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
+                 //pixelative Amp 
+                 add_action('wp', array($this, 'pixelative_amp_entry_point'));      
+                }  
                 
-        $settings = pwaforwp_defaultSettings();
-            
-        if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
-         add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
-        }        
+                add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
+                add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
+                add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
+        		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
+                if(isset($settings['pushnami_support_setting']) && $settings['pushnami_support_setting']==1){
+                    add_action( 'init',  array($this,'pwaforwp_pushnami_rewrite' ));
+                }
                 
-        if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
-         add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
-         //Automattic AMP will be done here
-         add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
-         //pixelative Amp 
-         add_action('wp', array($this, 'pixelative_amp_entry_point'));      
-        }  
+                /*
+                * load manifest on using Rest API
+                * This change for manifest
+                */
+                add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
+                
+                //Only when Searve url & Installation Url Different
+                //$url = pwaforwp_site_url();
+                //$home_url = pwaforwp_home_url();
+                //if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
+                    add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
+                    add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
+                //}
+                      
+                if($settings['default_caching']=='cacheFirst' && isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1){
+                    add_action('wp_login', array($this,'on_user_logged_in'));
+                }
+                /**
+                 * Remove apple-touch-icon from theme side
+                 */
+                add_filter("site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove'));
+            }
         
             	                                                                                                                                  
-        add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
-        add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
-        add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
-		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
-        if(isset($settings['pushnami_support_setting']) && $settings['pushnami_support_setting']==1){
-            add_action( 'init',  array($this,'pwaforwp_pushnami_rewrite' ));
-        }
-        
-        /*
-        * load manifest on using Rest API
-        * This change for manifest
-        */
-        add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
-            //Only when Searve url & Installation Url Different
-            $url = pwaforwp_site_url();
-            $home_url = pwaforwp_home_url();
-            //if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
-                add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
-                add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
-            //}
-                  
-            add_action('wp_login', array($this,'on_user_logged_in'));                                
-        /**
-         * Remove apple-touch-icon from theme side
-         */
-        add_filter("site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove'));
         }
 
         public static function loadalernative_script_load_method(){
@@ -627,7 +631,6 @@ class PWAFORWP_Service_Worker{
     }//function iosSplashScreen closed
 
     function on_user_logged_in(){
-        setcookie("pwa-loggedin", true);
         $settings = pwaforwp_defaultSettings();
         if($settings['default_caching']=='cacheFirst' && isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1){
             $settings['default_caching'] = 'networkFirst';
