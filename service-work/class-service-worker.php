@@ -10,7 +10,11 @@ class PWAFORWP_Service_Worker{
             $this->pwaforwp_is_amp_activated();
            
             $settings = pwaforwp_defaultSettings();
-            if(!isset($settings['avoid_loggedin_users']) || isset($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']!=1 ){
+            $showPWA = true;
+            if(!isset($settings['avoid_loggedin_users']) || ( isset($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
+                $showPWA = false;
+            }
+            if($showPWA){
                 add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
                  add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   

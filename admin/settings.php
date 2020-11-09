@@ -516,6 +516,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_webpushr_support',							// ID
+			esc_html__('Webpushr', 'pwa-for-wp'),					// Title
+			'pwaforwp_webpushr_support_callback',					// CB
+			'pwaforwp_compatibility_setting_section',				// Page slug
+			'pwaforwp_compatibility_setting_section'				// Settings Section ID
+		);
                                
                 add_settings_section('pwaforwp_precaching_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
 		add_settings_field(
@@ -1658,6 +1665,16 @@ function pwaforwp_pushnami_support_callback(){
 
 	<?php
 }
+
+function pwaforwp_webpushr_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	?>
+	<input type="checkbox" name="pwaforwp_settings[webpusher_support_setting]" id="pwaforwp_settings[webpusher_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['webpusher_support_setting'] ) &&  $settings['webpusher_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+
+	<?php
+}
+
 function pwaforwp_custom_add_to_home_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 

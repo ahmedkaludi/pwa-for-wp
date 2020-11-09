@@ -1,4 +1,7 @@
 <?php
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class PWAforWP_wppwa{
 	
 	const INSTALL_SERVICE_WORKER_AMP_QUERY_VAR = 'pwa_amp_install_service_worker_iframe';
