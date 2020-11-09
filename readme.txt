@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.5.1
-Stable tag: 1.7.23
+Tested up to: 5.5.3
+Stable tag: 1.7.24
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,10 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.24 (04 NOVEMBER 2020) =
+* Added 	 	: Added option to disable PWA for logged in users #543
+* Added 	 	: compatibility with Webpushr Plugin #513
+
 = 1.7.23 (26 OCTOBER 2020) =
 * Bug Fixed     : An option added that would add a custom icon 96x96 for the notifications that are sent for budge(Replace chrome icon).  #517
 * Improvement 	: FCM push notification Sending 2 times with Gutenberg editor & need a hook before sent message #547

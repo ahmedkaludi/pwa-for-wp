@@ -538,7 +538,9 @@ function pwaforwp_required_file_creation($action = null){
                         set_transient( 'pwaforwp_file_change_transient', true );
                     }
                     
-                    pwaforwp_onesignal_compatiblity($action);                   
+                    pwaforwp_onesignal_compatiblity($action);      
+
+                    pwaforwp_pushnami()->pushnami_compatiblity($action);            
 		                
                     if(isset($settings['fcm_server_key'])){
                          $server_key = $settings['fcm_server_key'];    
@@ -632,7 +634,7 @@ function service_workerUrls($url, $filename){
   $home_url       = pwaforwp_home_url();  
 
 
-  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) ){
+  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) && !class_exists( 'WPPushnami' ) ){
 	  $filename = str_replace(".", "-", $filename);
     $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
   }
