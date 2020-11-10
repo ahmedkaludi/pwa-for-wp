@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.5.3
 
-Stable tag: 1.7.24
+Stable tag: 1.7.25
 
 License: GPLv2 or later
 
@@ -74,9 +74,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
+= 1.7.24 (10 NOVEMBER 2020) =
+* Added 	 : compatibility with Webpushr Plugin (Settings->Tools->Compatibility->Webpushr) #513
+
 = 1.7.24 (04 NOVEMBER 2020) =
 * Added 	 	: Added option to disable PWA for logged in users #543
-* Added 	 	: compatibility with Webpushr Plugin #513
+* Added 	 	: Compatibility with the pushnami pushnotification #409
 
 = 1.7.23 (26 OCTOBER 2020) =
 * Bug Fixed     : An option added that would add a custom icon 96x96 for the notifications that are sent for budge(Replace chrome icon).  #517
