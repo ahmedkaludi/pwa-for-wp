@@ -11,7 +11,7 @@ class PWAFORWP_Service_Worker{
            
             $settings = pwaforwp_defaultSettings();
             $showPWA = true;
-            if(!isset($settings['avoid_loggedin_users']) || ( isset($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
+            if( ( isset($settings['avoid_loggedin_users']) && !empty($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
                 $showPWA = false;
             }
             if($showPWA){
