@@ -27,8 +27,6 @@ Class Pwaforwp_webpushr{
 		if(isset($this->settings['webpusher_support_setting']) && $this->settings['webpusher_support_setting']==1){
 			// add_filter( 'pwaforwp_sw_name_modify', array($this, 'change_sw_name') );
 			add_filter("pwaforwp_sw_js_template", array($this, 'add_webpushr'));
-			remove_action('wp_footer', 'insert_webpushr_script',1000);
-			remove_action('admin_footer', 'insert_webpushr_script',1000 );
 			
 		}
 	}
