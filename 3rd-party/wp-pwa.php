@@ -408,8 +408,7 @@ class PWAforWP_wppwa{
         } else { //Non AMP
                 $homeUrl = pwaforwp_home_url(); 
                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0){ 
-                	print_r($defaults['start_page']);die;                   
-                    $homeUrl = trailingslashit(get_permalink($defaults['start_page']));
+                	$homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                 }
             
                 if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
