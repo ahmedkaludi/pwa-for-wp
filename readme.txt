@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.5.3
-Stable tag: 1.7.25
+Stable tag: 1.7.26
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.26 (18 NOVEMBER 2020) =
+* Improvement 	 : Improvement for Webpushr Plugin compatibility #513
+
 = 1.7.25 (10 NOVEMBER 2020) =
 * Added 	 : compatibility with Webpushr Plugin (Settings->Tools->Compatibility->Webpushr) #513
 
