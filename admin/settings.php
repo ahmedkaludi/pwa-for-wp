@@ -183,6 +183,20 @@ function pwaforwp_admin_interface_render(){
 				</form>
 			</div>
 			<div class="pwaforwp-settings-second-div">
+				<a target="_blank" href="https://pwa-for-wp.com/festive-season/">
+		        <?php if(!pwaforwp_addons_is_active()) { ?>
+		         <div class="pwaforwp-upgrade-pro promo-cpn">
+		        	<h2><?php echo esc_html__('50% OFF on PRO','pwa-for-wp') ?></h2>
+		        	<span><?php echo esc_html__('Limited Time Offer for this festive season','pwa-for-wp') ?></span>
+		        	<div class="pwa-promo">
+		        		<span class="prm-cpn">BFCM2020</span>
+		        		<span class="prm-txt">Coupon Valid till 30 NOV </span>
+		        	</div>
+		        </div>
+		        <?php  } ?>
+		        </a>
+		    </div>
+			<div class="pwaforwp-settings-second-div">
 		        <?php if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
