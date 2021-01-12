@@ -511,9 +511,12 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
-            
-			//echo '<link rel="manifest" href="'. parse_url($url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json', PHP_URL_PATH).'"/>'.PHP_EOL;
-            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+
+            $rel='manifest';
+            if(isset($settings['prefetch_manifest_setting']) && $settings['prefetch_manifest_setting']==1){
+                $rel = 'prefetch';
+            }
+            echo '<link rel="'.$rel.'" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif;

@@ -183,20 +183,6 @@ function pwaforwp_admin_interface_render(){
 				</form>
 			</div>
 			<div class="pwaforwp-settings-second-div">
-				<a target="_blank" href="https://pwa-for-wp.com/festive-season/">
-		        <?php if(!pwaforwp_addons_is_active()) { ?>
-		         <div class="pwaforwp-upgrade-pro promo-cpn">
-		        	<h2><?php echo esc_html__('50% OFF on PRO','pwa-for-wp') ?></h2>
-		        	<span><?php echo esc_html__('Limited Time Offer for this festive season','pwa-for-wp') ?></span>
-		        	<div class="pwa-promo">
-		        		<span class="prm-cpn">BFCM2020</span>
-		        		<span class="prm-txt">Coupon Valid till 30 NOV </span>
-		        	</div>
-		        </div>
-		        <?php  } ?>
-		        </a>
-		    </div>
-			<div class="pwaforwp-settings-second-div">
 		        <?php if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
@@ -375,10 +361,17 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);                
-                add_settings_field(
+        add_settings_field(
 			'pwaforwp_offline_google_setting',							// ID
 			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
 			'pwaforwp_offline_google_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
+			'pwaforwp_prefetch_manifest_setting',							// ID
+			esc_html__('Prefetch manifest URL link', 'pwa-for-wp'),	// Title
+			'pwaforwp_prefetch_manifest_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -1053,6 +1046,15 @@ function pwaforwp_offline_google_setting_callback(){
         
 	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_prefetch_manifest_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[prefetch_manifest_setting]" id="pwaforwp_settings[prefetch_manifest_setting]" class="" <?php echo (isset( $settings['prefetch_manifest_setting'] ) &&  $settings['prefetch_manifest_setting'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('Prefetch manifest URLs provides some control over the request priority', 'pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_force_update_sw_setting_callback(){
