@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 5.5.3
+Tested up to: 5.6
 
-Stable tag: 1.7.27
+Stable tag: 1.7.28
 
 License: GPLv2 or later
 
@@ -74,6 +74,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
+= 1.7.28 (13 January 2021) =
+* Improvement 	 : Added a few Offline notice/message features to the app or website #489
+* Improvement 	 : Added prefetch option for manifest in HTML pages #564
+* Fix 			 : Loader after refresh the content #552
+
 = 1.7.27 (24 NOVEMBER 2020) =
 * Improvement 	 : Minor update
 
