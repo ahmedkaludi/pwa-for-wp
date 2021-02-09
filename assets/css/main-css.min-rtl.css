@@ -340,11 +340,12 @@ select {
 
 .pwaforwp-upgrade-pro.promo-cpn {
   box-sizing: border-box;
-  border: 1px solid #558b2f
+  border: 1px solid #ca4a1f
 }
 
 .pwaforwp-upgrade-pro.promo-cpn h2 {
-  color: #2e7d32;
+  color: #ca4a1f;
+  font-weight: bold;
   font-size: 24px;
   text-align: center;
   margin: 0 0 20px 0
@@ -354,7 +355,7 @@ select {
   text-align: center;
   font-size: 14px;
   display: inline-block;
-  color: #777;
+  color: #444;
   padding: 0 20px;
   box-sizing: border-box;
   line-height: 1.4;
@@ -369,16 +370,20 @@ select {
 }
 
 .pwaforwp-upgrade-pro.promo-cpn .pwa-promo .prm-cpn {
-  border: 1px dashed #1b5e20;
+  border: 1px dashed #ca4a1f;
   border-radius: 100px;
   margin-top: 5px;
-  color: #388e3c;
+  color: #ca4a1f;
   font-size: 20px;
   padding: 2px 15px 2px 15px
 }
 
 .pwaforwp-upgrade-pro.promo-cpn .prm-txt {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
   display: block;
+  margin-top: 10px;
   line-height: 1
 }
 
@@ -734,14 +739,14 @@ input:checked+.slider:before {
   right: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, 0.7);
   display: table;
-  transition: opacity .3s ease
+  transition: opacity .3s ease;
 }
 
 .pwawp-modal-wrapper {
   display: table-cell;
-  vertical-align: middle
+  vertical-align: middle;
 }
 
 .pwawp-modal-header {
@@ -750,7 +755,7 @@ input:checked+.slider:before {
   z-index: 100;
   border-bottom: 1px solid #d8d8d8;
   position: relative;
-  padding-right: 20px
+  padding-right: 20px;
 }
 
 .pwawp-modal-container {
@@ -777,7 +782,7 @@ input:checked+.slider:before {
   margin-bottom: 0;
   font-weight: 600;
   position: relative;
-  right: 15px
+  right: 15px;
 }
 
 .pwawp-modal-mask .pwawp-modal-body {
@@ -938,7 +943,6 @@ input:checked+.slider:before {
 
 .ios-splash-images .accordion:after {
   content: '\02795';
-  /* Unicode character for "plus" sign (+) */
   font-size: 13px;
   color: #777;
   float: left;
@@ -947,5 +951,4 @@ input:checked+.slider:before {
 
 .ios-splash-images .active:after {
   content: "\2796";
-  /* Unicode character for "minus" sign (-) */
 }

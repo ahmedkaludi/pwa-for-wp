@@ -341,11 +341,12 @@ select {
 
 .pwaforwp-upgrade-pro.promo-cpn {
 	box-sizing: border-box;
-	border: 1px solid #558b2f
+	border: 1px solid #ca4a1f
 }
 
 .pwaforwp-upgrade-pro.promo-cpn h2 {
-	color: #2e7d32;
+	color: #ca4a1f;
+	font-weight: bold;
 	font-size: 24px;
 	text-align: center;
 	margin: 0 0 20px 0
@@ -355,7 +356,7 @@ select {
 	text-align: center;
 	font-size: 14px;
 	display: inline-block;
-	color: #777;
+	color: #444;
 	padding: 0 20px;
 	box-sizing: border-box;
 	line-height: 1.4;
@@ -370,16 +371,20 @@ select {
 }
 
 .pwaforwp-upgrade-pro.promo-cpn .pwa-promo .prm-cpn {
-	border: 1px dashed #1b5e20;
+	border: 1px dashed #ca4a1f;
 	border-radius: 100px;
 	margin-top: 5px;
-	color: #388e3c;
+	color: #ca4a1f;
 	font-size: 20px;
 	padding: 2px 15px 2px 15px
 }
 
 .pwaforwp-upgrade-pro.promo-cpn .prm-txt {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
 	display: block;
+	margin-top: 10px;
 	line-height: 1
 }
 
@@ -749,7 +754,7 @@ input:checked+.slider:before {
 	background: #fff;
 	width: 100%;
 	z-index: 100;
-	border-bottom: 1px solid #D8D8D8;
+	border-bottom: 1px solid #d8d8d8;
 	position: relative;
 	padding-left: 20px;
 }
@@ -766,16 +771,16 @@ input:checked+.slider:before {
 	min-height: 300px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, .7);
 	background: #fcfcfc;
-	-webkit-font-smoothing: subpixel-antialiased;
+	-webkit-font-smoothing: subpixel-antialiased
 }
 
 .pwawp-modal-header h3 {
-	font-weight: normal;
-	padding: 0px 16px 0 0px;
+	font-weight: 400;
+	padding: 0 16px 0 0;
 	font-size: 20px;
 	line-height: 50px;
 	margin: 0;
-	margin-bottom: 0px;
+	margin-bottom: 0;
 	font-weight: 600;
 	position: relative;
 	left: 15px;
@@ -788,82 +793,81 @@ input:checked+.slider:before {
 	left: 0;
 	top: 0;
 	left: 35px;
-	right: 0px;
+	right: 0
 }
 
 .pwawp-modal-settings {
-	padding: 0px 0px;
+	padding: 0 0;
 	margin-top: 50px;
-	border-top: 1px solid #D8D8D8;
+	border-top: 1px solid #d8d8d8;
 	z-index: 1;
-	position: relative;
+	position: relative
 }
 
 .pwawp-modal-content {
 	height: 100vh;
-	/*  max-height: 660px;*/
 	overflow-y: hidden;
-	padding: 0px 20px 0px 0px;
-	overflow-x: hidden;
+	padding: 0 20px 0 0;
+	overflow-x: hidden
 }
 
 .pwawp-modal-default-button {
 	float: right;
 	position: relative;
-	right: 10px;
+	right: 10px
 }
 
 .pwawp-modal-footer {
-	padding: 10px 0px;
+	padding: 10px 0;
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	bottom: 0px;
+	bottom: 0;
 	background: #f1f1f1;
 	z-index: 100;
-	display: inline-block;
+	display: inline-block
 }
 
 .pwawp-modal-footer .pwawp-del-btn-modal {
 	left: 215px;
 	position: relative;
-	background: none;
+	background: 0 0;
 	border: 0;
 	box-shadow: none;
-	color: #bc0b0b;
+	color: #bc0b0b
 }
 
 .pwawp-modal-footer .pwawp-del-btn-modal:hover {
-	background: #455A64;
+	background: #455a64;
 	color: #fff
 }
 
 .pwawp-save-btn-modal {
 	position: relative;
-	right: 15px;
+	right: 15px
 }
 
 .pwawp-modal-footer .pwawp-close-btn-modal {
-	margin-right: 20px;
+	margin-right: 20px
 }
 
 .pwawp-modal-body .pwawp-modal-header {
 	padding-left: 20px;
 	height: 50px;
 	background-color: #fafafa;
-	border-bottom: 1px solid #D8D8D8;
+	border-bottom: 1px solid #d8d8d8;
 	width: 82%;
-	position: fixed;
+	position: fixed
 }
 
 .pwawp-modal-wrapper .pwawp-media-modal-close {
 	background: #fafafa;
-	box-shadow: -1px 0px 0px #d8d8d8;
+	box-shadow: -1px 0 0 #d8d8d8
 }
 
 .pwawp-media-modal-close:focus {
 	outline: 0;
-	border: 0;
+	border: 0
 }
 
 .pwawp-media-modal-close:hover {
@@ -884,7 +888,7 @@ input:checked+.slider:before {
 	z-index: 1000;
 	cursor: pointer;
 	outline: 0;
-	transition: color .1s ease-in-out, background .1s ease-in-out;
+	transition: color .1s ease-in-out, background .1s ease-in-out
 }
 
 .pwawp-media-modal-close .pwawp-media-modal-icon:before {
@@ -893,32 +897,59 @@ input:checked+.slider:before {
 	speak: none;
 	vertical-align: middle;
 	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	-moz-osx-font-smoothing: grayscale
 }
 
 .pwawp-modal-settings th:empty {
-	display: none;
+	display: none
 }
-.ios-splash-screen-creator .field{margin-bottom: 10px; }.ios-splash-screen-creator #pwa-ios-splashmessage{display:inline;}.ios-splash-screen-creator .field label{display: inline-block;width: 50%;} 
-.ios-splash-images .accordion {background-color: #eee;color: #444;cursor: pointer;padding: 18px;width: 100%;text-align: left;border: none;outline: none;transition: 0.4s;}
-.ios-splash-images .accordion.active, .ios-splash-images .accordion:hover {
-  background-color: #ccc;
+
+.ios-splash-screen-creator .field {
+	margin-bottom: 10px;
 }
+
+.ios-splash-screen-creator #pwa-ios-splashmessage {
+	display: inline;
+}
+
+.ios-splash-screen-creator .field label {
+	display: inline-block;
+	width: 50%;
+}
+
+.ios-splash-images .accordion {
+	background-color: #eee;
+	color: #444;
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	text-align: left;
+	border: none;
+	outline: none;
+	transition: 0.4s;
+}
+
+.ios-splash-images .accordion.active,
+.ios-splash-images .accordion:hover {
+	background-color: #ccc;
+}
+
 .ios-splash-images .panel {
-  padding: 3px 18px;
-  background-color: white;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.2s ease-out;
+	padding: 3px 18px;
+	background-color: white;
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.2s ease-out;
 }
+
 .ios-splash-images .accordion:after {
-  content: '\02795'; /* Unicode character for "plus" sign (+) */
-  font-size: 13px;
-  color: #777;
-  float: right;
-  margin-left: 5px;
+	content: '\02795';
+	font-size: 13px;
+	color: #777;
+	float: right;
+	margin-left: 5px;
 }
 
 .ios-splash-images .active:after {
-  content: "\2796"; /* Unicode character for "minus" sign (-) */
+	content: "\2796";
 }

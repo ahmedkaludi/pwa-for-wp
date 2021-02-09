@@ -3,8 +3,8 @@
 Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
-Author: Magazine3
-Version: 1.7.24
+Author: Magazine3 
+Version: 1.7.28
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.24');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.28');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -41,11 +41,9 @@ if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
 } 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/3rd-party/onesignal.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/3rd-party/pushnami.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/3rd-party/3rd-party-common.php";
 if( pwaforwp_is_admin() ){
     add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
     require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
@@ -53,8 +51,9 @@ if( pwaforwp_is_admin() ){
 add_action('plugins_loaded', 'pwaforwp_init_plugin');
 function pwaforwp_init_plugin(){
     
+    require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
     if ( class_exists( 'WP_Service_Workers' ) ) { 
-    require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
+      require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
     }
     //For CDN CODES
     if ( !is_admin() ) { 

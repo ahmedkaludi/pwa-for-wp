@@ -147,6 +147,17 @@
                                               if(a2hsdesk !== null){
                                                 a2hsdesk.style.display = "none";
                                               }
+                                              var html = '<style class="pwa-offmsgwrcss">.pwa-offmsgwr{background: #323232;color: #f1f1f1;display: table;position: fixed;box-sizing: border-box;box-shadow: 0 2px 4px 0 #000;bottom: 0;left: 0;width: 100%;font-size: 14px;padding: 0;transition: transform .15s cubic-bezier(.17,.67,.39,.95);transform: translateY(200%);z-index: 1000;will-change: transform;}.pwa-offmsgwr table{margin:0px}.pwa-offmsgwr.active{transform: translateY(0);}.pwa-offmsgwr .tdcl{padding: 15px;}.pwa-offmsgwr .span{display: table-cell;vertical-align: middle;}</style><div class="pwa-offmsgwr active"><table width="100%"><tbody><tr><td class="tdcl"><span>You are currently offline</span></td></tr><tr></tr></tbody></table></div>';
+                                              if(document.getElementsByClassName('pwa-offmsgwrcss').length==0){
+                                                document.body.innerHTML += html;
+                                              }
+                                                setTimeout(function(){
+                                                  if(document.getElementsByClassName('pwa-offmsgwrcss').length){ document.getElementsByClassName('pwa-offmsgwrcss')[0].remove(); }
+                                                  if(document.getElementsByClassName('pwa-offmsgwr').length){ document.getElementsByClassName('pwa-offmsgwr')[0].remove();}
+                                                }, 3000);
+
+                                            }else{
+                                              if(document.getElementsByClassName('pwa-offmsgwrcss').length){document.getElementsByClassName('pwa-offmsgwrcss')[0].remove(); document.getElementsByClassName('pwa-offmsgwr')[0].remove();}
                                             }
                                           }
                                           if(window.navigator.standalone === true){
