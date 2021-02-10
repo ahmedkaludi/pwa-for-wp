@@ -561,7 +561,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_premium_features_section'						// Settings Section ID
 		);
                 
-                
+		PWAForWP_APP_Shortcut::adminFeature();
                 
 		
 }
@@ -2459,6 +2459,13 @@ function pwaforwp_features_settings(){
                                     'tooltip_option'=> 'It auto saves the data on the fly',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
+				'quickshortcut' => array(
+									'enable_field' => 'quick_shortcut',
+									'section_name' => 'pwaforwp_quick_shortcut_setting_section',
+									'setting_title' => 'App Shortcuts',
+									'tooltip_option' => 'App shortcuts help users quickly start common or recommended tasks within your web app',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/pwa-app-shortcut-feature/'
+									),
 								);
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
@@ -2584,7 +2591,12 @@ function pwaforwp_update_features_options(){
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
-				$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				foreach (array_reverse($varArray) as $key) {
+					$newArr = [$key => $newArr];
+				}
+				$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
+				// $actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}else{
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}

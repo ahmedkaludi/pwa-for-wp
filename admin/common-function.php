@@ -713,3 +713,25 @@ function ios_splashscreen_files_data(){
             );
     return $iosSplashData;
 }
+/**
+ * pwaforwp_merge_recursive_ex merge any multidimensional Array
+ * @param Array1(array) Array2(array)
+ */
+function pwaforwp_merge_recursive_ex(array $array1, array $array2)
+{
+    $merged = $array1;
+
+    foreach ($array2 as $key => & $value) {
+        if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            $merged[$key] = pwaforwp_merge_recursive_ex($merged[$key], $value);
+        } else if (is_numeric($key)) {
+             if (!in_array($value, $merged)) {
+                $merged[] = $value;
+             }
+        } else {
+            $merged[$key] = $value;
+        }
+    }
+
+    return $merged;
+}
