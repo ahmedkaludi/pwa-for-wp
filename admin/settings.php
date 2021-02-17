@@ -2428,7 +2428,7 @@ function pwaforwp_features_settings(){
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
                                     'setting_title' => 'PWA to Android APP (APK)',
                                     'is_premium'    => true,
-                                    'pro_link'      => 'ptafp',
+                                    'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptafp']['p-slug'])? 1: 0),
                                     'slug' => $addonLists['ptafp']['p-slug'],
