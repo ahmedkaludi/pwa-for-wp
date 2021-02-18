@@ -210,7 +210,7 @@ add_action('admin_init', 'pwaforwp_settings_init');
 
 function pwaforwp_settings_init(){
 	$settings = pwaforwp_defaultSettings(); 
-	if(isset($settings['loading_icon_display_admin']) && $settings['loading_icon_display_admin']){
+	if( isset($settings['loading_icon_display_admin']) && $settings['loading_icon_display_admin'] && is_admin() ){
     	add_action('admin_footer', 'pwaforwp_loading_icon');
     	add_action('admin_print_footer_scripts', 'pwaforwp_loading_icon_scripts');
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
