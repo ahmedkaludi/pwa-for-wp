@@ -683,6 +683,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
                     'p-tab'	 => false
          ),
+         'bnpwa'  => array(
+                    'p-slug' => 'buddypress-notification-pwa-for-wp/buddypress-notification-pwa-for-wp.php',
+                    'p-name' => 'Buddypress Notification for PWA for WP',
+                    'p-short-prefix'=> 'BNPWA',
+                    'p-title' => 'Buddypress Notification for PWA for WP',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/buddypress-notification-for-pwa-for-wp/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/buddypress-notification-for-pwa-for-wp.png',
+                    'p-background-color'=> '#acb1b5',
+                    'p-desc' => 'Buddypress Notification for PWA extension to store forms for your website',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2459,7 +2470,20 @@ function pwaforwp_features_settings(){
                                     'tooltip_option'=> 'It auto saves the data on the fly',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
+				'buddypress_notification' => array(
+                                    'enable_field' => 'buddypress_notification',
+                                    'section_name' => 'pwaforwp_bpnotification_setting_section',
+                                    'setting_title' => 'Buddypress Notification',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['bnpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['bnpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['bnpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['bnpwa']['p-slug'])? 1: 0),
+                                    'slug' => 'bnpwa',
+                                    'tooltip_option'=> 'Support buddypress notification with PWA and push notification',
+                                             'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-notification/'
+                                    ),
 								);
+				
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
