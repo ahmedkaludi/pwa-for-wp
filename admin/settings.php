@@ -2479,8 +2479,8 @@ function pwaforwp_features_settings(){
                                     'pro_active'    => (is_plugin_active($addonLists['bnpwa']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['bnpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['bnpwa']['p-slug'])? 1: 0),
                                     'slug' => 'bnpwa',
-                                    'tooltip_option'=> 'Support buddypress notification with PWA and push notification',
-                                    'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress with pwa/'
+                                    'tooltip_option'=> 'Support buddypress push notification with PWA and push notification',
+                                    'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-for-pwaforwp/'
                                     ),
 								);
 				
