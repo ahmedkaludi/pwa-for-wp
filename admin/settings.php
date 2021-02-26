@@ -685,9 +685,9 @@ function pwaforwp_list_addons(){
          ),
          'bnpwa'  => array(
                     'p-slug' => 'buddypress-for-pwaforwp/buddypress-for-pwaforwp.php',
-                    'p-name' => 'Buddypress Notification for PWA for WP',
+                    'p-name' => 'BuddyPress for PWAforWP',
                     'p-short-prefix'=> 'BNPWA',
-                    'p-title' => 'Buddypress Notification for PWA for WP',
+                    'p-title' => 'Buddypress for PWA for WP',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/buddypress-for-pwaforwp/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/buddypress-for-pwaforwp.png',
                     'p-background-color'=> '#d94e27',
