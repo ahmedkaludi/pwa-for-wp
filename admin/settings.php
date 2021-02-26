@@ -691,7 +691,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/buddypress-for-pwaforwp/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/buddypress-for-pwaforwp.png',
                     'p-background-color'=> '#d94e27',
-                    'p-desc' => 'Buddypress Notification for PWA extension to send notification while core notification will work',
+                    'p-desc' => 'Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post',
                     'p-tab'	 => false
          ),
      );
