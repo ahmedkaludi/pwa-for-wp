@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.6
 
-Stable tag: 1.7.28
+Stable tag: 1.7.29
 
 License: GPLv2 or later
 
@@ -74,6 +74,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
+== Changelog ==
+= 1.7.29 (26 February 2021) =
+* Enhancement	 : Integrated BuddyPress Notification with Push Notification in PWA #183
+* Improvement 	 : Sets the style of the status bar for Full screen on iOS device #577
+* Improvement 	 : Add the different markups for the regular icons and the maskable icons #573
+* BugFixed		 : Compatible with Oxygen Gutenberg Integration Plugin #578
+* BugFixed 		 : Loading icons are not loading at users end #568
+
 = 1.7.28 (13 January 2021) =
 * Improvement 	 : Added a few Offline notice/message features to the app or website #489
 * Improvement 	 : Added prefetch option for manifest in HTML pages #564

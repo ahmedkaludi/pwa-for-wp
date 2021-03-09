@@ -18,7 +18,9 @@ function pwaforwp_loading_icon() {
     }
         
 }
-add_action('wp_footer', 'pwaforwp_loading_icon');
+if(!is_admin()){
+    add_action('wp_footer', 'pwaforwp_loading_icon');
+}
 
 function pwaforwp_reset_all_settings(){ 
     

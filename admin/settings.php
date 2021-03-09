@@ -210,7 +210,7 @@ add_action('admin_init', 'pwaforwp_settings_init');
 
 function pwaforwp_settings_init(){
 	$settings = pwaforwp_defaultSettings(); 
-	if(isset($settings['loading_icon_display_admin']) && $settings['loading_icon_display_admin']){
+	if( isset($settings['loading_icon_display_admin']) && $settings['loading_icon_display_admin'] && is_admin() ){
     	add_action('admin_footer', 'pwaforwp_loading_icon');
     	add_action('admin_print_footer_scripts', 'pwaforwp_loading_icon_scripts');
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
@@ -681,6 +681,17 @@ function pwaforwp_list_addons(){
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/offline-forms-for-pwa-for-wp.png',
                     'p-background-color'=> '#acb1b5',
                     'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
+                    'p-tab'	 => false
+         ),
+         'bnpwa'  => array(
+                    'p-slug' => 'buddypress-for-pwaforwp/buddypress-for-pwaforwp.php',
+                    'p-name' => 'BuddyPress for PWAforWP',
+                    'p-short-prefix'=> 'BNPWA',
+                    'p-title' => 'Buddypress for PWA for WP',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/buddypress-for-pwaforwp/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/buddypress-for-pwaforwp.png',
+                    'p-background-color'=> '#d94e27',
+                    'p-desc' => 'Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post',
                     'p-tab'	 => false
          ),
      );
@@ -2428,7 +2439,7 @@ function pwaforwp_features_settings(){
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
                                     'setting_title' => 'PWA to Android APP (APK)',
                                     'is_premium'    => true,
-                                    'pro_link'      => 'ptafp',
+                                    'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptafp']['p-slug'])? 1: 0),
                                     'slug' => $addonLists['ptafp']['p-slug'],
@@ -2459,7 +2470,20 @@ function pwaforwp_features_settings(){
                                     'tooltip_option'=> 'It auto saves the data on the fly',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
+				'buddypress_notification' => array(
+                                    'enable_field' => 'buddypress_notification',
+                                    'section_name' => 'pwaforwp_buddypress_setting_section',
+                                    'setting_title' => 'Buddypress',
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['bnpwa']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['bnpwa']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['bnpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['bnpwa']['p-slug'])? 1: 0),
+                                    'slug' => 'bnpwa',
+                                    'tooltip_option'=> 'Support buddypress push notification with PWA and push notification',
+                                    'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-for-pwaforwp/'
+                                    ),
 								);
+				
 	$featuresHtml = '';
 	foreach ($feturesArray as $key => $featureVal) {
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';

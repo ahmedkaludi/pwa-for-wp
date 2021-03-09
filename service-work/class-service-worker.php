@@ -532,7 +532,7 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
         <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
         
@@ -665,7 +665,7 @@ class PWAFORWP_Service_Worker{
     }
                 
 }
-if (class_exists('PWAFORWP_Service_Worker')) {
+if (class_exists('PWAFORWP_Service_Worker') && !is_admin()) {
 	$pwaServiceWorker = new PWAFORWP_Service_Worker;
     if( wp_doing_ajax() ){
         PWAFORWP_Service_Worker::loadalernative_script_load_method();
