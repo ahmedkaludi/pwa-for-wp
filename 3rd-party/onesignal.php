@@ -23,7 +23,7 @@ function pwaforwp_use_custom_manifest($action = null){
     
     $onesignal_option = get_option('OneSignalWPSetting');
     
-    if($onesignal_option['custom_manifest_url'] == '' && $onesignal_option['use_custom_manifest'] == false){
+    if(@$onesignal_option['custom_manifest_url'] == '' && @$onesignal_option['use_custom_manifest'] == false){
             
         $onesignal_option['use_custom_manifest'] = true;
         if($action){
