@@ -321,6 +321,14 @@ function pwaforwp_settings_init(){
 			'pwaforpw_display_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
+		);
+		// Apple mobile web app status bar style
+		add_settings_field(
+			'pwaforwp_ios_status_bar',									// ID
+			esc_html__('iOS APP Status Bar', 'pwa-for-wp'),		// Title
+			'pwaforwp_apple_status_bar_callback',								// CB
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
 		);                                
 
 	add_settings_section('pwaforwp_design_section', 'Splash Screen', '__return_false', 'pwaforwp_design_section');
@@ -1622,7 +1630,7 @@ function pwaforpw_orientation_callback(){
 			<option value="landscape" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape' ); } ?>>
 				<?php echo esc_html__( 'Landscape', 'pwa-for-wp' ); ?>
 			</option>
-			<option value="any" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'any' ); selected( $settings['orientation'], 'auto' ); } ?>>
+			<option value="any" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'any' ); selected( $settings['orientation'], 'any' ); } ?>>
 				<?php echo esc_html__( 'Auto', 'pwa-for-wp' ); ?>
 			</option>
 			<option value="landscape-primary" <?php if ( isset( $settings['orientation'] ) ) { selected( $settings['orientation'], 'landscape-primary' ); } ?>>
@@ -1676,6 +1684,31 @@ function pwaforpw_display_callback(){
 
 	<?php
 }
+function pwaforwp_apple_status_bar_callback(){
+	$settings = pwaforwp_defaultSettings();         
+        ?>
+	<!-- iOS status bar -->
+	<label for="pwaforwp_settings[ios_status_bar]">
+		<select name="pwaforwp_settings[ios_status_bar]" id="pwaforwp_settings[ios_status_bar]">
+			<option value="default" <?php if ( isset( $settings['ios_status_bar'] ) ) { selected( $settings['ios_status_bar'],'default' ); } ?>>
+				<?php echo esc_html__( 'Default', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="black" <?php if ( isset( $settings['ios_status_bar'] ) ) { selected( $settings['ios_status_bar'], 'black' ); } ?>>
+				<?php echo esc_html__( 'Black', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="black-translucent" <?php if ( isset( $settings['ios_status_bar'] ) ) { selected( $settings['ios_status_bar'], 'black-translucent' ); } ?>>
+				<?php echo esc_html__( 'Black translucent', 'pwa-for-wp' ); ?>
+			</option>
+		</select>
+	</label>
+	
+	<p class="description">
+		<?php esc_html__( 'The status bar at the top of the screen (which usually displays the time and battery status).', 'pwa-for-wp' ); ?>
+	</p>
+
+	<?php
+}
+
 function pwaforwp_one_signal_support_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
