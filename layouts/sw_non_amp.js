@@ -160,7 +160,7 @@
                                               if(document.getElementsByClassName('pwa-offmsgwrcss').length){document.getElementsByClassName('pwa-offmsgwrcss')[0].remove(); document.getElementsByClassName('pwa-offmsgwr')[0].remove();}
                                             }
                                           }
-                                          if(window.navigator.standalone === true){
+                                          if( true === window.navigator.standalone){
                                             var appContent = document.getElementsByClassName('pwaforwp-app-contents');
                                             for(var i=0; i<appContent.length; i++){
                                               appContent[i].style.display = 'block';
