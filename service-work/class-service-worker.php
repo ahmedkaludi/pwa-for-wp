@@ -512,11 +512,10 @@ class PWAFORWP_Service_Worker{
 		
 		if($manualfileSetup){
 
-            $rel='manifest';
             if(isset($settings['prefetch_manifest_setting']) && $settings['prefetch_manifest_setting']==1){
-                $rel = 'prefetch';
+                echo '<link rel="prefetch" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             }
-            echo '<link rel="'.$rel.'" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif;
@@ -532,7 +531,7 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-title" content="'.esc_attr($settings['app_blog_name']).'">
         <meta name="application-name" content="'.esc_attr($settings['app_blog_name']).'">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-status-bar-style" content="'.esc_attr(@$settings['ios_status_bar']).'">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
         

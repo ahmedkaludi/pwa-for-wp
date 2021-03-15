@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.6
-Stable tag: 1.7.29
+Tested up to: 5.7
+Stable tag: 1.7.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.30 (15 March 2021) =
+* Improvement 	 : OneSignal compatibility issue (resolve popup not appear with single/multi sites) #581
+* Enhancement	 : Added Alpha options in color picker of PWA settings #575
+* BugFixed		 : Loader not showing because of less z-index as compare to wrapper #578
+* Enhancement	 : Add an option to select “apple-mobile-web-app-status-bar-style” property based on user requirement #580
+* BugFixed		 : Resolve PWA APP not changes orientation as per device rotation.
+
+
 = 1.7.29 (26 February 2021) =
 * Enhancement	 : Integrated BuddyPress Notification with Push Notification in PWA #183
 * Improvement 	 : Sets the style of the status bar for Full screen on iOS device #577
