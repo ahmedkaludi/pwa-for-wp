@@ -7,7 +7,6 @@ function pwaforwp_onesignal_compatiblity($action = null) {
     if ( class_exists( 'OneSignal' ) ) {
         pwaforwp_use_custom_manifest($action);
         if ( ! is_multisite() ) {              
-            //pwaforwp_add_sw_to_onesignal_sw($action);
             add_filter('pwaforwp_sw_js_template', 'pwaforwp_add_sw_to_onesignal_sw',10,1);
         }
         register_deactivation_hook( PWAFORWP_PLUGIN_FILE, function () {
