@@ -37,7 +37,7 @@ const CACHE_STRATEGY = {
     css_js: '{{CSS_JS_CACHE_STRATEGY}}',
     images: '{{IMAGES_CACHE_STRATEGY}}',
     fonts: '{{FONTS_CACHE_STRATEGY}}',
-}
+};
 
 const CACHE_BLACKLIST =  [
 //    (str) => {

@@ -2834,6 +2834,7 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		  fclose($input);
 		  fclose($file);
 
+		if(function_exists('WP_Filesystem')){ WP_Filesystem(); }
 		unzip_file($zipfilename, $path);
 		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
 		$iosdata = ios_splashscreen_files_data(); 
