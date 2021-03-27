@@ -870,10 +870,16 @@ var pwaforwp_showpopup = function(caption, inlineId, submitClass){
     //iosSplashIcon
     var optSelection=document.getElementById('ios-splash-gen-opt');
     optSelection.addEventListener('change', onpwaiosOptSelection,false);
-    var event = new Event('change');
-    optSelection.dispatchEvent(event);
+    if(typeof Event=='function'){
+        var event = new Event('change');
+        optSelection.dispatchEvent(event);
+    }else{
+        onpwaiosOptSelection(optSelection);
+    }
     function onpwaiosOptSelection(e){
-        var selected = e.target.value
+        if(e.target){
+            var selected = e.target.value
+        }else{ var selected = e.value; }
         if(selected==""){
             document.getElementById('generate-auto-1').setAttribute("class", "panel pwaforwp-hide");
             document.getElementById('manually-1').setAttribute("class", "panel pwaforwp-hide");
