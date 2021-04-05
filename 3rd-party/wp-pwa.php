@@ -445,8 +445,8 @@ class PWAforWP_wppwa{
         $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
         $manifest['description']      = esc_attr($defaults['description']);
         $manifest['icons']            = $icons;
-        $manifest['background_color'] = sanitize_hex_color($defaults['background_color']);
-        $manifest['theme_color']      = sanitize_hex_color($defaults['theme_color']);
+        $manifest['background_color'] = esc_attr($defaults['background_color']);
+        $manifest['theme_color']      = esc_attr($defaults['theme_color']);
         $manifest['display']          = esc_html($display);
         $manifest['orientation']      = esc_html( $orientation );
         $manifest['start_url']        = esc_url($homeUrl);

@@ -1121,12 +1121,12 @@ function pwaforwp_loading_setting_callback(){
 }
 function pwaforwp_loading_color_setting_callback(){	
     $settings = pwaforwp_defaultSettings(); ?>
-    <input type="text" name="pwaforwp_settings[loading_icon_color]" id="pwaforwp_settings[loading_icon_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['loading_icon_color'] ) ? sanitize_hex_color( $settings['loading_icon_color']) : '#3498db'; ?>" data-default-color="#3498db">
+    <input type="text" name="pwaforwp_settings[loading_icon_color]" id="pwaforwp_settings[loading_icon_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['loading_icon_color'] ) ? esc_attr( $settings['loading_icon_color']) : '#3498db'; ?>" data-default-color="#3498db">
 	<p><?php echo esc_html__('Change the icon color of loader', 'pwa-for-wp'); ?></p><?php
 }
 function pwaforwp_loading_background_color_setting_callback(){	
     $settings = pwaforwp_defaultSettings(); ?>
-    <input type="text" name="pwaforwp_settings[loading_icon_bg_color]" id="pwaforwp_settings[loading_icon_bg_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['loading_icon_bg_color'] ) ? sanitize_hex_color( $settings['loading_icon_bg_color']) : '#ffffff'; ?>" data-default-color="#ffffff">
+    <input type="text" name="pwaforwp_settings[loading_icon_bg_color]" id="pwaforwp_settings[loading_icon_bg_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['loading_icon_bg_color'] ) ? esc_attr( $settings['loading_icon_bg_color']) : '#ffffff'; ?>" data-default-color="#ffffff">
 	<p><?php echo esc_html__('Change the background color of loader', 'pwa-for-wp'); ?></p><?php
 }
 function pwaforwp_loading_display_setting_callback(){	
@@ -1162,7 +1162,7 @@ function pwaforwp_background_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-        <input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['background_color'] ) ? sanitize_hex_color( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+        <input type="text" name="pwaforwp_settings[background_color]" id="pwaforwp_settings[background_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['background_color'] ) ? esc_attr( $settings['background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 		<p class="description"></p>
 	<?php
 }
@@ -1171,7 +1171,7 @@ function pwaforwp_theme_color_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<!-- Background Color -->
-	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['theme_color'] ) ? sanitize_hex_color( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
+	<input type="text" name="pwaforwp_settings[theme_color]" id="pwaforwp_settings[theme_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['theme_color'] ) ? esc_attr( $settings['theme_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB">
 	<p class="description"></p>
 	<?php
 }
@@ -1411,10 +1411,10 @@ function pwaforwp_custom_banner_design_callback(){
         <table class="" style="display: block;">
             <tr><th><strong><?php echo esc_html__('Title', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title]" id="pwaforwp_settings[custom_banner_title]" class="" value="<?php echo isset( $settings['custom_banner_title'] ) ? esc_attr( $settings['custom_banner_title']) : 'Add '.get_bloginfo().' to your Homescreen!'; ?>"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Button Text', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_button_text]" id="pwaforwp_settings[custom_banner_button_text]" class="" value="<?php echo isset( $settings['custom_banner_button_text'] ) ? esc_attr( $settings['custom_banner_button_text']) : 'Add'; ?>"></td></tr> 
-            <tr><th><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? sanitize_hex_color( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr> 
-            <tr><th><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? sanitize_hex_color( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
-            <tr><th><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
-            <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? sanitize_hex_color( $settings['custom_banner_btn_color']) : '#006dda'; ?>" data-default-color="#006dda"></td></tr>                         
+            <tr><th><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? esc_attr( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? esc_attr( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Button Text Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_text_color]" id="pwaforwp_settings[custom_banner_btn_text_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_btn_text_color'] ) ? esc_attr( $settings['custom_banner_btn_text_color']) : '#fff'; ?>" data-default-color="#fff"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Button Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_btn_color]" id="pwaforwp_settings[custom_banner_btn_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_btn_color'] ) ? esc_attr( $settings['custom_banner_btn_color']) : '#006dda'; ?>" data-default-color="#006dda"></td></tr>                         
         </table>
         <?php
 }
