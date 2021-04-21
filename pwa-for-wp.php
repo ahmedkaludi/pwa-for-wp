@@ -140,6 +140,9 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 function pwaforwp_admin_notice(){
     
     $screen_id      = ''; 
+
+    if ( ! function_exists( 'get_current_screen' ) ) return false;
+
     $current_screen = get_current_screen();
     
     if(is_object($current_screen)){
