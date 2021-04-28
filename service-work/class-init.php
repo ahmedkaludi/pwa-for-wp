@@ -32,7 +32,10 @@ class PWAFORWP_File_Creation_Init {
     }
     
     public function pwaforwp_push_notification_js($action = null){
-        
+        $pwaSettings = pwaforwp_defaultSettings();
+        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']!='fcm_push'){
+            return; 
+        }
         $pnjs_strContent = $this->fileCreation->pwaforwp_pnjs();
         return pwaforwp_write_a_file($this->push_notification_js, $pnjs_strContent, $action);
                                                

@@ -3,13 +3,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class pushNotification{
             
      public function pwaforwp_push_notification_hooks(){
-         
+        $pwaSettings = pwaforwp_defaultSettings();
+        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='fcm_push'){
+          
             add_action('transition_post_status', array($this, 'pwaforwp_send_notification_on_post_save'), 10, 3);                          
             add_filter('pwaforwp_manifest', array($this, 'pwaforwp_load_pn_manifest'), 35); 
             add_action('wp_enqueue_scripts', array($this, 'pwaforwp_load_pn_script_add'), 34);
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
             add_action('wp_ajax_pwaforwp_store_token', array($this, 'pwaforwp_store_token'));             
             add_action('wp_ajax_pwaforwp_send_notification_manually', array($this, 'pwaforwp_send_notification_manually'));
+        }
                            
      }
 

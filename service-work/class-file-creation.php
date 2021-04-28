@@ -17,39 +17,38 @@ class pwaforwpFileCreation{
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
-			$ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'));
+			       $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'));
           }else{
             $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
           }
 		        		
-      $swHtmlContentbody          = $this->pwaforwp_getlayoutfiles("layouts/sw.html");
-      $settings                       = pwaforwp_defaultSettings();
+          $swHtmlContentbody          = $this->pwaforwp_getlayoutfiles("layouts/sw.html");
+          $settings                   = pwaforwp_defaultSettings();
                         
-                        $swHtmlContent = '';
-                        /*Default Bar will be disabled if custom add to home banners are enabled*/
-                        $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
-                        $swdefaultaddtohomebar = '';
-                        if($showPwaDefaultbar==1){
-                          $swdefaultaddtohomebar = "e.preventDefault();";
-                        }
-                        if( isset($swHtmlContentbody) && $swHtmlContentbody){
-                            $swHtmlContent                      = $swHtmlContentbody;
-                            $swHtmlContent 			= str_replace(array(
-                                                                  "{{serviceWorkerFile}}",
-                                                                  "{{scope_url}}",
-                                                                  "{{swdefaultaddtohomebar}}"
-                                                                  ), 
-                                                                  array($ServiceWorkerfileName,
-                                                                    $scope_url,
-                                                                    $swdefaultaddtohomebar
-                                                                  ), 
-                                                                  $swHtmlContent);
-                        }                                                
+          $swHtmlContent = '';
+          /*Default Bar will be disabled if custom add to home banners are enabled*/
+          $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+          $swdefaultaddtohomebar = '';
+          if($showPwaDefaultbar==1){
+            $swdefaultaddtohomebar = "e.preventDefault();";
+          }
+          if( isset($swHtmlContentbody) && $swHtmlContentbody){
+            $swHtmlContent      = $swHtmlContentbody;
+            $swHtmlContent 			= str_replace(array(
+                                      "{{serviceWorkerFile}}",
+                                      "{{scope_url}}",
+                                      "{{swdefaultaddtohomebar}}"
+                                    ), 
+                                    array($ServiceWorkerfileName,
+                                      $scope_url,
+                                      $swdefaultaddtohomebar
+                                    ), 
+                                    $swHtmlContent);
+          }                                                
 			
 			return $swHtmlContent;		    
-	    }	
-            
-	}
+	    }	            
+	  }
     
     public function pwaforwp_pnjs($is_amp = false){
                 
