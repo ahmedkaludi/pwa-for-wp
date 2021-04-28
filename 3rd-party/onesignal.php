@@ -84,7 +84,7 @@ add_filter( 'pwaforwp_sw_name_modify', 'pwaforwp_onesignal_change_sw_name' );
 function pwaforwp_add_sw_to_onesignal_sw($content = null){
     
     $onesignal = 'importScripts( \'' . pwaforwp_https( plugin_dir_url( 'onesignal-free-web-push-notifications/onesignal.php' ) ) . 'sdk_files/OneSignalSDKWorker.js.php\' );' . PHP_EOL;
-
-    return $onesignal . $content;
+    $content = $onesignal . $content;
+    return $content;
     
 }
