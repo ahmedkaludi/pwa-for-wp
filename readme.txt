@@ -1,7 +1,7 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.7
+Tested up to: 5.7.1
 Stable tag: 1.7.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
