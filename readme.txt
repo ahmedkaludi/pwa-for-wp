@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.7
-Stable tag: 1.7.30
+Stable tag: 1.7.31
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.31 (29 April 2021) =
+* Improvement 	 : CTA issue with OneSignal compatibility #603
+* Improvement 	 : File not update when OneSignal enabled #591
+* BugFixed		 : Colors related fields values are not show alpha RGB colors #592
+* BugFixed		 : splash icon is not generating for the IOS device #596
+
+
 = 1.7.30 (15 March 2021) =
 * Improvement 	 : OneSignal compatibility issue (resolve popup not appear with single/multi sites) #581
 * Enhancement	 : Added Alpha options in color picker of PWA settings #575
