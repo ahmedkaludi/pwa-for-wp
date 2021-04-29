@@ -6,9 +6,8 @@ function pwaforwp_onesignal_compatiblity($action = null) {
         
     if ( class_exists( 'OneSignal' ) ) {
         pwaforwp_use_custom_manifest($action);
-        if ( ! is_multisite() ) {              
-            add_filter('pwaforwp_sw_js_template', 'pwaforwp_add_sw_to_onesignal_sw',10,1);
-        }
+        add_filter('pwaforwp_sw_js_template', 'pwaforwp_add_sw_to_onesignal_sw',10,1);
+        
         register_deactivation_hook( PWAFORWP_PLUGIN_FILE, function () {
             $os_settings                        = \OneSignal::get_onesignal_settings();
             $os_settings['use_custom_manifest'] = false;
@@ -66,15 +65,13 @@ add_filter( 'pwaforwp_manifest', 'pwaforwp_onesignal_insert_gcm_sender_id' );
 
 function pwaforwp_onesignal_change_sw_name($name){
     
-    if ( ! is_multisite() ) {
             
             if ( class_exists( 'OneSignal' ) ) {
             
-            $name = 'OneSignalSDKWorker.js';
+            $name = 'OneSignalSDKWorker'.pwaforwp_multisite_postfix().'.js.php';
             
             }
         
-        }
            
     return $name;
     
@@ -83,8 +80,10 @@ add_filter( 'pwaforwp_sw_name_modify', 'pwaforwp_onesignal_change_sw_name' );
 
 function pwaforwp_add_sw_to_onesignal_sw($content = null){
     
-    $onesignal = 'importScripts( \'' . pwaforwp_https( plugin_dir_url( 'onesignal-free-web-push-notifications/onesignal.php' ) ) . 'sdk_files/OneSignalSDKWorker.js.php\' );' . PHP_EOL;
+    $onesignal = '<?php header( "Content-Type: application/javascript" ); ?>
+    importScripts( \'' . pwaforwp_https( plugin_dir_url( 'onesignal-free-web-push-notifications/onesignal.php' ) ) . 'sdk_files/OneSignalSDKWorker.js.php\' );' . PHP_EOL;
     $content = $onesignal . $content;
+    
     return $content;
     
 }
