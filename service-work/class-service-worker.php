@@ -4,13 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class PWAFORWP_Service_Worker{
 	
         public $is_amp = false;       
-            
+        /**
+         * Initialize whole front end system
+         */
         public function __construct() {
-        
+            /* Check & initialize AMP is Activated or not*/
             $this->pwaforwp_is_amp_activated();
            
+            /*Grab the settings of PWA*/
             $settings = pwaforwp_defaultSettings();
-            $showPWA = true;
+            $showPWA  = true;
             if( ( isset($settings['avoid_loggedin_users']) && !empty($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
                 $showPWA = false;
             }

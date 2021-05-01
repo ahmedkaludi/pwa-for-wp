@@ -1797,7 +1797,7 @@ function pwaforwp_files_status_callback(){
 			$nonAmpStatusMsg = 'Manifest not working';
 		}
 
-		$swFile = "pwa-sw".pwaforwp_multisite_postfix().".js";
+		$swFile = apply_filters('pwaforwp_sw_name_modify',"pwa-sw".pwaforwp_multisite_postfix().".js");
 		$nonamp_sw_status = true;
 		if(!pwaforwp_is_enabled_pwa_wp()){
 			$swUrl = esc_url(pwaforwp_home_url().$swFile);

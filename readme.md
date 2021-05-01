@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.6
 
-Stable tag: 1.7.30
+Stable tag: 1.7.31
 
 License: GPLv2 or later
 
@@ -75,6 +75,13 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.31 (29 April 2021) =
+* Improvement 	 : CTA issue with OneSignal compatibility #603
+* Improvement 	 : File not update when OneSignal enabled #591
+* BugFixed		 : Colors related fields values are not show alpha RGB colors #592
+* BugFixed		 : splash icon is not generating for the IOS device #596
+
+
 = 1.7.30 (15 March 2021) =
 * Improvement 	 : OneSignal compatibility issue (resolve popup not appear with single/multi sites) #581
 * Enhancement	 : Added Alpha options in color picker of PWA settings #575

@@ -521,6 +521,9 @@ function pwaforwp_required_file_creation($action = null){
                     $server_key = $config = '';       
                 
                     $fileCreationInit = new PWAFORWP_File_Creation_Init();
+
+                    pwaforwp_onesignal_compatiblity($action);
+                    pwaforwp_pushnami()->pushnami_compatiblity($action); 
                 		                    
                     $status = '';                    
                     $status = $fileCreationInit->pwaforwp_swjs_init($action);
@@ -541,10 +544,6 @@ function pwaforwp_required_file_creation($action = null){
                         set_transient( 'pwaforwp_file_change_transient', true );
                     }
                     
-                    pwaforwp_onesignal_compatiblity($action);      
-
-                    pwaforwp_pushnami()->pushnami_compatiblity($action);            
-		                
                     if(isset($settings['fcm_server_key'])){
                          $server_key = $settings['fcm_server_key'];    
                     }
