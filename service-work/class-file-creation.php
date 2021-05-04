@@ -378,7 +378,7 @@ class pwaforwpFileCreation{
                     }
                 }
                 
-                if($settings['excluded_urls'] !=''){     
+                if(isset($settings['excluded_urls']) && !empty($settings['excluded_urls'])){     
                     
                   $exclude_from_cache     = $settings['excluded_urls']; 
                   $exclude_from_cache     = trim($exclude_from_cache, ",");
