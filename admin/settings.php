@@ -2635,6 +2635,10 @@ function pwaforwp_update_features_options(){
 		echo json_encode(array('status'=> 503, 'message'=> 'Unauthorized access, CSRF token not matched'));
 		die;
 	}
+	if(!isset($_POST['fields_data']) || !is_array($_POST['fields_data'])){
+		echo json_encode(array('status'=> 502, 'message'=> 'Feature settings not have any fields.'));
+		die;
+	}
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
 	if(is_array($allFields)){
