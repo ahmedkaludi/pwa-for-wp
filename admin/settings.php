@@ -2896,8 +2896,11 @@ function pwaforwp_loading_icon_scripts(){
       document.getElementById('pwaforwp_loading_icon').style.display = 'flex';
     }
   });
-  if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
-    document.getElementsByClassName('pwaforwp-loading-wrapper')[0].style.display = 'none';
+  if(document.getElementsByClassName('pwaforwp-loading-wrapper') && document.getElementsByClassName('pwaforwp-loading-wrapper').length > 0){
+    var tot = document.getElementsByClassName('pwaforwp-loading-wrapper');
+    for (var i = 0; i < tot.length; i++) {
+      tot[i].style.display = 'none';
+    }
   }
   if(document.getElementById('pwaforwp_loading_div')){
     document.getElementById('pwaforwp_loading_div').style.display = 'none';
