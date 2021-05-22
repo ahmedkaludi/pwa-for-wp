@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 5.6
+Tested up to: 5.7.1
 
-Stable tag: 1.7.31
+Stable tag: 1.7.32
 
 License: GPLv2 or later
 
@@ -75,6 +75,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.32 (22 May 2021) =
+* BugFixed		 : Removed Warnings and notice for latest version of PHP #608
+* BugFixed		 : Removed javascript warning  
+
 = 1.7.31 (29 April 2021) =
 * Improvement 	 : CTA issue with OneSignal compatibility #603
 * Improvement 	 : File not update when OneSignal enabled #591
