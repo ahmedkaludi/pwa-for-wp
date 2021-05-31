@@ -628,6 +628,10 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * @since 1.0.0
 		 */
 		public function optin_notice() {
+			global $pagenow;
+		    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
+		        return false;
+		    }
 			// Check for plugin args
 			if( isset( $_GET['plugin'] ) && isset( $_GET['plugin_action'] ) ) {
 				$plugin = sanitize_text_field( $_GET['plugin'] );
@@ -719,6 +723,10 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * @since 1.0.0
 		 */
 		public function marketing_notice() {
+			global $pagenow;
+		    if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']!='pwaforwp'){
+		        return ;
+		    }
 			// Check if user has opted in to marketing
 			if( isset( $_GET['marketing_optin'] ) ) {
 				// Set marketing optin

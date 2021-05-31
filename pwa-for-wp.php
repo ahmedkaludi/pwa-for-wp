@@ -138,7 +138,11 @@ function pwaforwp_admin_notice_activation_hook() {
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
-    
+    global $pagenow;
+    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
+        return false;
+    }
+
     $screen_id      = ''; 
     $current_screen = get_current_screen();
     
