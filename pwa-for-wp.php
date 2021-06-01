@@ -140,22 +140,20 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 function pwaforwp_admin_notice(){
     global $pagenow;
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
-        return false;
+        //return false;
     }
-
     $screen_id      = ''; 
     $current_screen = get_current_screen();
     
     if(is_object($current_screen)){
        $screen_id =  $current_screen->id;
     }
-    
     /* Check transient, if available display notice */
     
     if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
          ?>
         <div class="updated notice">
-            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click Here To Update', 'pwa-for-wp') ?></a></p>
+            <p><?php echo esc_html__('Update your pwa pre caching url list by click on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click Here To Update', 'pwa-for-wp') ?></a></p>
         </div>
         <?php
         
@@ -187,16 +185,22 @@ function pwaforwp_admin_notice(){
         $review_notice_bar_never       = get_option( "pwaforwp_review_never");
         
         if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
-            echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
-                <p><span class="dashicons dashicons-thumbs-up"></span> 
-                '.esc_html__('You have been using the PWA For WP plugin for some time now, do you like it?, If so,', 'pwa-for-wp').'						
-                <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews">				
-                '.esc_html__('please write us a review', 'pwa-for-wp').'
-                </a>
-                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-remindme">'.esc_html__('Remind Me Later', 'pwa-for-wp').'</button>
-                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-close">'.esc_html__('No Thanks', 'pwa-for-wp').'</button>'
-                .'</p> '
-                .'</div>';                       
+           echo sprintf('<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
+                    <p>
+                        <span class="dashicons dashicons-thumbs-up"></span>%s   
+                    </p>
+                    <p class="notice-action">                     
+                        <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews" class="button button-secondry">%s</a>
+                        <span style="margin-left:10px;opacity:0.4;cursor:pointer;font-size:10px;" class="pwaforwp-feedback-notice-remindme"> %s </span>
+                        <span style="margin-left:10px;opacity:0.4;cursor:pointer;font-size:10px;" class="pwaforwp-feedback-notice-close"> %s </span>
+                    </p>
+                </div>',
+                esc_html__('You have been using the PWA For WP plugin for some time now, do you like it? so,', 'pwa-for-wp'),
+                esc_html__('Write us a review', 'pwa-for-wp'),
+                esc_html__('Remind Me Later', 'pwa-for-wp'),
+                esc_html__('No Thanks', 'pwa-for-wp'),
+
+            ); 
         } 
     
 }

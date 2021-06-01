@@ -393,7 +393,7 @@ select {
 	display: inline!important;
 	margin-left: 0;
 	color: #d8d8d8!important;
-	cursor:pointer;
+	cursor: pointer;
 }
 
 .pwaforwp-wrap .pwafw-tooltip:hover {
@@ -528,7 +528,7 @@ select {
 	padding: 0;
 	top: -1px;
 	position: relative;
-  	cursor:pointer
+	cursor: pointer;
 }
 
 .pwaforwp-tlt-sw .card-action-settings span {
@@ -741,14 +741,14 @@ input:checked+.slider:before {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);
+	background-color: rgba(0, 0, 0, .7);
 	display: table;
-	transition: opacity .3s ease;
+	transition: opacity .3s ease
 }
 
 .pwawp-modal-wrapper {
 	display: table-cell;
-	vertical-align: middle;
+	vertical-align: middle
 }
 
 .pwawp-modal-header {
@@ -757,7 +757,7 @@ input:checked+.slider:before {
 	z-index: 100;
 	border-bottom: 1px solid #d8d8d8;
 	position: relative;
-	padding-left: 20px;
+	padding-left: 20px
 }
 
 .pwawp-modal-container {
@@ -784,7 +784,7 @@ input:checked+.slider:before {
 	margin-bottom: 0;
 	font-weight: 600;
 	position: relative;
-	left: 15px;
+	left: 15px
 }
 
 .pwawp-modal-mask .pwawp-modal-body {
@@ -953,4 +953,12 @@ input:checked+.slider:before {
 
 .ios-splash-images .active:after {
 	content: "\2796";
+}
+
+.pwaforwp-feedback-notice p {
+	display: inline-block;
+}
+
+.pwaforwp-feedback-notice .dashicons-thumbs-up {
+	padding-right: 5px;
 }
