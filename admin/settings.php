@@ -702,6 +702,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post',
                     'p-tab'	 => false
          ),
+         'qafp'  => array(
+                    'p-slug' => 'quick-action-for-pwa/quick-action-for-pwa.php',
+                    'p-name' => 'Quick Action for PWA',
+                    'p-short-prefix'=> 'QAFP',
+                    'p-title' => 'Quick Action for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/quick-action-feature-pwaforwp/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/quick-action-feature-pwaforwp.png',
+                    'p-background-color'=> '#d94e27',
+                    'p-desc' => 'App quick shortcuts help users give direct link to move on important pages quickly, start common or recommended tasks within your web app',
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2517,6 +2528,18 @@ function pwaforwp_features_settings(){
                                     'tooltip_option'=> 'Support buddypress push notification with PWA and push notification',
                                     'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-for-pwaforwp/'
                                     ),
+				'quickaction' => array(
+									'enable_field' => 'quick_action',
+									'section_name' => 'pwaforwp_quick_action_setting_section',
+									'setting_title' => 'App Quick Action',
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['qafp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['qafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['qafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qafp']['p-slug'])? 1: 0),
+                                    'slug' => 'qafp',
+									'tooltip_option' => 'App quick shortcuts help users give quick link, common or recommended pages within your web app',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/quick-action-for-pwa-doc/'
+									),
 								);
 				
 	$featuresHtml = '';
@@ -2647,7 +2670,12 @@ function pwaforwp_update_features_options(){
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
-				$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				foreach (array_reverse($varArray) as $key) {
+					$newArr = [$key => $newArr];
+				}
+				$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
+				//$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}else{
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
