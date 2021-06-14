@@ -2531,13 +2531,13 @@ function pwaforwp_features_settings(){
 				'quickaction' => array(
 									'enable_field' => 'quick_action',
 									'section_name' => 'pwaforwp_quick_action_setting_section',
-									'setting_title' => 'App Quick Action',
+									'setting_title' => esc_html__('Quick Action', 'pwa-for-wp'),
 									'is_premium'    => true,
 									'pro_link'      => $addonLists['qafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['qafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['qafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qafp']['p-slug'])? 1: 0),
                                     'slug' => 'qafp',
-									'tooltip_option' => 'App quick shortcuts help users give quick link, common or recommended pages within your web app',
+									'tooltip_option' => esc_html__('Quick action help users give shortcut link, common or recommended pages with in your web app', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/quick-action-for-pwa-doc/'
 									),
 								);
@@ -2949,4 +2949,27 @@ function pwaforwp_loading_icon_styles(){
 	@-webkit-keyframes spin {0% { -webkit-transform: rotate(0deg); }100% { -webkit-transform: rotate(360deg); }}
 	@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
 	</style>';
+}
+
+/**
+ * pwaforwp_merge_recursive_ex merge any multidimensional Array
+ * @param Array1(array) Array2(array)
+ */
+function pwaforwp_merge_recursive_ex(array $array1, array $array2)
+{
+    $merged = $array1;
+
+    foreach ($array2 as $key => & $value) {
+        if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            $merged[$key] = pwaforwp_merge_recursive_ex($merged[$key], $value);
+        } else if (is_numeric($key)) {
+             if (!in_array($value, $merged)) {
+                $merged[] = $value;
+             }
+        } else {
+            $merged[$key] = $value;
+        }
+    }
+
+    return $merged;
 }
