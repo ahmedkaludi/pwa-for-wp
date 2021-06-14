@@ -707,10 +707,21 @@ function pwaforwp_list_addons(){
                     'p-name' => 'Quick Action for PWA',
                     'p-short-prefix'=> 'QAFP',
                     'p-title' => 'Quick Action for PWA',
-                    'p-url'	 => 'https://pwa-for-wp.com/extensions/quick-action-feature-pwaforwp/',
-                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/quick-action-feature-pwaforwp.png',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/quick-action-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/quick-action-for-pwa.png',
+                    'p-background-color'=> '#bbcff0',
+                    'p-desc' => esc_html__('Quick action help users give shortcut link, common or recommended pages with in your web app', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'nbfp'  => array(
+                    'p-slug' => 'navigation-bar-for-pwa/navigation-bar-for-pwa.php',
+                    'p-name' => 'Navigation Bar for PWA',
+                    'p-short-prefix'=> 'NBFP',
+                    'p-title' => 'Navigation Bar for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/navigation-bar-for-pwa.png',
                     'p-background-color'=> '#d94e27',
-                    'p-desc' => 'App quick shortcuts help users give direct link to move on important pages quickly, start common or recommended tasks within your web app',
+                    'p-desc' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
      );
@@ -2538,7 +2549,19 @@ function pwaforwp_features_settings(){
                                     'pro_deactive'    => (!is_plugin_active($addonLists['qafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qafp']['p-slug'])? 1: 0),
                                     'slug' => 'qafp',
 									'tooltip_option' => esc_html__('Quick action help users give shortcut link, common or recommended pages with in your web app', 'pwa-for-wp'),
-									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/quick-action-for-pwa-doc/'
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-quick-action-for-pwa-for-wp/'
+									),
+				'navigationbar' => array(
+									'enable_field' => 'navigation_bar',
+									'section_name' => 'pwaforwp_navigation_bar_setting_section',
+									'setting_title' => esc_html__('Navigation Bar', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['nbfp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['nbfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['nbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['nbfp']['p-slug'])? 1: 0),
+                                    'slug' => 'nbfp',
+									'tooltip_option' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/navigation-bar-for-pwa-doc/'
 									),
 								);
 				
