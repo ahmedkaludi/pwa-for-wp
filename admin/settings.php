@@ -2561,7 +2561,7 @@ function pwaforwp_features_settings(){
                                     'pro_deactive'    => (!is_plugin_active($addonLists['nbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['nbfp']['p-slug'])? 1: 0),
                                     'slug' => 'nbfp',
 									'tooltip_option' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
-									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/navigation-bar-for-pwa-doc/'
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-navigation-bar-for-pwa-addon/'
 									),
 								);
 				
