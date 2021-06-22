@@ -2685,6 +2685,10 @@ function pwaforwp_update_features_options(){
 		echo json_encode(array('status'=> 502, 'message'=> 'Feature settings not have any fields.'));
 		die;
 	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+        echo json_encode(array('status'=> 501, 'message'=> 'Unauthorized access, permission not allowed'));
+		die;
+    }
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
 	if(is_array($allFields)){
@@ -2867,18 +2871,23 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 
 	function pwaforwp_splashscreen_uploader(){
 		if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
-            echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+            echo json_encode(array("status"=>500, "message"=> "Failed! Security check not active"));
             die;
         }
         if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+           echo json_encode(array("status"=>500, "message"=> "Failed! Security check"));
            die;
+        }
+        if( !current_user_can('manage_options') ){
+        	echo json_encode(array("status"=>401, "message"=> "Failed! you are not autherized to save"));
+        	die;
         }
 		$pwaforwp_settings = pwaforwp_defaultSettings();
 		
 		$upload = wp_upload_dir();
 		$path = $upload['basedir']."/pwa-splash-screen/";
 		wp_mkdir_p($path);
+		  file_put_contents($path.'/index.html','');
 		  $zipfilename = $path."file.zip";
 	      $input = fopen('php://input', 'rb');
 		  $file = fopen($zipfilename, 'wb'); 
