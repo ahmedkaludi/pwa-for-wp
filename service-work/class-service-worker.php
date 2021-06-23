@@ -100,20 +100,13 @@ class PWAFORWP_Service_Worker{
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
-                if($filename == 'dynamic_onesignal'){//work with onesignal only
-                    $home_url = pwaforwp_home_url();
-                    $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
-                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
-                    
-                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
-                    $url = service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
+                if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
+                    $filename = str_replace(".js_",".js", $filename);
+                    require_once ABSPATH.$filename;
+
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
-                    $content = preg_replace('/\s+/', ' ', $content);
-                    echo $content;
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
                     $home_url = pwaforwp_home_url();
@@ -197,20 +190,13 @@ class PWAFORWP_Service_Worker{
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
                 $fileRawName = $filename = sanitize_file_name( $query->get( pwaforwp_query_var('sw_file_var') ) );
-                if($filename == 'dynamic_onesignal'){//work with onesignal only
-                    $home_url = pwaforwp_home_url();
-                    $site_id = sanitize_text_field( $query->get( pwaforwp_query_var('site_id_var') ) );
-                    if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
-                    
-                    $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');   
-                    $content = '';
-					header("Service-Worker-Allowed: /");
-					header("Content-Type: application/javascript");
-					header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
-                    $content = preg_replace('/\s+/', ' ', $content);
-                    echo $content;
+               if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
+                    $filename = str_replace(".js_",".js", $filename);
+                    require_once ABSPATH.$filename;
+
+                    header("Service-Worker-Allowed: /");
+                    header("Content-Type: application/javascript");
+                    header("X-Robots-Tag: none");
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
                     $home_url = pwaforwp_home_url();
@@ -673,9 +659,9 @@ class PWAFORWP_Service_Worker{
     }
                 
 }
-if (class_exists('PWAFORWP_Service_Worker') && is_admin()) {
+if (class_exists('PWAFORWP_Service_Worker')) {
 	$pwaServiceWorker = new PWAFORWP_Service_Worker;
+    if( wp_doing_ajax() ){
+        PWAFORWP_Service_Worker::loadalernative_script_load_method();
+    }
 };
-if( wp_doing_ajax() ){
-    PWAFORWP_Service_Worker::loadalernative_script_load_method();
-}
