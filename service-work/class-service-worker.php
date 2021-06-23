@@ -112,6 +112,7 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
@@ -129,6 +130,7 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
                 }
@@ -183,6 +185,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
+                $file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
@@ -206,6 +209,7 @@ class PWAFORWP_Service_Worker{
 					header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js')".PHP_EOL;
+                    $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
@@ -219,6 +223,7 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $content .= "importScripts('".$url."')".PHP_EOL;
                     $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
                 }
@@ -271,6 +276,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
+                $file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
@@ -667,9 +673,9 @@ class PWAFORWP_Service_Worker{
     }
                 
 }
-if (class_exists('PWAFORWP_Service_Worker') && !is_admin()) {
+if (class_exists('PWAFORWP_Service_Worker') && is_admin()) {
 	$pwaServiceWorker = new PWAFORWP_Service_Worker;
-    if( wp_doing_ajax() ){
-        PWAFORWP_Service_Worker::loadalernative_script_load_method();
-    }
 };
+if( wp_doing_ajax() ){
+    PWAFORWP_Service_Worker::loadalernative_script_load_method();
+}
