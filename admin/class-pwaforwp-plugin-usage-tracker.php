@@ -628,7 +628,9 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * @since 1.0.0
 		 */
 		public function optin_notice() {
-			global $pagenow;
+			global $pagenow, $pwaforwp_globe_admin_notice;
+			if($pwaforwp_globe_admin_notice!=false){ return; }
+			$pwaforwp_globe_admin_notice = true;
 		    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
 		        return false;
 		    }
@@ -723,7 +725,9 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * @since 1.0.0
 		 */
 		public function marketing_notice() {
-			global $pagenow;
+			global $pagenow,$pwaforwp_globe_admin_notice;
+			if($pwaforwp_globe_admin_notice!=false){ return;}
+			$pwaforwp_globe_admin_notice = true;
 		    if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']!='pwaforwp'){
 		        return ;
 		    }
