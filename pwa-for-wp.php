@@ -210,7 +210,7 @@ function pwaforwp_admin_notice(){
                 esc_html__('Write us a review', 'pwa-for-wp'),
                 esc_html__('Remind Me Later', 'pwa-for-wp'),
                 esc_html__('I already did', 'pwa-for-wp'),
-                esc_html__('No, not good enough', 'pwa-for-wp'),
+                esc_html__('No, not good enough', 'pwa-for-wp')
 
             ); 
         } 
