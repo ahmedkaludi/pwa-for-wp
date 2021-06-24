@@ -720,7 +720,7 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Navigation Bar for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/navigation-bar-for-pwa.png',
-                    'p-background-color'=> '#d94e27',
+                    'p-background-color'=> '#3872a2',
                     'p-desc' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
