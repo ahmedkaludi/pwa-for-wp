@@ -702,6 +702,28 @@ function pwaforwp_list_addons(){
                     'p-desc' => 'Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post',
                     'p-tab'	 => false
          ),
+         'qafp'  => array(
+                    'p-slug' => 'quick-action-for-pwa/quick-action-for-pwa.php',
+                    'p-name' => 'Quick Action for PWA',
+                    'p-short-prefix'=> 'QAFP',
+                    'p-title' => 'Quick Action for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/quick-action-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/quick-action-for-pwa.png',
+                    'p-background-color'=> '#bbcff0',
+                    'p-desc' => esc_html__('Quick action help users give shortcut link, common or recommended pages with in your web app', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'nbfp'  => array(
+                    'p-slug' => 'navigation-bar-for-pwa/navigation-bar-for-pwa.php',
+                    'p-name' => 'Navigation Bar for PWA',
+                    'p-short-prefix'=> 'NBFP',
+                    'p-title' => 'Navigation Bar for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/navigation-bar-for-pwa.png',
+                    'p-background-color'=> '#3872a2',
+                    'p-desc' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2517,6 +2539,30 @@ function pwaforwp_features_settings(){
                                     'tooltip_option'=> 'Support buddypress push notification with PWA and push notification',
                                     'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-for-pwaforwp/'
                                     ),
+				'quickaction' => array(
+									'enable_field' => 'quick_action',
+									'section_name' => 'pwaforwp_quick_action_setting_section',
+									'setting_title' => esc_html__('Quick Action', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['qafp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['qafp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['qafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qafp']['p-slug'])? 1: 0),
+                                    'slug' => 'qafp',
+									'tooltip_option' => esc_html__('Quick action help users give shortcut link, common or recommended pages with in your web app', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-quick-action-for-pwa-for-wp/'
+									),
+				'navigationbar' => array(
+									'enable_field' => 'navigation_bar',
+									'section_name' => 'pwaforwp_navigation_bar_setting_section',
+									'setting_title' => esc_html__('Navigation Bar', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['nbfp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['nbfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['nbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['nbfp']['p-slug'])? 1: 0),
+                                    'slug' => 'nbfp',
+									'tooltip_option' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-navigation-bar-for-pwa-addon/'
+									),
 								);
 				
 	$featuresHtml = '';
@@ -2639,6 +2685,10 @@ function pwaforwp_update_features_options(){
 		echo json_encode(array('status'=> 502, 'message'=> 'Feature settings not have any fields.'));
 		die;
 	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+        echo json_encode(array('status'=> 501, 'message'=> 'Unauthorized access, permission not allowed'));
+		die;
+    }
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
 	if(is_array($allFields)){
@@ -2647,7 +2697,12 @@ function pwaforwp_update_features_options(){
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
-				$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				foreach (array_reverse($varArray) as $key) {
+					$newArr = [$key => $newArr];
+				}
+				$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
+				//$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}else{
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
@@ -2816,18 +2871,23 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 
 	function pwaforwp_splashscreen_uploader(){
 		if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
-            echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+            echo json_encode(array("status"=>500, "message"=> "Failed! Security check not active"));
             die;
         }
         if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           echo json_encode(array("status"=>500, "message"=> "Splash screen uploaded successfully"));
+           echo json_encode(array("status"=>500, "message"=> "Failed! Security check"));
            die;
+        }
+        if( !current_user_can('manage_options') ){
+        	echo json_encode(array("status"=>401, "message"=> "Failed! you are not autherized to save"));
+        	die;
         }
 		$pwaforwp_settings = pwaforwp_defaultSettings();
 		
 		$upload = wp_upload_dir();
 		$path = $upload['basedir']."/pwa-splash-screen/";
 		wp_mkdir_p($path);
+		  file_put_contents($path.'/index.html','');
 		  $zipfilename = $path."file.zip";
 	      $input = fopen('php://input', 'rb');
 		  $file = fopen($zipfilename, 'wb'); 
@@ -2921,4 +2981,27 @@ function pwaforwp_loading_icon_styles(){
 	@-webkit-keyframes spin {0% { -webkit-transform: rotate(0deg); }100% { -webkit-transform: rotate(360deg); }}
 	@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}
 	</style>';
+}
+
+/**
+ * pwaforwp_merge_recursive_ex merge any multidimensional Array
+ * @param Array1(array) Array2(array)
+ */
+function pwaforwp_merge_recursive_ex(array $array1, array $array2)
+{
+    $merged = $array1;
+
+    foreach ($array2 as $key => & $value) {
+        if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            $merged[$key] = pwaforwp_merge_recursive_ex($merged[$key], $value);
+        } else if (is_numeric($key)) {
+             if (!in_array($value, $merged)) {
+                $merged[] = $value;
+             }
+        } else {
+            $merged[$key] = $value;
+        }
+    }
+
+    return $merged;
 }

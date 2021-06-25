@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.7.1
-Stable tag: 1.7.32
+Tested up to: 5.7.2
+Stable tag: 1.7.33
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,17 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.33 (24 June 2021) =
+* Improvement 	 : To remove all data related with plugin, added uninstaller handle #623
+* Improvement 	 : Modified the message for review #618
+* Improvement 	 : Notices or messages related to PWA for WP should load only on settings pages #615
+* Enhancement	 : Added quick action feature for PWA #566
+* Enhancement	 : Added navigation tab bar feature for PWA web APPs #541
+* BugFixed		 : On the fly service worker file serve issue with onesignal #622 
+* Improvement 	 : Compressed the auto-generated Js/serviceworker file #556
+* Improvement 	 : Applied more check before store any outside operation #626
+* Improvement 	 : PWA admin notices will display only one notice at a time. #616
+
 = 1.7.32 (22 May 2021) =
 * BugFixed		 : Removed Warnings and notice for latest version of PHP #608
 * BugFixed		 : Removed javascript warning  

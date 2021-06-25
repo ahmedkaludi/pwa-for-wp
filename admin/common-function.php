@@ -585,7 +585,7 @@ function pwaforwp_manifest_json_url($is_amp=false){
         $fileCheck = file_exists($wppath .'pwa-amp-manifest'.$multisite_postfix.'.json');
       }
    }
-  if($fileCheck){
+  if($fileCheck && !$multisite_postfix){
     $restApiEnabled = 400;
   }else{
     $restApiEnabled = get_transient( 'pwaforwp_restapi_check' ); 

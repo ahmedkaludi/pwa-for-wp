@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.32
+Version: 1.7.33
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.32');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.33');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -50,7 +50,9 @@ if( pwaforwp_is_admin() ){
 }
 add_action('plugins_loaded', 'pwaforwp_init_plugin');
 function pwaforwp_init_plugin(){
-    
+    global $pwaforwp_globe_admin_notice;
+    $pwaforwp_globe_admin_notice = false;
+
     require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
     if ( class_exists( 'WP_Service_Workers' ) ) { 
       require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
@@ -138,26 +140,30 @@ function pwaforwp_admin_notice_activation_hook() {
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
-    
+    global $pagenow, $pwaforwp_globe_admin_notice;
+    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
+        //return false;
+    }
     $screen_id      = ''; 
     $current_screen = get_current_screen();
     
     if(is_object($current_screen)){
        $screen_id =  $current_screen->id;
     }
-    
     /* Check transient, if available display notice */
     
-    if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable'){
+    if(get_transient( 'pwaforwp_pre_cache_post_ids' ) && get_option('pwaforwp_update_pre_cache_list') == 'enable' && $pwaforwp_globe_admin_notice==false){
+        $pwaforwp_globe_admin_notice = true
          ?>
         <div class="updated notice">
-            <p><?php echo esc_html__('Update your pwa pre caching url list by clicking on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click Here To Update', 'pwa-for-wp') ?></a></p>
+            <p><?php echo esc_html__('Update your pwa pre caching url list by click on button. ','pwa-for-wp'); ?> <a href="" class="button button-primary pwaforwp-update-pre-caching-urls"> <?php echo esc_html__('Click Here To Update', 'pwa-for-wp') ?></a></p>
         </div>
         <?php
         
     }
     
-    if( get_transient( 'pwaforwp_admin_notice_transient' ) ){
+    if( get_transient( 'pwaforwp_admin_notice_transient' ) && $pwaforwp_globe_admin_notice==false){
+        $pwaforwp_globe_admin_notice = true;
         ?>
         <div class="updated notice">
             <p><?php echo esc_html__('Thank you for using','pwa-for-wp'); echo "<strong>".esc_html__(' PWA for WP plugin! ','pwa-for-wp')."</strong>"; ?> </p>
@@ -181,18 +187,32 @@ function pwaforwp_admin_notice(){
         
         $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
         $review_notice_bar_never       = get_option( "pwaforwp_review_never");
+        $datetime1 = new DateTime($review_notice_bar_status_date);
+        $datetime2 = new DateTime( $current_date );
+        $diff_intrval = round( ($datetime2->format( 'U' ) - $datetime1->format( 'U' )) / (60 * 60 * 24) );
         
-        if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never'){
-            echo '<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
-                <p><span class="dashicons dashicons-thumbs-up"></span> 
-                '.esc_html__('You have been using the PWA For WP plugin for some time now, do you like it?, If so,', 'pwa-for-wp').'						
-                <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews">				
-                '.esc_html__('please write us a review', 'pwa-for-wp').'
-                </a>
-                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-remindme">'.esc_html__('Remind Me Later', 'pwa-for-wp').'</button>
-                <button style="margin-left:10px;" class="button button-primary pwaforwp-feedback-notice-close">'.esc_html__('No Thanks', 'pwa-for-wp').'</button>'
-                .'</p> '
-                .'</div>';                       
+        if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never' && $diff_intrval >= 7 && $pwaforwp_globe_admin_notice==false){
+            $pwaforwp_globe_admin_notice = true;
+           echo sprintf('<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
+                    <p>
+                        <span class="dashicons dashicons-thumbs-up"></span>%s   
+                    </p>
+                    <p class="notice-action">                     
+                        <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews" class="button button-secondry">%s</a>
+                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-remindme">%s</a>
+                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                    </p>
+                </div>',
+                esc_html__('Excellent! You\'ve been using PWA For WP plugin for over a week. Hope you are enjoying it so far. We have spent countless hours developing this 
+
+                 plugin for you, and we would really appreciate it if you could drop us a rating on wp.org to help us spread the word and boost our motivation.,', 'pwa-for-wp'),
+                esc_html__('Write us a review', 'pwa-for-wp'),
+                esc_html__('Remind Me Later', 'pwa-for-wp'),
+                esc_html__('I already did', 'pwa-for-wp'),
+                esc_html__('No, not good enough', 'pwa-for-wp')
+
+            ); 
         } 
     
 }
