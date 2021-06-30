@@ -142,7 +142,7 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 function pwaforwp_admin_notice(){
     global $pagenow, $pwaforwp_globe_admin_notice;
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
-        //return false;
+        return false;
     }
     $screen_id      = ''; 
     $current_screen = get_current_screen();
@@ -190,8 +190,12 @@ function pwaforwp_admin_notice(){
         $datetime1 = new DateTime($review_notice_bar_status_date);
         $datetime2 = new DateTime( $current_date );
         $diff_intrval = round( ($datetime2->format( 'U' ) - $datetime1->format( 'U' )) / (60 * 60 * 24) );
-        
-        if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never' && $diff_intrval >= 7 && $pwaforwp_globe_admin_notice==false){
+
+        if(( in_array($current_date,$list_of_date) ||
+          (!empty($review_notice_bar_status_date) && $review_notice_bar_status_date != $current_date && $diff_intrval >= 7 )
+        )
+        && $review_notice_bar_never != 'never' 
+        && $pwaforwp_globe_admin_notice == false){
             $pwaforwp_globe_admin_notice = true;
            echo sprintf('<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
                     <p>
