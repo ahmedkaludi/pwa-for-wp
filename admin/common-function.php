@@ -580,9 +580,9 @@ function pwaforwp_manifest_json_url($is_amp=false){
   $wppath = ABSPATH;
   $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
   if(!is_admin() && !is_multisite()){
-      $fileCheck = file_exists($wppath .'pwa-manifest'.$multisite_postfix.'.json');
+      $fileCheck = file_exists($wppath .apply_filters('pwaforwp_manifest_file_name', "pwa-manifest".pwaforwp_multisite_postfix().".json"));
       if($is_amp){
-        $fileCheck = file_exists($wppath .'pwa-amp-manifest'.$multisite_postfix.'.json');
+        $fileCheck = file_exists($wppath .apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".pwaforwp_multisite_postfix().".json"));
       }
    }
   if($fileCheck && !$multisite_postfix){
@@ -603,9 +603,9 @@ function pwaforwp_manifest_json_url($is_amp=false){
     }
   }else{
     $url       = pwaforwp_site_url(); 
-    $link = $url.'pwa-manifest'.pwaforwp_multisite_postfix().'.json';
+    $link = $url.apply_filters('pwaforwp_manifest_file_name', "pwa-manifest".pwaforwp_multisite_postfix().".json");
     if($is_amp){
-      $link = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
+      $link = $url.apply_filters('pwaforwp_amp_manifest_file_name', "pwa-amp-manifest".pwaforwp_multisite_postfix().".json");
     }
   }
   return $link;
@@ -636,9 +636,12 @@ function service_workerUrls($url, $filename){
   $home_url       = pwaforwp_home_url();  
 
 
-  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) &&  !class_exists( 'OneSignal' ) && !class_exists( 'WPPushnami' ) ){
+  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) && !class_exists( 'WPPushnami' ) ){
 	  $filename = str_replace(".", "-", $filename);
-    $url = esc_url_raw($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename); 
+      $home_url = rtrim($home_url, "/");
+      $home_url = add_query_arg(pwaforwp_query_var('sw_query_var'), 1, $home_url);
+      $home_url = add_query_arg(pwaforwp_query_var('sw_file_var'), $filename, $home_url);
+      $url = $home_url;
   }
   if(isset($settings['serve_js_cache_menthod']) && $settings['serve_js_cache_menthod']=='true'){
     $url = esc_url_raw(admin_url( 'admin-ajax.php?action=pwaforwp_sw_files&'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename ));

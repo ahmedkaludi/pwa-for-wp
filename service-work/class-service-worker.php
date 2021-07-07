@@ -476,7 +476,7 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
 		if( $manualfileSetup ){//&& !class_exists('OneSignal')
-            $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+            $filename = apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js");
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
              
