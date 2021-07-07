@@ -102,7 +102,7 @@ class PWAFORWP_Service_Worker{
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
-                    if(file_exists(ABSPATH.$filename;)){
+                    if(file_exists(ABSPATH.$filename)){
                         require_once ABSPATH.$filename;
                     }
 
