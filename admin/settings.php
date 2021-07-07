@@ -724,6 +724,17 @@ function pwaforwp_list_addons(){
                     'p-desc' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
+         'mcfp'  => array(
+                    'p-slug' => 'multilingual-compatibility-for-pwa/multilingual-compatibility-for-pwa.php',
+                    'p-name' => 'Multilingual Compatibility for PWA',
+                    'p-short-prefix'=> 'MCFP',
+                    'p-title' => 'Multilingual Compatibility for PWA',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/Multilingual Compatibility for PWA/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/multilingual-compatibility-for-pwa.png',
+                    'p-background-color'=> '#3872a2',
+                    'p-desc' => esc_html__('Add multilingual support for PWA APP', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
      );
 	return $add_on_list;
 }
@@ -2562,6 +2573,18 @@ function pwaforwp_features_settings(){
                                     'slug' => 'nbfp',
 									'tooltip_option' => esc_html__('Top-level pages that need to be accessible from anywhere in the app', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-navigation-bar-for-pwa-addon/'
+									),
+				'multilingual' => array(
+									'enable_field' => 'multilingual',
+									'section_name' => 'pwaforwp_multilingual_setting_section',
+									'setting_title' => esc_html__('Multilingual', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['mcfp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['mcfp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['mcfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['mcfp']['p-slug'])? 1: 0),
+                                    'slug' => 'mcfp',
+									'tooltip_option' => esc_html__('Show respective language page when Multilingual avilable in PWA', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-multilingual-compatibility-for-pwa-addon/'
 									),
 								);
 				
