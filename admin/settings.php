@@ -731,7 +731,7 @@ function pwaforwp_list_addons(){
                     'p-title' => 'Multilingual Compatibility for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/Multilingual Compatibility for PWA/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/multilingual-compatibility-for-pwa.png',
-                    'p-background-color'=> '#3872a2',
+                    'p-background-color'=> '#cddae2',
                     'p-desc' => esc_html__('Add multilingual support for PWA APP', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
