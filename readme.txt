@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.7.2
-Stable tag: 1.7.33
+Tested up to: 5.8
+Stable tag: 1.7.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.34 (10 July 2021) =
+* Improvement 	 : Loader will shows in preview mode with elementor #629
+* Added 		 : Multilanual compatibility addon options #625 
+* Improvement 	 : Added the feature to show the loader functionality only for PWA #625 
+
+
 = 1.7.33 (24 June 2021) =
 * Improvement 	 : To remove all data related with plugin, added uninstaller handle #623
 * Improvement 	 : Modified the message for review #618
