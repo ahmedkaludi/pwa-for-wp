@@ -65,7 +65,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.34 (10 July 2021) =
 * Improvement 	 : Loader will shows in preview mode with elementor #629
-* Added 		 : Multilanual compatibility addon options #625 
+* Added 		 : Multilanual compatibility addon options #408 #625 #388
 * Improvement 	 : Added the feature to show the loader functionality only for PWA #625 
 
 
