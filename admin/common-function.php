@@ -139,7 +139,12 @@ function pwaforwp_frontend_enqueue(){
             
             wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
             
-            $loader_desktop = $loader_mobile = 0;
+            $loader_desktop = $loader_mobile = $loader_only_pwa = 0;
+            //For desktop
+            if( isset($settings['loading_icon_display_pwa']) && !empty($settings['loading_icon_display_pwa']) ){
+                $loader_only_pwa = $settings['loading_icon_display_pwa'];
+            }
+
             //For desktop
             if(isset($settings['loading_icon_display_desktop'])):
                 $loader_desktop = $settings['loading_icon_display_desktop'];
@@ -159,6 +164,7 @@ function pwaforwp_frontend_enqueue(){
               'pwa_home_url'   => pwaforwp_home_url(),  
               'loader_desktop' => $loader_desktop,
               'loader_mobile'  => $loader_mobile,
+              'loader_only_pwa'  => $loader_only_pwa,
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);

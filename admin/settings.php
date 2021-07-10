@@ -495,6 +495,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_loaders_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_show_pwa_option_setting',							// ID
+			esc_html__('Show only in PWA', 'pwa-for-wp'),	// Title
+			'pwaforwp_loading_display_inpwa_setting_callback',							// CB
+			'pwaforwp_loaders_setting_section',						// Page slug
+			'pwaforwp_loaders_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_loading_display_option_setting',							// ID
 			esc_html__('Loader enable on', 'pwa-for-wp'),	// Title
 			'pwaforwp_loading_display_setting_callback',							// CB
@@ -1161,6 +1168,12 @@ function pwaforwp_loading_background_color_setting_callback(){
     $settings = pwaforwp_defaultSettings(); ?>
     <input type="text" name="pwaforwp_settings[loading_icon_bg_color]" id="pwaforwp_settings[loading_icon_bg_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['loading_icon_bg_color'] ) ? esc_attr( $settings['loading_icon_bg_color']) : '#ffffff'; ?>" data-default-color="#ffffff">
 	<p><?php echo esc_html__('Change the background color of loader', 'pwa-for-wp'); ?></p><?php
+}
+function pwaforwp_loading_display_inpwa_setting_callback(){	
+	$settings = pwaforwp_defaultSettings();
+	?>
+    <label><input type="checkbox" name="pwaforwp_settings[loading_icon_display_pwa]" id="pwaforwp_settings[loading_icon_display_pwa]" class="" value="1" <?php echo isset( $settings['loading_icon_display_pwa'] ) && $settings['loading_icon_display_pwa']==1 ? 'checked' : ''; ?> ><?php echo esc_html__('Only on PWA', 'pwa-for-wp'); ?></label>
+    <?php
 }
 function pwaforwp_loading_display_setting_callback(){	
     $settings = pwaforwp_defaultSettings(); 
