@@ -102,7 +102,9 @@ class PWAFORWP_Service_Worker{
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
-                    require_once ABSPATH.$filename;
+                    if(file_exists(ABSPATH.$filename)){
+                        require_once ABSPATH.$filename;
+                    }
 
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
@@ -192,7 +194,9 @@ class PWAFORWP_Service_Worker{
                 $fileRawName = $filename = sanitize_file_name( $query->get( pwaforwp_query_var('sw_file_var') ) );
                if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
-                    require_once ABSPATH.$filename;
+                    if(file_exists(ABSPATH.$filename)){
+                        require_once ABSPATH.$filename;
+                    }
 
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
@@ -472,7 +476,7 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
 		if( $manualfileSetup ){//&& !class_exists('OneSignal')
-            $filename = 'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+            $filename = apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js");
             $url = $url.$filename;
             $url = service_workerUrls($url, $filename);
              

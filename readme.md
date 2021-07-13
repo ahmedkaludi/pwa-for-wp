@@ -44,7 +44,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
 
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/) and [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/), [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/), [Navigation Bar for PWA](https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/), [Quick Action for PWA](https://pwa-for-wp.com/extensions/quick-action-for-pwa/) and [Multilingual Compatibility for PWA](https://pwa-for-wp.com/extensions/multilingual-compatibility-for-pwa/) extensions
 
 **We Act Fast on Feedback!**
 
@@ -75,6 +75,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.34 (10 July 2021) =
+* Improvement 	 : Loader will shows in preview mode with elementor #629
+* Added 		 : Multilingual Compatibility for PWA addon #408 #625 #388
+* Improvement 	 : Added the feature to show the loader functionality only for PWA #625 
+
 = 1.7.33 (24 June 2021) =
 * Improvement 	 : To remove all data related with plugin, added uninstaller handle #623
 * Improvement 	 : Modified the message for review #618

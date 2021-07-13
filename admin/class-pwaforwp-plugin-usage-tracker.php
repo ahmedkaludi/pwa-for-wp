@@ -630,7 +630,6 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function optin_notice() {
 			global $pagenow, $pwaforwp_globe_admin_notice;
 			if($pwaforwp_globe_admin_notice!=false){ return; }
-			$pwaforwp_globe_admin_notice = true;
 		    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
 		        return false;
 		    }
@@ -687,6 +686,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					'plugin_action'	=> 'no'
 				) );
 				
+				$pwaforwp_globe_admin_notice = true;
 				// Decide on notice text
 				if( $this->marketing != 1 ) {
 					// Standard notice text
@@ -727,7 +727,6 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function marketing_notice() {
 			global $pagenow,$pwaforwp_globe_admin_notice;
 			if($pwaforwp_globe_admin_notice!=false){ return;}
-			$pwaforwp_globe_admin_notice = true;
 		    if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']!='pwaforwp'){
 		        return ;
 		    }
@@ -751,6 +750,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					'marketing_optin'	=> 'no'
 				) );
 				
+				$pwaforwp_globe_admin_notice = true;
 				$marketing_text = sprintf(
 					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' ),
 					$this->what_am_i

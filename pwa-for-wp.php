@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.33
+Version: 1.7.34
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.33');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.34');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -142,7 +142,7 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 function pwaforwp_admin_notice(){
     global $pagenow, $pwaforwp_globe_admin_notice;
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
-        //return false;
+        return false;
     }
     $screen_id      = ''; 
     $current_screen = get_current_screen();
@@ -190,8 +190,12 @@ function pwaforwp_admin_notice(){
         $datetime1 = new DateTime($review_notice_bar_status_date);
         $datetime2 = new DateTime( $current_date );
         $diff_intrval = round( ($datetime2->format( 'U' ) - $datetime1->format( 'U' )) / (60 * 60 * 24) );
-        
-        if(in_array($current_date,$list_of_date) && $review_notice_bar_status_date !=$current_date && $review_notice_bar_never !='never' && $diff_intrval >= 7 && $pwaforwp_globe_admin_notice==false){
+
+        if(( in_array($current_date,$list_of_date) ||
+          (!empty($review_notice_bar_status_date) && $review_notice_bar_status_date != $current_date && $diff_intrval >= 7 )
+        )
+        && $review_notice_bar_never != 'never' 
+        && $pwaforwp_globe_admin_notice == false){
             $pwaforwp_globe_admin_notice = true;
            echo sprintf('<div class="updated notice is-dismissible message notice notice-alt pwaforwp-feedback-notice">
                     <p>
