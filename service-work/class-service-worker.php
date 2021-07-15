@@ -17,6 +17,7 @@ class PWAFORWP_Service_Worker{
             if( ( isset($settings['avoid_loggedin_users']) && !empty($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
                 $showPWA = false;
             }
+            $showPWA = apply_filters("pwaforwp_show_pwa", $showPWA);
             if($showPWA){
                 add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
