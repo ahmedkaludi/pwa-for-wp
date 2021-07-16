@@ -535,14 +535,16 @@ class PWAFORWP_Service_Worker{
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
         
+        $linktags = '';
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-            echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
-            echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+            $linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+            $linktags .= '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
         endif; 
                 
         if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-            echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
+            $linktags .=  '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
         }
+        echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
     }
     public function pwaforwp_is_amp_activated() {    
@@ -623,16 +625,17 @@ class PWAFORWP_Service_Worker{
      */
     protected function iosSplashScreen(){
         $settings        = pwaforwp_defaultSettings();
+        $startupImages = '';
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
             $otherData = ios_splashscreen_files_data();
 
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key) && isset($otherData[$key])){
                     $screenData = $otherData[$key];
-                    echo '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
+                    $startupImages .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
                 }//if closed
             }//foreach closed
-
+            echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
         }//if closed
     }//function iosSplashScreen closed
 
