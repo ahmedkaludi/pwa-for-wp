@@ -554,6 +554,14 @@ function pwaforwp_settings_init(){
 			'pwaforwp_precaching_setting_section',						// Page slug
 			'pwaforwp_precaching_setting_section'						// Settings Section ID
 		);  
+		add_settings_section('pwaforwp_urlhandler_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_urlhandler_setting_section');
+		add_settings_field(
+			'pwaforwp_urlhandler_setting',							// ID
+			esc_html__('Enter URLs(With similar origin)', 'pwa-for-wp'),	
+			'pwaforwp_urlhandler_setting_callback',							// CB
+			'pwaforwp_urlhandler_setting_section',						// Page slug
+			'pwaforwp_urlhandler_setting_section'						// Settings Section ID
+		);  
                 
                 
                 add_settings_section('pwaforwp_push_notification_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_push_notification_section');
@@ -947,7 +955,33 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	<?php
 }
 
-
+function pwaforwp_urlhandler_setting_callback(){
+	$settings = pwaforwp_defaultSettings(); 
+	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
+	?><p><?php echo esc_html__('Note: Put one url in sigle line', 'pwa-for-wp'); ?></p>
+	<br>
+	<?php
+		if(isset($settings['urlhandler']) && !empty($settings['urlhandler'])){
+			$urls = explode("\n", $settings['urlhandler']);
+            if(is_array($urls)){
+                foreach($urls as $url){
+                	$fileData[] = array(
+	                			"manifest"=> $url,
+						        "details"=> array(
+						        	"paths"=> array("/*"),
+						        	"exclude_paths"=> array("/internal/*"),
+						        )
+                			);
+                }
+                $data = array("web_apps"=>$fileData);
+                echo "<p>".esc_html__("\"web-app-origin-association\" file for the music PWA example from above is given below.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")."</p>";
+                echo "<textarea cols='100' rows='20' readonly>".json_encode($data, JSON_PRETTY_PRINT)."</textarea>";
+            }
+                
+		}
+	?>
+	<?php
+}
 
 function pwaforwp_precaching_setting_callback(){
 	
@@ -2466,6 +2500,13 @@ function pwaforwp_features_settings(){
 									'setting_title' => 'Loader',
 									'tooltip_option'=> 'Loader for complete website',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-loading-icon-library-for-pwa/'
+									),
+				'urlhandler' => array(
+									'enable_field' => 'urlhandler_feature',
+									'section_name' => 'pwaforwp_urlhandler_setting_section',
+									'setting_title' => 'URL Handlers',
+									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers for URLs that match patterns like https://music.example.com, https://*.music.example.com, so that links from outside of the PWA',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
 									),
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',

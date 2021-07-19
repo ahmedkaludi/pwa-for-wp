@@ -662,7 +662,16 @@ class pwaforwpFileCreation{
                 $manifest['display']          = esc_html($display);
                 $manifest['orientation']      = esc_html( $orientation );
                 $manifest['start_url']        = esc_url_raw($homeUrl);
-                $manifest['scope']            = esc_url_raw($scope_url);                             
+                $manifest['scope']            = esc_url_raw($scope_url);     
+
+                if(isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
+                    $urls = explode("\n", $defaults['urlhandler']);
+                    if(is_array($urls)){
+                        foreach($urls as $url){
+                            $manifest['url_handlers'][]['origin'] = trim($url);
+                        }
+                    }
+                }                        
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
