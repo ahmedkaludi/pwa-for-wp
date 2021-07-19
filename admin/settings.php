@@ -974,7 +974,7 @@ function pwaforwp_urlhandler_setting_callback(){
                 			);
                 }
                 $data = array("web_apps"=>$fileData);
-                echo "<p>".esc_html__("\"web-app-origin-association\" file for the music PWA example from above is given below.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")."<a href='https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'>".esc_html__('Learn more', 'pwa-for-wp')."</a></p>";
+                echo "<p>".esc_html__("\"web-app-origin-association\" file for the music PWA example from above is given below.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")." <a href='https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'>".esc_html__('Learn more', 'pwa-for-wp')."</a></p>";
                 echo "<textarea cols='100' rows='20' readonly>".json_encode($data, JSON_PRETTY_PRINT)."</textarea>";
             }
                 
