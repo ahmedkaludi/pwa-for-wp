@@ -2505,7 +2505,7 @@ function pwaforwp_features_settings(){
 									'enable_field' => 'urlhandler_feature',
 									'section_name' => 'pwaforwp_urlhandler_setting_section',
 									'setting_title' => 'URL Handlers',
-									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers for URLs that match patterns like https://music.example.com, https://*.music.example.com, so that links from outside of the PWA',
+									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
 									),
 				'calltoaction'	=> array(
