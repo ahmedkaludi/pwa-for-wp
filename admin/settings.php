@@ -958,7 +958,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 function pwaforwp_urlhandler_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
 	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
-	?><p><?php echo esc_html__('Note: Put one url in sigle line', 'pwa-for-wp'); ?></p>
+	?><p><?php echo esc_html__('Note: Put one url in single line', 'pwa-for-wp'); ?></p>
 	<br>
 	<?php
 		if(isset($settings['urlhandler']) && !empty($settings['urlhandler'])){
