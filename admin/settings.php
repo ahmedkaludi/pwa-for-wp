@@ -557,7 +557,7 @@ function pwaforwp_settings_init(){
 		add_settings_section('pwaforwp_urlhandler_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_urlhandler_setting_section');
 		add_settings_field(
 			'pwaforwp_urlhandler_setting',							// ID
-			esc_html__('Enter URLs(With similar origin)', 'pwa-for-wp'),	
+			esc_html__('Enter URLs (with similar origin)', 'pwa-for-wp'),	
 			'pwaforwp_urlhandler_setting_callback',							// CB
 			'pwaforwp_urlhandler_setting_section',						// Page slug
 			'pwaforwp_urlhandler_setting_section'						// Settings Section ID

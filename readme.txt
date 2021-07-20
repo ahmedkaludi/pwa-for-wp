@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.8
-Stable tag: 1.7.34
+Stable tag: 1.7.35
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.35 (20 July 2021) =
+* Added		 	 : PWA url handler for same origin urls #621
+* Improvement 	 : apple icons html added hook #633
+* Improvement 	 : Added hook for enable pushnotification feature
+
 = 1.7.34 (10 July 2021) =
 * Improvement 	 : Loader will shows in preview mode with elementor #629
 * Added 		 : Multilingual Compatibility for PWA addon #408 #625 #388
