@@ -664,7 +664,7 @@ class pwaforwpFileCreation{
                 $manifest['start_url']        = esc_url_raw($homeUrl);
                 $manifest['scope']            = esc_url_raw($scope_url);     
 
-                if(isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
+                if(isset($defaults['urlhandler_feature']) && $defaults['urlhandler_feature']==1 && isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
                     $urls = explode("\n", $defaults['urlhandler']);
                     if(is_array($urls)){
                         foreach($urls as $url){

@@ -969,12 +969,12 @@ function pwaforwp_urlhandler_setting_callback(){
 	                			"manifest"=> $url,
 						        "details"=> array(
 						        	"paths"=> array("/*"),
-						        	"exclude_paths"=> array("/internal/*"),
+						        	"exclude_paths"=> array("/wp-admin/*"),
 						        )
                 			);
                 }
                 $data = array("web_apps"=>$fileData);
-                echo "<p>".esc_html__("\"web-app-origin-association\" file for the music PWA example from above is given below.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")." <a href='https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'>".esc_html__('Learn more', 'pwa-for-wp')."</a></p>";
+                echo "<p>".esc_html__("Create \"web-app-origin-association\" file for the apple and android.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")." <a href='https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'>".esc_html__('Learn more', 'pwa-for-wp')."</a></p>";
                 echo "<textarea cols='100' rows='20' readonly>".json_encode($data, JSON_PRETTY_PRINT)."</textarea>";
             }
                 
@@ -2501,13 +2501,6 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> 'Loader for complete website',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-loading-icon-library-for-pwa/'
 									),
-				'urlhandler' => array(
-									'enable_field' => 'urlhandler_feature',
-									'section_name' => 'pwaforwp_urlhandler_setting_section',
-									'setting_title' => 'URL Handlers',
-									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
-									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
-									),
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',
 									'section_name' => 'pwaforwp_call_to_action_setting_section',
@@ -2639,6 +2632,13 @@ function pwaforwp_features_settings(){
                                     'slug' => 'mcfp',
 									'tooltip_option' => esc_html__('Show respective language page when Multilingual avilable in PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-multilingual-compatibility-for-pwa-addon/'
+									),
+				'urlhandler' => array(
+									'enable_field' => 'urlhandler_feature',
+									'section_name' => 'pwaforwp_urlhandler_setting_section',
+									'setting_title' => 'URL Handlers',
+									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
 									),
 								);
 				
