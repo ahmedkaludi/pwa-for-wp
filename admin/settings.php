@@ -466,6 +466,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_reset_cookies_method_setting',							// ID
+			esc_html__('Reset cookies', 'pwa-for-wp'),	// Title
+			'pwaforwp_reset_cookies_method_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_disallow_data_tracking_setting',							// ID
 			esc_html__('Share Anonymous data for improving the UX', 'pwa-for-wp'),	// Title
 			'pwaforwp_disallow_data_tracking_setting_callback',							// CB
@@ -915,6 +922,15 @@ function pwaforwp_serve_cache_method_setting_callback(){
 	?>
 	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
 	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache','pwa-for-wp'); ?></p>
+	<?php
+}
+
+function pwaforwp_reset_cookies_method_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[reset_cookies]" id="pwaforwp_settings[reset_cookies]" class=""  <?php echo (isset( $settings['reset_cookies'] ) && $settings['reset_cookies']=='1'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('Check this to delete cookies','pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_disallow_data_tracking_setting_callback(){
