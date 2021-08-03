@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.8
 
-Stable tag: 1.7.35
+Stable tag: 1.7.36
 
 License: GPLv2 or later
 
@@ -75,6 +75,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.36 (3 August 2021) =
+* Added			 : Option to delete cookies from the cache #337
+* Fixed 		 : Getting "untitled" instead of the app title name in iOS #638
+
 = 1.7.35 (20 July 2021) =
 * Added		 	 : PWA url handler for same origin urls #621
 * Improvement 	 : apple icons html added hook #633
