@@ -199,7 +199,7 @@ class pushNotification{
             }
              wp_die();
       }
-      public function pwaforwp_send_push_notification($message){
+      protected function pwaforwp_send_push_notification($message){
           
             $settings   = pwaforwp_defaultSettings();                        
             $server_key = $settings['fcm_server_key'];           
