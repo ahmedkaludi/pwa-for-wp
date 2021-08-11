@@ -211,11 +211,9 @@ class pwaforwpFileCreation{
     $home_url = pwaforwp_home_url();
 
     $swFilename = apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
-    if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
-      $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$swFilename;   
-	  $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, $swFilename);
-    }else{
-      $ServiceWorkerfileName   = $url.$swFilename;
+    $ServiceWorkerfileName   = $url.$swFilename;
+    if( trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
+      $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, $swFilename);
     }
     /*Default Bar will be disabled if custom add to home banners are enabled*/
     $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);

@@ -160,7 +160,7 @@ class PWAFORWP_Service_Worker{
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
-                        case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
+                        case apply_filters('pwaforwp_sw_name_modify', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
                             $file_data = $fileCreation->pwaforwp_swjs();
                             break;

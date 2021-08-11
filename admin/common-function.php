@@ -647,7 +647,7 @@ function service_workerUrls($url, $filename){
   $home_url       = pwaforwp_home_url();  
 
 
-  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) && !class_exists( 'WPPushnami' ) ){
+  if( ( !pwaforwp_is_file_inroot() || $site_url!= $home_url) && !class_exists( 'WPPushnami' ) ){
 	  $filename = str_replace(".", "-", $filename);
       $home_url = rtrim($home_url, "/");
       $home_url = add_query_arg(pwaforwp_query_var('sw_query_var'), 1, $home_url);
