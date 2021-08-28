@@ -220,6 +220,8 @@ class PWAFORWP_Service_Worker{
                 }
                 if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
+                    header("Service-Worker-Allowed: /");
+                    header("X-Robots-Tag: none");
                 }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
