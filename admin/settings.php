@@ -751,10 +751,21 @@ function pwaforwp_list_addons(){
                     'p-name' => 'Multilingual Compatibility for PWA',
                     'p-short-prefix'=> 'MCFP',
                     'p-title' => 'Multilingual Compatibility for PWA',
-                    'p-url'	 => 'https://pwa-for-wp.com/extensions/Multilingual Compatibility for PWA/',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/multilingual-compatibility-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/multilingual-compatibility-for-pwa.png',
                     'p-background-color'=> '#cddae2',
                     'p-desc' => esc_html__('Add multilingual support for PWA APP', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'ropi'  => array(
+                    'p-slug' => 'rewards-on-pwa-install/rewards-on-pwa-install.php',
+                    'p-name' => 'Rewards on PWA install',
+                    'p-short-prefix'=> 'ROPI',
+                    'p-title' => 'Rewards on PWA install',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/rewards-on-pwa-install/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/rewards-on-pwa-install.png',
+                    'p-background-color'=> '#cddae2',
+                    'p-desc' => esc_html__('Rewards to the most loyal base of customers', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
      );
@@ -2529,6 +2540,18 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> 'CTA feature for PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
+				'rewardspwa' => array(
+									'enable_field' => 'rewardspwa_feature',
+									'section_name' => 'pwaforwp_rewardspwa_setting_section',
+									'setting_title' => 'Rewards on APP Install',
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['ropi']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['ropi']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ropi']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ropi']['p-slug'])? 1: 0),
+                                    'slug' => 'mcfp',
+									'tooltip_option' => esc_html__('Give Rewards to the customers', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
+									),
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
 									'section_name' => 'pwaforwp_data_analytics_setting_section',
@@ -2656,6 +2679,7 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
 									),
+				
 								);
 				
 	$featuresHtml = '';
