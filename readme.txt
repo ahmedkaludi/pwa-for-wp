@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.8
-Stable tag: 1.7.36
+Stable tag: 1.7.37
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.36 (3 August 2021) =
+* BugFixed		 : Service worker register issue with onesignal
+* BugFixed		 : Service worker register issue in multisite with dynamic URLs
+
+
 = 1.7.36 (3 August 2021) =
 * Added			 : Option to delete cookies from the cache #337
 * Fixed 		 : Getting "untitled" instead of the app title name in iOS #638
