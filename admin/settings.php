@@ -2871,9 +2871,9 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
-		if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
+		/*if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
 			$actualFields['precaching_feature'] = $actualFields['precaching_automatic'];
-		}
+		}*/
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
