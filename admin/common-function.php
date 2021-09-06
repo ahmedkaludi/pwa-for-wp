@@ -158,6 +158,10 @@ function pwaforwp_frontend_enqueue(){
             elseif(isset($settings['loading_icon']) && $settings['loading_icon']==1) ://Falback for old users
                 $loader_mobile = 1;
             endif;
+            $reset_cookies=0;
+            if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
+                $reset_cookies=1;
+            }
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
@@ -165,6 +169,7 @@ function pwaforwp_frontend_enqueue(){
               'loader_desktop' => $loader_desktop,
               'loader_mobile'  => $loader_mobile,
               'loader_only_pwa'  => $loader_only_pwa,
+              'reset_cookies'  => $reset_cookies,
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
@@ -642,7 +647,7 @@ function service_workerUrls($url, $filename){
   $home_url       = pwaforwp_home_url();  
 
 
-  if( ( is_multisite() || !pwaforwp_is_file_inroot() || $site_url!= $home_url) && !class_exists( 'WPPushnami' ) ){
+  if( ( !pwaforwp_is_file_inroot() || $site_url!= $home_url) && !class_exists( 'WPPushnami' ) ){
 	  $filename = str_replace(".", "-", $filename);
       $home_url = rtrim($home_url, "/");
       $home_url = add_query_arg(pwaforwp_query_var('sw_query_var'), 1, $home_url);

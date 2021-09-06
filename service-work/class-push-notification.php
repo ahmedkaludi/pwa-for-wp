@@ -4,7 +4,10 @@ class pushNotification{
             
      public function pwaforwp_push_notification_hooks(){
         $pwaSettings = pwaforwp_defaultSettings();
-        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='fcm_push'){
+        $showFirebase = true;
+        $showFirebase = apply_filters("pwaforwp_show_pwa_firebase", $showFirebase);
+        
+        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='fcm_push' && $showFirebase){
           
             add_action('transition_post_status', array($this, 'pwaforwp_send_notification_on_post_save'), 10, 3);                          
             add_filter('pwaforwp_manifest', array($this, 'pwaforwp_load_pn_manifest'), 35); 
@@ -196,7 +199,7 @@ class pushNotification{
             }
              wp_die();
       }
-      public function pwaforwp_send_push_notification($message){
+      protected function pwaforwp_send_push_notification($message){
           
             $settings   = pwaforwp_defaultSettings();                        
             $server_key = $settings['fcm_server_key'];           

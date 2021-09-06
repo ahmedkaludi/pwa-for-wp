@@ -411,7 +411,8 @@ select {
   background-color: #111;
   box-shadow: 0 0 10px 0 #999;
   color: #fff;
-  line-height: 1;
+  line-height: 1.5;
+  max-width: 410px;
   text-align: center;
   border-radius: 5px;
   padding: 10px 8px;

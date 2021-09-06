@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 5.7.2
+Tested up to: 5.8
 
-Stable tag: 1.7.33
+Stable tag: 1.7.36
 
 License: GPLv2 or later
 
@@ -75,6 +75,21 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.36 (9 September 2021) =
+* BugFixed		 : Service worker register issue with onesignal #643
+* BugFixed		 : Service worker register issue in multisite with dynamic URLs #643
+* Added			 : New Addon Rewards on PWA APP Install #475,#466,#182
+* BugFixed		 : Pre-Caching option is automatic get disabled #649
+
+= 1.7.36 (3 August 2021) =
+* Added			 : Option to delete cookies from the cache #337
+* Fixed 		 : Getting "untitled" instead of the app title name in iOS #638
+
+= 1.7.35 (20 July 2021) =
+* Added		 	 : PWA url handler for same origin urls #621
+* Improvement 	 : apple icons html added hook #633
+* Improvement 	 : Added hook for enable pushnotification feature
+
 = 1.7.34 (10 July 2021) =
 * Improvement 	 : Loader will shows in preview mode with elementor #629
 * Added 		 : Multilingual Compatibility for PWA addon #408 #625 #388

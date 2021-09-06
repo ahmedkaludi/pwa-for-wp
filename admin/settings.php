@@ -466,6 +466,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_reset_cookies_method_setting',							// ID
+			esc_html__('Reset cookies', 'pwa-for-wp'),	// Title
+			'pwaforwp_reset_cookies_method_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_disallow_data_tracking_setting',							// ID
 			esc_html__('Share Anonymous data for improving the UX', 'pwa-for-wp'),	// Title
 			'pwaforwp_disallow_data_tracking_setting_callback',							// CB
@@ -553,6 +560,14 @@ function pwaforwp_settings_init(){
 			'pwaforwp_precaching_setting_callback',							// CB
 			'pwaforwp_precaching_setting_section',						// Page slug
 			'pwaforwp_precaching_setting_section'						// Settings Section ID
+		);  
+		add_settings_section('pwaforwp_urlhandler_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_urlhandler_setting_section');
+		add_settings_field(
+			'pwaforwp_urlhandler_setting',							// ID
+			esc_html__('Enter URLs (with similar origin)', 'pwa-for-wp'),	
+			'pwaforwp_urlhandler_setting_callback',							// CB
+			'pwaforwp_urlhandler_setting_section',						// Page slug
+			'pwaforwp_urlhandler_setting_section'						// Settings Section ID
 		);  
                 
                 
@@ -736,10 +751,21 @@ function pwaforwp_list_addons(){
                     'p-name' => 'Multilingual Compatibility for PWA',
                     'p-short-prefix'=> 'MCFP',
                     'p-title' => 'Multilingual Compatibility for PWA',
-                    'p-url'	 => 'https://pwa-for-wp.com/extensions/Multilingual Compatibility for PWA/',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/multilingual-compatibility-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/multilingual-compatibility-for-pwa.png',
                     'p-background-color'=> '#cddae2',
                     'p-desc' => esc_html__('Add multilingual support for PWA APP', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'ropi'  => array(
+                    'p-slug' => 'rewards-on-pwa-install/rewards-on-pwa-install.php',
+                    'p-name' => 'Rewards on PWA install',
+                    'p-short-prefix'=> 'ROPI',
+                    'p-title' => 'Rewards on PWA install',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/rewards-on-pwa-install/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/rewards-on-pwa-install.png',
+                    'p-background-color'=> '#cddae2',
+                    'p-desc' => esc_html__('Rewards to the most loyal base of customers', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
      );
@@ -909,6 +935,15 @@ function pwaforwp_serve_cache_method_setting_callback(){
 	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache','pwa-for-wp'); ?></p>
 	<?php
 }
+
+function pwaforwp_reset_cookies_method_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); 
+	?>
+	<input type="checkbox" name="pwaforwp_settings[reset_cookies]" id="pwaforwp_settings[reset_cookies]" class=""  <?php echo (isset( $settings['reset_cookies'] ) && $settings['reset_cookies']=='1'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('Check this to delete cookies','pwa-for-wp'); ?></p>
+	<?php
+}
 function pwaforwp_disallow_data_tracking_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -947,7 +982,33 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	<?php
 }
 
-
+function pwaforwp_urlhandler_setting_callback(){
+	$settings = pwaforwp_defaultSettings(); 
+	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
+	?><p><?php echo esc_html__('Note: Put one url in single line', 'pwa-for-wp'); ?></p>
+	<br>
+	<?php
+		if(isset($settings['urlhandler']) && !empty($settings['urlhandler'])){
+			$urls = explode("\n", $settings['urlhandler']);
+            if(is_array($urls)){
+                foreach($urls as $url){
+                	$fileData[] = array(
+	                			"manifest"=> $url,
+						        "details"=> array(
+						        	"paths"=> array("/*"),
+						        	"exclude_paths"=> array("/wp-admin/*"),
+						        )
+                			);
+                }
+                $data = array("web_apps"=>$fileData);
+                echo "<p>".esc_html__("Create \"web-app-origin-association\" file for the apple and android.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n example URL https://example.com/.well-known/web-app-origin-association", "pwa-for-wp")." <a href='https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'>".esc_html__('Learn more', 'pwa-for-wp')."</a></p>";
+                echo "<textarea cols='100' rows='20' readonly>".json_encode($data, JSON_PRETTY_PRINT)."</textarea>";
+            }
+                
+		}
+	?>
+	<?php
+}
 
 function pwaforwp_precaching_setting_callback(){
 	
@@ -2479,6 +2540,18 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> 'CTA feature for PWA',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
+				'rewardspwa' => array(
+									'enable_field' => 'rewardspwa_feature',
+									'section_name' => 'pwaforwp_rewardspwa_setting_section',
+									'setting_title' => 'Rewards on APP Install',
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['ropi']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['ropi']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ropi']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ropi']['p-slug'])? 1: 0),
+                                    'slug' => 'mcfp',
+									'tooltip_option' => esc_html__('Give Rewards to the customers', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
+									),
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
 									'section_name' => 'pwaforwp_data_analytics_setting_section',
@@ -2599,6 +2672,14 @@ function pwaforwp_features_settings(){
 									'tooltip_option' => esc_html__('Show respective language page when Multilingual avilable in PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-multilingual-compatibility-for-pwa-addon/'
 									),
+				'urlhandler' => array(
+									'enable_field' => 'urlhandler_feature',
+									'section_name' => 'pwaforwp_urlhandler_setting_section',
+									'setting_title' => 'URL Handlers',
+									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
+									),
+				
 								);
 				
 	$featuresHtml = '';
@@ -2790,9 +2871,9 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
-		if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
+		/*if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
 			$actualFields['precaching_feature'] = $actualFields['precaching_automatic'];
-		}
+		}*/
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 

@@ -17,6 +17,7 @@ class PWAFORWP_Service_Worker{
             if( ( isset($settings['avoid_loggedin_users']) && !empty($settings['avoid_loggedin_users']) && $settings['avoid_loggedin_users']==1 && is_user_logged_in() ) ){
                 $showPWA = false;
             }
+            $showPWA = apply_filters("pwaforwp_show_pwa", $showPWA);
             if($showPWA){
                 add_action( 'wp', array($this, 'pwaforwp_service_worker_init'), 1);
                 if(isset($settings['custom_add_to_home_setting']) && isset($settings['normal_enable']) && $settings['normal_enable']==1){
@@ -159,7 +160,7 @@ class PWAFORWP_Service_Worker{
                         $fileRawName = str_replace("-html", ".html", $fileRawName);
                     }
                     switch ($fileRawName) {
-                        case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
+                        case apply_filters('pwaforwp_sw_name_modify', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
                             $file_data = $fileCreation->pwaforwp_swjs();
                             break;
@@ -219,6 +220,8 @@ class PWAFORWP_Service_Worker{
                 }
                 if( strrpos($filename, '-js', -3) !== false ){
                     $filename = str_replace("-js", ".js", $filename);
+                    header("Service-Worker-Allowed: /");
+                    header("X-Robots-Tag: none");
                 }if( strrpos($filename, '-html', -5) !== false ){
                     $filename = str_replace("-html", ".html", $filename);
                     @header( 'Content-Type: text/html; charset=utf-8' );
@@ -532,16 +535,19 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="'.esc_attr(@$settings['ios_status_bar']).'">
         <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content=" '.esc_attr($settings['app_blog_name']).'">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
         
+        $linktags = '';
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-            echo '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
-            echo '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+            $linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+            $linktags .= '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
         endif; 
                 
         if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-            echo '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
+            $linktags .=  '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
         }
+        echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
     }
     public function pwaforwp_is_amp_activated() {    
@@ -622,16 +628,17 @@ class PWAFORWP_Service_Worker{
      */
     protected function iosSplashScreen(){
         $settings        = pwaforwp_defaultSettings();
+        $startupImages = '';
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
             $otherData = ios_splashscreen_files_data();
 
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key) && isset($otherData[$key])){
                     $screenData = $otherData[$key];
-                    echo '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
+                    $startupImages .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
                 }//if closed
             }//foreach closed
-
+            echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
         }//if closed
     }//function iosSplashScreen closed
 

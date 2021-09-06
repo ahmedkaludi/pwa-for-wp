@@ -211,11 +211,9 @@ class pwaforwpFileCreation{
     $home_url = pwaforwp_home_url();
 
     $swFilename = apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
-    if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
-      $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$swFilename;   
-	  $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, $swFilename);
-    }else{
-      $ServiceWorkerfileName   = $url.$swFilename;
+    $ServiceWorkerfileName   = $url.$swFilename;
+    if( trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
+      $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, $swFilename);
     }
     /*Default Bar will be disabled if custom add to home banners are enabled*/
     $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
@@ -662,7 +660,16 @@ class pwaforwpFileCreation{
                 $manifest['display']          = esc_html($display);
                 $manifest['orientation']      = esc_html( $orientation );
                 $manifest['start_url']        = esc_url_raw($homeUrl);
-                $manifest['scope']            = esc_url_raw($scope_url);                             
+                $manifest['scope']            = esc_url_raw($scope_url);     
+
+                if(isset($defaults['urlhandler_feature']) && $defaults['urlhandler_feature']==1 && isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
+                    $urls = explode("\n", $defaults['urlhandler']);
+                    if(is_array($urls)){
+                        foreach($urls as $url){
+                            $manifest['url_handlers'][]['origin'] = trim($url);
+                        }
+                    }
+                }                        
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
