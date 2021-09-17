@@ -239,6 +239,8 @@ class PWAFORWP_Service_Worker{
                 }
                  $file_data = '';
                 if( file_exists($filename) ){
+                    header("Service-Worker-Allowed: /");
+                    header("X-Robots-Tag: none");
                     $file_data = file_get_contents( $filename );
                 }else{
                     $fileCreation = new pwaforwpFileCreation();
