@@ -1598,7 +1598,7 @@ function pwaforwp_splash_icon_callback(){
 		?>
 	</p>
 	<label>
-	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
+	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php echo esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
 	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
 			<label style="display: inline-block;width: 50%;"><?php echo esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
