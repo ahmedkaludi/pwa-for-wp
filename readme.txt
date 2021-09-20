@@ -65,7 +65,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 = 1.7.38 (20 September 2021) =
 * BugFixed		 : multisite not register with offline mode
-* BugFixed		 : Label show for apple checkbox #652
+* BugFixed		 : Label show for apple splash screen checkbox #652
 
 = 1.7.36 (9 September 2021) =
 * BugFixed		 : Service worker register issue with onesignal #643
