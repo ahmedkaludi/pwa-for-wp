@@ -266,6 +266,7 @@ function pwaforwp_get_default_settings_array(){
         'start_url' 		=> 0,
         'start_url_amp'		=> 0,
         'offline_page' 		=> 0,
+        'offline_page_other'=> '',
         '404_page' 		    => 0,
         'start_page' 		=> 0,
         'orientation'		=> 'portrait',
