@@ -19,7 +19,7 @@ function pwaforpw_add_menu_links() {
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
                                 
-	if(!pwaforwp_addons_is_active()){
+	if(!pwaforwp_addons_is_active() && current_user_can('manage_options')){
 	    global $submenu;
 		$permalink = 'javasctipt:void(0);';
 		$submenu['pwaforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
