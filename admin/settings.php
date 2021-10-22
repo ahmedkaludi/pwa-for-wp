@@ -306,6 +306,7 @@ function pwaforwp_admin_interface_render(){
 
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
 
+                    $license_alert = '';
                     if ( function_exists('call_to_action_for_pwa_updater')
                          || function_exists('pwaforwp_lilfp_updater')
                          || function_exists('data_analytics_for_pwa_updater')
