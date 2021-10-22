@@ -19,7 +19,7 @@ function pwaforpw_add_menu_links() {
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
                                 
-	if(!pwaforwp_addons_is_active()){
+	if(!pwaforwp_addons_is_active() && current_user_can('manage_options')){
 	    global $submenu;
 		$permalink = 'javasctipt:void(0);';
 		$submenu['pwaforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
@@ -1657,14 +1657,25 @@ function pwaforwp_offline_page_callback(){
 	<label for="pwaforwp_settings[offline_page]">
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();
-        echo wp_kses(wp_dropdown_pages( array( 
+		$selected = isset($settings['offline_page']) ? esc_attr($settings['offline_page']) : '';
+		$showother = 'style="display:none"';$selectedother = '';
+		if($selected=='other'){ $showother = ''; $selectedother= 'selected';}
+        $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => esc_attr('pwaforwp_settings[offline_page]'), 
+			'id'                => esc_attr('pwaforwp_settings_offline_page'), 
 			'echo'              => 0, 
 			'show_option_none'  => esc_attr( '&mdash; Default &mdash;' ), 
 			'option_none_value' => '0', 
-			'selected'          =>  isset($settings['offline_page']) ? esc_attr($settings['offline_page']) : '',
-		)), $allowed_html); ?>
+			'selected'          =>  $selected,
+		)), $allowed_html);
+		echo str_replace("</select>", "\t<option value='other' ".$selectedother."> ".esc_html__('Other', 'pwa-for-wp')." </option>\n</select>", $selectHtml); 
+		
+	
+	?>
+	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_html__('Other custom page (Must in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	
 	</label>
+	
 	
 	<p class="description">
 		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : esc_url(get_bloginfo( 'wpurl' )) ); ?>

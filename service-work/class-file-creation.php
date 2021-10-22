@@ -417,8 +417,12 @@ class pwaforwpFileCreation{
                 }
                                 
                 $site_url 		= user_trailingslashit(pwaforwp_https( site_url() ));  
+    if($settings['offline_page']!='other'){
 		$offline_page 		= user_trailingslashit(get_permalink( $settings['offline_page'] ) ?  pwaforwp_https(get_permalink( $settings['offline_page'] ))  :  pwaforwp_home_url());
-		$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] )) : pwaforwp_home_url());  
+    }else{
+      $offline_page 		= user_trailingslashit( $settings['offline_page_other'] ?  pwaforwp_https( $settings['offline_page_other'] ) :  pwaforwp_home_url());
+    }
+    $page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] )) : pwaforwp_home_url());  
 		
 
 		$cacheTimerHtml = 3600; $cacheTimerCss = 86400;
