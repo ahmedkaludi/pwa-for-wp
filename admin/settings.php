@@ -37,18 +37,17 @@ function pwaforwp_admin_interface_render(){
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {	
                                                                                     
-                $service_worker = new PWAFORWP_Service_Worker();
-                $service_worker->pwaforwp_store_latest_post_ids();
-                update_option('pwaforwp_update_pre_cache_list', 'disable');
-                pwaforwp_required_file_creation();                                                               
+        $service_worker = new PWAFORWP_Service_Worker();
+        $service_worker->pwaforwp_store_latest_post_ids();
+        update_option('pwaforwp_update_pre_cache_list', 'disable');
+        pwaforwp_required_file_creation();                                 
 		settings_errors();
-                
 	}
-	       $tab = pwaforwp_get_tab('dashboard', array('dashboard','general', 'features','push_notification', 'other_setting', 'precaching_setting', 'tools', 'premium_features','help'));
+	$tab = pwaforwp_get_tab('dashboard', array('dashboard','general', 'features','push_notification', 'other_setting', 'precaching_setting', 'tools', 'premium_features','help'));
                                                                         
 	?>
-		<div class="wrap pwaforwp-wrap">			
-			<?php
+	<div class="wrap pwaforwp-wrap">			
+	<?php
         if ( class_exists('PWAFORWPPROExtensionManager') ) {
             $license_info = get_option( 'pwawppro_license_info');
             if ( defined('PWAFORWPPRO_PLUGIN_DIR') && !empty($license_info) ){
@@ -57,8 +56,7 @@ function pwaforwp_admin_interface_render(){
                     require_once $pwaforwp_pro_manager;
                 }
             }
-        }
-        else {
+        }else {
             if ( !class_exists('PWAFORWPPROExtensionManager') && !defined('PWAFORWPPRO_PLUGIN_DIR')  ){
                 $settings = pwaforwp_defaultSettings(); 	
             	$add_on_list = pwaforwp_list_addons();
@@ -66,229 +64,203 @@ function pwaforwp_admin_interface_render(){
 
 				foreach($add_on_list as $key => $on){
 					if( is_plugin_active ($on['p-slug']) ){
-					$addon_prefix = $on['p-smallcaps-prefix'];
-                
-                if(isset($settings[$addon_prefix.'_addon_license_key'])){
-                  $license_key =   $settings[$addon_prefix.'_addon_license_key'];
-                }
-                
-                if(isset($settings[$addon_prefix.'_addon_license_key_status'])){
-                  $license_status =   $settings[$addon_prefix.'_addon_license_key_status'];
-                }
-                
-                if(isset($settings[$addon_prefix.'_addon_license_key_message'])){
-                  $license_status_msg =   $settings[$addon_prefix.'_addon_license_key_message'];
-                }
+					    $addon_prefix = $on['p-smallcaps-prefix'];                        
+                        if(isset($settings[$addon_prefix.'_addon_license_key'])){
+                          $license_key =   $settings[$addon_prefix.'_addon_license_key'];
+                        }
+                            
+                        if(isset($settings[$addon_prefix.'_addon_license_key_status'])){
+                          $license_status =   $settings[$addon_prefix.'_addon_license_key_status'];
+                        }
+                        
+                        if(isset($settings[$addon_prefix.'_addon_license_key_message'])){
+                          $license_status_msg =   $settings[$addon_prefix.'_addon_license_key_message'];
+                        }
 
-                if (isset($settings[$addon_prefix.'_addon_license_key_user_name'])) {                    
-                $license_user_name =   $settings[$addon_prefix.'_addon_license_key_user_name'];
-                }
+                        if (isset($settings[$addon_prefix.'_addon_license_key_user_name'])) {
+                            $license_user_name =   $settings[$addon_prefix.'_addon_license_key_user_name'];
+                        }
 
-                if (isset($settings[$addon_prefix.'_addon_license_key_download_id'])) {
-                $license_download_id =   $settings[$addon_prefix.'_addon_license_key_download_id'];
-                }
+                        if (isset($settings[$addon_prefix.'_addon_license_key_download_id'])) {
+                            $license_download_id =   $settings[$addon_prefix.'_addon_license_key_download_id'];
+                        }
 
-                if (isset($settings[$addon_prefix.'_addon_license_key_expires'])) {
-                $license_expires =   $settings[$addon_prefix.'_addon_license_key_expires'];
-                $expiredLicensedata[$addon_prefix] = $license_expires < 0 ? 1 : 0 ;
+                        if (isset($settings[$addon_prefix.'_addon_license_key_expires'])) {
+                            $license_expires =   $settings[$addon_prefix.'_addon_license_key_expires'];
+                            $expiredLicensedata[$addon_prefix] = $license_expires < 0 ? 1 : 0 ;
+                        }
+                        break;
+                    }
                 }
-            }
-        }
           
-            if ( isset( $license_user_name )  && $license_user_name!=="" && isset( $license_expires )   ){
+                if ( isset( $license_user_name )  && $license_user_name!=="" && isset( $license_expires )   ){
                     if ( !empty( $addon_prefix ) && $license_status =='active' ) {
-                $renew = "no";
-                $license_exp = "";
-                $license_k = $license_key;
-                $download_id = $license_download_id;
-                $days = $license_expires;
-                // print_r($days);die;
-                $one_of_plugin_expired = 0;
-                    if ( in_array( 1, $expiredLicensedata ) ){
-                            $one_of_plugin_expired = 1;
-                        }
-                    if ( !in_array( 0, $expiredLicensedata ) ){
-                            $one_of_plugin_expired = 0;
-                        }
-                        // print_r($one_of_plugin_expired);
-                $exp_id = '';
-                $expire_msg = '';
-                $renew_mesg = '';
-                $span_class = '';
-                $expire_msg_before = '';
-                $ZtoS_days = '';
-                $refresh_addon = '';
-                $refresh_addon_user = '';
-                $alert_icon = '';
-                $auto_refresh_data = '';
-                $user_refresh_addon = '';
-                $ext_settings_url = 'ext_url';
-            	// print_r($days);die;
-                if ( $days == 'Lifetime' ) {
-                    $expire_msg = " ".esc_html__('Valid for Lifetime', 'pwa-for-wp')." ";
-                    $expire_msg_before = '<span class="before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
-                    $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
-                    $color = 'color:green';
-                }
-                elseif( $days >= 0 && $days <= 7 ){
-                    $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                    if ($one_of_plugin_expired == 1) {
-                    $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
-                    }
-                    else{
-                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_seven">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
-                    }
-                    $color = 'color:green';
-                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
-            		
-            		    global $pwaforwp_settings;   	
-            	$get_options   = get_option('pwaforwp_settings');
-            	// print_r($get_options);die;
-            	$add_on_list = pwaforwp_list_addons();
-            	$expiredLicensedata  = array();
-
-				foreach($add_on_list as $key => $on){
-					if( is_plugin_active ($on['p-slug']) ){
-					$addon_prefix = $on['p-smallcaps-prefix'];                
-            if(isset($get_options[$addon_prefix.'_addon_license_key'])){
-                $license_key =   $get_options[$addon_prefix.'_addon_license_key'];}
-            if(isset($get_options[$addon_prefix.'_addon_license_key_status'])){
-                $license_status =  $get_options[$addon_prefix.'_addon_license_key_status'];}
-            if(isset($get_options[$addon_prefix.'_addon_license_key_message'])){
-                $license_status_msg =   $get_options[$addon_prefix.'_addon_license_key_message'];}
-            if (isset($get_options[$addon_prefix.'_addon_license_key_user_name'])){$license_user_name =   $get_options[$addon_prefix.'_addon_license_key_user_name'];}
-        if (isset($get_options[$addon_prefix.'_addon_license_key_download_id'])) {
-                $license_download_id =   $get_options[$addon_prefix.'_addon_license_key_download_id'];}
-            if (isset($get_options[$addon_prefix.'_addon_license_key_expires'])) {
-                $license_expires =   $get_options[$addon_prefix.'_addon_license_key_expires'];}
-
-                $license_name =   $addon_prefix;
-                $get_options[$addon_prefix.'_namee'] = $license_name;
-                
-            }
-        }
-
-            		$original_license = $license_key;
-            		// Check by Auto Refresh if user did renewal
-            		$trans_check = get_transient( 'pwaforwp_addon_zto7' );
-                    if ( $trans_check !== 'pwaforwp_addon_zto7_value' ){
-                	$auto_refresh_data = '<a addon-is-expired id="auto_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
-            			$auto_refresh_data.= '
-            			<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
-            		}
-            			// Check by Auto Refresh End
-                }
-
-                elseif( $days>=0 && $days<=30 ){
-                    $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                    if ($one_of_plugin_expired == 1) {
-                    $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
-                    }else{
-                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
-                }
-                    $color = 'color:green';
-                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
-                }
-                elseif($days<0){
-                    $ext_settings_url = 'ext_settings_url';
-                    $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                    if ($one_of_plugin_expired == 1) {
-                    $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span></span>';
-                    }else{
-                    $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('Your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('License has been', 'pwa-for-wp').'</span></span>';
-                    }
-                    $expire_msg = " ".esc_html__('Expired', 'pwa-for-wp')." ";
-                    $exp_class = 'expired';
-                    $exp_id = 'exp';
-                    $exp_class_2 = 'renew_license_key_';
-                    $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
-
-                    global $pwaforwp_settings;   	
-            	$get_options   = get_option('pwaforwp_settings');
-            	$add_on_list = pwaforwp_list_addons();
-            	$expiredLicensedata  = array();
-				foreach($add_on_list as $key => $on){
-					if( is_plugin_active ($on['p-slug']) ){
-					$addon_prefix = $on['p-smallcaps-prefix'];
-                
-            if(isset($get_options[$addon_prefix.'_addon_license_key'])){
-                $license_key =   $get_options[$addon_prefix.'_addon_license_key'];}
-            if(isset($get_options[$addon_prefix.'_addon_license_key_status'])){
-                $license_status =   $get_options[$addon_prefix.'_addon_license_key_status'];}
-            if(isset($get_options[$addon_prefix.'_addon_license_key_message'])){
-                  $license_status_msg =   $get_options[$addon_prefix.'_addon_license_key_message'];}
-            if (isset($get_options[$addon_prefix.'_addon_license_key_user_name'])){
-                $license_user_name =   $get_options[$addon_prefix.'_addon_license_key_user_name'];}
-        if (isset($get_options[$addon_prefix.'_addon_license_key_download_id'])) {
-                $license_download_id =   $get_options[$addon_prefix.'_addon_license_key_download_id'];}
-            if (isset($get_options[$addon_prefix.'_addon_license_key_expires'])) {
-                $license_expires =   $get_options[$addon_prefix.'_addon_license_key_expires'];}
-                                
-                $license_name =   $addon_prefix;
-                $get_options[$addon_prefix.'_namee'] = $license_name;
-                
-            }
-        }
-            		$original_license = $license_key;
-            		$trans_check = get_transient( 'pwaforwp_addons_expired' );
-                    if ( $trans_check !== 'pwaforwp_addons_expired_value' ){
-                	$refresh_addon = '<a addon-is-expired id="refresh_expired_addon-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
-                	<i addon-is-expired class="dashicons dashicons-update-alt" id="refresh_expired_addon"></i>
-                	</a>';
-            		$refresh_addon.= '
-            			<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
-            		}
-            		// Option for User to manually Check the updated Data if he has renewed after the Expiration
-
-            		$user_refresh_addon = '<a addon-is-expired id="user_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
-                    <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh"></i>
-                    </a>
-                    <input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
-
-            			$renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
-    					$color = 'color:red';
-}
-                    else{
-                        if ($one_of_plugin_expired == 1) {
-                        $expire_msg_before = '<span class="before_msg_active">'.esc_html__('One of your').' <span class=">than_30" style="color:red;">'.esc_html__('license key is').'</span></span>';    
-                        }else{
+                        $renew = "no";
+                        $license_exp = "";
+                        $license_k = $license_key;
+                        $download_id = $license_download_id;
+                        $days = $license_expires;
+                        $one_of_plugin_expired = 0;
+                        if ( in_array( 1, $expiredLicensedata ) ){
+                                $one_of_plugin_expired = 1;
+                            }
+                        if ( !in_array( 0, $expiredLicensedata ) ){
+                                $one_of_plugin_expired = 0;
+                            }
+                        $exp_id = $expire_msg = $renew_mesg = $span_class = $expire_msg_before = $ZtoS_days = $refresh_addon = $refresh_addon_user = $alert_icon = $auto_refresh_data = $user_refresh_addon = '';
+                        $ext_settings_url = 'ext_url';
+                        if ( $days == 'Lifetime' ) {
+                            $expire_msg = " ".esc_html__('Valid for Lifetime', 'pwa-for-wp')." ";
                             $expire_msg_before = '<span class="before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
-                        }
-                        if ($one_of_plugin_expired == 1) {
+                            $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
+                            $color = 'color:green';
+                        }elseif( $days >= 0 && $days <= 7 ){
                             $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                        $expire_msg = " <span class='one_of_expired'>".esc_html__('Expired')."</span> ";
-                        $renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
-                        }
-                        else{
-                            $expire_msg = " Active ";
-                        }
-                        if ($one_of_plugin_expired == 1) {
-                        $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
-                }
-                        else{
-                        $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
-                        }
-                        if ($one_of_plugin_expired == 1) {
-                         $color = 'color:red';
-                        }
-                        else{
-                        $color = 'color:green';
-                        }
-                    }
-                 
-                $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
-                <span class='pwaforwp-info'>
-                ".$alert_icon."<span class='activated-plugins'>".esc_html__('Hi', 'pwa-for-wp')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
-                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
-                <span class='".$span_class."'></span>".$renew_mesg."".$refresh_addon."".$auto_refresh_data."".$user_refresh_addon."
-            </span>
-            </div>";
-            echo $pwaforwp_addon_license_info;
-        }
-    }
+                            if ($one_of_plugin_expired == 1) {
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
+                            }else{
+                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_seven">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                            }
+                            $color = 'color:green';
+                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
+            		
+                            
+                        	$get_options   = $settings;
+                        	$expiredLicensedata  = array();
 
+				            foreach($add_on_list as $key => $on){
+					           if( is_plugin_active ($on['p-slug']) ){
+					                $addon_prefix = $on['p-smallcaps-prefix'];                
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key'])){
+                                        $license_key =   $get_options[$addon_prefix.'_addon_license_key'];}
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key_status'])){
+                                        $license_status =  $get_options[$addon_prefix.'_addon_license_key_status'];}
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key_message'])){
+                                        $license_status_msg =   $get_options[$addon_prefix.'_addon_license_key_message'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_user_name'])){
+                                        $license_user_name =   $get_options[$addon_prefix.'_addon_license_key_user_name'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_download_id'])) {
+                                        $license_download_id =   $get_options[$addon_prefix.'_addon_license_key_download_id'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_expires'])) {
+                                        $license_expires =   $get_options[$addon_prefix.'_addon_license_key_expires'];}
+
+                                        $license_name =   $addon_prefix;
+                                        $get_options[$addon_prefix.'_namee'] = $license_name;
+                
+                                }
+                            }
+
+                            $original_license = $license_key;
+                            // Check by Auto Refresh if user did renewal
+            		        $trans_check = get_transient( 'pwaforwp_addon_zto7' );
+                            if ( $trans_check !== 'pwaforwp_addon_zto7_value' ){
+                	           $auto_refresh_data = '<a addon-is-expired id="auto_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
+            			        $auto_refresh_data.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+                            }
+            			    // Check by Auto Refresh End
+                        }elseif( $days>=0 && $days<=30 ){
+                            $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
+                            if ($one_of_plugin_expired == 1) {
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
+                            }else{
+                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                            }
+                            $color = 'color:green';
+                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
+                        }elseif($days<0){
+                            $ext_settings_url = 'ext_settings_url';
+                            $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
+                            if ($one_of_plugin_expired == 1) {
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span></span>';
+                            }else{
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('Your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('License has been', 'pwa-for-wp').'</span></span>';
+                            }
+                            $expire_msg = " ".esc_html__('Expired', 'pwa-for-wp')." ";
+                            $exp_class = 'expired';
+                            $exp_id = 'exp';
+                            $exp_class_2 = 'renew_license_key_';
+                            $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
+
+                        	$get_options   = $settings;
+                        	$expiredLicensedata  = array();
+				            foreach($add_on_list as $key => $on){
+					            if( is_plugin_active ($on['p-slug']) ){
+					                $addon_prefix = $on['p-smallcaps-prefix'];
+                
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key'])){
+                                        $license_key =   $get_options[$addon_prefix.'_addon_license_key'];}
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key_status'])){
+                                        $license_status =   $get_options[$addon_prefix.'_addon_license_key_status'];}
+                                    if(isset($get_options[$addon_prefix.'_addon_license_key_message'])){
+                                          $license_status_msg =   $get_options[$addon_prefix.'_addon_license_key_message'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_user_name'])){
+                                        $license_user_name =   $get_options[$addon_prefix.'_addon_license_key_user_name'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_download_id'])) {
+                                        $license_download_id =   $get_options[$addon_prefix.'_addon_license_key_download_id'];}
+                                    if (isset($get_options[$addon_prefix.'_addon_license_key_expires'])) {
+                                        $license_expires =   $get_options[$addon_prefix.'_addon_license_key_expires'];
+                                    }
+                                                    
+                                    $license_name =   $addon_prefix;
+                                    $get_options[$addon_prefix.'_namee'] = $license_name;
+                                    
+                                }
+                            }
+            		        $original_license = $license_key;
+            		        $trans_check = get_transient( 'pwaforwp_addons_expired' );
+                            if ( $trans_check !== 'pwaforwp_addons_expired_value' ){
+                	           $refresh_addon = '<a addon-is-expired id="refresh_expired_addon-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
+                	                   <i addon-is-expired class="dashicons dashicons-update-alt" id="refresh_expired_addon"></i>
+                	            </a>';
+            		          $refresh_addon.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+            		        }
+            		        // Option for User to manually Check the updated Data if he has renewed after the Expiration
+
+            		        $user_refresh_addon = '<a addon-is-expired id="user_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
+                                    <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh"></i>
+                                </a>
+                                <input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+
+            			    $renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+    					    $color = 'color:red';
+                        }else{
+                            if ($one_of_plugin_expired == 1) {
+                                $expire_msg_before = '<span class="before_msg_active">'.esc_html__('One of your').' <span class=">than_30" style="color:red;">'.esc_html__('license key is').'</span></span>';    
+                            }else{
+                                $expire_msg_before = '<span class="before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
+                            }
+                            if ($one_of_plugin_expired == 1) {
+                                $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
+                                $expire_msg = " <span class='one_of_expired'>".esc_html__('Expired')."</span> ";
+                                $renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                            }else{
+                                $expire_msg = " Active ";
+                            }
+                            if ($one_of_plugin_expired == 1) {
+                                $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
+                            }else{
+                                $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
+                            }
+                            if ($one_of_plugin_expired == 1) {
+                                $color = 'color:red';
+                            }else{
+                                $color = 'color:green';
+                            }
+                        }
+                 
+                        $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
+                        <span class='pwaforwp-info'>
+                        ".$alert_icon."<span class='activated-plugins'>".esc_html__('Hi', 'pwa-for-wp')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
+                        <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
+                        <span class='".$span_class."'></span>".$renew_mesg."".$refresh_addon."".$auto_refresh_data."".$user_refresh_addon."
+                        </span>
+                        </div>";
+                        echo $pwaforwp_addon_license_info;
+                    }
+                }
+
+            }
         }
-    }
     
     ?>
     <h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
@@ -3118,12 +3090,14 @@ function pwaforwp_features_settings(){
 									'section_name' => 'pwaforwp_precaching_setting_section',
 									'setting_title' => 'Pre Caching',
 									'tooltip_option' => 'Pre-Cache pages and posts on page load',
+                                    'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/',
 									),
 				'addtohomebanner' => array(
 									'enable_field' => 'addtohomebanner_feature',
 									'section_name' => 'pwaforwp_addtohomescreen_setting_section',
 									'setting_title' => 'Custom Add To Home Banner',
 									'tooltip_option' => 'Add a banner website for PWA app install',
+                                    'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/how-to-add-custom-add-to-homescreen-banner/',
 									),
 				'utmtracking' => array(
 									'enable_field' => 'utmtracking_feature',
