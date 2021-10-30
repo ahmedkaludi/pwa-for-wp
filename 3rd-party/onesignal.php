@@ -68,7 +68,7 @@ function pwaforwp_onesignal_change_sw_name($name){
             
             if ( class_exists( 'OneSignal' ) ) {
             
-            $name = 'OneSignalSDKWorker'.pwaforwp_multisite_postfix().'.js.php';
+            $name = 'OneSignalSDKUpdaterWorker'.pwaforwp_multisite_postfix().'.js';
             
             }
         
@@ -80,10 +80,7 @@ add_filter( 'pwaforwp_sw_name_modify', 'pwaforwp_onesignal_change_sw_name' );
 
 function pwaforwp_add_sw_to_onesignal_sw($content = null){
     
-    $onesignal = '<?php header("Service-Worker-Allowed: /");
-    header("Content-Type: application/javascript");
-    header("X-Robots-Tag: none"); ?>
-    importScripts( \'' . pwaforwp_https( plugin_dir_url( 'onesignal-free-web-push-notifications/onesignal.php' ) ) . 'sdk_files/OneSignalSDKWorker.js.php\' );' . PHP_EOL;
+    $onesignal = "importScripts('https://cdn.onesignal.com/sdks/OneSignalSDKWorker.js');";
     $content = $onesignal . $content;
     
     return $content;
