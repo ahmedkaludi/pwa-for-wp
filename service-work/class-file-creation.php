@@ -87,7 +87,7 @@ class pwaforwpFileCreation{
         if(isset($settings['add_to_home_selector'])){
           
          if(strchr($settings['add_to_home_selector'], '#')){
-          $addtohomemanually    ='function collectionHas(a, b) { //helper function (see below)
+          $addtohomemanually    ='function collectionHas(a, b) { /*helper function (see below)*/
                                     for(var i = 0, len = a.length; i < len; i ++) {
                                       if(a[i] == b) return true;
                                     }
@@ -97,10 +97,10 @@ class pwaforwpFileCreation{
                                    function findParentBySelector(elm, selector) {
                                     var all = document.querySelectorAll(selector);
                                     var cur = elm.parentNode;
-                                    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
-                                      cur = cur.parentNode; //go up
+                                    while(cur && !collectionHas(all, cur)) { /*keep going up until you find a match*/
+                                      cur = cur.parentNode; /*go up*/
                                     }
-                                    return cur; //will return null if not found
+                                    return cur; /*will return null if not found*/
                                   }
                                   document.addEventListener("click",function(e){
                                     if(e.target && e.target.id== "'.substr($settings['add_to_home_selector'], 1).'"){
