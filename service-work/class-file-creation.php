@@ -150,7 +150,7 @@ class pwaforwpFileCreation{
               $addtohomebanner ='var lastScrollTop = 0;                                        
                               window.addEventListener("scroll", (evt) => {
                                 var st = document.documentElement.scrollTop;
-                                var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close")
+                                var closedTime = PWAforwpreadCookie("pwaforwp_prompt_close");
                                     if(closedTime){
                                       var today = new Date();
                                       var closedTime = new Date(closedTime);
