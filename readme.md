@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.8
 
-Stable tag: 1.7.39
+Stable tag: 1.7.40
 
 License: GPLv2 or later
 
@@ -75,6 +75,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.40 (31 October 2021) =
+* Added			 : Information rendered in admin option #662
+* BugFixed		 : Onesignal Compatibility reolve with update version 2.2.1 #659
+* BugFixed		 : Issue resolve related to minify Service Worker while register #663
+
 = 1.7.39 (15 October 2021) =
 * Added			 : Other option for offline page, user can set custom page url. #526
 * BugFixed		 : Hide PWA admin menu for other than admin users #655
