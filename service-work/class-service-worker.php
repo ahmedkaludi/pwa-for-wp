@@ -181,7 +181,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                $file_data = preg_replace('/\s+/', ' ', $file_data);
+                //$file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
@@ -271,7 +271,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                $file_data = preg_replace('/\s+/', ' ', $file_data);
+                //$file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
