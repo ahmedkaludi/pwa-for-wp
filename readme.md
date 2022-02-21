@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.9
 
-Stable tag: 1.7.41
+Stable tag: 1.7.42
 
 License: GPLv2 or later
 
@@ -75,6 +75,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.42 (21 February 2022) =
+* BugFixed		: Removed new line issue, while exclude urls from cache
+* BugFixed		: Loader icon will work properly
+* BugFixed		: Added Compatibility for wp verion 5.9
+
 = 1.7.41 (4 January 2022) =
 * BugFixed		 : removed duplicate meta tag #676
 * BugFixed		 : Loader show only in PWA with desktop|mobile #677
