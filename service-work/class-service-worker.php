@@ -181,7 +181,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                $file_data = preg_replace('/\s+/', ' ', $file_data);
+                //$file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
@@ -271,7 +271,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                $file_data = preg_replace('/\s+/', ' ', $file_data);
+                //$file_data = preg_replace('/\s+/', ' ', $file_data);
                 echo $file_data;
                 exit;
             }
@@ -537,7 +537,6 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="'.esc_attr(@$settings['ios_status_bar']).'">
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-title" content=" '.esc_attr($settings['app_blog_name']).'">
         <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
         
         $linktags = '';

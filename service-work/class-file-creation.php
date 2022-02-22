@@ -379,7 +379,9 @@ class pwaforwpFileCreation{
                 if(isset($settings['excluded_urls']) && !empty($settings['excluded_urls'])){     
                     
                   $exclude_from_cache     = $settings['excluded_urls']; 
+                  $exclude_from_cache     = str_replace(array("\n", "\r\n"), array(",",","), $exclude_from_cache);
                   $exclude_from_cache     = trim($exclude_from_cache, ",");
+                  $exclude_from_cache     = preg_replace('/\s+/', '', $exclude_from_cache);
                   $exclude_from_cache     = str_replace('/', '\/', $exclude_from_cache);     
                   $exclude_from_cache     = '/'.str_replace(',', '/,/', $exclude_from_cache).'/'; 
                   

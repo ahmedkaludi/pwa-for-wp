@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 5.8
+Tested up to: 5.9
 
-Stable tag: 1.7.40
+Stable tag: 1.7.42
 
 License: GPLv2 or later
 
@@ -75,9 +75,19 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.42 (21 February 2022) =
+* BugFixed		: Removed new line issue, while exclude urls from cache
+* BugFixed		: Loader icon will work properly
+* BugFixed		: Added Compatibility for wp verion 5.9
+
+= 1.7.41 (4 January 2022) =
+* BugFixed		 : removed duplicate meta tag #676
+* BugFixed		 : Loader show only in PWA with desktop|mobile #677
+* BugFixed		 : Update Firebase library #681
+
 = 1.7.40 (31 October 2021) =
 * Added			 : Information rendered in admin option #662
-* BugFixed		 : Onesignal Compatibility reolve with update version 2.2.1 #659
+* BugFixed		 : Onesignal Compatibility resolve with updated version 2.2.1 #659
 * BugFixed		 : Issue resolve related to minify Service Worker while register #663
 
 = 1.7.39 (15 October 2021) =
