@@ -36,7 +36,6 @@ function pwa_is_plugins_page() {
 
 function pwa_add_deactivation_feedback_modal() {
     
-    $screen = get_current_screen();
     if( !is_admin() && !pwa_is_plugins_page()) {
         return;
     }
@@ -103,7 +102,7 @@ add_action( 'wp_ajax_pwa_send_feedback', 'pwa_send_feedback' );
 add_action( 'admin_enqueue_scripts', 'pwa_enqueue_makebetter_email_js' );
 
 function pwa_enqueue_makebetter_email_js(){
-    $screen = get_current_screen();
+    
     if( !is_admin() && !pwa_is_plugins_page()) {
         return;
     }
