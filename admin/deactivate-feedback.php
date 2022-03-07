@@ -1,15 +1,15 @@
 <?php 
 $reasons = array(
     		1 => '<li><label><input type="radio" name="pwa_disable_reason" value="temporary"/>' . __('It is only temporary', 'pwa-for-wp') . '</label></li>',
-		2 => '<li><label><input type="radio" name="pwa_disable_reason" value="stopped showing ads"/>' . __('I stopped showing ads on my site', 'pwa-for-wp') . '</label></li>',
-		3 => '<li><label><input type="radio" name="pwa_disable_reason" value="missing feature"/>' . __('I miss a feature', 'pwa-for-wp') . '</label></li>
-		<li><input type="text" name="pwa_disable_text[]" value="" placeholder="Please describe the feature"/></li>',
-		4 => '<li><label><input type="radio" name="pwa_disable_reason" value="technical issue"/>' . __('Technical Issue', 'pwa-for-wp') . '</label></li>
-		<li><textarea name="pwa_disable_text[]" placeholder="' . __('Can we help? Please describe your problem', 'pwa-for-wp') . '"></textarea></li>',
-		5 => '<li><label><input type="radio" name="pwa_disable_reason" value="other plugin"/>' . __('I switched to another plugin', 'pwa-for-wp') .  '</label></li>
-		<li><input type="text" name="pwa_disable_text[]" value="" placeholder="Name of the plugin"/></li>',
+		2 => '<li><label><input type="radio" name="pwa_disable_reason" value="stopped"/>' . __('I stopped using PWA on my site', 'pwa-for-wp') . '</label></li>',
+		3 => '<li><label><input type="radio" name="pwa_disable_reason" value="missing"/>' . __('I miss a feature', 'pwa-for-wp') . '</label></li>
+		<li><input class="mb-box missing" type="text" name="pwa_disable_text[]" value="" placeholder="Please describe the feature"/></li>',
+		4 => '<li><label><input type="radio" name="pwa_disable_reason" value="technical"/>' . __('Technical Issue', 'pwa-for-wp') . '</label></li>
+		<li><textarea class="mb-box technical" name="pwa_disable_text[]" placeholder="' . __('How Can we help? Please describe your problem', 'pwa-for-wp') . '"></textarea></li>',
+		5 => '<li><label><input type="radio" name="pwa_disable_reason" value="another"/>' . __('I switched to another plugin', 'pwa-for-wp') .  '</label></li>
+		<li><input class="mb-box another" type="text" name="pwa_disable_text[]" value="" placeholder="Name of the plugin"/></li>',
 		6 => '<li><label><input type="radio" name="pwa_disable_reason" value="other"/>' . __('Other reason', 'pwa-for-wp') . '</label></li>
-		<li><textarea name="pwa_disable_text[]" placeholder="' . __('Please specify, if possible', 'pwa-for-wp') . '"></textarea></li>',
+		<li><textarea class="mb-box other" name="pwa_disable_text[]" placeholder="' . __('Please specify, if possible', 'pwa-for-wp') . '"></textarea></li>',
     );
 shuffle($reasons);
 ?>
