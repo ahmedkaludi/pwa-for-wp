@@ -78,7 +78,7 @@ function pwa_send_feedback() {
 
     $subject = $subject.' - PWA for WP';
 
-    if($subject == 'technical issue - PWA for WP'){
+    if($subject == 'technical - PWA for WP'){
 
           $text = trim($text);
 
