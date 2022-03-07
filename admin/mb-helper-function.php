@@ -76,7 +76,9 @@ function pwa_send_feedback() {
 
     $subject = isset( $form['pwa_disable_reason'] ) ? $form['pwa_disable_reason'] : '(no reason given)';
 
-    if($subject == 'technical issue'){
+    $subject = $subject.' - PWA for WP';
+
+    if($subject == 'technical issue - PWA for WP'){
 
           $text = trim($text);
 
