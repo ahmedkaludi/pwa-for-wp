@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.9
-Stable tag: 1.7.41
+Stable tag: 1.7.44
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,20 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.44 (23 March 2022) =
+* Fixed     : Push notification (FCM push notification) update library #689
+* Fixed     : Network first cache for Webpages on the Service Worker #692
+
+= 1.7.43 (8 March 2022) =
+* Fixed     : Need Compatibility with LiteSpeed Cache plugin #690
+* Minor changes
+* Fixed		: Added support for mail and tel attributes in href(remove loader) #691
+
+= 1.7.42 (21 February 2022) =
+* BugFixed		: Removed new line issue, while exclude urls from cache
+* BugFixed		: Loader icon will work properly
+* BugFixed		: Added Compatibility for wp verion 5.9
+
 = 1.7.41 (4 January 2022) =
 * BugFixed		 : removed duplicate meta tag #676
 * BugFixed		 : Loader show only in PWA with desktop|mobile #677
