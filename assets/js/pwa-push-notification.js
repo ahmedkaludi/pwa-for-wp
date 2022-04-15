@@ -1,4 +1,4 @@
-		    var config=null;                     
+		    var config=;                     
                      if (!firebase.apps.length) {
 		    firebase.initializeApp(config);	
 		    }                    		  		  		  
@@ -7,6 +7,7 @@
                     messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
                     if(pwaForWpisTokenSentToServer()){
+                        pwaForWpgetRegToken();
                         console.log('Token already saved');
                     }else{
                         pwaForWpgetRegToken();

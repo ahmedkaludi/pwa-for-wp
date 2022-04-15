@@ -180,7 +180,7 @@ function pwaforwp_frontend_enqueue(){
                 
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
         wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
-        }
+        }            
         
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue', 35 );
@@ -319,10 +319,14 @@ function pwaforwp_get_default_settings_array(){
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }
+
 $pwaforwp_settings = array();
 function pwaforwp_defaultSettings(){
     
 	global $pwaforwp_settings;
+
+    
+
 	if( empty($pwaforwp_settings) || (is_array($pwaforwp_settings) && count($pwaforwp_settings)==0) ){
         $defaults = pwaforwp_get_default_settings_array();
         $pwaforwp_settings = get_option( 'pwaforwp_settings', $defaults ); 

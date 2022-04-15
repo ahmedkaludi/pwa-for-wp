@@ -24,21 +24,6 @@ if(showLoader){
     if(document.getElementById('pwaforwp_loading_icon')){
       document.getElementById('pwaforwp_loading_icon').style.display = "flex";
     }
-    setInterval(function(){
-        if(document.getElementsByClassName('pwaforwp-loading-wrapper') && document.getElementsByClassName('pwaforwp-loading-wrapper').length > 0){
-          var tot = document.getElementsByClassName('pwaforwp-loading-wrapper');
-          for (var i = 0; i < tot.length; i++) {
-            tot[i].style.display = "none";
-          }
-        }
-        if(document.getElementById('pwaforwp_loading_div')){
-          document.getElementById('pwaforwp_loading_div').style.display = "none";
-        }
-        if(document.getElementById('pwaforwp_loading_icon')){
-          document.getElementById('pwaforwp_loading_icon').style.display = "none";
-        }   
-    }, 
-    3000, true);
   });
   if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
     document.getElementsByClassName('pwaforwp-loading-wrapper')[0].style.display = "none";
@@ -93,7 +78,6 @@ jQuery(document).ready(function($){
     }
   }else{
     jQuery('#pwaforwp_loading_div').hide();
-    jQuery('#pwaforwp_loading_icon').hide();   
     jQuery('.pwaforwp-loading-wrapper').hide();
   }
     

@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.42
+Version: 1.7.45
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,28 +17,30 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.42');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.45');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
-if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
-  require_once PWAFORWP_PLUGIN_DIR. '/admin/class-pwaforwp-plugin-usage-tracker.php';
-}
-if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
-  function pwaforwp_start_plugin_tracking() {
-    $settings = array('pwaforwp_settings' );
-    $wisdom = new PWAFORWP_Plugin_Usage_Tracker(
-      __FILE__,
-      'https://data.ampforwp.com/pwaforwp',
-      (array) $settings,
-      true,
-      true,
-      0
-    );
-  }
-  pwaforwp_start_plugin_tracking();
-} 
+require_once PWAFORWP_PLUGIN_DIR."/admin/mb-helper-function.php"; 
+//removed user data tracking.
+// if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
+//   require_once PWAFORWP_PLUGIN_DIR. '/admin/class-pwaforwp-plugin-usage-tracker.php';
+// }
+// if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
+//   function pwaforwp_start_plugin_tracking() {
+//     $settings = array('pwaforwp_settings' );
+//     $wisdom = new PWAFORWP_Plugin_Usage_Tracker(
+//       __FILE__,
+//       'https://data.ampforwp.com/pwaforwp',
+//       (array) $settings,
+//       true,
+//       true,
+//       0
+//     );
+//   }
+//   pwaforwp_start_plugin_tracking();
+// } 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
 require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
 require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 

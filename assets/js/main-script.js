@@ -9,6 +9,25 @@ function pwaforwpGetParamByName(name, url) {
 }
 
 jQuery(document).ready(function($){
+
+    // function get_include_pages(){
+    //     var include_type = jQuery(".visibility_options_select_include").val();
+    //     var data = {action:"pwaforwp_include_visibility_setting_callback"};
+    //     jQuery.ajax({
+    //             url: ajaxurl,
+    //             type: 'post',
+    //             data: data,
+    //             dataType: 'json',
+    //             success: function(response) {
+    //                 if (response.status == 200) {
+    //                     console.log(response);
+    //                 } else {
+    //                     alert(response.message)
+    //                 }
+
+    //             }
+    //         });
+    // }
     
     jQuery(".pwaforwp-colorpicker").wpColorPicker(); // Color picker
     jQuery(".pwaforwp-fcm-push-icon-upload").click(function(e) { // Application Icon upload
