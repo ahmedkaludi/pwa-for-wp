@@ -61,7 +61,9 @@ class PWAFORWP_Service_Worker{
                  * Remove apple-touch-icon from theme side
                  */
                 add_filter("site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove'));
-            }                                                                                                                                  
+            }
+        
+            	                                                                                                                                  
         }
 
         public static function loadalernative_script_load_method(){
@@ -298,133 +300,16 @@ class PWAFORWP_Service_Worker{
                 add_action('wp_head',array($this, 'apple_icons_support'),99);                
                 
             }else{
-                if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
-
-                        if (empty($settings['include_targeting_value'])) {
-                            $expo_include_type = array();
-                        }else{
-                            $expo_include_type = explode(',', $settings['include_targeting_type']);
-                        }
-                        if (empty($settings['include_targeting_value'])) {
-                            $expo_include_data = array();
-                        }else{
-                            $expo_include_data = explode(',', $settings['include_targeting_value']);
-                        }
-                        if (empty($settings['exclude_targeting_type'])) {
-                            $expo_exclude_type = array();
-                        }else{
-                           $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
-                        }
-                        if (empty($settings['exclude_targeting_value'])) {
-                            $expo_exclude_data = array();
-                        }else{
-                           $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
-                        }
-
-                        $current_page_type = get_post_type();
-                        $current_page_title = get_the_title();
-
-                        $is_desplay = 0; //1= show; 0=hide
-                        if(empty($expo_exclude_type) && empty($expo_include_type)){
-                            $is_desplay = 1; 
-                        }
-                        if(empty($expo_include_type)){
-                            $is_desplay = 1; 
-                        }
-
-                        /*Include code start */
-
-                        if(!empty(get_the_category()[0]->cat_name)){
-                            if(in_array(get_the_category()[0]->cat_name,$expo_include_data)){
-                                $current_page_type= 'post_category';
-                                $current_page_title =  get_the_category()[0]->cat_name;
-                            }
-                        }
-                        
-                        if(in_array('tags',$expo_include_type)){
-                            $tag = get_queried_object();
-                            if(in_array($tag->name,$expo_include_data)){
-                                $current_page_title =  $tag->name;
-                                $current_page_type = 'tags';
-                            }
-                        }
-
-                        if(in_array('taxonomy',$expo_include_type)){
-                            $tag = get_queried_object();
-                            if(in_array($tag->name,$expo_include_data)){
-                                $current_page_title =  $tag->name;
-                                $current_page_type = 'taxonomy';
-                            }
-                        }
-
-                        if( is_user_logged_in() ) {
-                            $user = wp_get_current_user();
-                            if(in_array($user->roles,$expo_include_data)){
-                                $current_page_title =  $user->roles;
-                                $current_page_type = 'user_type';
-                            }
-                        }
-
-                        if(!empty($expo_include_type) && $is_desplay==0){
-            
-                            if(in_array($current_page_type,$expo_include_type) 
-                                && in_array($current_page_title, $expo_include_data)) {
-                                $is_desplay = 1; 
-                            }else{
-                                $is_desplay = 0;
-                            }
-                        }
-                         if(in_array('globally',$expo_include_type)){
-                            $is_desplay = 1; 
-                        }
-                        /*Include code end */
-
-                        /*Exldude code start*/
-                       
-                        if(in_array('tags',$expo_exclude_type)){
-                            $tag = get_queried_object();
-                            if(in_array($tag->name,$expo_exclude_data)){
-                                $current_page_title =  $tag->name;
-                                $current_page_type = 'tags';
-                            }
-                            
-                        }
-
-                        if(in_array('taxonomy',$expo_exclude_type)){
-                            $tag = get_queried_object();
-                            if(in_array($tag->name,$expo_exclude_data)){
-                                $current_page_title =  $tag->name;
-                                $current_page_type = 'taxonomy';
-                            }
-                        }
-
-                        if( is_user_logged_in() ) {
-                            $user = wp_get_current_user();
-                            if(in_array($user->roles,$expo_exclude_data)){
-                                $current_page_title =  $user->roles;
-                                $current_page_type = 'user_type';
-                            }
-                        }
-                        if(!empty($expo_exclude_type)){
-                            if(in_array($current_page_type,$expo_exclude_type) && in_array($current_page_title, $expo_exclude_data)){
-                                $is_desplay = 0; 
-                            }
-                        }
-                         if(in_array('globally',$expo_exclude_type)){
-                            $is_desplay = 0; 
-                        }
-
-                        /*Exldude code end*/
-                        
-                        if($is_desplay==1){
-                            add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35); 
-                            add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
-                            add_action('wp_head',array($this, 'apple_icons_support'),99);  
-                        }
-                } 
+                
+               if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
+                   
+                 add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35);    
+                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
+                 add_action('wp_head',array($this, 'apple_icons_support'),99);  
+                 
+               } 
                
             }
-
         }
         public function pwaforwp_update_pre_caching_urls(){
                         

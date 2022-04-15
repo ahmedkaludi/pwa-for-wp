@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 5.9
 
-Stable tag: 1.7.44
+Stable tag: 1.7.42
 
 License: GPLv2 or later
 
@@ -75,15 +75,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
-= 1.7.44 (23 March 2022) =
-* Fixed     : Push notification (FCM push notification) #689
-* Fixed     : Network first cache for Webpages on the Service Worker #692
-
-= 1.7.43 (8 March 2022) =
-* Fixed     : Need Compatibility with LiteSpeed Cache plugin #690
-* Minor changes
-* Fixed		: Added support for mail and tel attributes in href(remove loader) #691
-
 = 1.7.42 (21 February 2022) =
 * BugFixed		: Removed new line issue, while exclude urls from cache
 * BugFixed		: Loader icon will work properly
