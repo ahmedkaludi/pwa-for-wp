@@ -3507,8 +3507,9 @@ function pwaforwp_update_features_options(){
 		}
 		$include_targeting_type_array = array();
         $include_targeting_value_array = array();
-        if(!empty($_POST['fields_data'])){
-                foreach ($_POST['fields_data'] as $key => $value) {
+        
+        if(!empty($allFields)){
+                foreach ($allFields as $key => $value) {
                     if($value['var_name']=="include_targeting_type"){
                         $include_targeting_type_array[] = $value['var_value'];
                     }
@@ -3530,13 +3531,13 @@ function pwaforwp_update_features_options(){
         }else{
             $actualFields['include_targeting_value'] = ''; 
 
-        } 
-
+        }
         
         $exclude_targeting_type_array = array();
         $exclude_targeting_value_array = array();
-        if(!empty($_POST['fields_data'])){
-                foreach ($_POST['fields_data'] as $key => $value) {
+        
+        if(!empty($allFields)){
+                foreach ($allFields as $key => $value) {
                     if($value['var_name']=="exclude_targeting_type"){
                         $exclude_targeting_type_array[] = $value['var_value'];
                     }
