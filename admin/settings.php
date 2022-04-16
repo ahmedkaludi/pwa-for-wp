@@ -732,14 +732,23 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
                                
-                add_settings_section('pwaforwp_precaching_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
+		add_settings_section('pwaforwp_visibility_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_visibility_setting_section');
 		add_settings_field(
-			'pwaforwp_precaching_setting',							// ID
+			'pwaforwp_visibility_setting',							// ID
 			'',	
-			'pwaforwp_precaching_setting_callback',							// CB
-			'pwaforwp_precaching_setting_section',						// Page slug
-			'pwaforwp_precaching_setting_section'						// Settings Section ID
+			'pwaforwp_visibility_setting_callback',							// CB
+			'pwaforwp_visibility_setting_section',						// Page slug
+			'pwaforwp_visibility_setting_section'						// Settings Section ID
 		);  
+
+        add_settings_section('pwaforwp_precaching_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
+        add_settings_field(
+            'pwaforwp_precaching_setting',                          // ID
+            '', 
+            'pwaforwp_precaching_setting_callback',                         // CB
+            'pwaforwp_precaching_setting_section',                      // Page slug
+            'pwaforwp_precaching_setting_section'                       // Settings Section ID
+        );  
 		add_settings_section('pwaforwp_urlhandler_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_urlhandler_setting_section');
 		add_settings_field(
 			'pwaforwp_urlhandler_setting',							// ID
@@ -1282,6 +1291,131 @@ function pwaforwp_precaching_setting_callback(){
 	
 	<?php
 }
+
+function pwaforwp_visibility_setting_callback(){
+    
+    $settings = pwaforwp_defaultSettings();
+
+    $arrayOPT = array(
+                    'post_type'     => 'Post Type',
+                    'globally'      => 'Globally',
+                    'post'          => 'Post',
+                    'post_category' => 'Post Category',
+                    'page'          => 'Page',
+                    'taxonomy'      => 'Taxonomy Terms',
+                    'tags'          => 'Tags',
+                    'page_template' => 'Page Template',
+                    'user_type'     => 'Logged in User Type'
+                );
+
+    
+    ?>
+        <tr>
+            <th colspan="2"><?php echo esc_html__('Which Page Would You Like To Display', 'pwa-for-wp');?></th>
+        </tr>
+
+        <tr>
+            <th><?php echo esc_html__('Included On', 'pwa-for-wp'); ?> <i class="dashicons dashicons-plus-alt"></i></th> 
+        </tr>
+        <tr>
+            <td colspan="3">
+                    
+                <div class="visibility-include-target-item-list">
+                    <?php $rand = time().rand(000,999);
+                    
+                    if(!empty( $settings['include_targeting_type']))  {
+                        $expo_include_type = explode(',', $settings['include_targeting_type']);
+                        $expo_include_data = explode(',', $settings['include_targeting_value']);
+                        for ($i=0; $i<count($expo_include_type); $i++) {
+                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="include_targeting_type" value="'.esc_attr($expo_include_type[$i],'pwa-for-wp').'">
+                                <input type="hidden" name="include_targeting_data" value="'.esc_attr($expo_include_data[$i],'pwa-for-wp').'">';
+                            $expo_include_type_test = removeExtraValue($expo_include_type[$i]);
+                            $expo_include_data_test = removeExtraValue($expo_include_data[$i]);
+                            echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_include_type_test.' - '.$expo_include_data_test,'pwa-for-wp').'</span>
+                            <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
+                            $rand++;
+                        }
+                    }?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select id="pwaforwp_settings[visibility_included_post_options]" class="regular-text visibility_options_select visibility_options_select_include" onchange="get_include_pages()">
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
+                    <?php if($arrayOPT){
+                        foreach ($arrayOPT as $key => $opval) {?>
+                            <option value="<?php echo esc_html__($key,'pwa-for-wp');?>"><?php echo esc_html__($opval,'pwa-for-wp'); ?></option>
+                        <?php }
+                    } ?>
+                </select>
+                <div class="include_error">&nbsp;</div>
+            </td>
+            <td class="visibility_options_select">
+                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text visibility_options_select visibility_include_select_type">
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>                    
+                </select>
+                <div class="include_type_error">&nbsp;</div>
+            </td>
+            <td><a class="include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+        </tr> 
+
+        <!-- Excluded -->
+        <tr>
+            <th><?php echo esc_html__('Excluded On', 'pwa-for-wp'); ?> <i class="dashicons dashicons-plus-alt"></i></th> 
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                    
+                <div class="visibility-exclude-target-item-list">
+                    <?php $rand = time().rand(000,999);
+                    if(!empty( $settings['exclude_targeting_type']))  {
+                        $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
+                        $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
+                       for ($i=0; $i < count($expo_exclude_type); $i++) {
+                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="exclude_targeting_type" value="'.esc_attr($expo_exclude_type[$i], 'pwa-for-wp').'">
+                                <input type="hidden" name="exclude_targeting_data" value="'.$expo_exclude_data[$i].'">';
+                           $expo_exclude_type_test = removeExtraValue($expo_exclude_type[$i]);
+                           $expo_exclude_data_test = removeExtraValue($expo_exclude_data[$i]);
+
+                           echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_exclude_type_test.' - '.$expo_exclude_data_test, 'pwa-for-wp').'</span>
+                            <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
+                            $rand++;
+                        }
+                    }?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select  id="pwaforwp_settings[visibility_excluded_post_options]" class="regular-text visibility_options_select visibility_options_select_exclude" onchange="get_exclude_pages()">
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
+
+                    <?php if($arrayOPT){
+                        foreach ($arrayOPT as $key => $opval) {?>
+                            <option value="<?php echo esc_html__($key,'pwa-for-wp');?>"><?php echo esc_html__($opval,'pwa-for-wp'); ?></option> 
+                            
+                        <?php }
+                    } ?>
+                                     
+                </select>
+                 <div class="exclude_error">&nbsp;</div>
+            </td>
+
+            <td class="visibility_options_select">
+                <select  class="regular-text visibility_options_select visibility_exclude_select_type">
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
+                    
+                    
+                </select>
+                 <div class="exclude_type_error">&nbsp;</div>
+            </td>
+            <td><a class="exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+        </tr>   
+    <?php
+}
+
 function pwaforwp_utm_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -3057,6 +3191,20 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> 'Loader for complete website',
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-loading-icon-library-for-pwa/'
 									),
+				'urlhandler' => array(
+										'enable_field' => 'urlhandler_feature',
+										'section_name' => 'pwaforwp_urlhandler_setting_section',
+										'setting_title' => 'URL Handlers',
+										'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
+										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
+										),
+				'visibility' => array(
+										'enable_field' => 'visibility_feature',
+										'section_name' => 'pwaforwp_visibility_setting_section',
+										'setting_title' => 'Visibility',
+										'tooltip_option' => 'App Visibility on pages, posts, post-types',
+										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-visibility-in-pwa/',
+										),
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',
 									'section_name' => 'pwaforwp_call_to_action_setting_section',
@@ -3200,15 +3348,7 @@ function pwaforwp_features_settings(){
                                     'slug' => 'mcfp',
 									'tooltip_option' => esc_html__('Show respective language page when Multilingual avilable in PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-multilingual-compatibility-for-pwa-addon/'
-									),
-				'urlhandler' => array(
-									'enable_field' => 'urlhandler_feature',
-									'section_name' => 'pwaforwp_urlhandler_setting_section',
-									'setting_title' => 'URL Handlers',
-									'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
-									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
-									),
-				
+									),				
 								);
 				
 	$featuresHtml = '';
@@ -3292,6 +3432,9 @@ function pwaforwp_features_settings(){
 		<div class="pwawp-modal-mask pwaforwp-hide">
     <div class="pwawp-modal-wrapper">
         <div class="pwawp-modal-container">
+			<div class="visibility-loader">
+				<div class="visibility-loader-box"></div>
+			</div>
             <button type="button" class="pwawp-media-modal-close"><span class="pwawp-media-modal-icon"></span></button>
             <div class="pwawp-modal-content">
                 
@@ -3362,6 +3505,60 @@ function pwaforwp_update_features_options(){
 				$actualFields['precaching_automatic_post'] = 0;
 			}
 		}
+		$include_targeting_type_array = array();
+        $include_targeting_value_array = array();
+        
+        if(!empty($allFields)){
+                foreach ($allFields as $key => $value) {
+                    if($value['var_name']=="include_targeting_type"){
+                        $include_targeting_type_array[] = $value['var_value'];
+                    }
+                    if($value['var_name']=="include_targeting_data"){
+                            $include_targeting_value_array[] = $value['var_value'];
+                    }
+                }
+        }
+        if(!empty($include_targeting_type_array)){
+            $include_targeting_type = implode(',',$include_targeting_type_array);
+            $actualFields['include_targeting_type'] = $include_targeting_type; 
+        }else{
+            $actualFields['include_targeting_type'] = ''; 
+
+        }  
+        if(!empty($include_targeting_value_array)){
+            $include_targeting_value = implode(',',$include_targeting_value_array);
+            $actualFields['include_targeting_value'] = $include_targeting_value; 
+        }else{
+            $actualFields['include_targeting_value'] = ''; 
+
+        }
+        
+        $exclude_targeting_type_array = array();
+        $exclude_targeting_value_array = array();
+        
+        if(!empty($allFields)){
+                foreach ($allFields as $key => $value) {
+                    if($value['var_name']=="exclude_targeting_type"){
+                        $exclude_targeting_type_array[] = $value['var_value'];
+                    }
+                    if($value['var_name']=="exclude_targeting_data"){
+                            $exclude_targeting_value_array[] = $value['var_value'];
+                    }
+                }
+        }
+        if(!empty($exclude_targeting_type_array)){
+            $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
+            $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
+        }else{
+            $actualFields['exclude_targeting_type'] = ''; 
+
+        }  
+        if(!empty($exclude_targeting_value_array)){
+            $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
+            $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
+        }else{
+            $actualFields['exclude_targeting_value'] = ''; 
+        }
 
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
@@ -3425,6 +3622,163 @@ function pwaforwp_active_update_transient($plugin){
 add_action( 'deactivated_plugin', 'pwaforwp_deactivate_update_transient' );
 function pwaforwp_deactivate_update_transient($plugin){
 	delete_transient( 'pwaforwp_restapi_check' ); 
+}
+
+add_action("wp_ajax_pwaforwp_include_visibility_setting_callback", 'pwaforwp_include_visibility_setting_callback');
+function pwaforwp_include_visibility_setting_callback(){
+   
+     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    } 
+    
+    $include_type = sanitize_text_field($_POST['include_type']);
+
+    if($include_type == 'post' || $include_type == 'page'){
+        $args = array(
+            'post_type' => $include_type,
+            'post_status' => 'publish',
+         );  
+        //print_r($include_type);exit;
+        $query = new WP_Query($args);
+        // print_r($query);
+        $option ='<option value="">Select '.$include_type.' Type</option>';
+        while ($query->have_posts()) : $query->the_post();
+                    
+            $option .= '<option value="'.get_the_title().'">'.get_the_title().'</option>';
+             endwhile; 
+    }
+    if(in_array($include_type, array('post_type','globally'))) {
+        if($include_type == 'post_type'){
+            $get_option = array('post', 'page', 'product');
+            $option ='<option value="">Select Post Type</option>';
+        }
+        if($include_type == 'globally'){ 
+            $get_option = array('Globally');
+            $option ='<option value="">Select Global Type</option>';
+        }        
+        foreach ($get_option as $options_array) {
+            $option .= '<option value="'.$options_array.'">'.$options_array.'</option>';
+        }
+    }
+
+     if($include_type == 'post_category'){
+        $get_option = get_categories(array(
+          'hide_empty' => true,
+        ));
+        $option ='<option value="">Select Post Category</option>';
+        foreach ($get_option as $options_array) {
+            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+        }
+       
+    }
+    if($include_type == 'taxonomy'){ 
+        $get_option = get_terms( array(
+          'hide_empty' => true,
+        ) );
+        $option ='<option value="">Select Taxonomy</option>';
+        foreach ($get_option as $options_array) {
+            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+        }
+    }
+
+    if($include_type == 'tags'){ 
+        $get_option = get_tags(array(
+          'hide_empty' => false
+        ));
+        $option ='<option value="">Select Tag</option>';
+        foreach ($get_option as $options_array) {
+            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+        }
+
+    }
+
+    if($include_type == 'user_type'){ 
+        $get_options = array("administrator"=>"Administrator", "editor"=>"Editor", "author"=>"Author", "contributor"=>"Contributor","subscriber"=>"Subscriber");
+        $get_option = $get_options;
+        $option ='<option value="">Select User</option>';
+        foreach ($get_option as $key => $value) {
+            $option .= '<option value="'.$key.'">'.$value.'</option>';
+        }
+
+    }
+
+    if($include_type == 'page_template'){ 
+        $get_option = wp_get_theme()->get_page_templates();
+        $option ='<option value="">Select Page Template</option>';
+        foreach ($get_option as $key => $value) {
+            $option .= '<option value="'.$value.'">'.$value.'</option>';
+        }
+    }
+
+    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    echo json_encode($data);    exit;
+
+}
+
+add_action("wp_ajax_pwaforwp_include_visibility_condition_callback", 'pwaforwp_include_visibility_condition_callback');
+
+function pwaforwp_include_visibility_condition_callback() {
+
+    if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    }
+    
+    $include_targeting_type = sanitize_text_field($_POST['include_targeting_type']);
+    $include_targeting_data = sanitize_text_field($_POST['include_targeting_data']);
+
+    $rand = time().rand(000,999);
+    $option .= '<span class="pwaforwp-visibility-target-icon-'.$rand.'">
+    <input type="hidden" name="include_targeting_type" value="'.$include_targeting_type.'">
+    <input type="hidden" name="include_targeting_data" value="'.$include_targeting_data.'">';
+    $include_targeting_type = removeExtraValue($include_targeting_type);
+    $include_targeting_data = removeExtraValue($include_targeting_data);
+    $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$include_targeting_type.' - '.$include_targeting_data.'</span>
+        <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
+
+    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    echo json_encode($data);    exit;
+}
+
+add_action("wp_ajax_pwaforwp_exclude_visibility_condition_callback", 'pwaforwp_exclude_visibility_condition_callback');
+
+function pwaforwp_exclude_visibility_condition_callback() {
+
+    if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    } 
+    
+    $exclude_targeting_type = sanitize_text_field($_POST['exclude_targeting_type']);
+    $exclude_targeting_data = sanitize_text_field($_POST['exclude_targeting_data']);
+
+    $rand = time().rand(000,999);
+    $option .= '<span class="pwaforwp-visibility-target-icon-'.$rand.'">
+    <input type="hidden" name="exclude_targeting_type" value="'.$exclude_targeting_type.'">
+    <input type="hidden" name="exclude_targeting_data" value="'.$exclude_targeting_data.'">';
+
+    $exclude_targeting_type = removeExtraValue($exclude_targeting_type);
+    $exclude_targeting_data = removeExtraValue($exclude_targeting_data);
+    $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$exclude_targeting_type.' - '.$exclude_targeting_data.'</span>
+        <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
+
+    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    echo json_encode($data);    exit;
+}
+
+function removeExtraValue($val)
+{
+    $val = str_replace("_", " ", $val);
+    $val = str_replace(".php", "", $val);
+    $val = ucwords($val);
+    return $val;
 }
 
 /**
