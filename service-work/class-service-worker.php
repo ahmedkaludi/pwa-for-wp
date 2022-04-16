@@ -360,6 +360,16 @@ class PWAFORWP_Service_Worker{
                         }
                     }
 
+                    if(in_array('page_template',$expo_include_type)){
+                        $page_template = wp_get_theme()->get_page_templates();
+                        foreach ($page_template as $key => $value) {
+                            if(in_array($value,$expo_include_data)){
+                                $current_page_title =  $value;
+                                $current_page_type = 'page_template';
+                            }
+                        }
+                    }
+
                     if( is_user_logged_in() ) {
                         $user = wp_get_current_user();
                         if(in_array($user->roles,$expo_include_data)){
@@ -389,8 +399,7 @@ class PWAFORWP_Service_Worker{
                         if(in_array($tag->name,$expo_exclude_data)){
                             $current_page_title =  $tag->name;
                             $current_page_type = 'tags';
-                        }
-                        
+                        }  
                     }
 
                     if(in_array('taxonomy',$expo_exclude_type)){
@@ -398,6 +407,16 @@ class PWAFORWP_Service_Worker{
                         if(in_array($tag->name,$expo_exclude_data)){
                             $current_page_title =  $tag->name;
                             $current_page_type = 'taxonomy';
+                        }
+                    }
+
+                    if(in_array('page_template',$expo_exclude_type)){
+                        $page_template = wp_get_theme()->get_page_templates();
+                        foreach ($page_template as $key => $value) {
+                            if(in_array($value,$expo_exclude_data)){
+                                $current_page_title =  $value;
+                                $current_page_type = 'page_template';
+                            }
                         }
                     }
 

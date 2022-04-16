@@ -1322,17 +1322,16 @@ function pwaforwp_visibility_setting_callback(){
                     
                 <div class="visibility-include-target-item-list">
                     <?php $rand = time().rand(000,999);
-                    /*echo "<pre>";
-                    print_r($settings);*/
+                    
                     if(!empty( $settings['include_targeting_type']))  {
                         $expo_include_type = explode(',', $settings['include_targeting_type']);
                         $expo_include_data = explode(',', $settings['include_targeting_value']);
                         for ($i=0; $i<count($expo_include_type); $i++) {
-                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="include_targeting_type" value="'.$expo_include_type[$i].'">
-                                <input type="hidden" name="include_targeting_data" value="'.$expo_include_data[$i].'">';
+                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="include_targeting_type" value="'.esc_attr($expo_include_type[$i],'pwa-for-wp').'">
+                                <input type="hidden" name="include_targeting_data" value="'.esc_attr($expo_include_data[$i],'pwa-for-wp').'">';
                             $expo_include_type_test = removeExtraValue($expo_include_type[$i]);
                             $expo_include_data_test = removeExtraValue($expo_include_data[$i]);
-                            echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$expo_include_type_test.' - '.$expo_include_data_test.'</span>
+                            echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_include_type_test.' - '.$expo_include_data_test,'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
                             $rand++;
                         }
@@ -1343,7 +1342,7 @@ function pwaforwp_visibility_setting_callback(){
         <tr>
             <td>
                 <select id="pwaforwp_settings[visibility_included_post_options]" class="regular-text visibility_options_select visibility_options_select_include" onchange="get_include_pages()">
-                    <option value="">Select Visibility Type</option>
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     <?php if($arrayOPT){
                         foreach ($arrayOPT as $key => $opval) {?>
                             <option value="<?php echo esc_html__($key,'pwa-for-wp');?>"><?php echo esc_html__($opval,'pwa-for-wp'); ?></option>
@@ -1354,7 +1353,7 @@ function pwaforwp_visibility_setting_callback(){
             </td>
             <td class="visibility_options_select">
                 <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text visibility_options_select visibility_include_select_type">
-                    <option value="">Select Visibility Type</option>                    
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>                    
                 </select>
                 <div class="include_type_error">&nbsp;</div>
             </td>
@@ -1375,12 +1374,12 @@ function pwaforwp_visibility_setting_callback(){
                         $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
                         $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
                        for ($i=0; $i < count($expo_exclude_type); $i++) {
-                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="exclude_targeting_type" value="'.$expo_exclude_type[$i].'">
+                           echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="exclude_targeting_type" value="'.esc_attr($expo_exclude_type[$i], 'pwa-for-wp').'">
                                 <input type="hidden" name="exclude_targeting_data" value="'.$expo_exclude_data[$i].'">';
                            $expo_exclude_type_test = removeExtraValue($expo_exclude_type[$i]);
                            $expo_exclude_data_test = removeExtraValue($expo_exclude_data[$i]);
 
-                           echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$expo_exclude_type_test.' - '.$expo_exclude_data_test.'</span>
+                           echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_exclude_type_test.' - '.$expo_exclude_data_test, 'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
                             $rand++;
                         }
@@ -1391,7 +1390,7 @@ function pwaforwp_visibility_setting_callback(){
         <tr>
             <td>
                 <select  id="pwaforwp_settings[visibility_excluded_post_options]" class="regular-text visibility_options_select visibility_options_select_exclude" onchange="get_exclude_pages()">
-                    <option value="">Select Visibility Type</option>
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
 
                     <?php if($arrayOPT){
                         foreach ($arrayOPT as $key => $opval) {?>
@@ -1406,7 +1405,7 @@ function pwaforwp_visibility_setting_callback(){
 
             <td class="visibility_options_select">
                 <select  class="regular-text visibility_options_select visibility_exclude_select_type">
-                    <option value="">Select Visibility Type</option>
+                    <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     
                     
                 </select>
@@ -3627,7 +3626,14 @@ function pwaforwp_deactivate_update_transient($plugin){
 add_action("wp_ajax_pwaforwp_include_visibility_setting_callback", 'pwaforwp_include_visibility_setting_callback');
 function pwaforwp_include_visibility_setting_callback(){
    
-    $include_type = $_POST['include_type'];
+     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    } 
+    
+    $include_type = sanitize_text_field($_POST['include_type']);
 
     if($include_type == 'post' || $include_type == 'page'){
         $args = array(
@@ -3704,10 +3710,8 @@ function pwaforwp_include_visibility_setting_callback(){
         foreach ($get_option as $key => $value) {
             $option .= '<option value="'.$value.'">'.$value.'</option>';
         }
-
     }
 
-    
     $data = array('success' => 1,'message'=>'Success','option'=>$option );
     echo json_encode($data);    exit;
 
@@ -3716,8 +3720,17 @@ function pwaforwp_include_visibility_setting_callback(){
 add_action("wp_ajax_pwaforwp_include_visibility_condition_callback", 'pwaforwp_include_visibility_condition_callback');
 
 function pwaforwp_include_visibility_condition_callback() {
-    $include_targeting_type = $_POST['include_targeting_type'];
-    $include_targeting_data = $_POST['include_targeting_data'];
+
+    if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    }
+    
+    $include_targeting_type = sanitize_text_field($_POST['include_targeting_type']);
+    $include_targeting_data = sanitize_text_field($_POST['include_targeting_data']);
+
     $rand = time().rand(000,999);
     $option .= '<span class="pwaforwp-visibility-target-icon-'.$rand.'">
     <input type="hidden" name="include_targeting_type" value="'.$include_targeting_type.'">
@@ -3734,8 +3747,17 @@ function pwaforwp_include_visibility_condition_callback() {
 add_action("wp_ajax_pwaforwp_exclude_visibility_condition_callback", 'pwaforwp_exclude_visibility_condition_callback');
 
 function pwaforwp_exclude_visibility_condition_callback() {
-    $exclude_targeting_type = $_POST['exclude_targeting_type'];
-    $exclude_targeting_data = $_POST['exclude_targeting_data'];
+
+    if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+        return; 
+    }
+    if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+       return;  
+    } 
+    
+    $exclude_targeting_type = sanitize_text_field($_POST['exclude_targeting_type']);
+    $exclude_targeting_data = sanitize_text_field($_POST['exclude_targeting_data']);
+
     $rand = time().rand(000,999);
     $option .= '<span class="pwaforwp-visibility-target-icon-'.$rand.'">
     <input type="hidden" name="exclude_targeting_type" value="'.$exclude_targeting_type.'">
