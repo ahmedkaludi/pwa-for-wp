@@ -340,7 +340,12 @@ class pwaforwpFileCreation{
                     }
                   }
                 }
-                
+
+                if(isset($settings['screenshots'])){ 
+                  $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";  
+                  $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";  
+                }
+
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                     
                  $explod_urls = explode(',', $settings['precaching_urls']);
@@ -653,6 +658,12 @@ class pwaforwpFileCreation{
                     'type'  => 'image/png', 
                     'purpose'=> 'maskable',
                 );
+                $screenshots[] = array( 
+                    'src'   => esc_url(pwaforwp_https($defaults['screenshots'])),   
+                    'sizes' => '512x512',   
+                    'type'  => 'image/png',     
+                    'purpose'=> 'maskable', 
+                );
 
                                                              
                 $manifest = array();
@@ -661,6 +672,7 @@ class pwaforwpFileCreation{
                 $manifest['short_name']       = ($defaults['app_blog_short_name']);
                 $manifest['description']      = ($defaults['description']);
                 $manifest['icons']            = $icons;
+                $manifest['screenshots']      = $screenshots;   
                 $manifest['background_color'] = esc_attr($defaults['background_color']);
                 $manifest['theme_color']      = esc_attr($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);

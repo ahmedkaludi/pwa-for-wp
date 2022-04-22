@@ -1297,6 +1297,9 @@ cursor: pointer;
     top: 2px;
     position: relative;
 }
+.menu_page_pro_alert{	
+	top: 0;	
+}
 .visibility-wrap-tb .form-table {
     width: auto;
 }

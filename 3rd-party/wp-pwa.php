@@ -150,7 +150,13 @@ class PWAforWP_wppwa{
               $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
               $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
             }
-                
+             
+            //screenshots cache
+            if(isset($settings['screenshots'])){
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";
+            }
+
             if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                 
              	$explod_urls = explode(',', $settings['precaching_urls']);
@@ -444,11 +450,22 @@ class PWAforWP_wppwa{
             'sizes'	=> '512x512', 
             'type'	=> 'image/png', 
         );
-                                                     
+        
+        $screenshots = array();
+        //App screenshots
+        $screenshots[] = array(
+            'src' 	=> esc_url(pwaforwp_https($defaults['screenshots'])),
+            'sizes'	=> '1000x520', 
+            'type'	=> 'image/png', 
+            "platform": "wide",
+    		"label": "Homescreen of PWA App"
+        );
+
         $manifest['name']             = esc_attr($defaults['app_blog_name']);
         $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
         $manifest['description']      = esc_attr($defaults['description']);
         $manifest['icons']            = $icons;
+        $manifest['screenshots']      = $screenshots;
         $manifest['background_color'] = esc_attr($defaults['background_color']);
         $manifest['theme_color']      = esc_attr($defaults['theme_color']);
         $manifest['display']          = esc_html($display);

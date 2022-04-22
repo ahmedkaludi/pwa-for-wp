@@ -656,6 +656,9 @@ class PWAFORWP_Service_Worker{
                 echo '<link rel="prefetch" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             }
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
+                echo '<link rel="apple-touch-screenshots-precomposed" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
+            endif;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif;
@@ -686,6 +689,14 @@ class PWAFORWP_Service_Worker{
         }
         echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
+
+        $screenshots_linktags = '';
+        if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
+            $screenshots_linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['screenshots'])) .'">'.PHP_EOL;
+            $screenshots_linktags .= '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['screenshots'])) . '">'.PHP_EOL;
+        endif;  
+        echo apply_filters('pwaforwp_apple_touch_icons',$screenshots_linktags);
+        $this->screenshotScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		
@@ -775,6 +786,17 @@ class PWAFORWP_Service_Worker{
                     $startupImages .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.$value.'"/>'."\n";
                 }//if closed
             }//foreach closed
+
+              echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
+        }//if closed
+    }//function iosSplashScreen closed
+    protected function screenshotScreen(){
+        $settings        = pwaforwp_defaultSettings();
+        $startupImages = '';
+        if(isset($settings['screenshots']) && $settings['screenshots']){
+                    $screenData = $settings['screenshots'];
+                    $startupImages .= '<link rel="apple-touch-startup-image" href="'.$screenData.'"/>'."\n";
+                    
             echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
         }//if closed
     }//function iosSplashScreen closed

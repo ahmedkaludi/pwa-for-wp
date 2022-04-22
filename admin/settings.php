@@ -2,10 +2,26 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 require_once PWAFORWP_PLUGIN_DIR.'/admin/pwa-utility.php';
-function pwaforpw_add_menu_links() {	
+function pwaforpw_add_menu_links() {
+
+    $license_alert_icon = '';
+    if ( function_exists('call_to_action_for_pwa_updater')
+         || function_exists('pwaforwp_lilfp_updater')
+         || function_exists('data_analytics_for_pwa_updater')
+          || function_exists('pwa_to_apk_plugin_for_pwa_updater')
+          || function_exists('pull_to_refresh_for_pwa_updater')
+           || function_exists('scroll_progress_bar_for_pwa_updater')
+           || function_exists('offline_forms_pwa_for_pwa_updater')
+           || function_exists('buddypress_pwaforwp_for_pwa_updater')
+           || function_exists('qafp_plugin_for_pwa_updater')
+           || function_exists('nbfp_plugin_for_pwa_updater')
+           || function_exists('mcfp_plugin_for_pwa_updater') ) {
+        $license_alert_icon = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warning pro_alert' ></span>": ''  ;
+    }
+
 	// Main menu page
 	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
-                esc_html__( 'PWA', 'pwa-for-wp' ), 
+                esc_html__( 'PWA', 'pwa-for-wp' ).$license_alert_icon, 
                 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
@@ -456,6 +472,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		);
+
+        // Screenshot Icon
+        add_settings_field(
+            'pwaforwp_app_screenshots',                                       // ID
+            esc_html__('Screenshots', 'pwa-for-wp'),   // Title
+            'pwaforwp_app_screenshots_callback',                                   // Callback function
+            'pwaforwp_general_section',                     // Page slug
+            'pwaforwp_general_section'                      // Settings Section ID
+        );
 
 		// Offline Page
 		add_settings_field(
@@ -1978,6 +2003,27 @@ function pwaforwp_splash_icon_callback(){
 	</div>
 
 	<?php
+}
+
+function pwaforwp_app_screenshots_callback(){
+    // Get Settings
+    $settings = pwaforwp_defaultSettings(); ?>
+    
+    <!-- Application Icon -->
+        <input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]" class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
+    <button type="button" class="button pwaforwp-screenshots-upload" data-editor="content">
+        <span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+    </button>
+    
+    <p class="description">
+        <?php echo sprintf('%s <strong>%s</strong><br/> %s',
+            esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
+            esc_html__('512x512 in size.'),
+            esc_html__('- For Apple mobile exact sizes is necessary')
+                );
+        ?>
+    </p>
+    <?php
 }
 
 function pwaforwp_offline_page_callback(){

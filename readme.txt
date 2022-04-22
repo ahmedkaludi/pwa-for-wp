@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 5.9
-Stable tag: 1.7.45
+Stable tag: 1.7.46
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.46 (21 April 2022) =
+* BugFixed		: Fixed loader issue in IOS, desktop, mobile, admin, and only PWA #703, #700
+* BugFixed		: Improvement when license is expired #696
+* BugFixed		: Added option to add screenshots in manifest #694
+
 = 1.7.45 (15 April 2022) =
 * Added		: Added Visibility Feature
 * Added		: Added Include and exclude condition in visibility feature

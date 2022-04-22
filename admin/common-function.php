@@ -139,7 +139,7 @@ function pwaforwp_frontend_enqueue(){
             
             wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
             
-            $loader_desktop = $loader_mobile = $loader_only_pwa = 0;
+            $loader_desktop = $loader_mobile = $loader_admin = $loader_only_pwa = 0;
             //For desktop
             if( isset($settings['loading_icon_display_pwa']) && !empty($settings['loading_icon_display_pwa']) ){
                 $loader_only_pwa = $settings['loading_icon_display_pwa'];
@@ -158,6 +158,14 @@ function pwaforwp_frontend_enqueue(){
             elseif(isset($settings['loading_icon']) && $settings['loading_icon']==1) ://Falback for old users
                 $loader_mobile = 1;
             endif;
+
+            //For Admin
+            if(isset($settings['loading_icon_display_admin'])):
+                $loader_admin = $settings['loading_icon_display_admin'];
+            elseif(isset($settings['loading_icon']) && $settings['loading_icon']==1) ://Falback for old users
+                $loader_admin = 1;
+            endif;
+
             $reset_cookies=0;
             if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
                 $reset_cookies=1;
@@ -168,6 +176,8 @@ function pwaforwp_frontend_enqueue(){
               'pwa_home_url'   => pwaforwp_home_url(),  
               'loader_desktop' => $loader_desktop,
               'loader_mobile'  => $loader_mobile,
+              'loader_admin'  => $loader_admin,
+              'user_admin'  => is_user_logged_in(),
               'loader_only_pwa'  => $loader_only_pwa,
               'reset_cookies'  => $reset_cookies,
             );
@@ -256,6 +266,7 @@ function pwaforwp_get_default_settings_array(){
                                 '1668x2388'=>'',
                                 '2048x2732'=>'',
                                 ),
+        'screenshots'            => PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
         'custom_banner_background_color'=>'#D5E0EB',
         'custom_banner_title_color'=>'#000',
         'custom_banner_btn_color'=>'#006dda',
