@@ -72,13 +72,14 @@ and open the template in the editor.
 /* Center the loader */
 
 #pwaforwp_loading_div {
-position: fixed;
-width: 100%;
-height: 200%;
-top: 0px;
-left: 0px;
-background-color: white;
-z-index: 9999;
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 200%;
+  top: 0px;
+  left: 0px;
+  background-color: white;
+  z-index: 9999;
 }
 .pwaforwp-loading-wrapper{z-index: 9999999;display:none;}
 #pwaforwp_loading_icon {

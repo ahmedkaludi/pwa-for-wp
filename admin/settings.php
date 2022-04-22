@@ -476,7 +476,7 @@ function pwaforwp_settings_init(){
         // Screenshot Icon
         add_settings_field(
             'pwaforwp_app_screenshots',                                       // ID
-            esc_html__('Screenshots', 'pwa-for-wp'),   // Title
+            esc_html__('APP Screenshots', 'pwa-for-wp'),   // Title
             'pwaforwp_app_screenshots_callback',                                   // Callback function
             'pwaforwp_general_section',                     // Page slug
             'pwaforwp_general_section'                      // Settings Section ID
@@ -2019,7 +2019,7 @@ function pwaforwp_app_screenshots_callback(){
         <?php echo sprintf('%s <strong>%s</strong><br/> %s',
             esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
             esc_html__('512x512 in size.'),
-            esc_html__('- For Apple mobile exact sizes is necessary')
+            esc_html__('- For all mobiles exact sizes is necessary')
                 );
         ?>
     </p>
