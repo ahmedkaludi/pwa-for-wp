@@ -5,18 +5,26 @@ require_once PWAFORWP_PLUGIN_DIR.'/admin/pwa-utility.php';
 function pwaforpw_add_menu_links() {
 
     $license_alert_icon = '';
-    if ( function_exists('call_to_action_for_pwa_updater')
-         || function_exists('pwaforwp_lilfp_updater')
-         || function_exists('data_analytics_for_pwa_updater')
-          || function_exists('pwa_to_apk_plugin_for_pwa_updater')
-          || function_exists('pull_to_refresh_for_pwa_updater')
-           || function_exists('scroll_progress_bar_for_pwa_updater')
-           || function_exists('offline_forms_pwa_for_pwa_updater')
-           || function_exists('buddypress_pwaforwp_for_pwa_updater')
-           || function_exists('qafp_plugin_for_pwa_updater')
-           || function_exists('nbfp_plugin_for_pwa_updater')
-           || function_exists('mcfp_plugin_for_pwa_updater') ) {
-        $license_alert_icon = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warning pro_alert' ></span>": ''  ;
+    $days = '';
+        $get_license_info = get_option( 'pwawppro_license_info');
+        if($get_license_info){
+            $pwawp_pro_expires = date('Y-m-d', strtotime($get_license_info->expires));
+            $license_info_lifetime = $get_license_info->expires;
+                    $today = date('Y-m-d');
+        $exp_date = $pwawp_pro_expires;
+        $date1 = date_create($today);
+        $date2 = date_create($exp_date);
+        $diff = date_diff($date1,$date2);
+        $days = $diff->format("%a");
+        $show_exp_lic = 0;
+        if( $license_info_lifetime == 'lifetime' ){
+            $show_exp_lic = 1;
+        }
+
+        else if($exp_date > $today){
+            $show_exp_lic = 1;
+        }
+    $license_alert_icon = $show_exp_lic==0 ? "<span class='pwaforwp_pro_icon dashicons dashicons-warning pwaforwp_pro_alert'></span>": "" ;
     }
 
 	// Main menu page
