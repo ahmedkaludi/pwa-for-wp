@@ -457,8 +457,8 @@ class PWAforWP_wppwa{
             'src' 	=> esc_url(pwaforwp_https($defaults['screenshots'])),
             'sizes'	=> '512x512', 
             'type'	=> 'image/png', 
-            "platform": "wide",
-    		"label": "Homescreen of PWA App"
+            "platform"=> "wide",
+    		"label"=> "Homescreen of PWA App"
         );
 
         $manifest['name']             = esc_attr($defaults['app_blog_name']);
