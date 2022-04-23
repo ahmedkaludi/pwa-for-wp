@@ -65,9 +65,9 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 == Changelog ==
 
 = 1.7.46 (21 April 2022) =
-* BugFixed		: Fixed loader issue in IOS, desktop, mobile, admin, and only PWA #703, #700
-* BugFixed		: Improvement when license is expired #696
-* BugFixed		: Added option to add screenshots in manifest #694
+* Bug Fixed		: Fixed loader issue in IOS, desktop, mobile, admin, and only PWA #703, #700
+* Bug Fixed		: Improvement when license is expired #696
+* Bug Fixed		: Added option to add screenshots in manifest #694
 
 = 1.7.45 (15 April 2022) =
 * Added		: Added Visibility Feature
