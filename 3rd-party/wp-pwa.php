@@ -455,7 +455,7 @@ class PWAforWP_wppwa{
         //App screenshots
         $screenshots[] = array(
             'src' 	=> esc_url(pwaforwp_https($defaults['screenshots'])),
-            'sizes'	=> '1000x520', 
+            'sizes'	=> '512x512', 
             'type'	=> 'image/png', 
             "platform": "wide",
     		"label": "Homescreen of PWA App"

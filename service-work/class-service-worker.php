@@ -795,7 +795,7 @@ class PWAFORWP_Service_Worker{
         $startupImages = '';
         if(isset($settings['screenshots']) && $settings['screenshots']){
                     $screenData = $settings['screenshots'];
-                    $startupImages .= '<link rel="apple-touch-startup-image" href="'.$screenData.'"/>'."\n";
+                    $startupImages .= '<link rel="apple-touch-startup-image" href="'.esc_url($screenData).'"/>'."\n";
                     
             echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
         }//if closed
