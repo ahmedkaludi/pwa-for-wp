@@ -1340,7 +1340,6 @@ function pwaforwp_visibility_setting_callback(){
                     'page_template' => 'Page Template',
                     'user_type'     => 'Logged in User Type'
                 );
-
     
     ?>
         <tr>
@@ -3256,7 +3255,7 @@ function pwaforwp_features_settings(){
 										'enable_field' => 'visibility_feature',
 										'section_name' => 'pwaforwp_visibility_setting_section',
 										'setting_title' => 'Visibility',
-										'tooltip_option' => 'App Visibility on pages, posts, post-types',
+										'tooltip_option' => 'PWA visibility allows apps to control the visibility of the APP on specific pages, posts, and post-types',
 										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-visibility-in-pwa/',
 										),
 				'calltoaction'	=> array(
