@@ -38,7 +38,7 @@ if(showLoader){
           document.getElementById('pwaforwp_loading_icon').style.display = "none";
         }   
     }, 
-    3000, true);
+    1000, true);
   });
   if(document.getElementsByClassName('pwaforwp-loading-wrapper') && typeof document.getElementsByClassName('pwaforwp-loading-wrapper')[0]!=='undefined'){
     document.getElementsByClassName('pwaforwp-loading-wrapper')[0].style.display = "none";

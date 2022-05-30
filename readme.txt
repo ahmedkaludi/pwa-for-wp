@@ -1,7 +1,7 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 5.9
+Tested up to: 6.0
 Stable tag: 1.7.47
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -64,10 +64,12 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.47 (13 May 2022) =
-* Bug Fixed: Getting blank page when trying to access the BuddyBoss plugin using " Buddypress for PWAforWP " extension #704
+= 1.7.47 (30 May 2022) =
+* Bug Fixed: Getting blank page when trying to access the BuddyBoss plugin using "Buddypress for PWAforWP" extension #704
 * Bug Fixed: Video not playing with PWA #707
 * Improvement: Need to improve the visibility section tool tip #705
+* Improvement: Need to change the To:- email in the Help tab. #718
+* Improvement: Resolved jquery file issue
 
 = 1.7.46 (23 April 2022) =
 * Bug Fixed		: Fixed loader issue in IOS, desktop, mobile, admin, and only PWA #703, #700

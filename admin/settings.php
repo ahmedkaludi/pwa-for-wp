@@ -1976,7 +1976,7 @@ function pwaforwp_splash_icon_callback(){
 		reset($currentpic);
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
-			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="50" height="50">';
+			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="60" height="40">';
 		}
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
 				<div class="ios-splash-screen-creator" style="display:inline-block; width:90%">
@@ -2652,7 +2652,7 @@ function pwaforwp_send_query_message(){
             $user_data  = $user->data;        
             $user_email = $user_data->user_email;       
             //php mailer variables
-            $to = 'team@magazine3.com';
+            $to = 'team@magazine3.in';
             $subject = "PWA Customer Query";
             $headers = 'From: '. esc_attr($user_email) . "\r\n" .
             'Reply-To: ' . esc_attr($user_email) . "\r\n";
