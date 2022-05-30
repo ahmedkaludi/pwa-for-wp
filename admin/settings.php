@@ -1973,7 +1973,6 @@ function pwaforwp_splash_icon_callback(){
 
 		<?php
 		$currentpic = $splashIcons = ios_splashscreen_files_data();
-		reset($currentpic);
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
 			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="60" height="40">';
