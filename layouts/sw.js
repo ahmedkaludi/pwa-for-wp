@@ -576,6 +576,7 @@ self.addEventListener('online', event => {
         console.log('offline');
     }
 });
+
 function isReachable(url) {
   /**
    * Note: fetch() still "succeeds" for 404s on subdirectories,
@@ -613,57 +614,51 @@ self.addEventListener(
                        
         {{EXTERNAL_LINKS}}
 
-
-        if (event.request.headers.get('range')) {
-            fetchRengeData(event);
-        } else {
-            if(event.request.method !== 'GET' ){
-                event.respondWith(
-                    fetch(event.request)
-                        .catch(error => {
-                            {{fallbackPostRequest}}
-                        })
-                );
-                return false;
-            }
-            const destination = event.request.destination;
-            switch (destination) {
-                case 'style':
-                case 'script':
-                  cachingStrategyType = CACHE_STRATEGY.css_js;
-                  break;
-                case 'document':
-                  cachingStrategyType = CACHE_STRATEGY.default
-                  break;
-                case 'image': 
-                    cachingStrategyType = CACHE_STRATEGY.images;
-                  break;
-                case 'font': 
-                    cachingStrategyType = CACHE_STRATEGY.fonts;
-                break;
-                // All `XMLHttpRequest` or `fetch()` calls where
-                // `Request.destination` is the empty string default value
-                default: 
-                  cachingStrategyType = CACHE_STRATEGY.default
-            }
-            var cache = null;
-            switch(cachingStrategyType){
-                case "networkFirst":
-                   cache = cachingStrategy.NeworkFirstStrategy(event)
-                break;
-                case "networkOnly":
-                   cache = cachingStrategy.networkOnlyStrategy(event)
-                break;
-                //break;
-                case "cacheFirst":
-                case "staleWhileRevalidate": 
-                default:
-                   cache = cachingStrategy.cacheFirstStrategy(event)
-                break;
-            }
-            event.respondWith(cache);
-        
+        if(event.request.method !== 'GET' ){
+            event.respondWith(
+                fetch(event.request)
+                    .catch(error => {
+                        {{fallbackPostRequest}}
+                    })
+            );
+            return false;
         }
+        const destination = event.request.destination;
+        switch (destination) {
+            case 'style':
+            case 'script':
+              cachingStrategyType = CACHE_STRATEGY.css_js;
+              break;
+            case 'document':
+              cachingStrategyType = CACHE_STRATEGY.default
+              break;
+            case 'image': 
+                cachingStrategyType = CACHE_STRATEGY.images;
+              break;
+            case 'font': 
+                cachingStrategyType = CACHE_STRATEGY.fonts;
+            break;
+            // All `XMLHttpRequest` or `fetch()` calls where
+            // `Request.destination` is the empty string default value
+            default: 
+              cachingStrategyType = CACHE_STRATEGY.default
+        }
+        var cache = null;
+        switch(cachingStrategyType){
+            case "networkFirst":
+               cache = cachingStrategy.NeworkFirstStrategy(event)
+            break;
+            case "networkOnly":
+               cache = cachingStrategy.networkOnlyStrategy(event)
+            break;
+            //break;
+            case "cacheFirst":
+            case "staleWhileRevalidate": 
+            default:
+               cache = cachingStrategy.cacheFirstStrategy(event)
+            break;
+        }
+        event.respondWith(cache);
 
     }
 );
