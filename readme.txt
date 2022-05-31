@@ -64,7 +64,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.47 (30 May 2022) =
+= 1.7.47 (31 May 2022) =
 * Bug Fixed: Getting blank page when trying to access the BuddyBoss plugin using "Buddypress for PWAforWP" extension #704
 * Bug Fixed: Video not playing with PWA #707
 * Bug Fixed: IOS Splash Screen Method is not working. #717
