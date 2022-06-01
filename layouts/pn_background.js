@@ -39,4 +39,4 @@
                                       clients.openWindow(notification.data.url);
                                       notification.close();
                                     }
-                                  });  
+                                  });

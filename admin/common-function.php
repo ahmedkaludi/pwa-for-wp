@@ -52,8 +52,6 @@ function pwaforwp_reset_all_settings(){
 
 add_action('wp_ajax_pwaforwp_reset_all_settings', 'pwaforwp_reset_all_settings');
 
-
-
 function pwaforwp_load_plugin_textdomain() {
     load_plugin_textdomain( 'pwa-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
@@ -190,6 +188,10 @@ function pwaforwp_frontend_enqueue(){
                 
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
         wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
+
+        wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), PWAFORWP_PLUGIN_VERSION, false); 
+        wp_enqueue_script('pwaforwp-video-js');
+
         }
         
 }

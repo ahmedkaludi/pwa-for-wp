@@ -188,6 +188,7 @@ class PWAFORWP_Service_Worker{
         }
 
         function pwaforwp_load_service_worker( WP_Query $query ){
+
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
@@ -489,8 +490,8 @@ class PWAFORWP_Service_Worker{
                     $postslist = get_posts( $post_args );
                     if($postslist){
                         foreach ($postslist as $post){
-                         $post_ids[] = $post->ID;
-                       }
+                            $post_ids[] = $post->ID;
+                        }
                     }
                 }
                 
@@ -591,7 +592,6 @@ class PWAFORWP_Service_Worker{
                 }else{
                     $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 }
-
             
                 ?>
                         <amp-install-serviceworker data-scope="<?php echo trailingslashit(pwaforwp_home_url()); ?>" 
@@ -834,4 +834,5 @@ if (class_exists('PWAFORWP_Service_Worker')) {
     if( wp_doing_ajax() ){
         PWAFORWP_Service_Worker::loadalernative_script_load_method();
     }
+    
 };

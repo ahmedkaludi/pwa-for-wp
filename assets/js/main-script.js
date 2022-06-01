@@ -9,7 +9,6 @@ function pwaforwpGetParamByName(name, url) {
 }
 
 jQuery(document).ready(function($){
-    
     jQuery(".pwaforwp-colorpicker").wpColorPicker(); // Color picker
     jQuery(".pwaforwp-fcm-push-icon-upload").click(function(e) { // Application Icon upload
         e.preventDefault();
@@ -143,7 +142,7 @@ jQuery(document).ready(function($){
         e.preventDefault();   
         var message = jQuery("#pwaforwp_query_message").val();           
         var customer = jQuery("#pwaforwp_query_customer").val();    
-        if($.trim(message) !='' && customer){       
+        if(jQuery.trim(message) !='' && customer){       
                     jQuery.ajax({
                         type: "POST",    
                         url: ajaxurl,                    
@@ -170,7 +169,7 @@ jQuery(document).ready(function($){
             if(customer ==''){
                 alert('Select Customer type');
             }
-            if($.trim(message) == ''){
+            if(jQuery.trim(message) == ''){
                 alert('Please enter the message');
             }
                 
@@ -382,13 +381,13 @@ jQuery(document).ready(function($){
                               }
                               else if(response['status'] =='expired'){
                                
-                               $(".addon-inactive_" + add_on + "").text('Expired');
-                                    $(".addon-inactive_" + add_on + "").css("color","red");
+                               jQuery(".addon-inactive_" + add_on + "").text('Expired');
+                                    jQuery(".addon-inactive_" + add_on + "").css("color","red");
                               }else{
                                 var invalid_lic = response.message;
                                 if ( invalid_lic == 'Invalid license.') {
-                                    $(".addon-inactive_" + add_on + "").text('Invalid');
-                                    $(".addon-inactive_" + add_on + "").css("color","red");
+                                    jQuery(".addon-inactive_" + add_on + "").text('Invalid');
+                                    jQuery(".addon-inactive_" + add_on + "").css("color","red");
                                 }
                                jQuery(".saswp-"+add_on+"-dashicons").addClass('dashicons-no-alt');
                                jQuery(".saswp-"+add_on+"-dashicons").removeClass('dashicons-yes');
@@ -494,7 +493,7 @@ function PWAforwpreadCookie(name) {
 }
         jQuery(document).on("click",".user_refresh_single_addon", function(e){
 
-                var currentThis = $(this);
+                var currentThis = jQuery(this);
                 e.preventDefault();
                 var license_status = 'active';
                 var add_on         = currentThis.attr('add-on');
@@ -534,7 +533,7 @@ function PWAforwpreadCookie(name) {
                 }
                 else{  
                 setTimeout( function() {
-                    $(".dashicons").removeClass( 'spin' );}, 0 );   
+                    jQuery(".dashicons").removeClass( 'spin' );}, 0 );   
                 previous_check = Math.abs(previous_check.getDate()+1)+'/'+Math.abs(previous_check.getMonth()+1) +'/'+previous_check.getFullYear()+' '+previous_check.getHours()+':'+previous_check.getMinutes()+':'+previous_check.getSeconds();
                 alert('Please try after '+ previous_check);
     }
@@ -545,7 +544,7 @@ function PWAforwpreadCookie(name) {
 
         // Start Auto Check when expired 
         setTimeout(function() {
-            $("#refresh_expired_addon-").trigger('click'); 
+            jQuery("#refresh_expired_addon-").trigger('click'); 
         }, 1000)
 
 
@@ -618,7 +617,7 @@ function PWAforwpreadCookie(name) {
 
         // Start Auto-check if user had done renewal between 0-7 days
         setTimeout(function() {
-            $("#auto_refresh-").trigger('click'); 
+            jQuery("#auto_refresh-").trigger('click'); 
         }, 1000)
 
         jQuery(document).on("click","#auto_refresh-", function(e){
@@ -816,7 +815,7 @@ function PWAforwpreadCookie(name) {
         console.log(wp.updates);
 
 
-        $.ajax({
+        jQuery.ajax({
             url: ajaxurl,
             type: 'post',
             data: 'action=pwafowp_enable_modules_upgread' + activate + '&verify_nonce=' + nonce,
@@ -854,7 +853,7 @@ function PWAforwpreadCookie(name) {
         var self = jQuery(this);
         if(self.prop("checked")==true){
             var nonce = self.attr('data-secure'); var data_file = self.attr('data-file');
-            $.ajax({
+            jQuery.ajax({
                 url: ajaxurl,type: 'post',data: 'action=pwafowp_enable_modules_active&target_file=' + data_file + '&verify_nonce=' + nonce,
                 dataType: 'json',
                 success: function (response) {

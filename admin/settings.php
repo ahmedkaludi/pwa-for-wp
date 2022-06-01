@@ -1340,7 +1340,6 @@ function pwaforwp_visibility_setting_callback(){
                     'page_template' => 'Page Template',
                     'user_type'     => 'Logged in User Type'
                 );
-
     
     ?>
         <tr>
@@ -1974,10 +1973,9 @@ function pwaforwp_splash_icon_callback(){
 
 		<?php
 		$currentpic = $splashIcons = ios_splashscreen_files_data();
-		reset($currentpic);
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
-			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'" width="50" height="50">';
+           			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.rand(00,99).'" width="60" height="40">';
 		}
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
 				<div class="ios-splash-screen-creator" style="display:inline-block; width:90%">
@@ -2653,7 +2651,7 @@ function pwaforwp_send_query_message(){
             $user_data  = $user->data;        
             $user_email = $user_data->user_email;       
             //php mailer variables
-            $to = 'team@magazine3.com';
+            $to = 'team@magazine3.in';
             $subject = "PWA Customer Query";
             $headers = 'From: '. esc_attr($user_email) . "\r\n" .
             'Reply-To: ' . esc_attr($user_email) . "\r\n";
@@ -3256,7 +3254,7 @@ function pwaforwp_features_settings(){
 										'enable_field' => 'visibility_feature',
 										'section_name' => 'pwaforwp_visibility_setting_section',
 										'setting_title' => 'Visibility',
-										'tooltip_option' => 'App Visibility on pages, posts, post-types',
+										'tooltip_option' => 'PWA visibility allows apps to control the visibility of the APP on specific pages, posts, and post-types',
 										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-visibility-in-pwa/',
 										),
 				'calltoaction'	=> array(

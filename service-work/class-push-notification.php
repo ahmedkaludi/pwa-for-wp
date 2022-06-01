@@ -131,8 +131,7 @@ class pushNotification{
      }
      
      public function pwaforwp_load_pn_manifest($manifest){	
-            $settings     = pwaforwp_defaultSettings();      
-            
+            $settings     = pwaforwp_defaultSettings();
             $server_key = $config = '';
             
             if(isset($settings['fcm_server_key'])){
@@ -146,6 +145,7 @@ class pushNotification{
                 $manifest['gcm_sender_id'] = '103953800507';
             }
           return $manifest;
+
      }  
      public function pwaforwp_load_pn_script_add(){  
          
