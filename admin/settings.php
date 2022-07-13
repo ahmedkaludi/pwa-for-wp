@@ -572,6 +572,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_tools_section'						// Settings Section ID
 		);
 
+        add_settings_field(
+            'pwaforwp_cleandataonuninstall_setting',                           // ID
+            esc_html__('Remove Data on Uninstall?', 'pwa-for-wp'),  // Title
+            'pwaforwp_cleandataonuninstall_setting_callback',                          // CB
+            'pwaforwp_tools_section',                       // Page slug
+            'pwaforwp_tools_section'                        // Settings Section ID
+        );
+
+
 		//Misc tabs
 		add_settings_section('pwaforwp_other_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
 		add_settings_field(
@@ -1570,6 +1579,16 @@ function pwaforwp_reset_setting_callback(){
         </button>
         
 	<?php
+}
+
+function pwaforwp_cleandataonuninstall_setting_callback(){  
+    // Get Settings
+    $settings = pwaforwp_defaultSettings(); 
+    ?>            
+        <input type="checkbox" name="pwaforwp_settings[pwa_uninstall_data]" id="pwaforwp_settings_navigation_uninstall_setting" class="" <?php echo (isset( $settings['pwa_uninstall_data'] ) &&  $settings['pwa_uninstall_data'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+        <p><?php echo esc_html__('Check this box if you would like to completely remove all of its data when the plugin is deleted.', 'pwa-for-wp'); ?></p>
+        
+    <?php
 }
 
 function pwaforwp_loading_setting_callback(){	
@@ -3692,6 +3711,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $args = array(
             'post_type' => $include_type,
             'post_status' => 'publish',
+            'posts_per_page' => -1,
          );  
         //print_r($include_type);exit;
         $query = new WP_Query($args);

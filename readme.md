@@ -78,6 +78,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 = 1.7.48 (13 July 2022) =
 * Bug Fixed: Buddypress downloading feature is not working with IOS PWA but it is works with safari. #713
+* Bug Fixed: Need to add a option for the proper uninstallation of the plugin. #723
 
 = 1.7.47 (02 June 2022) =
 * Bug Fixed: Getting blank page when trying to access the BuddyBoss plugin using "Buddypress for PWAforWP" extension #704
