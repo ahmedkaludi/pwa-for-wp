@@ -1,6 +1,7 @@
 /**
 * For loaders
 */
+// alert("Hi");
 var showLoader = false;
 if(pwaforwp_is_mobile() && pwaforwp_js_obj.loader_mobile=="1"){
   showLoader = true;
@@ -9,7 +10,7 @@ if(pwaforwp_is_mobile() && pwaforwp_js_obj.loader_mobile=="1"){
 }
 if(pwaforwp_js_obj.loader_only_pwa=="1"){
   showLoader = false;
-  if ( window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: minimal-ui)').matches || window.matchMedia('(display-mode: browser)').matches ) {
+  if ( window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: minimal-ui)').matches) {
     showLoader  = true;
   }
 }

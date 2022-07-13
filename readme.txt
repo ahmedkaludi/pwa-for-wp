@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.0
-Stable tag: 1.7.47
+Stable tag: 1.7.48
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -64,7 +64,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.47 (31 May 2022) =
+= 1.7.48 (13 July 2022) =
+* Bug Fixed: Buddypress downloading feature is not working with IOS PWA but it is works with safari. #713
+
+= 1.7.47 (02 June 2022) =
 * Bug Fixed: Getting blank page when trying to access the BuddyBoss plugin using "Buddypress for PWAforWP" extension #704
 * Bug Fixed: Video not playing with PWA #707
 * Bug Fixed: IOS Splash Screen Method is not working. #717
