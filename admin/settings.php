@@ -1551,14 +1551,18 @@ function pwaforwp_prefetch_manifest_setting_callback(){
 function pwaforwp_force_update_sw_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
-	?>
-        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php if(isset($settings['force_update_sw_setting'])){ 
-        	if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
-				$settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
-			}
-        	echo esc_attr($settings['force_update_sw_setting']);
-        }else{ echo PWAFORWP_PLUGIN_VERSION; } ?>"></label>      
-        <code>Current Version <?php echo PWAFORWP_PLUGIN_VERSION; ?></code>  
+    if(isset($settings['force_update_sw_setting'])){ 
+        if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
+            $settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
+        }
+        // echo esc_attr($settings['force_update_sw_setting']);
+        $force_update_sw_setting_value = $settings['force_update_sw_setting'];
+    }else{ 
+        $force_update_sw_setting_value = PWAFORWP_PLUGIN_VERSION;
+    }	
+    ?>
+        <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php echo $force_update_sw_setting_value ?>"></label>      
+        <code>Current Version <?php echo $force_update_sw_setting_value ?></code>  
 	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }

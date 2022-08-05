@@ -106,6 +106,16 @@ function pwaforwp_frontend_enqueue(){
         $server_key = $config = '';
         
         $settings   = pwaforwp_defaultSettings();
+
+        if(isset($settings['force_update_sw_setting'])){ 
+            if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
+                $settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
+            }
+            // echo esc_attr($settings['force_update_sw_setting']);
+            $force_update_sw_setting_value = $settings['force_update_sw_setting'];
+        }else{ 
+            $force_update_sw_setting_value = PWAFORWP_PLUGIN_VERSION;
+        }
         
         if(isset($settings['normal_enable']) && $settings['normal_enable']==1){
             
@@ -119,7 +129,7 @@ function pwaforwp_frontend_enqueue(){
                         
          if(isset($settings['notification_feature']) && $settings['notification_feature']==1 && isset($settings['notification_options']) && $settings['notification_options']=='fcm_push' && ($server_key !='' && $config !='')){             
                                                                          
-            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array('pwa-main-script'), PWAFORWP_PLUGIN_VERSION, true);
+            wp_register_script('pwaforwp-push-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwa-push-notification'.pwaforwp_multisite_postfix().'.js', array('pwa-main-script'), $force_update_sw_setting_value, true);
 
             $object_name = array(
               'ajax_url'                  => admin_url( 'admin-ajax.php' ),
@@ -135,7 +145,7 @@ function pwaforwp_frontend_enqueue(){
                   
         if( (isset($settings['loading_icon']) && $settings['loading_icon']==1) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
             
-            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+            wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), $force_update_sw_setting_value, true); 
             
             $loader_desktop = $loader_mobile = $loader_admin = $loader_only_pwa = 0;
             //For desktop
@@ -186,15 +196,15 @@ function pwaforwp_frontend_enqueue(){
             
         }
                 
-        wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , PWAFORWP_PLUGIN_VERSION );       
+        wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , $force_update_sw_setting_value );       
         wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
 
         }
 
-        wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+        wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), $force_update_sw_setting_value, true); 
         wp_enqueue_script('pwaforwp-video-js');
 
-        wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), PWAFORWP_PLUGIN_VERSION, true); 
+        wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), $force_update_sw_setting_value, true); 
         wp_enqueue_script('pwaforwp-download-js');
         
 }
