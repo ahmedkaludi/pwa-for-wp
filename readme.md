@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.0
 
-Stable tag: 1.7.48
+Stable tag: 1.7.49
 
 License: GPLv2 or later
 
@@ -75,6 +75,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.49 (10 August 2022) =
+* Bug Fixed: Remove jQuery dependency in PWA plugin #743
+* Bug Fixed: Force Update Service Worker is not working #742
 
 = 1.7.48 (13 July 2022) =
 * Bug Fixed: Buddypress downloading feature is not working with IOS PWA but it is works with safari. #713
