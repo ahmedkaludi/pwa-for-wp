@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.0
-Stable tag: 1.7.49
+Stable tag: 1.7.50
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,9 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.50 (12 August 2022) =
+* Bug Fixed: When loader is enable then website and app take longer to load. #739
 
 = 1.7.49 (10 August 2022) =
 * Bug Fixed: Remove jQuery dependency in PWA plugin #743
