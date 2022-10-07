@@ -25,13 +25,6 @@
 							  deferredPrompt = e;
                                                           
                     if(deferredPrompt != null || deferredPrompt != undefined){
-
-                        var a2hsviashortcode = document.getElementsByClassName("pwaforwp-add-via-class");
-                        if(a2hsviashortcode !== null){
-                            for (var i = 0; i < a2hsviashortcode.length; i++) {
-                              a2hsviashortcode[i].style.display="inline-block"; 
-                          }
-                        }
                         
                         var a2hsviashortcode = document.getElementsByClassName("pwaforwp-sticky-banner");
                         var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent); 
