@@ -64,8 +64,9 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.50 (12 August 2022) =
+= 1.7.50 (07 October 2022) =
 * Bug Fixed: When loader is enable then website and app take longer to load. #739
+* Bug Fixed: CTA banner's install button is not working on desktop and android devices. (Sticky bar) #753
 
 = 1.7.49 (10 August 2022) =
 * Bug Fixed: Remove jQuery dependency in PWA plugin #743
