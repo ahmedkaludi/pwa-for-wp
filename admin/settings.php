@@ -1398,7 +1398,7 @@ function pwaforwp_visibility_setting_callback(){
                 </select>
                 <div class="include_type_error">&nbsp;</div>
             </td>
-            <td><a class="include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+            <td class="include-btn-box"><a class="include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr> 
 
         <!-- Excluded -->
@@ -1452,7 +1452,7 @@ function pwaforwp_visibility_setting_callback(){
                 </select>
                  <div class="exclude_type_error">&nbsp;</div>
             </td>
-            <td><a class="exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+            <td class="include-btn-box"><a class="exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr>   
     <?php
 }

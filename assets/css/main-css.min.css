@@ -1308,6 +1308,11 @@ cursor: pointer;
     border-color: #005aef;
     font-size: 15px;
     padding: 2px 20px;
+    margin-top: -20px;
+}
+.include-btn-box {
+    padding: 0 !important;
+    line-height: 0 !important;
 }
 .wp-core-ui .visibility_options_select {
 	border-color: #cccccc;
