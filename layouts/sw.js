@@ -382,7 +382,7 @@ let cachingStrategy = {
                                         if (response) {
                                             return response;
                                         } else {
-                                            return fetch(event.request.clone())
+                                            return fetch(event.request.clone(), {cache: "no-store"})
                                                 .then(
                                                     (response) => {
 
