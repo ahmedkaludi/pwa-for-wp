@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.0
 
-Stable tag: 1.7.50
+Stable tag: 1.7.51
 
 License: GPLv2 or later
 
@@ -75,6 +75,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.51 (01 November 2022) =
+* Improvement: Checkbox inside Default caching strategy should have some padding #761
+* Improvement: styling is not right #726
+* Bug Fixed: When we add the video to our website when the PWA plugin is enabled, there is an error in the console. #760
 
 = 1.7.50 (11 October 2022) =
 * Bug Fixed: When loader is enable then website and app take longer to load. #739
