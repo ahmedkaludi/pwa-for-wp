@@ -193,7 +193,7 @@ function pwaforwp_admin_interface_render(){
                                 </a>
                                 <input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
 
-            			    $renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+            			    $renew_mesg = '<a target="blank" class="renewal-license" href="'.esc_url($renew_url).'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
     					    $color = 'color:red';
                         }else{
                             if ($one_of_plugin_expired == 1) {
@@ -204,7 +204,7 @@ function pwaforwp_admin_interface_render(){
                             if ($one_of_plugin_expired == 1) {
                                 $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
                                 $expire_msg = " <span class='one_of_expired'>".esc_html__('Expired')."</span> ";
-                                $renew_mesg = '<a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                                $renew_mesg = '<a target="blank" class="renewal-license" href="'.esc_url($renew_url).'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
                             }else{
                                 $expire_msg = " Active ";
                             }
@@ -223,8 +223,8 @@ function pwaforwp_admin_interface_render(){
                         $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
                         <span class='pwaforwp-info'>
                         ".$alert_icon."<span class='activated-plugins'>".esc_html__('Hi', 'pwa-for-wp')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
-                        <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
-                        <span class='".$span_class."'></span>".$renew_mesg."".$refresh_addon."".$auto_refresh_data."".$user_refresh_addon."
+                        <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".esc_html__($expire_msg,'pwa-for-wp')."</span></span>
+                        <span class='".$span_class."'></span>".esc_html__($renew_mesg."".$refresh_addon."".$auto_refresh_data."".$user_refresh_addon,'pwa-for-wp')."
                         </span>
                         </div>";
                         echo $pwaforwp_addon_license_info;
@@ -354,7 +354,7 @@ function pwaforwp_admin_interface_render(){
 						            <ul>
 						                <li><label for="pwaforwp_query_customer"><?php echo esc_html__('Are you existing Premium Customer?', 'pwa-for-wp'); ?></label>
 						                    <select class="regular-select" rows="5" cols="60" id="pwaforwp_query_customer" name="pwaforwp_query_customer">
-						                    	<option value="">Select</option>
+						                    	<option value=""><?php echo esc_html__('Select', 'pwa-for-wp'); ?></option>
 						                    	<option value="Yes"><?php echo esc_html__('Yes', 'pwa-for-wp'); ?></option>
 						                    	<option value="No"><?php echo esc_html__('No', 'pwa-for-wp'); ?></option>
 						                    </select>
@@ -837,7 +837,7 @@ function pwaforwp_addon_html(){
 	    }else{                                            
 	       $ctafp_active_text .= '<label class="pwaforwp-sts-txt-inactive">'.esc_html__('Status', 'pwa-for-wp').' :<span class="pwaforwp_addon_uninstalled">'.esc_html__('Inactive', 'pwa-for-wp').'</span></label>'; 
 	       if(!class_exists('PWAFORWPPROExtensionManager')){
-		       $ctafp_active_text .= '<a target="_blank" href="'.$plugin['p-url'].'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
+		       $ctafp_active_text .= '<a target="_blank" href="'.esc_url($plugin['p-url']).'"><span class="pwaforwp-d-btn">'.esc_html__('Download', 'pwa-for-wp').'</span></a>';
 		   }
 	    }
 
@@ -846,8 +846,8 @@ function pwaforwp_addon_html(){
                 <div class="pwafowp-feature-ext">
 
 				<div class="pwaforwp-features-ele">
-					<div class="pwaforwp-ele-ic" style="background: '.$plugin['p-background-color'].'">
-                        <img src="'.$plugin['p-icon-img'].'">
+					<div class="pwaforwp-ele-ic" style="background: '.esc_attr($plugin['p-background-color']).'">
+                        <img src="'.esc_url($plugin['p-icon-img']).'">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html__($plugin['p-title'],'pwa-for-wp').'</h3>
@@ -878,7 +878,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/call-to-action-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/call-to-action.png',
                     'p-background-color'=> '#333333',
-                    'p-desc' => 'Call to Action extension makes it easy for your users to add the website to the home screen',
+                    'p-desc' => esc_html__('Call to Action extension makes it easy for your users to add the website to the home screen', 'pwa-for-wp'),
                     'p-tab'	 => true
          ),
          'lilfp'  => array(
@@ -890,7 +890,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/loading-icon-library.png',
                     'p-background-color'=> '#2f696d',
-                    'p-desc' => 'Loading Icon Library extension multiple icons for PWA app',
+                    'p-desc' => esc_html__('Loading Icon Library extension multiple icons for PWA app', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'dafp'  => array(
@@ -914,7 +914,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pull-to-refresh-for-pwa.png',
                     'p-background-color'=> '#336363',
-                    'p-desc' => 'Pull to Refresh for PWA extension help users to refresh the page inside PWA app',
+                    'p-desc' => esc_html__('Pull to Refresh for PWA extension help users to refresh the page inside PWA app', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'spbfp'  => array(
@@ -926,7 +926,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/scroll-progress-bar-for-pwa.png',
                     'p-background-color'=> '#3e3e3e',
-                    'p-desc' => 'Scroll Progress Bar for PWA extension indicator to display the current reading position',
+                    'p-desc' => esc_html__('Scroll Progress Bar for PWA extension indicator to display the current reading position', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'ptafp'  => array(
@@ -938,7 +938,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-apk-plugin.png',
                     'p-background-color'=> '#afa173',
-                    'p-desc' => 'PWA to APK Plugin for PWA extension to create apk for your website',
+                    'p-desc' => esc_html__('PWA to APK Plugin for PWA extension to create apk for your website', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'ofpwa'  => array(
@@ -950,7 +950,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/offline-forms-for-pwa-for-wp.png',
                     'p-background-color'=> '#acb1b5',
-                    'p-desc' => 'Offline Forms for PWA extension to store forms for your website',
+                    'p-desc' => esc_html__('Offline Forms for PWA extension to store forms for your website', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'bnpwa'  => array(
@@ -962,7 +962,7 @@ function pwaforwp_list_addons(){
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/buddypress-for-pwaforwp/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/buddypress-for-pwaforwp.png',
                     'p-background-color'=> '#d94e27',
-                    'p-desc' => 'Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post',
+                    'p-desc' => esc_html__('Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'qafp'  => array(
@@ -1562,7 +1562,7 @@ function pwaforwp_force_update_sw_setting_callback(){
     }	
     ?>
         <label><input type="text" id="pwaforwp_settings[force_update_sw_setting]" name="pwaforwp_settings[force_update_sw_setting]" value="<?php echo esc_attr($force_update_sw_setting_value ); ?>"></label>      
-        <code>Current Version <?php echo esc_attr($force_update_sw_setting_value); ?></code>  
+        <code><?php echo esc_html__('Current Version', 'pwa-for-wp'); ?> <?php echo esc_attr($force_update_sw_setting_value); ?></code>  
 	<p><?php echo esc_html__('Change the version. It will automatically update the service worker for all the users', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1699,9 +1699,9 @@ function pwaforwp_push_notification_callback(){
         			<th><?php echo esc_html__('Push notification integration', 'pwa-for-wp');?></th>
         			<td>
         				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">
-        					<option value="">Select</option>
-        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>>PushNotifications.io (Recommended)</option>
-        					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> >FCM push notification</option>
+        					<option value=""><?php echo esc_html__('Select', 'pwa-for-wp') ?></option>
+        					<option value="pushnotifications_io" <?php selected('pushnotifications_io', $selectedService) ?>><?php echo esc_html__('PushNotifications.io (Recommended)', 'pwa-for-wp') ?></option>
+        					<option value="fcm_push" <?php selected('fcm_push', $selectedService) ?> ><?php echo esc_html__('FCM push notification', 'pwa-for-wp') ?></option>
         				</select>
         			</td>
         		</tbody>
@@ -1989,8 +1989,8 @@ function pwaforwp_splash_icon_callback(){
 			<label style="display: inline-block;width: 50%;"><?php echo esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
 				<option value="">Select</option>
-				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>>Automatic</option>
-				<option  value="manually" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='manually'? 'selected': ''; ?>>Manual</option>
+				<option value="generate-auto" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='generate-auto'? 'selected': ''; ?>><?php echo esc_html__('Automatic', 'pwa-for-wp'); ?></option>
+				<option  value="manually" <?php echo isset($settings['iosSplashScreenOpt']) && $settings['iosSplashScreenOpt']=='manually'? 'selected': ''; ?>><?php echo esc_html__('Manual', 'pwa-for-wp'); ?></option>
 			</select>
 		</div>
 
@@ -2279,7 +2279,7 @@ function pwaforwp_custom_add_to_home_callback(){
          ?>
         <div class="show-banner-on-static-website">
         	<input type="checkbox" name="pwaforwp_settings[show_banner_without_scroll]" id="show_banner_without_scroll" value="1" <?php echo (isset( $settings['show_banner_without_scroll'] ) &&  $settings['show_banner_without_scroll'] == 1 ? 'checked="checked"' : ''); ?> >
-        	<label for="show_banner_without_scroll" style="font-weight:600">Show banner without scroll</label>
+        	<label for="show_banner_without_scroll" style="font-weight:600"><?php echo esc_html__('Show banner without scroll', 'pwa-for-wp');?></label>
         	<p><?php echo esc_html__('By default pop up will appear on scroll', 'pwa-for-wp'); ?></p>
         </div>
 
@@ -2862,7 +2862,7 @@ function pwaforwp_get_license_section_html($on){
                     $license_expires_class = "expire_msg";
                     $final_otp = '<span class="expired-pwaforwp-license-tenure" days_remaining='.$license_expires.'>'.$alert_icon.' '.$expire_msg_before.'
                 <span expired-days-data="'.$license_expires.'" class='.$license_expires_class.'>'.$single_expire_msg.'
-                <a target="blank" class="renewal-license" href="'.$renew_url.'">
+                <a target="blank" class="renewal-license" href="'.esc_url($renew_url).'">
                 <span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>'.$user_refresh_addon.'
                 </span>
                 </span>';
@@ -3234,68 +3234,68 @@ function pwaforwp_features_settings(){
 				'notification' => array(
 									'enable_field' => 'notification_feature',
 									'section_name' => 'pwaforwp_push_notification_section',
-									'setting_title' => 'Push notification',
-									'tooltip_option' => 'send notification to users',
+									'setting_title' =>  esc_html__('Push notification', 'pwa-for-wp'),
+									'tooltip_option' => esc_html__('send notification to users', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-push-notifications-in-pwa/'
 									),
 				'precaching' => array(
 									'enable_field' => 'precaching_feature',
 									'section_name' => 'pwaforwp_precaching_setting_section',
-									'setting_title' => 'Pre Caching',
-									'tooltip_option' => 'Pre-Cache pages and posts on page load',
+									'setting_title' =>  esc_html__('Pre Caching', 'pwa-for-wp'),
+									'tooltip_option' => esc_html__('Pre-Cache pages and posts on page load', 'pwa-for-wp'),
                                     'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-precaching-in-pwa/',
 									),
 				'addtohomebanner' => array(
 									'enable_field' => 'addtohomebanner_feature',
 									'section_name' => 'pwaforwp_addtohomescreen_setting_section',
-									'setting_title' => 'Custom Add To Home Banner',
-									'tooltip_option' => 'Add a banner website for PWA app install',
+									'setting_title' =>  esc_html__('Custom Add To Home Banner', 'pwa-for-wp'),
+									'tooltip_option' => esc_html__('Add a banner website for PWA app install', 'pwa-for-wp'),
                                     'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/how-to-add-custom-add-to-homescreen-banner/',
 									),
 				'utmtracking' => array(
 									'enable_field' => 'utmtracking_feature',
 									'section_name' => 'pwaforwp_utmtracking_setting_section',
-									'setting_title' => 'UTM Tracking',
-									'tooltip_option'=> 'Urchin Traffic Monitor Tracking',
+									'setting_title' => esc_html__('UTM Tracking', 'pwa-for-wp'),
+									'tooltip_option'=> esc_html__('Urchin Traffic Monitor Tracking', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-add-utm-tracking-in-pwa/'
 									),
 				'loader' => array(
 									'enable_field' => 'loader_feature',
 									'section_name' => 'pwaforwp_loaders_setting_section',
-									'setting_title' => 'Loader',
-									'tooltip_option'=> 'Loader for complete website',
+									'setting_title' => esc_html__('Loader', 'pwa-for-wp'),
+									'tooltip_option'=> esc_html__('Loader for complete website', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-loading-icon-library-for-pwa/'
 									),
 				'urlhandler' => array(
 										'enable_field' => 'urlhandler_feature',
 										'section_name' => 'pwaforwp_urlhandler_setting_section',
-										'setting_title' => 'URL Handlers',
-										'tooltip_option'=> 'PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA',
+										'setting_title' => esc_html__('URL Handlers', 'pwa-for-wp'),
+										'tooltip_option'=> esc_html__('PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA', 'pwa-for-wp'),
 										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/how-to-use-urlhandler-for-pwa/'
 										),
 				'visibility' => array(
 										'enable_field' => 'visibility_feature',
 										'section_name' => 'pwaforwp_visibility_setting_section',
-										'setting_title' => 'Visibility',
-										'tooltip_option' => 'PWA visibility allows apps to control the visibility of the APP on specific pages, posts, and post-types',
+										'setting_title' => esc_html__('Visibility', 'pwa-for-wp'),
+										'tooltip_option' => esc_html__('PWA visibility allows apps to control the visibility of the APP on specific pages, posts, and post-types', 'pwa-for-wp'),
 										'tooltip_link'  => 'https://pwa-for-wp.com/docs/article/setting-up-visibility-in-pwa/',
 										),
 				'calltoaction'	=> array(
 									'enable_field' => 'call_to_action',
 									'section_name' => 'pwaforwp_call_to_action_setting_section',
-									'setting_title' => 'Call To Action',
+									'setting_title' => esc_html__('Call To Action', 'pwa-for-wp'),
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['ctafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ctafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (!is_plugin_active($addonLists['ctafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ctafp']['p-slug'])? 1: 0),
 									'slug' => 'ctafp',
-									'tooltip_option'=> 'CTA feature for PWA',
+									'tooltip_option'=> esc_html__('CTA feature for PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-call-to-action-cta-in-pwa/'
 									),
 				'rewardspwa' => array(
 									'enable_field' => 'rewardspwa_feature',
 									'section_name' => 'pwaforwp_rewardspwa_setting_section',
-									'setting_title' => 'Rewards on APP Install',
+									'setting_title' => esc_html__('Rewards on APP Install', 'pwa-for-wp'),
 									'is_premium'    => true,
 									'pro_link'      => $addonLists['ropi']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['ropi']['p-slug'])? 1: 0),
@@ -3307,85 +3307,85 @@ function pwaforwp_features_settings(){
 				'dataAnalytics' => array(
 									'enable_field' => 'data_analytics',
 									'section_name' => 'pwaforwp_data_analytics_setting_section',
-									'setting_title' => 'Data Analytics',
+									'setting_title' => esc_html__('Data Analytics', 'pwa-for-wp'),
 									'is_premium'	=> true,
 									'pro_link'		=> $addonLists['dafp']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['dafp']['p-slug'])? 1: 0),
 									'pro_deactive'    => (!is_plugin_active($addonLists['dafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['dafp']['p-slug'])? 1: 0),
 									'slug' => 'dafp',
-									'tooltip_option'=> 'Analytics for the number of people who are installing PWA',
+									'tooltip_option'=> esc_html__('Analytics for the number of people who are installing PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
 									),
 				'pulltorefresh' => array(
                                     'enable_field' => 'pull_to_refresh',
                                     'section_name' => 'pwaforwp_pull_to_refresh_setting_section',
-                                    'setting_title' => 'Pull To Refresh',
+                                    'setting_title' => esc_html__('Pull To Refresh', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptrfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptrfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptrfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptrfp']['p-slug'])? 1: 0),
                                     'slug' => 'ptrfp',
-                                    'tooltip_option'=> 'Refresh the PWA APP page',
+                                    'tooltip_option'=> esc_html__('Refresh the PWA APP page', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-data-analytics-for-pwa/'
                                     ),
 				'progressbar' => array(
                                     'enable_field' => 'scroll_progress_bar',
                                     'section_name' => 'pwaforwp_scroll_progress_bar_setting_section',
-                                    'setting_title' => 'Scroll Progress Bar',
+                                    'setting_title' => esc_html__('Scroll Progress Bar', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['spbfp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['spbfp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['spbfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['spbfp']['p-slug'])? 1: 0),
                                     'slug' => 'spbfp',
-                                    'tooltip_option'=> 'Show Scroll progress bar',
+                                    'tooltip_option'=> esc_html__('Show Scroll progress bar', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/scroll-progress-bar-for-pwa/'
                                     ),
 				'pwatoapkplugin' => array(
                                     'enable_field' => 'pwa_to_apk_plugin',
                                     'section_name' => 'pwaforwp_pwa_to_apk_plugin_setting_section',
-                                    'setting_title' => 'PWA to Android APP (APK)',
+                                    'setting_title' => esc_html__('PWA to Android APP (APK)', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptafp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptafp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptafp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptafp']['p-slug'])? 1: 0),
                                     'slug' => $addonLists['ptafp']['p-slug'],
-                                    'tooltip_option'=> 'Generate APK for website',
+                                    'tooltip_option'=> esc_html__('Generate APK for website', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
                                     ),
 				'offlineforms' => array(
                                     'enable_field' => 'offline_forms',
                                     'section_name' => 'pwaforwp_offline_forms_setting_section',
-                                    'setting_title' => 'Offline Forms',
+                                    'setting_title' => esc_html__('Offline Forms', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug'])? 1: 0),
                                     'slug' => 'ofpwa',
-                                    'tooltip_option'=> 'Support forms to work on offline mode',
+                                    'tooltip_option'=> esc_html__('Support forms to work on offline mode', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-offline-forms/'
                                     ),
 				'autosaveforms' => array(
                                     'enable_field' => 'autosave_forms',
                                     'section_name' => 'pwaforwp_autosave_forms_setting_section',
-                                    'setting_title' => 'Auto Save Forms',
+                                    'setting_title' => esc_html__('Auto Save Forms', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ofpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ofpwa']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ofpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ofpwa']['p-slug']) ? 1: 0),
                                     'slug' => 'ofpwa',
-                                    'tooltip_option'=> 'It auto saves the data on the fly',
+                                    'tooltip_option'=> esc_html__('It auto saves the data on the fly', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-auto-save-forms/'
                                     ),
 				'buddypress_notification' => array(
                                     'enable_field' => 'buddypress_notification',
                                     'section_name' => 'pwaforwp_buddypress_setting_section',
-                                    'setting_title' => 'Buddypress',
+                                    'setting_title' => esc_html__('Buddypress', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['bnpwa']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['bnpwa']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['bnpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['bnpwa']['p-slug'])? 1: 0),
                                     'slug' => 'bnpwa',
-                                    'tooltip_option'=> 'Support buddypress push notification with PWA and push notification',
+                                    'tooltip_option'=> esc_html__('Support buddypress push notification with PWA and push notification', 'pwa-for-wp'),
                                     'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-buddypress-for-pwaforwp/'
                                     ),
 				'quickaction' => array(
@@ -3431,12 +3431,12 @@ function pwaforwp_features_settings(){
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
 			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap '.$key.'-wrap-tb">';
 				do_settings_sections( $featureVal['section_name'] );
-				echo '<div class="footer tab_view_submitbtn" style=""><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">Submit</button></div>';
+				echo '<div class="footer tab_view_submitbtn" style=""><button type="submit" class="button button-primary pwaforwp-submit-feature-opt">'.esc_html__('Submit', 'pwa-for-wp').'</button></div>';
 			echo '</div>';
 		echo '</div>';
 		$settingsHtml = $tooltipHtml = $warnings = '';
 		if($key=='notification' && empty($settings['notification_options'])){
-			$warnings = "<span class='pwafw-tooltip'><i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;' title=''></i><span class='pwafw-help-subtitle'>Need integration</span></span>";
+			$warnings = "<span class='pwafw-tooltip'><i id='notification-opt-stat' class='dashicons dashicons-warning' style='color: #ffb224d1;' title=''></i><span class='pwafw-help-subtitle'>".esc_html__('Need integration', 'pwa-for-wp')."</span></span>";
 		}
 		if(isset($settings[$featureVal['enable_field']]) && $settings[$featureVal['enable_field']]){
 			$settingsHtml = 'style="opacity:1;"';
@@ -3542,15 +3542,15 @@ function pwaforwp_features_settings(){
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){
 	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
-		echo json_encode(array('status'=> 503, 'message'=> 'Unauthorized access, CSRF token not matched'));
+		echo json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','pwa-for-wp')));
 		die;
 	}
 	if(!isset($_POST['fields_data']) || !is_array($_POST['fields_data'])){
-		echo json_encode(array('status'=> 502, 'message'=> 'Feature settings not have any fields.'));
+		echo json_encode(array('status'=> 502, 'message'=> esc_html__( 'Feature settings not have any fields.','pwa-for-wp')));
 		die;
 	}
 	if ( ! current_user_can( 'manage_options' ) ) {
-        echo json_encode(array('status'=> 501, 'message'=> 'Unauthorized access, permission not allowed'));
+        echo json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','pwa-for-wp')));
 		die;
     }
 	$allFields = $_POST['fields_data'];
@@ -3985,7 +3985,7 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
 		unlink($zipfilename);
-		echo json_encode(array("status"=>200, "message"=> "Splash screen uploaded successfully"));
+		echo json_encode(array("status"=>200, "message"=> esc_html__("Splash screen uploaded successfully"),'pwa-for-wp'));
 		  die;
 	} 	
 } 

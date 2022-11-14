@@ -13,8 +13,8 @@ function pwaforwp_loading_icon() {
             $color_style = 'style="border-top-color: '.$color.'"';
         }
         if($bgcolor!=='#ffffff'){ $bg_color_style = 'style="background-color: '.$bgcolor.'"'; }
-        echo '<div id="pwaforwp_loading_div" '.$bg_color_style.'></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.$color_style.'></div></div>');
+        echo '<div id="pwaforwp_loading_div" '.esc_attr($bg_color_style).'></div>';
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.esc_attr($color_style).'></div></div>');
     }
         
 }
