@@ -778,7 +778,7 @@ class PWAFORWP_Service_Worker{
         $settings        = pwaforwp_defaultSettings();
         $startupImages = '';
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
-            $otherData = ios_splashscreen_files_data();
+            $otherData = pwaforwp_ios_splashscreen_files_data();
 
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key) && isset($otherData[$key])){

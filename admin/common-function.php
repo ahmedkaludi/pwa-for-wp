@@ -731,7 +731,7 @@ function pwaforwp_is_enabled_pwa_wp(){
     
 }
 
-function ios_splashscreen_files_data(){
+function pwaforwp_ios_splashscreen_files_data(){
     $iosSplashData = array(
             '1136x640'=> array("device-width"=> '320px', "device-height"=> "568px","ratio"=> 2,"orientation"=> "landscape","file"=> "icon_1136x640.png",'name'=> 'iPhone 5/iPhone SE'),
             '640x1136'=> array("device-width"=> '320px', "device-height"=> "568px","ratio"=> 2,"orientation"=> "portrait", "file"=> "icon_640x1136.png",'name'=> 'iPhone 5/iPhone SE'),

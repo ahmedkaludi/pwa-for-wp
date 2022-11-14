@@ -1370,8 +1370,8 @@ function pwaforwp_visibility_setting_callback(){
                         for ($i=0; $i<count($expo_include_type); $i++) {
                            echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="include_targeting_type" value="'.esc_attr($expo_include_type[$i],'pwa-for-wp').'">
                                 <input type="hidden" name="include_targeting_data" value="'.esc_attr($expo_include_data[$i],'pwa-for-wp').'">';
-                            $expo_include_type_test = removeExtraValue($expo_include_type[$i]);
-                            $expo_include_data_test = removeExtraValue($expo_include_data[$i]);
+                            $expo_include_type_test = pwaforwpRemoveExtraValue($expo_include_type[$i]);
+                            $expo_include_data_test = pwaforwpRemoveExtraValue($expo_include_data[$i]);
                             echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_include_type_test.' - '.$expo_include_data_test,'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
                             $rand++;
@@ -1417,8 +1417,8 @@ function pwaforwp_visibility_setting_callback(){
                        for ($i=0; $i < count($expo_exclude_type); $i++) {
                            echo '<span class="pwaforwp-visibility-target-icon-'.$rand.'"><input type="hidden" name="exclude_targeting_type" value="'.esc_attr($expo_exclude_type[$i], 'pwa-for-wp').'">
                                 <input type="hidden" name="exclude_targeting_data" value="'.$expo_exclude_data[$i].'">';
-                           $expo_exclude_type_test = removeExtraValue($expo_exclude_type[$i]);
-                           $expo_exclude_data_test = removeExtraValue($expo_exclude_data[$i]);
+                           $expo_exclude_type_test = pwaforwpRemoveExtraValue($expo_exclude_type[$i]);
+                           $expo_exclude_data_test = pwaforwpRemoveExtraValue($expo_exclude_data[$i]);
 
                            echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_exclude_type_test.' - '.$expo_exclude_data_test, 'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
@@ -1995,7 +1995,7 @@ function pwaforwp_splash_icon_callback(){
 		</div>
 
 		<?php
-		$currentpic = $splashIcons = ios_splashscreen_files_data();
+		$currentpic = $splashIcons = pwaforwp_ios_splashscreen_files_data();
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
            			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.rand(00,99).'" width="60" height="40">';
@@ -2612,7 +2612,7 @@ function pwaforwp_enqueue_style_js( $hook ) {
             'uploader_button'           => esc_html__('Select Icon', 'pwa-for-wp'),
             'file_status'               => esc_html__('Check permission or download from manual', 'pwa-for-wp'),
             'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce'),
-            'iosSplashIcon'				=> ios_splashscreen_files_data(),
+            'iosSplashIcon'				=> pwaforwp_ios_splashscreen_files_data(),
         );
         
         $object_name = apply_filters('pwaforwp_localize_filter',$object_name,'pwaforwp_obj');
@@ -3812,8 +3812,8 @@ function pwaforwp_include_visibility_condition_callback() {
     $option .= '<span class="pwaforwp-visibility-target-icon-'.$rand.'">
     <input type="hidden" name="include_targeting_type" value="'.$include_targeting_type.'">
     <input type="hidden" name="include_targeting_data" value="'.$include_targeting_data.'">';
-    $include_targeting_type = removeExtraValue($include_targeting_type);
-    $include_targeting_data = removeExtraValue($include_targeting_data);
+    $include_targeting_type = pwaforwpRemoveExtraValue($include_targeting_type);
+    $include_targeting_data = pwaforwpRemoveExtraValue($include_targeting_data);
     $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$include_targeting_type.' - '.$include_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
@@ -3840,8 +3840,8 @@ function pwaforwp_exclude_visibility_condition_callback() {
     <input type="hidden" name="exclude_targeting_type" value="'.$exclude_targeting_type.'">
     <input type="hidden" name="exclude_targeting_data" value="'.$exclude_targeting_data.'">';
 
-    $exclude_targeting_type = removeExtraValue($exclude_targeting_type);
-    $exclude_targeting_data = removeExtraValue($exclude_targeting_data);
+    $exclude_targeting_type = pwaforwpRemoveExtraValue($exclude_targeting_type);
+    $exclude_targeting_data = pwaforwpRemoveExtraValue($exclude_targeting_data);
     $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$exclude_targeting_type.' - '.$exclude_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
@@ -3849,7 +3849,7 @@ function pwaforwp_exclude_visibility_condition_callback() {
     echo json_encode($data);    exit;
 }
 
-function removeExtraValue($val)
+function pwaforwpRemoveExtraValue($val)
 {
     $val = str_replace("_", " ", $val);
     $val = str_replace(".php", "", $val);
@@ -3977,7 +3977,7 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		if(function_exists('WP_Filesystem')){ WP_Filesystem(); }
 		unzip_file($zipfilename, $path);
 		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
-		$iosdata = ios_splashscreen_files_data(); 
+		$iosdata = pwaforwp_ios_splashscreen_files_data(); 
 		foreach ($iosdata as $key => $value) {
 			$pwaforwp_settings['ios_splash_icon'][$key] = $pathURL.$value['file'];
 		}
