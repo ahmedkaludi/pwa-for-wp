@@ -1,5 +1,5 @@
-                                 importScripts("https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js");
-                                 importScripts("https://www.gstatic.com/firebasejs/6.2.4/firebase-messaging.js");
+                                 importScripts("https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js");
+                                 importScripts("https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js");
                                  
                                  var config ={{config}};
                                  if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		  
