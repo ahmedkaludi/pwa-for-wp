@@ -13,8 +13,8 @@ function pwaforwp_loading_icon() {
             $color_style = 'style="border-top-color: '.$color.'"';
         }
         if($bgcolor!=='#ffffff'){ $bg_color_style = 'style="background-color: '.$bgcolor.'"'; }
-        echo '<div id="pwaforwp_loading_div" '.$bg_color_style.'></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.$color_style.'></div></div>');
+        echo '<div id="pwaforwp_loading_div" '.esc_attr($bg_color_style).'></div>';
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.esc_attr($color_style).'></div></div>');
     }
         
 }
@@ -731,7 +731,7 @@ function pwaforwp_is_enabled_pwa_wp(){
     
 }
 
-function ios_splashscreen_files_data(){
+function pwaforwp_ios_splashscreen_files_data(){
     $iosSplashData = array(
             '1136x640'=> array("device-width"=> '320px', "device-height"=> "568px","ratio"=> 2,"orientation"=> "landscape","file"=> "icon_1136x640.png",'name'=> 'iPhone 5/iPhone SE'),
             '640x1136'=> array("device-width"=> '320px', "device-height"=> "568px","ratio"=> 2,"orientation"=> "portrait", "file"=> "icon_640x1136.png",'name'=> 'iPhone 5/iPhone SE'),
