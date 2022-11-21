@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 6.0
+Tested up to: 6.1
 
-Stable tag: 1.7.51
+Stable tag: 1.7.52
 
 License: GPLv2 or later
 
@@ -75,6 +75,14 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.52 (21 November 2022) =
+* Bug Fixed  : While using FCM push notification, there is an error in the console. #741
+* Improvement: Remove jQuery dependency in PWA plugin #743
+* Improvement: Escaping is missing in some place #769 
+* Improvement: Some functions are missing prefix #770 
+* Improvement: Push notification Send Manual Notification Improvement #771
+* New :BFCM internal offer #772 
 
 = 1.7.51 (01 November 2022) =
 * Improvement: Checkbox inside Default caching strategy should have some padding #761
