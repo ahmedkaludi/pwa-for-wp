@@ -676,11 +676,11 @@ class PWAFORWP_Service_Worker{
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="'.esc_attr(@$settings['ios_status_bar']).'">
         <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-touch-fullscreen" content="YES">'.PHP_EOL;
+        <meta name="apple-touch-fullscreen" content="yes">'.PHP_EOL;
         
         $linktags = '';
         if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-            $linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
+            //$linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
             $linktags .= '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
         endif; 
                 
@@ -690,13 +690,13 @@ class PWAFORWP_Service_Worker{
         echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
 
-        $screenshots_linktags = '';
-        if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
-            $screenshots_linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['screenshots'])) .'">'.PHP_EOL;
-            $screenshots_linktags .= '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['screenshots'])) . '">'.PHP_EOL;
-        endif;  
-        echo apply_filters('pwaforwp_apple_touch_icons',$screenshots_linktags);
-        $this->screenshotScreen();
+        //$screenshots_linktags = '';
+        // if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
+        //     $screenshots_linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['screenshots'])) .'">'.PHP_EOL;
+        //     $screenshots_linktags .= '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['screenshots'])) . '">'.PHP_EOL;
+        // endif;  
+        //echo apply_filters('pwaforwp_apple_touch_icons',$screenshots_linktags);
+        //$this->screenshotScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		
