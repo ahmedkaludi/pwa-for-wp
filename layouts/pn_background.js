@@ -2,9 +2,8 @@
                                  importScripts("https://www.gstatic.com/firebasejs/7.18.0/firebase-messaging.js");
                                  
                                  var config ={{config}};
-                                 if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		  
-                                 const messaging = firebase.messaging();
-                                 
+                                 if (!firebase.apps.length) {firebase.initializeApp(config);}
+                                 if(!messaging)	{const messaging = firebase.messaging();}
                                  messaging.setBackgroundMessageHandler(function(payload) {  
                                  const notificationTitle = payload.data.title;
                                  const notificationOptions = {

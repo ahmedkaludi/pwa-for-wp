@@ -625,7 +625,7 @@ class pwaforwpFileCreation{
         }
         $homeUrl        = pwaforwp_https($homeUrl);
         $scope_url      = pwaforwp_https($scope_url);
-        $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
+        $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "";
         $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
         if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
 		      $homeUrl = rtrim($homeUrl, '/\\');
@@ -676,7 +676,10 @@ class pwaforwpFileCreation{
                 $manifest['background_color'] = esc_attr($defaults['background_color']);
                 $manifest['theme_color']      = esc_attr($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
-                $manifest['orientation']      = esc_html( $orientation );
+                if($orientation)
+                {
+                  $manifest['orientation']      = esc_html( $orientation );
+                }
                 $manifest['start_url']        = esc_url_raw($homeUrl);
                 $manifest['scope']            = esc_url_raw($scope_url);     
 
