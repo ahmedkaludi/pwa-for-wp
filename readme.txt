@@ -64,6 +64,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
+= 1.7.53 (06 December 2022) =
+* Bug Fixed  : CTA Short code is not working #768
+* Bug Fixed  : The Option "Follow Device Orientation" is not working. #766
+* Bug Fixed  : Splash screen icon is not working on IOS #724
+
 = 1.7.52 (21 November 2022) =
 * Bug Fixed  : While using FCM push notification, there is an error in the console. #741
 * Improvement: Remove jQuery dependency in PWA plugin #743
