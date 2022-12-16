@@ -10,11 +10,11 @@ function pwaforwp_loading_icon() {
         $bgcolor = (isset($settings['loading_icon_bg_color']) && !empty($settings['loading_icon_bg_color']))? $settings['loading_icon_bg_color'] : '';
         $color_style = $bg_color_style = '';
         if($color){
-            $color_style = 'style="border-top-color: '.$color.'"';
+            $color_style = 'border-top-color: '.$color;
         }
-        if($bgcolor!=='#ffffff'){ $bg_color_style = 'style="background-color: '.$bgcolor.'"'; }
-        echo '<div id="pwaforwp_loading_div" '.esc_attr($bg_color_style).'></div>';
-        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  '.esc_attr($color_style).'></div></div>');
+        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.$bgcolor; }
+        echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
+        echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
     }
         
 }
