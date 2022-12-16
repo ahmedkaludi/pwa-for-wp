@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.1
-Stable tag: 1.7.53
+Stable tag: 1.7.54
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.54 (16 December 2022) =
+* Bug Fixed  : A2HS Shortcode shows only on iOS, not on desktop. #780
+* Bug Fixed  : Offline forms throwing error  #779
+* Bug Fixed  : Offline submission didn't work #685
+* Bug Fixed  : Loader icon color and background color does noy change according to set color #781
+* Added      : Added offline support for multistep gravity forms
 
 = 1.7.53 (06 December 2022) =
 * Bug Fixed  : CTA Short code is not working #768
