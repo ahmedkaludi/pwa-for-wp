@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.1
 
-Stable tag: 1.7.54
+Stable tag: 1.7.55
 
 License: GPLv2 or later
 
@@ -75,6 +75,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.55 (26 December 2022) =
+* Bug Fixed  : PWA loader is not working in iphone safari browser and macbook safari #664
+* Bug Fixed  : Data Analytics does not count the PWAs downloaded when display mode is minimal-ui in Android. #750	
 
 = 1.7.54 (16 December 2022) =
 * Bug Fixed  : A2HS Shortcode shows only on iOS, not on desktop. #780
