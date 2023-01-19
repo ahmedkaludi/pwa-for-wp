@@ -219,15 +219,17 @@ function pwaforwp_admin_interface_render(){
                                 $color = 'color:green';
                             }
                         }
-                 
+                    echo $pwaforwp_addon_license_info;
                         $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
-                        <span class='pwaforwp-info'>
-                        ".$alert_icon."<span class='activated-plugins'>".esc_html__('Hi', 'pwa-for-wp')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
-                        <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".esc_html__($expire_msg,'pwa-for-wp')."</span></span>
-                        <span class='".$span_class."'></span>".esc_html__($renew_mesg."".$refresh_addon."".$auto_refresh_data."".$user_refresh_addon,'pwa-for-wp')."
-                        </span>
-                        </div>";
-                        echo $pwaforwp_addon_license_info;
+                <span class='pwaforwp-info'>
+                ".$alert_icon."<span class='activated-plugins'>".pwaforwp_t_string('Hi')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
+                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
+                <span class='".$span_class."'></span>".$renew_mesg.$refresh_addon.$refresh_addon_user ;
+                $trans_check = get_transient( 'pwaforwp_addons_set_transient' );
+            
+            $pwaforwp_addon_license_info .= $ZtoS_days."
+            </span>
+            </div>";
                     }
                 }
 
