@@ -545,7 +545,7 @@ class pwaforwpFileCreation{
                                     ), array(
                                       "",
                                       "return caches.open(CACHE_VERSIONS.offline).then(function(cache) {
-                                        return cache.match(OFFLINE_URL);
+                                        return cache.match(OFFLINE_PAGE);
                                       });"
                                     ), $swJsContent); 		
 	        return $swJsContent;
