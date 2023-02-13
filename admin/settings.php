@@ -830,6 +830,7 @@ function pwaforwp_addon_html(){
     
     $add_on_list = pwaforwp_list_addons();
     $pluginHtml = '';
+	if(is_array($add_on_list) && !empty($add_on_list)){
     foreach ($add_on_list as $key => $plugin) {
     	$ctafp_active_text = '';
     	if(is_plugin_active($plugin['p-slug'])){                                           
@@ -860,6 +861,7 @@ function pwaforwp_addon_html(){
                 </div>
                 </li>';
     }
+}
 
     
     $ext_html = $pluginHtml;
@@ -1086,7 +1088,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 	<tr>
 		<td><label><?php echo esc_html__('Default caching strategy', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching]">
-			<?php if($arrayOPT){
+			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching']==$key){$sel = "selected"; }
@@ -1106,7 +1108,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 	<tr>
 		<td><label><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_js_css]">
-			<?php if($arrayOPT){
+			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_js_css']==$key){$sel = "selected"; }
@@ -1119,7 +1121,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 	<tr>
 		<td><label><?php echo esc_html__('Caching strategy for images', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_images]">
-			<?php if($arrayOPT){
+			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_images']==$key){$sel = "selected"; }
@@ -1132,7 +1134,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 	<tr>
 		<td><label><?php echo esc_html__('Caching strategy for fonts', 'pwa-for-wp'); ?></label></td>
 		<td><select name="pwaforwp_settings[default_caching_fonts]">
-			<?php if($arrayOPT){
+			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
 					$sel = "";
 					if($settings['default_caching_fonts']==$key){$sel = "selected"; }
@@ -1384,7 +1386,7 @@ function pwaforwp_visibility_setting_callback(){
             <td>
                 <select id="pwaforwp_settings[visibility_included_post_options]" class="regular-text visibility_options_select visibility_options_select_include" onchange="get_include_pages()">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
-                    <?php if($arrayOPT){
+                    <?php if(is_array($arrayOPT) && !empty($arrayOPT)){
                         foreach ($arrayOPT as $key => $opval) {?>
                             <option value="<?php echo esc_html__($key,'pwa-for-wp');?>"><?php echo esc_html__($opval,'pwa-for-wp'); ?></option>
                         <?php }
@@ -1433,7 +1435,7 @@ function pwaforwp_visibility_setting_callback(){
                 <select  id="pwaforwp_settings[visibility_excluded_post_options]" class="regular-text visibility_options_select visibility_options_select_exclude" onchange="get_exclude_pages()">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
 
-                    <?php if($arrayOPT){
+                    <?php if(is_array($arrayOPT) && !empty($arrayOPT)){
                         foreach ($arrayOPT as $key => $opval) {?>
                             <option value="<?php echo esc_html__($key,'pwa-for-wp');?>"><?php echo esc_html__($opval,'pwa-for-wp'); ?></option> 
                             
@@ -2016,6 +2018,7 @@ function pwaforwp_splash_icon_callback(){
 		?>
 		<div class="panel pwaforwp-hide" id="manually-1" style="max-height: 100%;">
 		<?php
+		if(is_array($splashIcons) && !empty($splashIcons)){
 		foreach ($splashIcons as $key => $splashValue) {
 			
 		?>
@@ -2026,7 +2029,7 @@ function pwaforwp_splash_icon_callback(){
 					<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
 				</button>
 			</div>
-		<?php } ?>
+		<?php } } ?>
 		</div>
 		
 	</div>
@@ -3427,6 +3430,7 @@ function pwaforwp_features_settings(){
 								);
 				
 	$featuresHtml = '';
+	if(is_array($feturesArray) && !empty($feturesArray)){
 	foreach ($feturesArray as $key => $featureVal) {
 		echo '<div id="'.$key.'-contents" class="pwaforwp-hide">';
 			echo '<div class="pwaforwp-wrap thickbox-fetures-wrap '.$key.'-wrap-tb">';
@@ -3500,7 +3504,7 @@ function pwaforwp_features_settings(){
 							$warnings
 
 						);
-	}
+	}}
 	echo '<ul class="pwaforwp-feature-cards">
 			'.$featuresHtml.'
 		</ul>
@@ -3555,16 +3559,18 @@ function pwaforwp_update_features_options(){
     }
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
-	if(is_array($allFields)){
+	if(is_array($allFields) && !empty($allFields)){
 		foreach ($allFields as $key => $field) {
 			
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
 				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				if(is_array($newArr) && !empty($newArr)){
 				foreach (array_reverse($varArray) as $key) {
 					$newArr = [$key => $newArr];
 				}
+			   }
 				$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
 				//$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}else{
@@ -3583,7 +3589,7 @@ function pwaforwp_update_features_options(){
 		$include_targeting_type_array = array();
         $include_targeting_value_array = array();
         
-        if(!empty($allFields)){
+        if(!empty($allFields) && is_array($allFields)){
                 foreach ($allFields as $key => $value) {
                     if($value['var_name']=="include_targeting_type"){
                         $include_targeting_type_array[] = $value['var_value'];
@@ -3611,7 +3617,7 @@ function pwaforwp_update_features_options(){
         $exclude_targeting_type_array = array();
         $exclude_targeting_value_array = array();
         
-        if(!empty($allFields)){
+        if(!empty($allFields) && is_array($allFields)){
                 foreach ($allFields as $key => $value) {
                     if($value['var_name']=="exclude_targeting_type"){
                         $exclude_targeting_type_array[] = $value['var_value'];
@@ -3734,10 +3740,11 @@ function pwaforwp_include_visibility_setting_callback(){
         if($include_type == 'globally'){ 
             $get_option = array('Globally');
             $option ='<option value="">Select Global Type</option>';
-        }        
+        }
+		if(!empty($get_option) && is_array($get_option)){        
         foreach ($get_option as $options_array) {
             $option .= '<option value="'.$options_array.'">'.$options_array.'</option>';
-        }
+        }}
     }
 
      if($include_type == 'post_category'){
@@ -3745,9 +3752,10 @@ function pwaforwp_include_visibility_setting_callback(){
           'hide_empty' => true,
         ));
         $option ='<option value="">Select Post Category</option>';
+		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $options_array) {
             $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
-        }
+        }}
        
     }
     if($include_type == 'taxonomy'){ 
@@ -3755,9 +3763,10 @@ function pwaforwp_include_visibility_setting_callback(){
           'hide_empty' => true,
         ) );
         $option ='<option value="">Select Taxonomy</option>';
+		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
             $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
-        }
+        }}
     }
 
     if($include_type == 'tags'){ 
@@ -3765,9 +3774,11 @@ function pwaforwp_include_visibility_setting_callback(){
           'hide_empty' => false
         ));
         $option ='<option value="">Select Tag</option>';
+		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
             $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
         }
+	}
 
     }
 
@@ -3775,18 +3786,20 @@ function pwaforwp_include_visibility_setting_callback(){
         $get_options = array("administrator"=>"Administrator", "editor"=>"Editor", "author"=>"Author", "contributor"=>"Contributor","subscriber"=>"Subscriber");
         $get_option = $get_options;
         $option ='<option value="">Select User</option>';
+		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
             $option .= '<option value="'.$key.'">'.$value.'</option>';
-        }
+        }}
 
     }
 
     if($include_type == 'page_template'){ 
         $get_option = wp_get_theme()->get_page_templates();
         $option ='<option value="">Select Page Template</option>';
+		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
             $option .= '<option value="'.$value.'">'.$value.'</option>';
-        }
+        }}
     }
 
     $data = array('success' => 1,'message'=>'Success','option'=>$option );
@@ -3873,13 +3886,15 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 		if( file_exists($filename) ){
 			//Check there is need of file creation
 			$createImage = array();
+			if(!empty($new_value['ios_splash_icon']) && is_array($new_value['ios_splash_icon'])){   
 			foreach ($new_value['ios_splash_icon'] as $key => $value) {
 				if(empty($value)){
 					$createImage[$key] = '';
 				}
-			}
+			}}
 			if(count($createImage)>0){
 				$editor = wp_get_image_editor( $filename, array() );
+				if(!empty($createImage) && is_array($createImage)){   
 				foreach ($createImage as $newkey => $newimages) {
 					
 					// Grab the editor for the file and the size of the original image.
@@ -3908,7 +3923,7 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 						}
 					}
 
-				}//Foreach closed
+				}}//Foreach closed
 				update_option( 'pwaforwp_settings', $new_value);
 
 			}
@@ -3977,10 +3992,11 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		if(function_exists('WP_Filesystem')){ WP_Filesystem(); }
 		unzip_file($zipfilename, $path);
 		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
-		$iosdata = pwaforwp_ios_splashscreen_files_data(); 
+		$iosdata = pwaforwp_ios_splashscreen_files_data();
+		if(is_array($iosdata) && !empty($iosdata)){
 		foreach ($iosdata as $key => $value) {
 			$pwaforwp_settings['ios_splash_icon'][$key] = $pathURL.$value['file'];
-		}
+		}}
 		$pwaforwp_settings['iosSplashScreenOpt']='generate-auto';
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
@@ -4066,7 +4082,7 @@ function pwaforwp_loading_icon_styles(){
 function pwaforwp_merge_recursive_ex(array $array1, array $array2)
 {
     $merged = $array1;
-
+	if(is_array($array2) && !empty($array2)){
     foreach ($array2 as $key => & $value) {
         if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
             $merged[$key] = pwaforwp_merge_recursive_ex($merged[$key], $value);
@@ -4077,7 +4093,7 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
         } else {
             $merged[$key] = $value;
         }
-    }
+    }}
 
     return $merged;
 }

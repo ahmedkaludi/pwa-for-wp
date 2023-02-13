@@ -160,13 +160,15 @@ class PWAforWP_wppwa{
             if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                 
              	$explod_urls = explode(',', $settings['precaching_urls']);
-             
-	            foreach ($explod_urls as $url){
-	                 
-	              $pre_cache_urls .= "'".trim(esc_url($url))."',\n"; 
-	              $pre_cache_urls_amp .= "'".trim(esc_url($url))."',\n"; 
-	              
-	            }   
+				if(is_array($explod_urls) && !empty($explod_urls))
+				{
+					foreach ($explod_urls as $url){
+						
+					$pre_cache_urls .= "'".trim(esc_url($url))."',\n"; 
+					$pre_cache_urls_amp .= "'".trim(esc_url($url))."',\n"; 
+					
+					}   
+				}
              
             }
                                
@@ -519,6 +521,7 @@ class PWAforWP_wppwa{
 		<script>
 			if ( navigator.serviceWorker ) {
 				window.addEventListener( 'load', function() {
+					if(is_array($scopes) && !empty($scopes)) {
 					<?php foreach ( $scopes as $name => $scope ) : ?>
 						{
 							let updatedSw;
@@ -561,7 +564,7 @@ class PWAforWP_wppwa{
 									} );
 								}
 							<?php endif; ?>
-						}
+						} }
 					<?php endforeach; ?>
 
 					let refreshedPage = false;

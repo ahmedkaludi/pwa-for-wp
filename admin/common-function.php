@@ -238,7 +238,7 @@ function pwaforwp_admin_link($tab = '', $args = array()){
 		$link .= '&tab=' . $tab;
 	}
 
-	if ( $args ) {
+	if ( !empty($args) ) {
 		foreach ( $args as $arg => $value ) {
 			$link .= '&' . $arg . '=' . urlencode( $value );
 		}
