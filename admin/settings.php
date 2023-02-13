@@ -151,8 +151,8 @@ function pwaforwp_admin_interface_render(){
                             // Check by Auto Refresh if user did renewal
                            $trans_check = get_transient( 'pwaforwp_addon_zto7' );
                             if ( $trans_check !== 'pwaforwp_addon_zto7_value' ){
-                               $auto_refresh_data = '<a addon-is-expired id="auto_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
-                                $auto_refresh_data.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+                               $auto_refresh_data = '<a addon-is-expired id="auto_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
+                                $auto_refresh_data.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
                             }
                             // Check by Auto Refresh End
                         }elseif( $days>=0 && $days<=30 ){
@@ -181,17 +181,17 @@ function pwaforwp_admin_interface_render(){
             		        $original_license = $license_key;
             		        $trans_check = get_transient( 'pwaforwp_addons_expired' );
                             if ( $trans_check !== 'pwaforwp_addons_expired_value' ){
-                	           $refresh_addon = '<a addon-is-expired id="refresh_expired_addon-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
+                	           $refresh_addon = '<a addon-is-expired id="refresh_expired_addon-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
                 	                   <i addon-is-expired class="dashicons dashicons-update-alt" id="refresh_expired_addon"></i>
                 	            </a>';
-            		          $refresh_addon.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+            		          $refresh_addon.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
             		        }
             		        // Option for User to manually Check the updated Data if he has renewed after the Expiration
 
-            		        $user_refresh_addon = '<a addon-is-expired id="user_refresh-" days_remaining="'.$days.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name.'" class="days_remain" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name).'_addon_license_key]">
+            		        $user_refresh_addon = '<a addon-is-expired id="user_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
                                     <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh"></i>
                                 </a>
-                                <input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name).''.strtolower($license_name).'" id="pwaforwp_license_deactivation_internal">';
+                                <input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
 
             			    $renew_mesg = '<a target="blank" class="renewal-license" href="'.esc_url($renew_url).'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
     					    $color = 'color:red';
@@ -3726,7 +3726,7 @@ function pwaforwp_include_visibility_setting_callback(){
         //print_r($include_type);exit;
         $query = new WP_Query($args);
         // print_r($query);
-        $option ='<option value="">Select '.$include_type.' Type</option>';
+        $option ='<option value="">Select '.esc_attr($include_type).' Type</option>';
         while ($query->have_posts()) : $query->the_post();
                     
             $option .= '<option value="'.get_the_title().'">'.get_the_title().'</option>';
@@ -3743,7 +3743,7 @@ function pwaforwp_include_visibility_setting_callback(){
         }
 		if(!empty($get_option) && is_array($get_option)){        
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.$options_array.'">'.$options_array.'</option>';
+            $option .= '<option value="'.esc_attr($options_array).'">'.esc_attr($options_array).'</option>';
         }}
     }
 
@@ -3754,7 +3754,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">Select Post Category</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
         }}
        
     }
@@ -3765,7 +3765,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">Select Taxonomy</option>';
 		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
         }}
     }
 
@@ -3776,7 +3776,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">Select Tag</option>';
 		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.$options_array->name.'">'.$options_array->name.'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
         }
 	}
 
@@ -3788,7 +3788,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">Select User</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
-            $option .= '<option value="'.$key.'">'.$value.'</option>';
+            $option .= '<option value="'.esc_attr($key).'">'.esc_attr($value).'</option>';
         }}
 
     }
@@ -3798,7 +3798,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">Select Page Template</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
-            $option .= '<option value="'.$value.'">'.$value.'</option>';
+            $option .= '<option value="'.esc_attr($value).'">'.esc_attr($value).'</option>';
         }}
     }
 
