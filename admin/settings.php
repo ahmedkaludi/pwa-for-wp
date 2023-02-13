@@ -751,7 +751,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 
-		add_settings_section('pwaforwp_compatibility_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_compatibility_setting_section');
+		add_settings_section('pwaforwp_compatibility_setting_section', '', '__return_false', 'pwaforwp_compatibility_setting_section');
                 add_settings_field(
 			'pwaforwp_one_signal_support',									// ID
 			esc_html__('OneSignal', 'pwa-for-wp'),		// Title
@@ -774,7 +774,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
                                
-		add_settings_section('pwaforwp_visibility_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_visibility_setting_section');
+		add_settings_section('pwaforwp_visibility_setting_section', '', '__return_false', 'pwaforwp_visibility_setting_section');
 		add_settings_field(
 			'pwaforwp_visibility_setting',							// ID
 			'',	
@@ -783,7 +783,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_visibility_setting_section'						// Settings Section ID
 		);  
 
-        add_settings_section('pwaforwp_precaching_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_precaching_setting_section');
+        add_settings_section('pwaforwp_precaching_setting_section', '', '__return_false', 'pwaforwp_precaching_setting_section');
         add_settings_field(
             'pwaforwp_precaching_setting',                          // ID
             '', 
@@ -791,7 +791,7 @@ function pwaforwp_settings_init(){
             'pwaforwp_precaching_setting_section',                      // Page slug
             'pwaforwp_precaching_setting_section'                       // Settings Section ID
         );  
-		add_settings_section('pwaforwp_urlhandler_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_urlhandler_setting_section');
+		add_settings_section('pwaforwp_urlhandler_setting_section', '', '__return_false', 'pwaforwp_urlhandler_setting_section');
 		add_settings_field(
 			'pwaforwp_urlhandler_setting',							// ID
 			esc_html__('Enter URLs (with similar origin)', 'pwa-for-wp'),	
@@ -801,7 +801,7 @@ function pwaforwp_settings_init(){
 		);  
                 
                 
-                add_settings_section('pwaforwp_push_notification_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_push_notification_section');
+                add_settings_section('pwaforwp_push_notification_section', '', '__return_false', 'pwaforwp_push_notification_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_push_notification',							// ID
@@ -811,7 +811,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_push_notification_section'						// Settings Section ID
 		);
                 
-                add_settings_section('pwaforwp_premium_features_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_premium_features_section');
+                add_settings_section('pwaforwp_premium_features_section', '', '__return_false', 'pwaforwp_premium_features_section');
 		// Splash Screen Background Color
 		add_settings_field(
 			'pwaforwp_premium_features',							// ID
