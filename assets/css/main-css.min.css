@@ -485,13 +485,13 @@ label.pwaforwp-sts-txt-inactive {
 	font-size: 15px
 }
 
-.ios-splash-images {
+.pwaforwp-ios-splash-images {
 	padding: 10px 0 10px 15px;
 	border: 1px solid #cdcdcd;
 	display: block
 }
 
-.ios-splash-images-field {
+.pwaforwp-ios-splash-images-field {
 	padding: 5px 0;
 	font-size: 13px
 }
@@ -545,7 +545,7 @@ label.pwaforwp-sts-txt-inactive {
 	cursor: pointer
 }
 
-#TB_ajaxContent .pwaforwp-wrap table th:empty {
+#pwaforwp_iTB_ajaxContent .pwaforwp-wrap table th:empty {
 	display: none
 }
 
@@ -562,7 +562,7 @@ label.pwaforwp-sts-txt-inactive {
 	height: 0
 }
 
-.pwaforwp-card-wrap .slider {
+.pwaforwp-card-wrap .pwaforwp_slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -574,7 +574,7 @@ label.pwaforwp-sts-txt-inactive {
 	transition: .4s
 }
 
-.pwaforwp-card-wrap .slider:before {
+.pwaforwp-card-wrap .pwaforwp_slider:before {
 	position: absolute;
 	content: "";
 	height: 12px;
@@ -585,19 +585,19 @@ label.pwaforwp-sts-txt-inactive {
 	transition: .4s
 }
 
-input:checked+.slider {
+input:checked+.pwaforwp_slider {
 	background-color: #46b450
 }
 
-input:checked+.slider:before {
+input:checked+.pwaforwp_slider:before {
 	left: -8px
 }
 
-input:focus+.slider {
+input:focus+.pwaforwp_slider {
 	box-shadow: 0 0 1px #2196f3
 }
 
-input:checked+.slider:before {
+input:checked+.pwaforwp_slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px)
@@ -621,11 +621,11 @@ input:checked+.slider:before {
 	top: 15px
 }
 
-.slider.round {
+.pwaforwp_slider.pwaforwp_round {
 	border-radius: 60px
 }
 
-.slider.round:before {
+.pwaforwp_slider.pwaforwp_round:before {
 	border-radius: 50%
 }
 
@@ -708,30 +708,30 @@ input:checked+.slider:before {
 	text-align: center
 }
 
-#TB_ajaxContent::-webkit-scrollbar {
+#pwaforwp_iTB_ajaxContent::-webkit-scrollbar {
 	-webkit-appearance: none
 }
 
-#TB_ajaxContent::-webkit-scrollbar:vertical {
+#pwaforwp_iTB_ajaxContent::-webkit-scrollbar:vertical {
 	width: 12px
 }
 
-#TB_ajaxContent::-webkit-scrollbar:horizontal {
+#pwaforwp_iTB_ajaxContent::-webkit-scrollbar:horizontal {
 	height: 12px
 }
 
-#TB_ajaxContent::-webkit-scrollbar-thumb {
+#pwaforwp_iTB_ajaxContent::-webkit-scrollbar-thumb {
 	background-color: rgba(0, 0, 0, .5);
 	border-radius: 10px;
 	border: 2px solid #fff
 }
 
-#TB_ajaxContent::-webkit-scrollbar-track {
+#pwaforwp_iTB_ajaxContent::-webkit-scrollbar-track {
 	border-radius: 10px;
 	background-color: #fff
 }
 
-#TB_ajaxContent .addtohomebanner-wrap-tb p {
+#pwaforwp_iTB_ajaxContent .addtohomebanner-wrap-tb p {
 	padding-top: 0;
 	margin-top: 0;
 	margin-bottom: 5px
@@ -908,20 +908,20 @@ input:checked+.slider:before {
 	display: none
 }
 
-.ios-splash-screen-creator .field {
+.pwaforwp-ios-splash-screen-creator .field {
 	margin-bottom: 10px;
 }
 
-.ios-splash-screen-creator #pwa-ios-splashmessage {
+.pwaforwp-ios-splash-screen-creator #pwa-ios-splashmessage {
 	display: inline;
 }
 
-.ios-splash-screen-creator .field label {
+.pwaforwp-ios-splash-screen-creator .field label {
 	display: inline-block;
 	width: 50%;
 }
 
-.ios-splash-images .accordion {
+.pwaforwp-ios-splash-images .accordion {
 	background-color: #eee;
 	color: #444;
 	cursor: pointer;
@@ -933,12 +933,12 @@ input:checked+.slider:before {
 	transition: 0.4s;
 }
 
-.ios-splash-images .accordion.active,
-.ios-splash-images .accordion:hover {
+.pwaforwp-ios-splash-images .accordion.active,
+.pwaforwp-ios-splash-images .accordion:hover {
 	background-color: #ccc;
 }
 
-.ios-splash-images .panel {
+.pwaforwp-ios-splash-images .panel {
 	padding: 3px 18px;
 	background-color: white;
 	overflow: hidden;
@@ -946,7 +946,7 @@ input:checked+.slider:before {
 	transition: max-height 0.2s ease-out;
 }
 
-.ios-splash-images .accordion:after {
+.pwaforwp-ios-splash-images .accordion:after {
 	content: '\02795';
 	font-size: 13px;
 	color: #777;
@@ -954,7 +954,7 @@ input:checked+.slider:before {
 	margin-left: 5px;
 }
 
-.ios-splash-images .active:after {
+.pwaforwp-ios-splash-images .active:after {
 	content: "\2796";
 }
 
@@ -964,19 +964,19 @@ input:checked+.slider:before {
 
 .pwaforwp-feedback-notice .dashicons-thumbs-up {
 	padding-right: 5px;
-}span#lic_active {
+}span#pwaforwp_lic_active {
     color: green;
     margin-left: 7px;
-}#lic_inactive {
+}#pwaforwp_lic_inactive {
     color: #bebfc0;
     margin-left: 7px;
-}.license_key_input_Active {
+}.pwaforwp_license_key_input_active {
     margin-left: 10px;
-}.license_key_input_Inactive {
+}.pwaforwp_license_key_input_inactive {
     margin-left: 6px;
 }.pwaforwp-features-blocks{
 	display:inline-grid;grid-template-columns:1fr 1fr;grid-gap:20px;
-}.activated-plugins {
+}.pwaforwp-activated-plugins {
     position: relative;
     display: inline-block;
     color: #222;
@@ -985,7 +985,7 @@ input:checked+.slider:before {
     right: 5px;
     margin-left: 4px;
 }
-.pro_icon:before {
+.pwaforwp_pro_icon:before {
     content: "\f147";
     background: #388e3c;
     border-radius: 40px;
@@ -998,30 +998,30 @@ input:checked+.slider:before {
     margin: 0;
     font-size: 14px;
 }
-.pro_icon {
+.pwaforwp_pro_icon {
     margin: 0;
     font-size: 16px;
     margin-left: 3px;
     margin-top: 1px;
     right: 5px;
 }
-.expiredinner_span {
+.pwaforwp_expiredinner_span {
     color: green;
 }
 i.dashicons-before.dashicons-admin-generic {
     color: #666;
 }
-#exp {
+#pwaforwp-exp {
     color: red;
 }
-.dashicons-no {
+.pwaforwp-dashicons-no {
     background: red;
     color: #fff;
     border-radius: 10px;
     position: relative;
     font-size: 15px;
 }
-.dashicons-no:before {
+.pwaforwp-dashicons-no:before {
     content: "\f158";
     top: 2px;
     position: relative;
@@ -1032,7 +1032,7 @@ i.dashicons-before.dashicons-admin-generic {
     font-size: 14px;
     letter-spacing: 0;
 }
-.dashicons-alert::before {
+.pwaforwp-dashicons-alert::before {
     content: "\f534";
     background: #ffb900;
     border-radius: 40px;
@@ -1044,7 +1044,7 @@ i.dashicons-before.dashicons-admin-generic {
     margin: 0;
     position: relative;
 }
-a.renewal-license {
+a.pwaforwp-renewal-license {
     margin-left: 5px;
     font-size: 12px!important;
     padding: 4px 10px 5px;
@@ -1056,23 +1056,23 @@ a.renewal-license {
     box-shadow: 0 0.15em 0.65em 0 rgb(0 0 0 / 25%);
     text-decoration: none;
 }
-.renew-lic:hover {
+.pwaforwp-renew-lic:hover {
     color: #eee;
 }
-span.renew-lic {
+span.pwaforwp-renew-lic {
     font-size: 14px;
 }
 .pwaforwp_key_user_name {
     font-weight: 700;
 }
 
-.before_msg_active {
+.pwaforwp_before_msg_active {
     margin-left: 3px;
 }
 .pwaforwp_addon_inactive {
     margin-left: 3px;
 }
-.ext_settings_url {
+.pwaforwp_ext_settings_url {
     margin-left: 8px;
     text-decoration: unset;
 }
@@ -1084,11 +1084,8 @@ span.renew-lic {
     padding: 1px 0 0 7px;
     margin-top: 5px;
 }
-.pwaforwp-main .activated-plugins {
+.pwaforwp-main .pwaforwp-activated-plugins {
     color: #222;
-}
-a.ext_url {
-    text-decoration: unset;
 }
 span#pwaforwp-addon-dashicons-yes {
     top: 20px;
@@ -1103,7 +1100,7 @@ p.pwaforwp_license_status_msg {
     position: relative;
     bottom: 10px;
 }
-span#pwaforwp-addon-dashicons-no {
+span#pwaforwp-addon-pwaforwp-dashicons-no {
     display: none;
     position: relative;
     top: 22px;
@@ -1121,7 +1118,7 @@ span#pwaforwp-addon-dashicons-no {
     float: right;
     left: -163px;
 }
-.license_key_input_inactive {
+.pwaforwp_license_key_input_inactive {
     display: inline-block;
     bottom: 8px;
     position: relative;
@@ -1134,15 +1131,15 @@ span#pwaforwp-addon-dashicons-no {
     position: relative;
     display: block;
 }
-span.pwaforwp_addon_icon.dashicons.dashicons-yes.pro_icon {
+span.pwaforwp_addon_icon.dashicons.dashicons-yes.pwaforwp_pro_icon {
     top: 0;
     position: relative;
 }
-p#enter_key_reviews {
+p#pwaforwp_enter_key_Reviews {
     position: relative;
     top: 20px;
 }
-p.enter_key_Reviews {
+p.pwaforwp_enter_key_Reviews {
     position: relative;
     top: 8px;
 }
@@ -1150,11 +1147,11 @@ label.pwaforwp-sts-txt {
     font-size: 14px;
     color: #000;
 }
-p#enter_key_woocommerce {
+p#pwaforwp_enter_key_woocommerce {
     position: relative;
     top: 20px;
 }
-input.license_key_input_active::placeholder {
+input.pwaforwp_license_key_input_active::placeholder {
     color: #000;
 }
 
@@ -1170,7 +1167,7 @@ span.addon-activated {
     padding: 6px 15px;
 }
  
-span.limit_span {
+span.pwaforwp_limit_span {
     float: left;
     display: block;
     position: relative;
@@ -1185,7 +1182,7 @@ a#pwaforwp_license_deactivationbtn {
 a#pwaforwp_license_activation_ {
     display: none;
 }
-.license_key_input_inactive {
+.pwaforwp_license_key_input_inactive {
     top: 0;
 }
 .pwaforwp-tools-field-title {
@@ -1196,10 +1193,10 @@ a#pwaforwp_license_activation_ {
 .pwaforwp-sts-active-main.reviews_addon {
     margin: -7px 0 0 0;
 }
-input.license_key_input_active {
+input.pwaforwp_license_key_input_active {
     margin-left: 10px;
 }
-input.license_key_input_inactive {
+input.pwaforwp_license_key_input_inactive {
     margin-left: 10px;
 }
 .pwaforwp-sts-active-main.woocommerce_addon {
@@ -1209,119 +1206,100 @@ input.license_key_input_inactive {
 a#pwaforwp_license_deactivation_internal {
     display: none;
 }
-.inner_span_expiring {
-    color: red;
-    margin-right: 2px;
-}
 .dashicons.spin {
-    animation: dashicons-spin 2s infinite;
+    animation: pwaforwp-dashicons-spin 2s infinite;
     animation-timing-function: linear;
 }
-@keyframes dashicons-spin {
+@keyframes pwaforwp-dashicons-spin {
     0% {
     transform: rotate(0);
 }
 100% {
     transform: rotate(-360deg);
 }
-}span#lic_exp {
+}span#pwaforwp_lic_exp {
     color: red;
         margin-left: 7px;
 }
-i#refresh_expired_addon {
+i#pwaforwp_refresh_expired_addon {
     cursor: pointer;
     /*display: none;*/
 }
-i#user_refresh_expired_addon {
-    cursor: pointer;
-}
-span.one_of_expired {
+span.pwaforwp_one_of_expired {
     color: red;
 }
-.pro_warning {
+.pwaforwp_pro_warning {
     color: #ffb229;
     right: 3px;
     position: relative;
     bottom: 1px;
-}.zero_to_seven{
+}.pwaforwp_zero_to_seven{
 	color: red;
-}.zero_to_30{
+}.pwaforwp_zero_to_30{
 	color: red;
-}#auto_refresh- {
+}#pwaforwp_auto_refresh- {
     cursor: pointer;
     display: none;
 }
-#refresh_expired_addon-{
+#pwaforwp_refresh_expired_addon-{
 cursor: pointer;
     display: none;	
-}#user_refresh- {
+}#pwaforwp_user_refresh- {
     cursor: pointer;
 }span.pwaforwp-license-tenure{
 	display: inline-block;
 	margin-top: 8px;    padding: 0px 0px 0px 17px;
 }
-.single-renewal-license{
-	margin-left: 5px;
-    padding: 4px 10px 5px;
-    letter-spacing: .1px;
-    border-radius: 60px;
-    margin-right: 0;
-    background: #388e3c;
-    color: #fff;
-    box-shadow: 0 0.15em 0.65em 0 rgb(0 0 0 / 25%);
-	}
-	span.pwaforwp-addon-active {
+
+span.pwaforwp-addon-active {
     color: #000;
-}.single_addon_warning{
+}.pwaforwp_single_addon_warning{
 	color: #ffb229;
 }label {
     cursor: default;
-}.less_than_zero {
+}.pwaforwp_less_than_zero {
     color: red;
     cursor: default;
-}.expire_msg {
+}.pwaforwp_expire_msg {
     color: red;
 }
 .expired-pwaforwp-license-tenure{
 	display: inline-block;
     margin: 0px 0px 0px 17px;
-}.lifetime_ {
+}.pwaforwp_lifetime_ {
     color: green;
-}#lic_lifetime {
+}#pwaforwp_lic_lifetime {
     color: green;
     margin-left: 8px;
-}.user_refresh_single_addon {
+}.pwaforwp_user_refresh_single_addon {
     cursor: pointer;
-}.pro_alert {
+}.pwaforwp_pro_alert {
     color: #ffb229;
     top: 2px;
     position: relative;
 }
-.menu_page_pro_alert{	
-	top: 0;	
-}
-.visibility-wrap-tb .form-table {
+.pwaforwp-visibility-wrap-tb .form-table {
     width: auto;
 }
-.include-btn.button-primary, .exclude-btn.button-primary {
+.pwaforwp-include-btn.button-primary, .pwaforwp-exclude-btn.button-primary {
     background: #005aef;
     border-color: #005aef;
     font-size: 15px;
     padding: 2px 20px;
     margin-top: -20px;
 }
-.include-btn-box {
+.pwaforwp-include-btn-box {
     padding: 0 !important;
     line-height: 0 !important;
 }
-.wp-core-ui .visibility_options_select {
+.wp-core-ui .pwaforwp_visibility_options_select {
 	border-color: #cccccc;
     padding: 5px 10px;
 }
 .pwaforwp-visibility-target-icon {
 	cursor: pointer;
 }
-.visibility-target-item {
+.pwaforwp-visibility-target-item {
 	background-color: #027bf714;
 	border-radius: 20px;
 	border: 1px solid #007eff3d;
@@ -1330,7 +1308,7 @@ cursor: pointer;
 	color: #002638;
 	margin-right: 10px;
 }
-.visibility-loader {
+.pwaforwp-visibility-loader {
   display: none;
   min-width: 200px;
   width: 100%;
@@ -1346,7 +1324,7 @@ cursor: pointer;
   background: rgba(0, 0, 0, 0.5);
 }
 
-.visibility-loader-box {
+.pwaforwp-pwaforwp-visibility-loader-box {
   width: 48px;
   height: 48px;
   border-radius: 50%;

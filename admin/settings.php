@@ -135,35 +135,35 @@ function pwaforwp_admin_interface_render(){
                         $ext_settings_url = 'ext_url';
                         if ( $days == 'Lifetime' ) {
                             $expire_msg = " ".esc_html__('Valid for Lifetime', 'pwa-for-wp')." ";
-                            $expire_msg_before = '<span class="before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
-                            $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
+                            $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
+                            $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pwaforwp_pro_icon";
                             $color = 'color:green';
                         }elseif( $days >= 0 && $days <= 7 ){
                             $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
                             if ($one_of_plugin_expired == 1) {
-                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'pwaforwp_one_of_expired\'> Expired </span></span><a target="blank" class="pwaforwp-renewal-license" href="'.$renew_url.'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
                             }else{
-                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_seven">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_zero_to_seven">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="pwaforwp-renewal-license" href="'.$renew_url.'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
                             }
                             $color = 'color:green';
-                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
+                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pwaforwp_pro_warning"></span>';
                             $original_license = $license_key;
                             // Check by Auto Refresh if user did renewal
                            $trans_check = get_transient( 'pwaforwp_addon_zto7' );
                             if ( $trans_check !== 'pwaforwp_addon_zto7_value' ){
-                               $auto_refresh_data = '<a addon-is-expired id="auto_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
+                               $auto_refresh_data = '<a addon-is-expired id="pwaforwp_auto_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]"><i addon-is-expired class="dashicons dashicons-update-alt" id="auto_refresh"></i></a>';
                                 $auto_refresh_data.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
                             }
                             // Check by Auto Refresh End
                         }elseif( $days>=0 && $days<=30 ){
                             $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
                             if ($one_of_plugin_expired == 1) {
-                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'one_of_expired\'> Expired </span></span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
+                                $expire_msg_before = '<span class="pwaforwp_addon_inactive">'.esc_html__('One of your', 'pwa-for-wp').' <span class="lessthan_0" style="color:red;">'.esc_html__('license key is', 'pwa-for-wp').'</span><span class=\'pwaforwp_one_of_expired\'> Expired </span></span><a target="blank" class="pwaforwp-renewal-license" href="'.$renew_url.'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';                    
                             }else{
-                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="renewal-license" href="'.$renew_url.'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                                $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span> <span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$days.' '.esc_html__('days', 'pwa-for-wp').'</span><a target="blank" class="pwaforwp-renewal-license" href="'.$renew_url.'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
                             }
                             $color = 'color:green';
-                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pro_warning"></span>';
+                            $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pwaforwp_pro_warning"></span>';
                         }elseif($days<0){
                             $ext_settings_url = 'ext_settings_url';
                             $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
@@ -174,44 +174,44 @@ function pwaforwp_admin_interface_render(){
                             }
                             $expire_msg = " ".esc_html__('Expired', 'pwa-for-wp')." ";
                             $exp_class = 'expired';
-                            $exp_id = 'exp';
+                            $exp_id = 'pwaforwp-exp';
                             $exp_class_2 = 'renew_license_key_';
-                            $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
+                            $span_class = "pwaforwp_addon_icon dashicons pwaforwp-dashicons-no";
 
             		        $original_license = $license_key;
             		        $trans_check = get_transient( 'pwaforwp_addons_expired' );
                             if ( $trans_check !== 'pwaforwp_addons_expired_value' ){
-                	           $refresh_addon = '<a addon-is-expired id="refresh_expired_addon-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
-                	                   <i addon-is-expired class="dashicons dashicons-update-alt" id="refresh_expired_addon"></i>
+                	           $refresh_addon = '<a addon-is-expired id="pwaforwp_refresh_expired_addon-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
+                	                   <i addon-is-expired class="dashicons dashicons-update-alt" id="pwaforwp_refresh_expired_addon"></i>
                 	            </a>';
             		          $refresh_addon.= '<input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
             		        }
             		        // Option for User to manually Check the updated Data if he has renewed after the Expiration
 
-            		        $user_refresh_addon = '<a addon-is-expired id="user_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
+            		        $user_refresh_addon = '<a addon-is-expired id="pwaforwp_user_refresh-" days_remaining="'.esc_attr($days).'" licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr($license_name).'" class="days_remain" data-attr="'.esc_attr($original_license).'" add-onname="pwaforwp_settings['.esc_attr(strtolower($license_name)).'_addon_license_key]">
                                     <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh"></i>
                                 </a>
                                 <input type="hidden" license-status="inactive"  licensestatusinternal="'.esc_attr($license_status).'" add-on="'.esc_attr(strtolower($license_name)).'" class="button button-default pwaforwp_license_activation '.esc_attr($license_status).'mode '.esc_attr(strtolower($license_name)).''.esc_attr(strtolower($license_name)).'" id="pwaforwp_license_deactivation_internal">';
 
-            			    $renew_mesg = '<a target="blank" class="renewal-license" href="'.esc_url($renew_url).'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+            			    $renew_mesg = '<a target="blank" class="pwaforwp-renewal-license" href="'.esc_url($renew_url).'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
     					    $color = 'color:red';
                         }else{
                             if ($one_of_plugin_expired == 1) {
-                                $expire_msg_before = '<span class="before_msg_active">'.esc_html__('One of your').' <span class=">than_30" style="color:red;">'.esc_html__('license key is').'</span></span>';    
+                                $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('One of your').' <span class=">than_30" style="color:red;">'.esc_html__('license key is').'</span></span>';    
                             }else{
-                                $expire_msg_before = '<span class="before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
+                                $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
                             }
                             if ($one_of_plugin_expired == 1) {
                                 $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                                $expire_msg = " <span class='one_of_expired'>".esc_html__('Expired')."</span> ";
-                                $renew_mesg = '<a target="blank" class="renewal-license" href="'.esc_url($renew_url).'"><span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
+                                $expire_msg = " <span class='pwaforwp_one_of_expired'>".esc_html__('Expired')."</span> ";
+                                $renew_mesg = '<a target="blank" class="pwaforwp-renewal-license" href="'.esc_url($renew_url).'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
                             }else{
                                 $expire_msg = " Active ";
                             }
                             if ($one_of_plugin_expired == 1) {
-                                $span_class = "pwaforwp_addon_icon dashicons dashicons-no";
+                                $span_class = "pwaforwp_addon_icon dashicons pwaforwp-dashicons-no";
                             }else{
-                                $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pro_icon";
+                                $span_class = "pwaforwp_addon_icon dashicons dashicons-yes pwaforwp_pro_icon";
                             }
                             if ($one_of_plugin_expired == 1) {
                                 $color = 'color:red';
@@ -222,8 +222,8 @@ function pwaforwp_admin_interface_render(){
                     echo $pwaforwp_addon_license_info;
                         $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
                 <span class='pwaforwp-info'>
-                ".$alert_icon."<span class='activated-plugins'>".pwaforwp_t_string('Hi')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
-                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
+                ".$alert_icon."<span class='pwaforwp-activated-plugins'>".pwaforwp_t_string('Hi')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
+                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='pwaforwp_expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
                 <span class='".$span_class."'></span>".$renew_mesg.$refresh_addon.$refresh_addon_user ;
                 $trans_check = get_transient( 'pwaforwp_addons_set_transient' );
             
@@ -264,7 +264,7 @@ function pwaforwp_admin_interface_render(){
                            || function_exists('qafp_plugin_for_pwa_updater')
                            || function_exists('nbfp_plugin_for_pwa_updater')
                            || function_exists('mcfp_plugin_for_pwa_updater') ) {
-                        $license_alert = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warning pro_alert' ></span>": ''  ;
+                        $license_alert = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warningpwaforwp_pro_alert' ></span>": ''  ;
                 }
 
 		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.' ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
@@ -1374,7 +1374,7 @@ function pwaforwp_visibility_setting_callback(){
                                 <input type="hidden" name="include_targeting_data" value="'.esc_attr($expo_include_data[$i],'pwa-for-wp').'">';
                             $expo_include_type_test = pwaforwpRemoveExtraValue($expo_include_type[$i]);
                             $expo_include_data_test = pwaforwpRemoveExtraValue($expo_include_data[$i]);
-                            echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_include_type_test.' - '.$expo_include_data_test,'pwa-for-wp').'</span>
+                            echo '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_include_type_test.' - '.$expo_include_data_test,'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
                             $rand++;
                         }
@@ -1384,7 +1384,7 @@ function pwaforwp_visibility_setting_callback(){
         </tr>
         <tr>
             <td>
-                <select id="pwaforwp_settings[visibility_included_post_options]" class="regular-text visibility_options_select visibility_options_select_include" onchange="get_include_pages()">
+                <select id="pwaforwp_settings[visibility_included_post_options]" class="regular-text pwaforwp_visibility_options_select visibility_options_select_include" onchange="get_include_pages()">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     <?php if(is_array($arrayOPT) && !empty($arrayOPT)){
                         foreach ($arrayOPT as $key => $opval) {?>
@@ -1395,12 +1395,12 @@ function pwaforwp_visibility_setting_callback(){
                 <div class="include_error">&nbsp;</div>
             </td>
             <td class="visibility_options_select">
-                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text visibility_options_select visibility_include_select_type">
+                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text pwaforwp_visibility_options_select visibility_include_select_type">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>                    
                 </select>
                 <div class="include_type_error">&nbsp;</div>
             </td>
-            <td class="include-btn-box"><a class="include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+            <td class="include-btn-box"><a class="pwaforwp-include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr> 
 
         <!-- Excluded -->
@@ -1422,7 +1422,7 @@ function pwaforwp_visibility_setting_callback(){
                            $expo_exclude_type_test = pwaforwpRemoveExtraValue($expo_exclude_type[$i]);
                            $expo_exclude_data_test = pwaforwpRemoveExtraValue($expo_exclude_data[$i]);
 
-                           echo '<span class="visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_exclude_type_test.' - '.$expo_exclude_data_test, 'pwa-for-wp').'</span>
+                           echo '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.esc_html__($expo_exclude_type_test.' - '.$expo_exclude_data_test, 'pwa-for-wp').'</span>
                             <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
                             $rand++;
                         }
@@ -1432,7 +1432,7 @@ function pwaforwp_visibility_setting_callback(){
         </tr>
         <tr>
             <td>
-                <select  id="pwaforwp_settings[visibility_excluded_post_options]" class="regular-text visibility_options_select visibility_options_select_exclude" onchange="get_exclude_pages()">
+                <select  id="pwaforwp_settings[visibility_excluded_post_options]" class="regular-text pwaforwp_visibility_options_select visibility_options_select_exclude" onchange="get_exclude_pages()">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
 
                     <?php if(is_array($arrayOPT) && !empty($arrayOPT)){
@@ -1447,14 +1447,14 @@ function pwaforwp_visibility_setting_callback(){
             </td>
 
             <td class="visibility_options_select">
-                <select  class="regular-text visibility_options_select visibility_exclude_select_type">
+                <select  class="regular-text pwaforwp_visibility_options_select visibility_exclude_select_type">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     
                     
                 </select>
                  <div class="exclude_type_error">&nbsp;</div>
             </td>
-            <td class="include-btn-box"><a class="exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
+            <td class="include-btn-box"><a class="pwaforwp-exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr>   
     <?php
 }
@@ -1986,7 +1986,7 @@ function pwaforwp_splash_icon_callback(){
 	</p>
 	<label>
 	<input type="checkbox" class="switch_apple_splash_screen" name="pwaforwp_settings[switch_apple_splash_screen]" value="1" <?php if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){ echo "checked"; } ?> ><?php echo esc_html__('Setup Splash Screen for iOS', 'pwa-for-wp') ?></label>
-	<div class="ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
+	<div class="pwaforwp-ios-splash-images" <?php if(isset($settings['switch_apple_splash_screen']) && !$settings['switch_apple_splash_screen']){ echo 'style="display:none"'; }?>>
 		<div class="field" style="margin-bottom: 10px;">
 			<label style="display: inline-block;width: 50%;"><?php echo esc_html__('iOS Splash Screen Method', 'pwa-for-wp') ?></label>
 			<select name="pwaforwp_settings[iosSplashScreenOpt]" id="ios-splash-gen-opt">
@@ -2003,7 +2003,7 @@ function pwaforwp_splash_icon_callback(){
            			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.rand(00,99).'" width="60" height="40">';
 		}
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
-				<div class="ios-splash-screen-creator" style="display:inline-block; width:90%">
+				<div class="pwaforwp-ios-splash-screen-creator" style="display:inline-block; width:90%">
 					<div class="field"><label>'.esc_html__('Select image (Only PNG)', 'pwa-for-wp').'</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
 					<div class="field"><label>'.esc_html__('Background color', 'pwa-for-wp').'</label><input type="text" id="ios-splash-color" value="#FFFFFF"></div>
 					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="Generate">
@@ -2022,7 +2022,7 @@ function pwaforwp_splash_icon_callback(){
 		foreach ($splashIcons as $key => $splashValue) {
 			
 		?>
-			<div class="ios-splash-images-field">
+			<div class="pwaforwp-ios-splash-images-field">
 				<label><?php echo $splashValue['name']." ($key) [".ucfirst($splashValue['orientation'])."]" ?></label>
 				<input type="text" name="pwaforwp_settings[ios_splash_icon][<?php echo $key ?>]" id="pwaforwp_settings[ios_splash_icon][<?php echo $key ?>]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon'][$key] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon'][$key])) : ''; ?>">
 				<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
@@ -2751,52 +2751,52 @@ function pwaforwp_get_license_section_html($on){
                 if( $license_status == 'active' ){
 
                     $license_Status_ = ''.esc_html__('Active', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_active"';
+                    $license_Status_id = 'id="pwaforwp_lic_active"';
 
                     if ( $license_expires == 'Lifetime' ) {
                     $license_Status_ = ''.esc_html__('Active', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_lifetime"';
+                    $license_Status_id = 'id="pwaforwp_lic_lifetime"';
                 }
                 else if( $license_expires < 0 ){
                     $license_Status_ = ''.esc_html__('Expired', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_exp"';
+                    $license_Status_id = 'id="pwaforwp_lic_exp"';
                  }
                  else if($license_expires > 0){
                     $license_Status_ = ''.esc_html__('Active', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_active"';
+                    $license_Status_id = 'id="pwaforwp_lic_active"';
                 }
 
                 $original_license = $license_key;
                     $license_name_ = strtolower($on);
                     $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_key."&download_id=".$license_download_id."";
-                    $user_refresh_addon = '<a addon-is-expired id="'.strtolower($license_name_).'" remaining_days_org='.$license_exp.' days_remaining="'.$license_expires.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name_.'" class="user_refresh_single_addon" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name_).'_addon_license_key]">
+                    $user_refresh_addon = '<a addon-is-expired id="'.strtolower($license_name_).'" remaining_days_org='.$license_exp.' days_remaining="'.$license_expires.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name_.'" class="pwaforwp_user_refresh_single_addon" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name_).'_addon_license_key]">
                     <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh_'.strtolower($license_name_).'"></i>
                     Refresh
                     </a>
                     <input type="hidden" license-status="inactive"  licensestatusinternal="'.$license_status.'" add-on="'.strtolower($license_name_).'" class="button button-default pwaforwp_license_activation '.$license_status.'mode '.strtolower($license_name_).''.strtolower($license_name_).'" id="pwaforwp_license_deactivation_internal">';
                 if ( $license_expires == 'Lifetime' ) {
-                    $expire_msg_before = '<span class="before_msg_active">'.esc_html__('License is', 'pwa-for-wp').'</span>';
+                    $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('License is', 'pwa-for-wp').'</span>';
                     $single_expire_msg = " ".esc_html__('Valid for Lifetime', 'pwa-for-wp')." ";
                     $renew_text = 'Renew';
-                    $license_expires_class = "lifetime_";
+                    $license_expires_class = "pwaforwp_lifetime_";
                 }
 
                 else if( $license_expires >= 0 && $license_expires <= 7 ){
-                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
+                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
                     $license_expires_class = "zero2thirty";
                     $single_expire_msg = '<span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$license_expires .' '.esc_html__('days', 'pwa-for-wp').'</span>';
                     $renew_text = 'Renew';
-                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning single_addon_warning"></span>';
+                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pwaforwp_single_addon_warning"></span>';
                  }
                  else if( $license_expires >=0 && $license_expires <=30 ){
-                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
+                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_zero_to_30">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
                     $license_expires_class = "zero2thirty";
                     $single_expire_msg = '<span class="pwaforwp-addon-alert">'.esc_html__('expiring in', 'pwa-for-wp').' '.$license_expires .' '.esc_html__('days', 'pwa-for-wp').'</span>';
                     $renew_text = 'Renew';
-                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning single_addon_warning"></span>';
+                    $alert_icon = '<span class="pwaforwp_addon_icon dashicons dashicons-warning pwaforwp_single_addon_warning"></span>';
                 }
                 else if( $license_expires < 0 ){
-                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="less_than_zero">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
+                    $expire_msg_before = '<span class="before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_less_than_zero">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
                     $single_expire_msg = " ".esc_html__('Expired', 'pwa-for-wp')." ";
                     $renew_text = 'Renew';
                     $license_expires_class = "expire_msg";
@@ -2812,8 +2812,8 @@ function pwaforwp_get_license_section_html($on){
 
                 $when_active = '<span class="pwaforwp-license-tenure" days_remaining='.$license_expires.'>'.$alert_icon.' '.$expire_msg_before.'
                 <span expired-days-data="'.$license_expires.'" class='.$license_expires_class.'>'.$single_expire_msg.'
-                <a target="blank" class="renewal-license" href="'.$renew_url.'">
-                <span class="renew-lic">'.esc_html__( $renew_text , 'pwa-for-wp').'</span></a>'.$user_refresh_addon.'
+                <a target="blank" class="pwaforwp-renewal-license" href="'.$renew_url.'">
+                <span class="pwaforwp-renew-lic">'.esc_html__( $renew_text , 'pwa-for-wp').'</span></a>'.$user_refresh_addon.'
                 </span>
                 </span>';
             }
@@ -2839,20 +2839,20 @@ function pwaforwp_get_license_section_html($on){
                 else{
                     if( $license_expires < 0 ){
                     $license_Status_ = ''.esc_html__('Expired', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_exp"';
+                    $license_Status_id = 'id="pwaforwp_lic_exp"';
                  }else if($license_expires > 0){
                     $license_Status_ = ''.esc_html__('Inactive', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_inactive"';
+                    $license_Status_id = 'id="pwaforwp_lic_inactive"';
                 }else{
                     $license_Status_ = ''.esc_html__('Inactive', 'pwa-for-wp').'';
-                    $license_Status_id = 'id="lic_inactive"';
+                    $license_Status_id = 'id="pwaforwp_lic_inactive"';
                 }
                  
                 if (!empty($expire_msg_before) && !empty($single_expire_msg) && !empty($license_expires_class) && !empty($license_expires) ) {
                     $original_license = $license_key;
                     $license_name_ = strtolower($on);
                     $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_key."&download_id=".$license_download_id."";
-                    $user_refresh_addon = '<a addon-is-expired remaining_days_org='.$license_exp.' id="'.strtolower($license_name_).'" days_remaining="'.$license_expires.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name_.'" class="user_refresh_single_addon" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name_).'_addon_license_key]">
+                    $user_refresh_addon = '<a addon-is-expired remaining_days_org='.$license_exp.' id="'.strtolower($license_name_).'" days_remaining="'.$license_expires.'" licensestatusinternal="'.$license_status.'" add-on="'.$license_name_.'" class="pwaforwp_user_refresh_single_addon" data-attr="'.$original_license.'" add-onname="pwaforwp_settings['.strtolower($license_name_).'_addon_license_key]">
                     <i addon-is-expired class="dashicons dashicons-update-alt" id="user_refresh_'.strtolower($license_name_).'"></i>
                     Refresh
                     </a>
@@ -2860,13 +2860,13 @@ function pwaforwp_get_license_section_html($on){
 
                     $final_otp = '';
                 if( $license_expires < 0 ){
-                    $expire_msg_before = '<span class="expired_before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="less_than_zero">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
+                    $expire_msg_before = '<span class="expired_before_msg">'.esc_html__('Your', 'pwa-for-wp').' <span class="pwaforwp_less_than_zero">'.esc_html__('License is', 'pwa-for-wp').'</span></span>';
                     $single_expire_msg = " ".esc_html__('Expired', 'pwa-for-wp')." ";
                     $license_expires_class = "expire_msg";
                     $final_otp = '<span class="expired-pwaforwp-license-tenure" days_remaining='.$license_expires.'>'.$alert_icon.' '.$expire_msg_before.'
                 <span expired-days-data="'.$license_expires.'" class='.$license_expires_class.'>'.$single_expire_msg.'
-                <a target="blank" class="renewal-license" href="'.esc_url($renew_url).'">
-                <span class="renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>'.$user_refresh_addon.'
+                <a target="blank" class="pwaforwp-renewal-license" href="'.esc_url($renew_url).'">
+                <span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>'.$user_refresh_addon.'
                 </span>
                 </span>';
                  }
@@ -3458,7 +3458,7 @@ function pwaforwp_features_settings(){
 	    $premium_alert  = '<div class="card-action">
 				<label class="switch">
 				  <input type="checkbox" %3$s name="pwaforwp_settings[%4$s]" value="1">
-				  <span class="slider round"></span>
+				  <span class="pwaforwp_slider pwaforwp_round"></span>
 				</label>
 				<div class="card-action-settings" data-content="%2$s-contents" '.$settingsHtml.'>
 					<span class="pwaforwp-change-data pwaforwp-setting-icon-tab dashicons dashicons-admin-generic" href="#" data-option="%2$s-contents" title="%1$s"></span>
@@ -3472,7 +3472,7 @@ function pwaforwp_features_settings(){
 	    	$wp_nonce = wp_create_nonce("wp_pro_activate");
 	    	$premium_alert = '<label class="switch">
 				  <input type="checkbox" class="pwa_activate_pro_plugin" value="1" data-secure="'.$wp_nonce.'" data-file="'.$featureVal['slug'].'">
-				  <span class="slider round"></span>
+				  <span class="pwaforwp_slider pwaforwp_round"></span>
 				</label>';
 	    }elseif(isset($featureVal['is_premium']) && $featureVal['is_premium'] && !$featureVal['pro_active'] && class_exists('PWAFORWPPROExtensionManager')){
 		    $premium_alert = '<span class="pro deactivated">Deactivated</span>';
@@ -3511,8 +3511,8 @@ function pwaforwp_features_settings(){
 		<div class="pwawp-modal-mask pwaforwp-hide">
     <div class="pwawp-modal-wrapper">
         <div class="pwawp-modal-container">
-			<div class="visibility-loader">
-				<div class="visibility-loader-box"></div>
+			<div class="pwaforwp-visibility-loader">
+				<div class="pwaforwp-pwaforwp-visibility-loader-box"></div>
 			</div>
             <button type="button" class="pwawp-media-modal-close"><span class="pwawp-media-modal-icon"></span></button>
             <div class="pwawp-modal-content">
@@ -3828,7 +3828,7 @@ function pwaforwp_include_visibility_condition_callback() {
     <input type="hidden" name="include_targeting_data" value="'.$include_targeting_data.'">';
     $include_targeting_type = pwaforwpRemoveExtraValue($include_targeting_type);
     $include_targeting_data = pwaforwpRemoveExtraValue($include_targeting_data);
-    $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$include_targeting_type.' - '.$include_targeting_data.'</span>
+    $option .= '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.$include_targeting_type.' - '.$include_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
     $data = array('success' => 1,'message'=>'Success','option'=>$option );
@@ -3856,7 +3856,7 @@ function pwaforwp_exclude_visibility_condition_callback() {
 
     $exclude_targeting_type = pwaforwpRemoveExtraValue($exclude_targeting_type);
     $exclude_targeting_data = pwaforwpRemoveExtraValue($exclude_targeting_data);
-    $option .= '<span class="visibility-target-item"><span class="visibility-include-target-label">'.$exclude_targeting_type.' - '.$exclude_targeting_data.'</span>
+    $option .= '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.$exclude_targeting_type.' - '.$exclude_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
     $data = array('success' => 1,'message'=>'Success','option'=>$option );
