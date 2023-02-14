@@ -3731,6 +3731,7 @@ function pwaforwp_include_visibility_setting_callback(){
                     
             $option .= '<option value="'.get_the_title().'">'.get_the_title().'</option>';
              endwhile; 
+		wp_reset_postdata();
     }
     if(in_array($include_type, array('post_type','globally'))) {
         if($include_type == 'post_type'){
