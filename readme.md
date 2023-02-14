@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.1
 
-Stable tag: 1.7.55
+Stable tag: 1.7.56
 
 License: GPLv2 or later
 
@@ -75,6 +75,12 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.56 (14 February 2023) =
+* Improvement: Code Improvement as per WP guidlines #787
+* Bug Fixed  : The offline form is not working and shows an error after submitting. #789
+* Bug Fixed  : Subscribe to push notification appears again and again after subscribing it.(User Specific) #751	
+* Removed    : Removed Offer Banner #788
 
 = 1.7.55 (26 December 2022) =
 * Bug Fixed  : PWA loader is not working in iphone safari browser and macbook safari #664
