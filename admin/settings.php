@@ -627,15 +627,7 @@ function pwaforwp_settings_init(){
 			'pwaforwp_addtohomescreen_setting_section',						// Page slug
 			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
 		);
-        // Add to Home screen Color
-        /*add_settings_field(
-			'pwaforwp_custom_banner_design',									// ID
-			esc_html__('', 'pwa-for-wp'),		// Title
-			'pwaforwp_custom_banner_design_callback',								// CB
-			'pwaforwp_addtohomescreen_setting_section',						// Page slug
-			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
-		);*/
-                
+       
                 add_settings_field(
 			'pwaforwp_cache_external_links_setting',							// ID
 			esc_html__('Cache External Links', 'pwa-for-wp'),	// Title
@@ -3467,8 +3459,6 @@ function pwaforwp_features_settings(){
 
 	    $pro_link = '';
 	    if(isset($featureVal['pro_deactive']) && $featureVal['pro_deactive'] && $featureVal['pro_deactive']==1  && !class_exists('PWAFORWPPROExtensionManager')){
-	    	//$Plugins = get_transient( 'plugin_slugs');
-	    	//<span class="pro deactivated">Deactivated</span>
 	    	$wp_nonce = wp_create_nonce("wp_pro_activate");
 	    	$premium_alert = '<label class="switch">
 				  <input type="checkbox" class="pwa_activate_pro_plugin" value="1" data-secure="'.$wp_nonce.'" data-file="'.$featureVal['slug'].'">
@@ -3678,9 +3668,7 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
-		/*if(isset($actualFields['precaching_automatic']) && $actualFields['precaching_automatic']==0){
-			$actualFields['precaching_feature'] = $actualFields['precaching_automatic'];
-		}*/
+		
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
@@ -3723,9 +3711,7 @@ function pwaforwp_include_visibility_setting_callback(){
             'post_status' => 'publish',
             'posts_per_page' => -1,
          );  
-        //print_r($include_type);exit;
         $query = new WP_Query($args);
-        // print_r($query);
         $option ='<option value="">Select '.esc_attr($include_type).' Type</option>';
         while ($query->have_posts()) : $query->the_post();
                     
@@ -3882,8 +3868,6 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 	if( isset($new_value['ios_splash_icon']['2048x1496']) && !empty($new_value['ios_splash_icon']['2048x1496']) && strrpos($new_value['ios_splash_icon']['2048x1496'], 'uploads/') ){
 		$uploadPath = wp_upload_dir();
 		$filename = str_replace($uploadPath['baseurl'], $uploadPath['basedir'], $new_value['ios_splash_icon']['2048x1496']);
-		
-		//$filename = '/Users/tommcfarlin/Projects/acme/wp-content/uploads/2018/06/original-image.jpg';
 		if( file_exists($filename) ){
 			//Check there is need of file creation
 			$createImage = array();
@@ -3933,10 +3917,6 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 
     
 
-/* else {
-	   // Handle the problem however you deem necessary.
-	}
-*/	
 }
 
 
