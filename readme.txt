@@ -64,7 +64,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.56 (14 February 2023) =
+= 1.7.56 (16 February 2023) =
 * Improvement: Code Improvement as per WP guidlines #787
 * Bug Fixed  : The offline form is not working and shows an error after submitting. #789
 * Bug Fixed  : Subscribe to push notification appears again and again after subscribing it.(User Specific) #751	
