@@ -281,7 +281,7 @@ class PWAFORWP_Service_Worker{
         function pwa_add_error_template_query_var() {
             global $wp;
             $allQueryVar = pwaforwp_query_var();
-            if(is_array($allQueryVar)){
+            if(is_array($allQueryVar) && !empty($allQueryVar)){
                 foreach ($allQueryVar as $key => $value) {
                     $wp->add_query_var( $value );
                 }
@@ -363,12 +363,13 @@ class PWAFORWP_Service_Worker{
 
                     if(in_array('page_template',$expo_include_type)){
                         $page_template = wp_get_theme()->get_page_templates();
+                        if(!empty($page_template) && is_array($page_template)){
                         foreach ($page_template as $key => $value) {
                             if(in_array($value,$expo_include_data)){
                                 $current_page_title =  $value;
                                 $current_page_type = 'page_template';
                             }
-                        }
+                        }}
                     }
 
                     if( is_user_logged_in() ) {
@@ -413,12 +414,13 @@ class PWAFORWP_Service_Worker{
 
                     if(in_array('page_template',$expo_exclude_type)){
                         $page_template = wp_get_theme()->get_page_templates();
+                        if(!empty($page_template) && is_array($page_template)){
                         foreach ($page_template as $key => $value) {
                             if(in_array($value,$expo_exclude_data)){
                                 $current_page_title =  $value;
                                 $current_page_type = 'page_template';
                             }
-                        }
+                        }}
                     }
 
                     if( is_user_logged_in() ) {
@@ -488,7 +490,7 @@ class PWAFORWP_Service_Worker{
                                         
                 if(isset($settings['precaching_automatic_post']) && $settings['precaching_automatic_post']==1){
                     $postslist = get_posts( $post_args );
-                    if($postslist){
+                    if(is_array($postslist) && !empty($postslist)){
                         foreach ($postslist as $post){
                             $post_ids[] = $post->ID;
                         }
@@ -497,7 +499,7 @@ class PWAFORWP_Service_Worker{
                 
                 if(isset($settings['precaching_automatic_page']) && $settings['precaching_automatic_page']==1){
                     $pageslist = get_pages( $page_args );
-                    if($pageslist){
+                    if(is_array($pageslist) && !empty($pageslist)){
                         foreach ($pageslist as $post){
                          $post_ids[] = $post->ID;
                        }               
@@ -779,14 +781,14 @@ class PWAFORWP_Service_Worker{
         $startupImages = '';
         if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
             $otherData = pwaforwp_ios_splashscreen_files_data();
-
+            if(is_array($settings['ios_splash_icon']) && !empty($settings['ios_splash_icon'])){
             foreach ($settings['ios_splash_icon'] as $key => $value) {
                 if(!empty($value) && !empty($key) && isset($otherData[$key])){
                     $screenData = $otherData[$key];
                     $startupImages .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.esc_url($value).'"/>'."\n";
                 }//if closed
             }//foreach closed
-
+        }
               echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
         }//if closed
     }//function iosSplashScreen closed
@@ -820,11 +822,12 @@ class PWAFORWP_Service_Worker{
         if(is_customize_preview() && is_admin()){
             return $meta_tags;
         }
+        if(is_array($meta_tags) && !empty($meta_tags)){
         foreach ($meta_tags as $key => $value) {
             if(strpos($value, 'apple-touch-icon') !== false){
                 unset($meta_tags[$key]);
             }
-        }
+        }}
         return $meta_tags;
     }
                 

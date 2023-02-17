@@ -228,12 +228,14 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			}
 			$plugins = array_keys( get_plugins() );
 			$active_plugins = get_option( 'active_plugins', array() );
-			foreach ( $plugins as $key => $plugin ) {
-				if ( in_array( $plugin, $active_plugins ) ) {
-					// Remove active plugins from list so we can show active and inactive separately
-					unset( $plugins[$key] );
+			if(is_array($plugins) && !empty($plugins)){
+				foreach ( $plugins as $key => $plugin ) {
+					if ( in_array( $plugin, $active_plugins ) ) {
+						// Remove active plugins from list so we can show active and inactive separately
+						unset( $plugins[$key] );
+					}
 				}
-			}
+		 	}
 			$body['active_plugins'] = $active_plugins;
 			$body['inactive_plugins'] = $plugins;
 			// Check text direction

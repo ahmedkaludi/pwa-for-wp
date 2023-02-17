@@ -38,7 +38,7 @@ class pushNotification{
             $result           = $this->pwaforwp_send_push_notification($message); 
             
             $result = json_decode($result, true);                         
-            if(!empty($result)){             
+            if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
             echo json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
             echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
@@ -226,24 +226,16 @@ class pushNotification{
                     'data'             => $msg  
             ];
 
-            $curl = curl_init();
-
-            curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://fcm.googleapis.com/fcm/send',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($payload),
-            CURLOPT_HTTPHEADER => $header,
-            )
+            $args = array(
+              'body'        => json_encode($payload),
+              'timeout'     => '15',
+              'headers'     => $header,
+              'sslverify'   => false,
             );
-            $response = curl_exec($curl);            
-            $err = curl_error($curl);
-            curl_close($curl);
-            if($err){
-              return $err;
-            }else{
-              return $response;
-            }              
+
+            $response = wp_remote_post( 'https://fcm.googleapis.com/fcm/send', $args);
+            $response = wp_remote_retrieve_body( $response );
+            return $response;          
       }
                  
 }

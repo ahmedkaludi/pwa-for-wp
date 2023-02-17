@@ -1,9 +1,12 @@
 		    var config=;                     
                      if (!firebase.apps.length) {
-		    firebase.initializeApp(config);	
-		    }           
-        if(!messaging)
-        {const messaging = firebase.messaging();}         		  		  		                
+		                      firebase.initializeApp(config);	
+		                    }                    		  		  		  
+                    if(!messaging)
+                    {
+                      const messaging = firebase.messaging();
+                    }
+                    
                     messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
                     if(pwaForWpisTokenSentToServer()){

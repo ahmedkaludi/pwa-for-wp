@@ -491,7 +491,7 @@ function PWAforwpreadCookie(name) {
     }
     return null;
 }
-        jQuery(document).on("click",".user_refresh_single_addon", function(e){
+        jQuery(document).on("click",".pwaforwp_user_refresh_single_addon", function(e){
 
                 var currentThis = jQuery(this);
                 e.preventDefault();

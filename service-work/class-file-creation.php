@@ -333,12 +333,14 @@ class pwaforwpFileCreation{
                   $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
                 }
                 if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){
+                  if(is_array($settings['ios_splash_icon']) && !empty($settings['ios_splash_icon'])){
                   foreach ($settings['ios_splash_icon'] as $key => $value) {
                     if($value){
                       $pre_cache_urls .= "'".esc_url(pwaforwp_https($value))."',\n";
                       $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($value))."',\n";
                     }
                   }
+                }
                 }
 
                 if(isset($settings['screenshots'])){ 
@@ -349,12 +351,12 @@ class pwaforwpFileCreation{
                 if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
                     
                  $explod_urls = explode(',', $settings['precaching_urls']);
-                 
+                 if(is_array($explod_urls) && !empty($explod_urls)){ 
                  foreach ($explod_urls as $url){
-                     
+                  
                   $pre_cache_urls .= "'".trim(esc_url($url))."',\n"; 
                   $pre_cache_urls_amp .= "'".trim(esc_url($url))."',\n"; 
-                  
+                 }
                  }   
                  
                 }
@@ -362,7 +364,7 @@ class pwaforwpFileCreation{
                 $store_post_id = array();
                 $store_post_id = json_decode(get_transient('pwaforwp_pre_cache_post_ids'));
                 
-                if(!empty($store_post_id) && isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
+                if(!empty($store_post_id) && is_array($store_post_id) && isset($settings['precaching_automatic']) && $settings['precaching_automatic']==1){
                     
                     foreach ($store_post_id as $post_id){
                         
@@ -545,7 +547,7 @@ class pwaforwpFileCreation{
                                     ), array(
                                       "",
                                       "return caches.open(CACHE_VERSIONS.offline).then(function(cache) {
-                                        return cache.match(OFFLINE_URL);
+                                        return cache.match(OFFLINE_PAGE);
                                       });"
                                     ), $swJsContent); 		
 	        return $swJsContent;
