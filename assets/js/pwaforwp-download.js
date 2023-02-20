@@ -1,9 +1,11 @@
 (function(){
 	setTimeout(()=>{
+		if( window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: minimal-ui)').matches) { 
 		document.addEventListener("click", function(event){
-			if(event.target.tagName === "A"){			
-			var isdownlod = event.target.attributes["download"] ? "1" : "0";
-			if(isdownlod == 1){
+			if(event.target.tagName === "A"){	
+			var pwaforwp_download_text = event.target.attributes["download"];		
+			var pwaforwp_isdownload = pwaforwp_download_text ? "1" : "0";
+			if(pwaforwp_isdownload == 1){
 				event.preventDefault();
 				var url = event.target.attributes["href"].value;
 				event.target.removeAttribute("href");
@@ -16,7 +18,7 @@
 			        var myBlob = this.response;
 			        var link = document.createElement('a');
 			        link.href = window.URL.createObjectURL(myBlob);
-			        link.download = url;
+			        link.download = pwaforwp_download_text;
 			        link.click();
 			      }
 			    };
@@ -24,6 +26,6 @@
 			}
 			}
 		})
-
+		}
 	},1000)
 })()
