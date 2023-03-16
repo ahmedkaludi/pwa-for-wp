@@ -118,7 +118,8 @@ register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
 register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
 
 function pwaforwp_on_deactivation(){
-            
+    global $wp_rewrite;
+    $wp_rewrite->flush_rules();        
     pwaforwp_delete_pwa_files();
     
 }
