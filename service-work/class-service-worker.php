@@ -35,7 +35,9 @@ class PWAFORWP_Service_Worker{
                 add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
                 add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
                 add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
-        		add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
+                if(isset($settings['one_signal_support_setting']) && $settings['one_signal_support_setting']==1){
+        		    add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
+                }
                 if(isset($settings['pushnami_support_setting']) && $settings['pushnami_support_setting']==1){
                     add_action( 'init',  array($this,'pwaforwp_pushnami_rewrite' ));
                 }
@@ -72,20 +74,13 @@ class PWAFORWP_Service_Worker{
         }
 		
 		function pwaforwp_onesignal_rewrite(){
-            flush_rewrite_rules();
-            // Flushing rewrite urls ONLY on activation
-            global $wp_rewrite;
-            $wp_rewrite->flush_rules();
+
 			add_rewrite_rule("onesignal_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("onesignal_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
 
 		}
 
         function pwaforwp_pushnami_rewrite(){
-            flush_rewrite_rules();
-            // Flushing rewrite urls ONLY on activation
-            global $wp_rewrite;
-            $wp_rewrite->flush_rules();
             add_rewrite_rule("pushnami_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("pushnami_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
         }
