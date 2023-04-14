@@ -473,6 +473,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section'						// Settings Section ID
 		);
 		
+		// Monochrome Icon
+		add_settings_field(
+			'pwaforwp_monochrome',										// ID
+			esc_html__('Monochrome Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_monochrome_callback',									// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
+		
 		// Splash Screen Icon
 		add_settings_field(
 			'pwaforwp_app_splash_icon',									// ID
@@ -542,7 +551,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_apple_status_bar_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
-		);                                
+		);
+		
+		add_settings_field(
+			'pwaforwp_app_related_applications',									// ID
+			esc_html__('Related Application', 'pwa-for-wp'),	// Title
+			'pwaforwp_related_applications_callback',								// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
 
 	add_settings_section('pwaforwp_design_section', 'Splash Screen', '__return_false', 'pwaforwp_design_section');
 		// Splash Screen Background Color
@@ -1960,6 +1977,27 @@ function pwaforwp_app_icon_callback(){
 	<?php
 }
 
+function pwaforwp_monochrome_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
+	
+	<!-- monochrome Icon -->
+        <input type="text" name="pwaforwp_settings[monochrome]" id="pwaforwp_settings[monochrome]" class="pwaforwp-monochrome regular-text" size="50" value="<?php echo isset( $settings['monochrome'] ) ? esc_attr( pwaforwp_https($settings['monochrome'])) : ''; ?>">
+	<button type="button" class="button pwaforwp-monochrome-upload" data-editor="content">
+		<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Monochrome Icon', 'pwa-for-wp'); ?> 
+	</button>
+	
+	<p class="description">
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Monochrome Icon of your application when installed on the phone. Must be a PNG image exactly'),
+			esc_html__('192x192 in size.'),
+			esc_html__('- For Apple mobile exact sizes is necessary')
+				);
+		?>
+	</p>
+	<?php
+}
+
 function pwaforwp_splash_icon_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); ?>
@@ -2224,6 +2262,17 @@ function pwaforwp_apple_status_bar_callback(){
 	<p class="description">
 		<?php esc_html__( 'The status bar at the top of the screen (which usually displays the time and battery status).', 'pwa-for-wp' ); ?>
 	</p>
+
+	<?php
+}
+
+function pwaforwp_related_applications_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
+	
+	<fieldset>
+		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
+	</fieldset>
 
 	<?php
 }
