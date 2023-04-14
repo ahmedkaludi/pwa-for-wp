@@ -660,6 +660,12 @@ class pwaforwpFileCreation{
                     'type'  => 'image/png', 
                     'purpose'=> 'maskable',
                 );
+                $icons[] = array(
+                    'src'   => esc_url(pwaforwp_https($defaults['monochrome'])),
+                    'sizes' => '512x512', 
+                    'type'  => 'image/png', 
+                    'purpose'=> 'monochrome',
+                );
                 $screenshots[] = array( 
                     'src'   => esc_url(pwaforwp_https($defaults['screenshots'])),   
                     'sizes' => '512x512',   
@@ -678,6 +684,7 @@ class pwaforwpFileCreation{
                 $manifest['background_color'] = esc_attr($defaults['background_color']);
                 $manifest['theme_color']      = esc_attr($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
+                $manifest['related_applications']       = ($defaults['related_applications']);
                 if($orientation)
                 {
                   $manifest['orientation']      = esc_html( $orientation );
