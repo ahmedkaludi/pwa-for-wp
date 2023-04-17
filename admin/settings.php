@@ -1990,7 +1990,7 @@ function pwaforwp_monochrome_callback(){
 	<p class="description">
 		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
 			esc_html__('Monochrome Icon of your application when installed on the phone. Must be a PNG image exactly'),
-			esc_html__('192x192 in size.'),
+			esc_html__('512x512 in size.'),
 			esc_html__('- For Apple mobile exact sizes is necessary')
 				);
 		?>
