@@ -1989,7 +1989,7 @@ function pwaforwp_monochrome_callback(){
 	
 	<p class="description">
 		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
-			esc_html__('Monochrome Icon of your application when installed on the phone. Must be a PNG image exactly'),
+			esc_html__('Monochrome Icon for the application .Must be PNG having transparent background'),
 			esc_html__('512x512 in size.'),
 			esc_html__('- For Apple mobile exact sizes is necessary')
 				);
@@ -2271,7 +2271,12 @@ function pwaforwp_related_applications_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<fieldset>
-		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="com.example.app" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
+		<label for="pwaforwp_settings[related_applications]">Play Store ID</label>
+	</fieldset>
+	<fieldset>
+		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
+		<label for="pwaforwp_settings[related_applications_ios]">App Store ID</label>
 	</fieldset>
 
 	<?php

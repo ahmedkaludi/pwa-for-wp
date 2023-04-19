@@ -556,8 +556,7 @@ class pwaforwpFileCreation{
       
     public function pwaforwp_manifest($is_amp = false){ 
         
-    	$defaults = pwaforwp_defaultSettings();  
-        
+    	$defaults = pwaforwp_defaultSettings();
         if($is_amp){ 
           if(function_exists('ampforwp_url_controller')){
 				      if(isset($defaults['start_page']) && $defaults['start_page'] !=0){
@@ -660,20 +659,31 @@ class pwaforwpFileCreation{
                     'type'  => 'image/png', 
                     'purpose'=> 'maskable',
                 );
-                $icons[] = array(
-                    'src'   => esc_url(pwaforwp_https($defaults['monochrome'])),
-                    'sizes' => '512x512', 
-                    'type'  => 'image/png', 
-                    'purpose'=> 'monochrome',
-                );
+                if (isset($defaults['monochrome']) && $defaults['monochrome']) {
+                  $icons[] = array(
+                      'src'   => esc_url(pwaforwp_https($defaults['monochrome'])),
+                      'sizes' => '512x512', 
+                      'type'  => 'image/png', 
+                      'purpose'=> 'monochrome',
+                  );
+                }
                 $screenshots[] = array( 
                     'src'   => esc_url(pwaforwp_https($defaults['screenshots'])),   
                     'sizes' => '512x512',   
                     'type'  => 'image/png',     
                     'purpose'=> 'maskable', 
                 );
-
-                                                             
+                $related_applications = [];
+                if (isset($defaults['related_applications']) && $defaults['related_applications']) {
+                  $related_applications[] = array('id' =>$defaults['related_applications'],
+                                                'platform' => 'play',
+                                                'url' => 'https://play.google.com/store/apps/details?id='.$defaults['related_applications'] );
+                }
+                if (isset($defaults['related_applications_ios']) && $defaults['related_applications_ios']) {
+                  $related_applications[] = array('id' =>$defaults['related_applications_ios'],
+                                                'platform' => 'itunes',
+                                                'url' => 'https://apps.apple.com/app/'.$defaults['related_applications_ios'] );
+                }                                            
                 $manifest = array();
                                                 
                 $manifest['name']             = ($defaults['app_blog_name']);
@@ -684,7 +694,8 @@ class pwaforwpFileCreation{
                 $manifest['background_color'] = esc_attr($defaults['background_color']);
                 $manifest['theme_color']      = esc_attr($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
-                $manifest['related_applications']       = ($defaults['related_applications']);
+                $manifest['related_applications']       = $related_applications;
+                
                 if($orientation)
                 {
                   $manifest['orientation']      = esc_html( $orientation );
