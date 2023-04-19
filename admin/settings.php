@@ -2271,12 +2271,12 @@ function pwaforwp_related_applications_callback(){
 	$settings = pwaforwp_defaultSettings(); ?>
 	
 	<fieldset>
+		<label for="pwaforwp_settings[related_applications]">PlayStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="com.example.app" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
-		<label for="pwaforwp_settings[related_applications]">Play Store ID</label>
 	</fieldset>
 	<fieldset>
+		<label for="pwaforwp_settings[related_applications_ios]">AppStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
-		<label for="pwaforwp_settings[related_applications_ios]">App Store ID</label>
 	</fieldset>
 
 	<?php
