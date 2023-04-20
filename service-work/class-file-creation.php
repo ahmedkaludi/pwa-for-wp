@@ -683,7 +683,7 @@ class pwaforwpFileCreation{
                   $related_applications[] = array('id' =>$defaults['related_applications_ios'],
                                                 'platform' => 'itunes',
                                                 'url' => 'https://apps.apple.com/app/'.$defaults['related_applications_ios'] );
-                }                                            
+                }
                 $manifest = array();
                                                 
                 $manifest['name']             = ($defaults['app_blog_name']);
@@ -694,7 +694,9 @@ class pwaforwpFileCreation{
                 $manifest['background_color'] = esc_attr($defaults['background_color']);
                 $manifest['theme_color']      = esc_attr($defaults['theme_color']);
                 $manifest['display']          = esc_html($display);
-                $manifest['related_applications']       = $related_applications;
+                if (count($related_applications) > 0) {
+                  $manifest['related_applications']       = $related_applications;
+                }
                 
                 if($orientation)
                 {

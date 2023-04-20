@@ -2276,7 +2276,7 @@ function pwaforwp_related_applications_callback(){
 	</fieldset>
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications_ios]">AppStore App ID</label>&nbsp;
-		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="id123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
 	</fieldset>
 
 	<?php
