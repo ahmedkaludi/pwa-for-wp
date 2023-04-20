@@ -64,6 +64,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
+= 1.7.58 (20 April 2023) =
+* Feature Added  : Add monochrome icons to manifest #795
+* Feature Added  : Add "related_applications" to manifest #794
+* Bug Fixed : Auto-save forms feature is not working properly. #799
+
 = 1.7.57 (18 March 2023) =
 * Bug Fixed  : Download button href changing into link attribute on click #790
 * Bug Fixed  : Rewrite rules are being flush on every page load #765
