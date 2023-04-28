@@ -592,7 +592,7 @@ function pwaforwp_settings_init(){
 
         add_settings_field(
             'pwaforwp_cleandataonuninstall_setting',                           // ID
-            esc_html__('Remove Data on Uninstall?', 'pwa-for-wp'),  // Title
+            __('<label for="pwaforwp_settings_navigation_uninstall_setting"><b>Remove Data on Uninstall?</b></label>', 'pwa-for-wp'),  // Title
             'pwaforwp_cleandataonuninstall_setting_callback',                          // CB
             'pwaforwp_tools_section',                       // Page slug
             'pwaforwp_tools_section'                        // Settings Section ID
@@ -603,21 +603,21 @@ function pwaforwp_settings_init(){
 		add_settings_section('pwaforwp_other_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_other_setting_section');
 		add_settings_field(
 			'pwaforwp_cdn_setting',							// ID
-			esc_html__('CDN Compatibility', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings_cdn_setting"><b>CDN Compatibility</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_cdn_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);                
         add_settings_field(
 			'pwaforwp_offline_google_setting',							// ID
-			esc_html__('Offline Google Analytics', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[offline_google_setting]"><b>Offline Google Analytics</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_offline_google_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_prefetch_manifest_setting',							// ID
-			esc_html__('Prefetch manifest URL link', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[prefetch_manifest_setting]"><b>Prefetch manifest URL link</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_prefetch_manifest_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -646,9 +646,9 @@ function pwaforwp_settings_init(){
 			'pwaforwp_addtohomescreen_setting_section'						// Settings Section ID
 		);
        
-                add_settings_field(
+        add_settings_field(
 			'pwaforwp_cache_external_links_setting',							// ID
-			esc_html__('Cache External Links', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings_external_links_setting"><b>Cache External Links</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_cache_external_links_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -677,28 +677,28 @@ function pwaforwp_settings_init(){
 		);
 		add_settings_field(
 			'pwaforwp_avoid_default_banner_setting',							// ID
-			esc_html__('Remove default banner', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[avoid_default_banner]"><b>Remove default banner</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_avoid_default_banner_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_avoid_pwa_loggedin_setting',							// ID
-			esc_html__('Remove pwa for logged in users', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[avoid_loggedin_users]"><b>Remove pwa for logged in users</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_avoid_pwa_loggedin_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
-			esc_html__('PWA alternative method', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[serve_js_cache_menthod]"><b>PWA alternative method</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_reset_cookies_method_setting',							// ID
-			esc_html__('Reset cookies', 'pwa-for-wp'),	// Title
+			__('<label for="pwaforwp_settings[reset_cookies]"><b>Reset cookies</b></label>', 'pwa-for-wp'),	// Title
 			'pwaforwp_reset_cookies_method_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -764,21 +764,21 @@ function pwaforwp_settings_init(){
 		add_settings_section('pwaforwp_compatibility_setting_section', '', '__return_false', 'pwaforwp_compatibility_setting_section');
                 add_settings_field(
 			'pwaforwp_one_signal_support',									// ID
-			esc_html__('OneSignal', 'pwa-for-wp'),		// Title
+			__('<label for="pwaforwp_settings[one_signal_support_setting]"><b>OneSignal</b></label>', 'pwa-for-wp'),		// Title
 			'pwaforwp_one_signal_support_callback',								// CB
 			'pwaforwp_compatibility_setting_section',						// Page slug
 			'pwaforwp_compatibility_setting_section'						// Settings Section ID
 		);
         add_settings_field(
 			'pwaforwp_pushnami_support',							// ID
-			esc_html__('Pushnami', 'pwa-for-wp'),					// Title
+			__('<label for="pwaforwp_settings[pushnami_support_setting]"><b>Pushnami</b></label>', 'pwa-for-wp'),					// Title
 			'pwaforwp_pushnami_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_webpushr_support',							// ID
-			esc_html__('Webpushr', 'pwa-for-wp'),					// Title
+			__('<label for="pwaforwp_settings[webpusher_support_setting]"><b>Webpushr</b></label>', 'pwa-for-wp'),					// Title
 			'pwaforwp_webpushr_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
@@ -2446,11 +2446,10 @@ function pwaforwp_files_status_callback(){
                 </tr>
                 
                 <tr>
-                    <th><?php echo esc_html__( 'Enable / Disable', 'pwa-for-wp' ) ?></th>
+                    <th><label for="pwaforwp_settings_normal_enable"><b><?php echo esc_html__( 'Enable / Disable', 'pwa-for-wp' ) ?></label></b></th>
 	                <td> 
-	                	<label><input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]"> 
+	                	<input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]" id="pwaforwp_settings_normal_enable"> 
 	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
-	                	</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
