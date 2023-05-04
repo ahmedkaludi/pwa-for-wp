@@ -1025,6 +1025,19 @@ function pwaforwp_list_addons(){
                     'p-desc' => esc_html__('Rewards to the most loyal base of customers', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
+		 
+         'qcfp'  => array(
+				'p-slug' => 'qr-code-for-pwa/qr-code-for-pwa.php',
+				'p-name' => 'Qr Code for PWA',
+				'p-short-prefix'=> 'QRCODE',
+				'p-smallcaps-prefix'=> 'qrcode',
+				'p-title' => 'Qr Code for PWA',
+				'p-url'	 => 'https://pwa-for-wp.com/extensions/qr-code-for-pwa/',
+				'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/qr-code-for-pwa.png',
+				'p-background-color'=> '#acb1b5',
+				'p-desc' => esc_html__('QR Code for PWA extension to user can install app using QR Code ', 'pwa-for-wp'),
+				'p-tab'	 => false
+			),
      );
 	return $add_on_list;
 }
@@ -3472,7 +3485,19 @@ function pwaforwp_features_settings(){
                                     'slug' => 'mcfp',
 									'tooltip_option' => esc_html__('Show respective language page when Multilingual avilable in PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-multilingual-compatibility-for-pwa-addon/'
-									),				
+									),
+				'qr_code_for_pwa' => array(
+									'enable_field' => esc_html__('qr_code_for_pwa', 'pwa-for-wp'),
+									'section_name' => esc_html__('pwaforwp_qrcode_setting_section', 'pwa-for-wp'),
+									'setting_title' => esc_html__('Qr Code For PWA', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['qcfp']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['qcfp']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['qcfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qcfp']['p-slug'])? 1: 0),
+									'slug' => 'qcfp',
+									'tooltip_option'=> esc_html__('Qr code for PWA', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-qr-code-for-pwa/'
+									),			
 								);
 				
 	$featuresHtml = '';
