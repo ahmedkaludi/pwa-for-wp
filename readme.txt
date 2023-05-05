@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.1
-Stable tag: 1.7.58
+Tested up to: 6.2
+Stable tag: 1.7.59
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,10 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.59 (05 May 2023) =
+* Feature Added  : Label should be clickable for all checkbox labels #802
+* Feature Added  : Add functionality that user can install app using QR Code #806
 
 = 1.7.58 (20 April 2023) =
 * Feature Added  : Add monochrome icons to manifest #795
