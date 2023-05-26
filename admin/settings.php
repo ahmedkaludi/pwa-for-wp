@@ -3629,19 +3629,23 @@ function pwaforwp_update_features_options(){
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
 	if(is_array($allFields) && !empty($allFields)){
-		foreach ($allFields as $key => $field) {
-			
+		foreach ($allFields as $key => $field) {			
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
+
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
 				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 				if(is_array($newArr) && !empty($newArr)){
-				foreach (array_reverse($varArray) as $key) {
-					$newArr = [$key => $newArr];
+					foreach (array_reverse($varArray) as $key) {
+						$newArr = [$key => $newArr];
+					}
+					$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
+				}else{
+					if (isset($actualFields[$varArray[0]][$varArray[1]])) {
+						$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+					}
 				}
-			   }
-				$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
-				//$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+				
 			}else{
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
