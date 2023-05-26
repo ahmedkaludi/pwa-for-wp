@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.2
-Stable tag: 1.7.6
+Stable tag: 1.7.60
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -64,7 +64,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.6 (26 May 2023) =
+= 1.7.60 (26 May 2023) =
 * Bug Fixed  : Navigation Bar saving button is not working properly. #811
 * Bug Fixed  : Conflict issue in loader extension #812
 * Bug Fixed  : formidable forms File Upload feature is not supported in offline form #801
