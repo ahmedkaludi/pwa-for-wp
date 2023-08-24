@@ -2083,14 +2083,34 @@ function pwaforwp_splash_icon_callback(){
 
 function pwaforwp_app_screenshots_callback(){
     // Get Settings
-    $settings = pwaforwp_defaultSettings(); ?>
-    
-    <!-- Application Icon -->
-        <input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]" class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
-    <button type="button" class="button pwaforwp-screenshots-upload" data-editor="content">
-        <span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
-    </button>
-    
+    $settings = pwaforwp_defaultSettings();
+	?>
+	<div class="js_clone_div" style="margin-top: 10px;">
+		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots regular-text"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
+		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
+			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+		</button>
+		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
+		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+		</button>
+	</div>
+	<?php
+	if (isset($settings['screenshots_multiple']) && is_array($settings['screenshots_multiple']) && !empty($settings['screenshots_multiple'])) {
+		foreach ($settings['screenshots_multiple'] as $key => $screenshot) {
+	?>	
+		<div class="js_clone_div" style="margin-top: 10px;">
+			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
+			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
+				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+			</button>
+				<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+				</button>
+		</div>
+	<?php
+		}
+	}
+	?>
+    <?php /*
     <p class="description">
         <?php echo sprintf('%s <strong>%s</strong><br/> %s',
             esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
@@ -2098,7 +2118,8 @@ function pwaforwp_app_screenshots_callback(){
             esc_html__('- For all mobiles exact sizes is necessary')
                 );
         ?>
-    </p>
+    </p> */ ?>
+	
     <?php
 }
 
