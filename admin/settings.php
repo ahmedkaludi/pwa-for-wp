@@ -2110,7 +2110,6 @@ function pwaforwp_app_screenshots_callback(){
 		}
 	}
 	?>
-    <?php /*
     <p class="description">
         <?php echo sprintf('%s <strong>%s</strong><br/> %s',
             esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
@@ -2118,7 +2117,7 @@ function pwaforwp_app_screenshots_callback(){
             esc_html__('- For all mobiles exact sizes is necessary')
                 );
         ?>
-    </p> */ ?>
+    </p>
 	
     <?php
 }
