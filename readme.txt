@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.2
-Stable tag: 1.7.60
+Tested up to: 6.3
+Stable tag: 1.7.61
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,17 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.61 (01 Sept 2023) =
+* Bug Fixed  : QR code activation issue #827
+* Bug Fixed  : Add logo in WordPress Menu for PWAforWP #803
+* Bug Fixed  : PWA dashboard Enable / Disable option not working properly #820
+* Bug Fixed  : Login header are visible after logout #826
+* Bug Fixed  : Offline form issue with Formidable form #825
+* Feature Added  : Option to upload multiple images in APP Screenshots section #807
+* Feature Added  : Install Link for PWA for WP #735
+* Feature Added  : Add a feature by which Search bar should work offline #815
+* Feature Added  : Add a feature to force disable the pull to refresh on an Android device #814
 
 = 1.7.60 (26 May 2023) =
 * Bug Fixed  : Navigation Bar saving button is not working properly. #811
