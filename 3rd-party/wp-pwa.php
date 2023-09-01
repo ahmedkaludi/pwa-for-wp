@@ -463,6 +463,20 @@ class PWAforWP_wppwa{
     		"label"=> "Homescreen of PWA App"
         );
 
+		if (isset($defaults['screenshots_multiple']) && !empty($defaults['screenshots_multiple'])) {
+			foreach ($defaults['screenshots_multiple'] as $key => $screenshots_multiple) {
+				if (!empty($screenshots_multiple)) {
+					$screenshots[] = array(
+						'src' 	=> esc_url(pwaforwp_https($screenshots_multiple)),
+						'sizes'	=> '512x512', 
+						'type'	=> 'image/png', 
+						"platform"=> "wide",
+						"label"=> "Homescreen of PWA App"
+					);
+				}
+			}
+		}
+
         $manifest['name']             = esc_attr($defaults['app_blog_name']);
         $manifest['short_name']       = esc_attr($defaults['app_blog_short_name']);
         $manifest['description']      = esc_attr($defaults['description']);

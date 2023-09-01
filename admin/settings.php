@@ -28,12 +28,12 @@ function pwaforpw_add_menu_links() {
     }
 
 	// Main menu page
-	add_menu_page( esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
-                esc_html__( 'PWA', 'pwa-for-wp' ).$license_alert_icon, 
+	add_menu_page( __( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
+                __( 'PWA', 'pwa-for-wp' ).$license_alert_icon, 
                 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
-                '', 100 );
+                PWAFORWP_PLUGIN_URL.'images/menu-icon.png', 100 );
 	
 	// Settings page - Same as main menu page
 	add_submenu_page( 'pwaforwp',
@@ -1026,12 +1026,12 @@ function pwaforwp_list_addons(){
                     'p-tab'	 => false
          ),
 		 
-         'qcfp'  => array(
+         'qrcode'  => array(
 				'p-slug' => 'qr-code-for-pwa/qr-code-for-pwa.php',
-				'p-name' => 'Qr Code for PWA',
+				'p-name' => 'QR Code for PWA',
 				'p-short-prefix'=> 'QRCODE',
 				'p-smallcaps-prefix'=> 'qrcode',
-				'p-title' => 'Qr Code for PWA',
+				'p-title' => 'QR Code for PWA',
 				'p-url'	 => 'https://pwa-for-wp.com/extensions/qr-code-for-pwa/',
 				'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/qr-code-for-pwa.png',
 				'p-background-color'=> '#acb1b5',
@@ -2083,14 +2083,33 @@ function pwaforwp_splash_icon_callback(){
 
 function pwaforwp_app_screenshots_callback(){
     // Get Settings
-    $settings = pwaforwp_defaultSettings(); ?>
-    
-    <!-- Application Icon -->
-        <input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]" class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
-    <button type="button" class="button pwaforwp-screenshots-upload" data-editor="content">
-        <span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
-    </button>
-    
+    $settings = pwaforwp_defaultSettings();
+	?>
+	<div class="js_clone_div" style="margin-top: 10px;">
+		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots regular-text"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
+		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
+			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+		</button>
+		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
+		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+		</button>
+	</div>
+	<?php
+	if (isset($settings['screenshots_multiple']) && is_array($settings['screenshots_multiple']) && !empty($settings['screenshots_multiple'])) {
+		foreach ($settings['screenshots_multiple'] as $key => $screenshot) {
+	?>	
+		<div class="js_clone_div" style="margin-top: 10px;">
+			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
+			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
+				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+			</button>
+				<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+				</button>
+		</div>
+	<?php
+		}
+	}
+	?>
     <p class="description">
         <?php echo sprintf('%s <strong>%s</strong><br/> %s',
             esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
@@ -2099,6 +2118,7 @@ function pwaforwp_app_screenshots_callback(){
                 );
         ?>
     </p>
+	
     <?php
 }
 
@@ -2460,9 +2480,11 @@ function pwaforwp_files_status_callback(){
                 
                 <tr>
                     <th><label for="pwaforwp_settings_normal_enable"><b><?php echo esc_html__( 'Enable / Disable', 'pwa-for-wp' ) ?></label></b></th>
-	                <td> 
-	                	<input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]" id="pwaforwp_settings_normal_enable"> 
-	                		<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
+	                <td>
+						<label>
+							<input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]" id="pwaforwp_settings_normal_enable"> 
+							<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
+						</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
@@ -2993,10 +3015,10 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 		$api_params = array(
 			'edd_action' => $edd_action,
 			'license'    => $license_key,
-                        'item_name'  => $item_name[strtolower($add_on)]['p-title'],
-                        'author'     => 'Magazine3',			
+			'item_name'  => $item_name[strtolower($add_on)]['p-title'],
+			'author'     => 'Magazine3',			
 			'url'        => home_url(),
-                        'beta'       => false,
+			'beta'       => false,
 		);
                 
                 $message        = '';
@@ -3042,6 +3064,9 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                     }
                     if ($addon_name == 'Quick Action for PWA') {
                         $addon_name = 'qafp';
+                    }
+                    if ($addon_name == 'QR Code for PWA') {
+                        $addon_name = 'qrcode';
                     }
                     
 					$license[strtolower($add_on).'_addon_license_key_status']  = 'inactive';
@@ -3163,6 +3188,9 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                     }
                     if ($addon_name == 'Quick Action for PWA') {
                         $addon_name = 'qafp';
+                    }
+					if ($addon_name == 'QR Code for PWA') {
+                        $addon_name = 'qrcode';
                     }
                         $fname = substr($fname, 0, strpos($fname, ' '));
                         $check_for_Caps = ctype_upper($fname);
@@ -3489,13 +3517,13 @@ function pwaforwp_features_settings(){
 				'qr_code_for_pwa' => array(
 									'enable_field' => esc_html__('qr_code_for_pwa', 'pwa-for-wp'),
 									'section_name' => esc_html__('pwaforwp_qrcode_setting_section', 'pwa-for-wp'),
-									'setting_title' => esc_html__('Qr Code For PWA', 'pwa-for-wp'),
+									'setting_title' => esc_html__('QR Code For PWA', 'pwa-for-wp'),
 									'is_premium'    => true,
-									'pro_link'      => $addonLists['qcfp']['p-url'],
-									'pro_active'    => (is_plugin_active($addonLists['qcfp']['p-slug'])? 1: 0),
-									'pro_deactive'    => (!is_plugin_active($addonLists['qcfp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qcfp']['p-slug'])? 1: 0),
-									'slug' => 'qcfp',
-									'tooltip_option'=> esc_html__('Qr code for PWA', 'pwa-for-wp'),
+									'pro_link'      => $addonLists['qrcode']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['qrcode']['p-slug'])? 1: 0),
+									'pro_deactive'    => (!is_plugin_active($addonLists['qrcode']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['qrcode']['p-slug'])? 1: 0),
+									'slug' => 'qrcode',
+									'tooltip_option'=> esc_html__('QR code for PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-qr-code-for-pwa/'
 									),			
 								);

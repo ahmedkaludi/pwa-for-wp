@@ -64,8 +64,14 @@ class PWAFORWP_Service_Worker{
                  */
                 add_filter("site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove'));
             }
+
+            if( $GLOBALS['pagenow'] === 'wp-login.php' ){
+                add_action( 'init',  array($this,'load_scripts' ));
+            }
+        }
         
-            	                                                                                                                                  
+        function load_scripts($hooks){
+            wp_enqueue_script( 'pwa-cache-clear-js', PWAFORWP_PLUGIN_URL . '/assets/js/clear-cache.js',array(),PWAFORWP_PLUGIN_VERSION, true );
         }
 
         public static function loadalernative_script_load_method(){

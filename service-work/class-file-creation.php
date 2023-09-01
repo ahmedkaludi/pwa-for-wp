@@ -673,6 +673,19 @@ class pwaforwpFileCreation{
                     'type'  => 'image/png',     
                     'purpose'=> 'maskable', 
                 );
+                if (isset($defaults['screenshots_multiple']) && !empty($defaults['screenshots_multiple'])) {
+                  foreach ($defaults['screenshots_multiple'] as $key => $screenshots_multiple) {
+                    if (!empty($screenshots_multiple)) {
+                      $screenshots[] = array(
+                        'src' 	=> esc_url(pwaforwp_https($screenshots_multiple)),
+                        'sizes'	=> '512x512', 
+                        'type'	=> 'image/png', 
+                        "platform"=> "wide",
+                        "label"=> "Homescreen of PWA App"
+                      );
+                    }
+                  }
+                }
                 $related_applications = [];
                 if (isset($defaults['related_applications']) && $defaults['related_applications']) {
                   $related_applications[] = array('id' =>$defaults['related_applications'],
