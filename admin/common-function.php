@@ -764,3 +764,70 @@ function pwaforwp_ios_splashscreen_files_data(){
             );
     return $iosSplashData;
 }
+
+function pwaforwp_get_user_roles(){
+    global $wp_roles;
+    $allroles = array();
+    foreach ( $wp_roles->roles as $key=>$value ){
+        $allroles[esc_attr($key)] = esc_html($value['name']);
+    }
+    return $allroles;
+}
+
+function pwaforwp_get_capability_by_role($role){
+    $cap = apply_filters('pwaforwp_default_manage_option_capability', 'manage_options' );
+    switch ($role) {
+        case 'wpseo_editor':
+            $cap = 'edit_pages';                
+            break;                  
+        case 'editor':
+            $cap = 'edit_pages';                
+            break;            
+        case 'author':
+            $cap = 'publish_posts';                
+            break;
+        case 'contributor':
+            $cap = 'edit_posts';                
+            break;
+        case 'wpseo_manager':
+            $cap = 'edit_posts';                
+            break;
+        case 'subscriber':
+            $cap = 'read';                
+            break;
+        default:
+            break;
+    }
+    return $cap;
+
+}
+
+function pwaforwp_current_user_allowed(){
+    $currentuserrole = array();
+    if( ( function_exists('is_user_logged_in') && is_user_logged_in() )  && function_exists('wp_get_current_user') ) {
+        $settings       = pwaforwp_defaultSettings();
+        $currentUser    = wp_get_current_user();        
+        $pwaforwp_roles = isset($settings['pwaforwp_role_based_access']) ? $settings['pwaforwp_role_based_access'] : array('administrator');
+        if($currentUser){
+            if($currentUser->roles){
+                $currentuserrole = (array) $currentUser->roles;
+            }else{
+                if( isset($currentUser->caps['administrator']) ){
+                    $currentuserrole = array('administrator');
+                }	
+            }
+            if( is_array($currentuserrole) ){
+                $hasrole         = array_intersect( $currentuserrole, $pwaforwp_roles );
+                if( !empty($hasrole)){                                     
+                    return reset($hasrole);
+                }
+            }
+        }       
+    }
+    return false;
+}
+
+function pwaforwp_current_user_can(){
+    $capability = pwaforwp_current_user_allowed() ? pwaforwp_get_capability_by_role(pwaforwp_current_user_allowed()) : 'manage_options';
+    return $capability;                    
+}
