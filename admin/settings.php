@@ -2994,6 +2994,7 @@ function pwaforwp_get_license_section_html($on){
                     <span class="lic_btn_active_'.strtolower($on).'">
                 	  <a license-status="active" add-on="'.strtolower($on).'" class="button button-default pwaforwp_license_activation">'.esc_html__('Activate', 'pwa-for-wp').'</a>
                       </span>
+					  <p class="message_addon-inactive_'.strtolower($on).'" '.$license_Status_id.'></p>
 
                     </label></div>';
                     $response .=  $final_otp ;
@@ -3057,13 +3058,24 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 			'beta'       => false,
 		);
                 
-                $message        = '';
-                $current_status = '';
-                $response       = @wp_remote_post( PWAFORWP_EDD_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-                           
+		$message        = '';
+		$current_status = '';
+		$response       = @wp_remote_post( PWAFORWP_EDD_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
                 // make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$message =  ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : __( 'An error occurred, please try again.' );
+			if(!empty($response->get_error_message())){
+				$error_message = strtolower($response->get_error_message());
+				$error_pos = strpos($error_message, 'operation timed out');
+				if($error_pos !== false){
+					$message = __('Request timed out, please try again');
+				}else{
+					$message = esc_html($response->get_error_message());
+				}
+			}
+			if(empty($message)){ 
+					 $message =   __( 'An error occurred, please try again.');
+			}
+			// $message =  ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : __( 'An error occurred, please try again.' );
 		} else {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
                         
