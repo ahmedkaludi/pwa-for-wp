@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.3
-Stable tag: 1.7.61
+Stable tag: 1.7.62
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.62 (14 Sept 2023) =
+* Bug Fixed  : Push notification is not working on IOS. #66
+* Bug Fixed  : Need to put a proper display message on license activation/deactivation timeout #831
+* Bug Fixed  : The messages do not redirect when the extension Buddypress for PWAforWP is activated on the user-end #839
+* Feature Added  : Need to create a feature for Role managers #824
+* Feature Added  : Need to add support to display badge on mobile PWA icon #821
+* Feature Added  : Need to add a new feature for BuddyPress Group Notification in buddypress for PWAforWP pro extension #841
 
 = 1.7.61 (01 Sept 2023) =
 * Bug Fixed  : QR code activation issue #827
