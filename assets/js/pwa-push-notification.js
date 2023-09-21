@@ -2,7 +2,7 @@
                      if (!firebase.apps.length) {
 		                      firebase.initializeApp(config);	
 		                    }                    		  		  		  
-                    if(!messaging)
+                    if(typeof messaging == 'undefined')
                     {
                       const messaging = firebase.messaging();
                     }

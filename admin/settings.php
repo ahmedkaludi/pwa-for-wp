@@ -30,16 +30,17 @@ function pwaforpw_add_menu_links() {
 	// Main menu page
 	add_menu_page( __( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
                 __( 'PWA', 'pwa-for-wp' ).$license_alert_icon, 
-                'manage_options',
+				pwaforwp_current_user_can(),
+                // 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
                 PWAFORWP_PLUGIN_URL.'images/menu-icon.png', 100 );
-	
 	// Settings page - Same as main menu page
 	add_submenu_page( 'pwaforwp',
                 esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ),
                 esc_html__( 'Settings', 'pwa-for-wp' ),
-                'manage_options',
+				pwaforwp_current_user_can(),
+                // 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render');	
                                 
@@ -52,11 +53,13 @@ function pwaforpw_add_menu_links() {
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
 
 function pwaforwp_admin_interface_render(){
-    
-	// Authentication
-	if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
 		return;
 	}
+	// Authentication
+	// if ( ! current_user_can( 'manage_options' ) ) {
+	// 	return;
+	// }
 		
 	// Handing save settings
 	if ( isset( $_GET['settings-updated'] ) ) {	
@@ -710,6 +713,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		if( function_exists('is_super_admin') &&  is_super_admin() ){
+			add_settings_field(
+				'pwaforwp_disallow_data_tracking_setting',							// ID
+				esc_html__('Role Based Access', 'pwa-for-wp'),	// Title
+				'pwaforwp_role_based_access_setting_callback',							// CB
+				'pwaforwp_other_setting_section',						// Page slug
+				'pwaforwp_other_setting_section'						// Settings Section ID
+			);
+		}
 		add_settings_section('pwaforwp_loaders_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -1215,6 +1227,30 @@ function pwaforwp_reset_cookies_method_setting_callback(){
 	<input type="checkbox" name="pwaforwp_settings[reset_cookies]" id="pwaforwp_settings[reset_cookies]" class=""  <?php echo (isset( $settings['reset_cookies'] ) && $settings['reset_cookies']=='1'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Check this to delete cookies','pwa-for-wp'); ?></p>
 	<?php
+}
+function pwaforwp_role_based_access_setting_callback(){
+	if( function_exists('is_super_admin') &&  is_super_admin() ){
+		$settings = pwaforwp_defaultSettings(); 
+		?>
+			<select id="pwaforwp_role_based_access" class="regular-text" name="pwaforwp_settings[pwaforwp_role_based_access][]" multiple="multiple">
+				<?php
+					foreach (pwaforwp_get_user_roles() as $key => $opval) {
+						$selected = "";
+						if (isset($settings['pwaforwp_role_based_access']) && in_array($key,$settings['pwaforwp_role_based_access'])) {
+							$selected = "selected";
+						}
+						?>
+						
+						<option value="<?php echo esc_html__($key,'pwa-for-wp');?>" <?php echo esc_html__($selected,'pwa-for-wp');?>><?php echo esc_html__($opval,'pwa-for-wp'); ?></option>
+					<?php }
+				?>
+                </select><br/>
+				<?php
+				echo esc_html__('Choose the users whom you want to allow full access of this plugin','pwa-for-wp');
+
+		
+		
+	} 
 }
 function pwaforwp_disallow_data_tracking_setting_callback(){
 	// Get Settings
@@ -2958,6 +2994,7 @@ function pwaforwp_get_license_section_html($on){
                     <span class="lic_btn_active_'.strtolower($on).'">
                 	  <a license-status="active" add-on="'.strtolower($on).'" class="button button-default pwaforwp_license_activation">'.esc_html__('Activate', 'pwa-for-wp').'</a>
                       </span>
+					  <p class="message_addon-inactive_'.strtolower($on).'" '.$license_Status_id.'></p>
 
                     </label></div>';
                     $response .=  $final_otp ;
@@ -3021,13 +3058,24 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 			'beta'       => false,
 		);
                 
-                $message        = '';
-                $current_status = '';
-                $response       = @wp_remote_post( PWAFORWP_EDD_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-                           
+		$message        = '';
+		$current_status = '';
+		$response       = @wp_remote_post( PWAFORWP_EDD_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
                 // make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$message =  ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : __( 'An error occurred, please try again.' );
+			if(!empty($response->get_error_message())){
+				$error_message = strtolower($response->get_error_message());
+				$error_pos = strpos($error_message, 'operation timed out');
+				if($error_pos !== false){
+					$message = __('Request timed out, please try again');
+				}else{
+					$message = esc_html($response->get_error_message());
+				}
+			}
+			if(empty($message)){ 
+					 $message =   __( 'An error occurred, please try again.');
+			}
+			// $message =  ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : __( 'An error occurred, please try again.' );
 		} else {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
                         
