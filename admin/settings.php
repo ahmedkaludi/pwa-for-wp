@@ -1050,6 +1050,7 @@ function pwaforwp_list_addons(){
 				'p-desc' => esc_html__('QR Code for PWA extension to user can install app using QR Code ', 'pwa-for-wp'),
 				'p-tab'	 => false
 			),
+			/*
 			'ldpwa'  => array(
 				'p-slug' => 'learndash-for-pwaforwp/learndash-for-pwaforwp.php',
 				'p-name' => 'LearnDash for PWAforWP',
@@ -1061,7 +1062,7 @@ function pwaforwp_list_addons(){
 				'p-background-color'=> '#d94e27',
 				'p-desc' => esc_html__('LearnDash extension to send push notification while core notification will work ex: A course is created / A lession is created', 'pwa-for-wp'),
 				'p-tab'	 => false
-	 ),
+	 		),*/
      );
 	return $add_on_list;
 }
@@ -3586,6 +3587,7 @@ function pwaforwp_features_settings(){
 									'tooltip_option'=> esc_html__('QR code for PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-qr-code-for-pwa/'
 									),
+				/*
 				'learndash_notification' => array(
 					'enable_field' => esc_html__('learndash_notification', 'pwa-for-wp'),
 					'section_name' => esc_html__('pwaforwp_learndash_setting_section', 'pwa-for-wp'),
@@ -3597,7 +3599,7 @@ function pwaforwp_features_settings(){
 					'slug' => 'ldpwa',
 					'tooltip_option'=> esc_html__('Support learndash push notification with PWA and push notification', 'pwa-for-wp'),
 					'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-learndash-for-pwaforwp/'
-					),	
+					), */
 								);
 				
 	$featuresHtml = '';
