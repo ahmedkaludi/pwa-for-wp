@@ -34,7 +34,7 @@ function pwaforpw_add_menu_links() {
                 // 'manage_options',
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
-                PWAFORWP_PLUGIN_URL.'images/menu-icon.png', 100 );
+                PWAFORWP_PLUGIN_URL.'images/menu-icon.svg', 100 );
 	// Settings page - Same as main menu page
 	add_submenu_page( 'pwaforwp',
                 esc_html__( 'Progressive Web Apps For WP', 'pwa-for-wp' ),
@@ -1038,7 +1038,7 @@ function pwaforwp_list_addons(){
                     'p-tab'	 => false
          ),
 		 
-         'qrcode'  => array(
+        'qrcode'  => array(
 				'p-slug' => 'qr-code-for-pwa/qr-code-for-pwa.php',
 				'p-name' => 'QR Code for PWA',
 				'p-short-prefix'=> 'QRCODE',
@@ -1050,6 +1050,19 @@ function pwaforwp_list_addons(){
 				'p-desc' => esc_html__('QR Code for PWA extension to user can install app using QR Code ', 'pwa-for-wp'),
 				'p-tab'	 => false
 			),
+			/*
+			'ldpwa'  => array(
+				'p-slug' => 'learndash-for-pwaforwp/learndash-for-pwaforwp.php',
+				'p-name' => 'LearnDash for PWAforWP',
+				'p-short-prefix'=> 'LDPWA',
+				'p-smallcaps-prefix'=> 'ldpwa',
+				'p-title' => 'LearnDash for PWA for WP',
+				'p-url'	 => 'https://pwa-for-wp.com/extensions/learndash-for-pwaforwp/',
+				'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/learndash-for-pwaforwp.png',
+				'p-background-color'=> '#d94e27',
+				'p-desc' => esc_html__('LearnDash extension to send push notification while core notification will work ex: A course is created / A lession is created', 'pwa-for-wp'),
+				'p-tab'	 => false
+	 		),*/
      );
 	return $add_on_list;
 }
@@ -3573,7 +3586,20 @@ function pwaforwp_features_settings(){
 									'slug' => 'qrcode',
 									'tooltip_option'=> esc_html__('QR code for PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-qr-code-for-pwa/'
-									),			
+									),
+				/*
+				'learndash_notification' => array(
+					'enable_field' => esc_html__('learndash_notification', 'pwa-for-wp'),
+					'section_name' => esc_html__('pwaforwp_learndash_setting_section', 'pwa-for-wp'),
+					'setting_title' => esc_html__('LearnDash', 'pwa-for-wp'),
+					'is_premium'    => true,
+					'pro_link'      => $addonLists['ldpwa']['p-url'],
+					'pro_active'    => (is_plugin_active($addonLists['ldpwa']['p-slug'])? 1: 0),
+					'pro_deactive'    => (!is_plugin_active($addonLists['ldpwa']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ldpwa']['p-slug'])? 1: 0),
+					'slug' => 'ldpwa',
+					'tooltip_option'=> esc_html__('Support learndash push notification with PWA and push notification', 'pwa-for-wp'),
+					'tooltip_link' => 'https://pwa-for-wp.com/docs/article/how-to-use-learndash-for-pwaforwp/'
+					), */
 								);
 				
 	$featuresHtml = '';
