@@ -2314,6 +2314,9 @@ function pwaforpw_display_callback(){
 			<option value="minimal-ui" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'minimal-ui' ); } ?>>
 				<?php echo esc_html__( 'Minimal-ui', 'pwa-for-wp' ); ?>
 			</option>
+			<option value="browser" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'browser' ); } ?>>
+				<?php echo esc_html__( 'Browser', 'pwa-for-wp' ); ?>
+			</option>
 		</select>
 	</label>
 	
