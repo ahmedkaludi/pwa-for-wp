@@ -557,6 +557,13 @@ function pwaforwp_settings_init(){
 		);
 		
 		add_settings_field(
+			'pwaforwp_prefer_related_applications',									// ID
+			esc_html__('Prefer Related Application', 'pwa-for-wp'),	// Title
+			'pwaforwp_prefer_related_applications_callback',								// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_app_related_applications',									// ID
 			esc_html__('Related Application', 'pwa-for-wp'),	// Title
 			'pwaforwp_related_applications_callback',								// Callback function
@@ -2373,8 +2380,14 @@ function pwaforwp_apple_status_bar_callback(){
 
 function pwaforwp_related_applications_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
+	$settings = pwaforwp_defaultSettings();
+	$related_applications_div = 'none';
+	if(isset( $settings['prefer_related_applications'] ) && $settings['prefer_related_applications'] == 1){
+		$related_applications_div = '';
+	}
 	
+	?>
+	<div id="related_applications_div" style="display:<?php echo $related_applications_div; ?>">
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications]">PlayStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="com.example.app" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
@@ -2383,7 +2396,20 @@ function pwaforwp_related_applications_callback(){
 		<label for="pwaforwp_settings[related_applications_ios]">AppStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="id123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
 	</fieldset>
+	</div>
 
+	<?php
+}
+
+function pwaforwp_prefer_related_applications_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();	
+	$prefer_related_applications = '';
+	if(isset( $settings['prefer_related_applications'] ) && $settings['prefer_related_applications'] == 1){
+		$prefer_related_applications = 'checked="checked';
+	}
+	?>        
+	<input type="checkbox" name="pwaforwp_settings[prefer_related_applications]" id="prefer_related_applications" class="" <?php echo $prefer_related_applications; ?> data-uncheck-val="0" value="1">
 	<?php
 }
 

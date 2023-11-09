@@ -689,15 +689,19 @@ class pwaforwpFileCreation{
                   }
                 }
                 $related_applications = [];
-                if (isset($defaults['related_applications']) && $defaults['related_applications']) {
-                  $related_applications[] = array('id' =>$defaults['related_applications'],
-                                                'platform' => 'play',
-                                                'url' => 'https://play.google.com/store/apps/details?id='.$defaults['related_applications'] );
-                }
-                if (isset($defaults['related_applications_ios']) && $defaults['related_applications_ios']) {
-                  $related_applications[] = array('id' =>$defaults['related_applications_ios'],
-                                                'platform' => 'itunes',
-                                                'url' => 'https://apps.apple.com/app/'.$defaults['related_applications_ios'] );
+                $prefer_related_applications = false;
+                if (isset($defaults['prefer_related_applications']) && $defaults['prefer_related_applications']) {
+                  $prefer_related_applications = true;
+                  if (isset($defaults['related_applications']) && $defaults['related_applications']) {
+                    $related_applications[] = array('id' =>$defaults['related_applications'],
+                                                  'platform' => 'play',
+                                                  'url' => 'https://play.google.com/store/apps/details?id='.$defaults['related_applications'] );
+                  }
+                  if (isset($defaults['related_applications_ios']) && $defaults['related_applications_ios']) {
+                    $related_applications[] = array('id' =>$defaults['related_applications_ios'],
+                                                  'platform' => 'itunes',
+                                                  'url' => 'https://apps.apple.com/app/'.$defaults['related_applications_ios'] );
+                  }
                 }
                 $manifest = array();
                                                 
@@ -719,6 +723,7 @@ class pwaforwpFileCreation{
                 }
                 $manifest['start_url']        = esc_url_raw($homeUrl);
                 $manifest['scope']            = esc_url_raw($scope_url);     
+                $manifest['prefer_related_applications']            = esc_html($prefer_related_applications);     
 
                 if(isset($defaults['urlhandler_feature']) && $defaults['urlhandler_feature']==1 && isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
                     $urls = explode("\n", $defaults['urlhandler']);
