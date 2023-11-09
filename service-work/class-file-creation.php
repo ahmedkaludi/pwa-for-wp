@@ -250,7 +250,7 @@ class pwaforwpFileCreation{
                 $firebaseconfig = apply_filters('pwaforwp_pn_config', $firebaseconfig);
                 $useserviceworker = apply_filters('pwaforwp_pn_use_sw', $useserviceworker);
 
-                                
+    $offline_message = !isset($settings['offline_message_setting']) ? 1 : $settings['offline_message_setting'];                    
 		$swHtmlContent 			= str_replace(array(
                                                 "{{swfile}}", 
                                                 "{{config}}", 
@@ -261,7 +261,8 @@ class pwaforwpFileCreation{
                                                 "{{addtohomefunction}}",
                                                 "{{home_url}}",
                                                 "{{swdefaultaddtohomebar}}",
-                                                "{{HTML_DEFAULTCACHING}}"
+                                                "{{HTML_DEFAULTCACHING}}",
+                                                "{{offline_message}}"
                                             ), 
                                             array(
                                                 $ServiceWorkerfileName, 
@@ -273,7 +274,8 @@ class pwaforwpFileCreation{
                                                 $addtohomefunction,
                                                 $home_url,
                                                 $swdefaultaddtohomebar,
-                                                $settings['default_caching']
+                                                $settings['default_caching'],
+                                                $offline_message
                                             ), 
                                     $swHtmlContent);
                     

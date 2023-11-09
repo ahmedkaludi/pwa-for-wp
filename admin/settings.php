@@ -722,6 +722,13 @@ function pwaforwp_settings_init(){
 				'pwaforwp_other_setting_section'						// Settings Section ID
 			);
 		}
+		add_settings_field(
+			'pwaforwp_offline_message_setting',							// ID
+			__('<label for="pwaforwp_settings[offline_message_setting]"><b>Offline Message</b></label>', 'pwa-for-wp'),	// Title
+			'pwaforwp_offline_message_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_section('pwaforwp_loaders_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -1611,6 +1618,19 @@ function pwaforwp_offline_google_setting_callback(){
         
 	<input type="checkbox" name="pwaforwp_settings[offline_google_setting]" id="pwaforwp_settings[offline_google_setting]" class="" <?php echo (isset( $settings['offline_google_setting'] ) &&  $settings['offline_google_setting'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_offline_message_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$offline_message_checked = 'checked="checked';
+	if(!isset( $settings['offline_message_setting'] ) || $settings['offline_message_setting'] == 0){
+		$offline_message_checked = '';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[offline_message_setting]" id="pwaforwp_settings[offline_message_setting]" class="" <?php echo $offline_message_checked; ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('To check whether user is offline and display message You are offline', 'pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_prefetch_manifest_setting_callback(){
