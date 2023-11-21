@@ -731,7 +731,7 @@ function pwaforwp_settings_init(){
 		}
 		add_settings_field(
 			'pwaforwp_offline_message_setting',							// ID
-			__('<label for="pwaforwp_settings[offline_message_setting]"><b>Offline Message</b></label>', 'pwa-for-wp'),	// Title
+			esc_html__('Offline Message', 'pwa-for-wp'),	// Title
 			'pwaforwp_offline_message_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
