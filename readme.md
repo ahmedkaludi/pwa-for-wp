@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.1
 
-Stable tag: 1.7.56
+Stable tag: 1.7.64
 
 License: GPLv2 or later
 
