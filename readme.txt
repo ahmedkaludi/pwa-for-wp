@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.3
-Stable tag: 1.7.63
+Tested up to: 6.4
+Stable tag: 1.7.64
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.64 (22 November 2023) =
+* Improvement  : Make the offline message "You are offline" as an option #727
+* Improvement  : Add support for prefer_related_applications #819
+* Bug Fixed  : Conflict issue with the plugin Category Icon #851
+* Feature Added  : Added browser option in Display #829
+* Improvement : Added "Alt" attribute is missing in logo images #852
+* Improvement : License key area should be proper #759
 
 = 1.7.63 (16 October 2023) =
 * Bug Fixed  : Offlineforms are not working with Contact Form7 #844

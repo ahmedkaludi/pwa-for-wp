@@ -133,7 +133,11 @@
                                                          });
                                                          
                                                         }
-                                          window.addEventListener("offline", pwaforwpOnNetworkChange);   
+                                          var offline_message = '{{offline_message}}'
+
+                                          if (offline_message == 1) {
+                                            window.addEventListener("offline", pwaforwpOnNetworkChange);
+                                          }
                                           function pwaforwpOnNetworkChange(event) {
                                             if (!navigator.onLine) {
                                               var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");

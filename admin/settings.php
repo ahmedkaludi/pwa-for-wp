@@ -557,6 +557,13 @@ function pwaforwp_settings_init(){
 		);
 		
 		add_settings_field(
+			'pwaforwp_prefer_related_applications',									// ID
+			esc_html__('Prefer Related Application', 'pwa-for-wp'),	// Title
+			'pwaforwp_prefer_related_applications_callback',								// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_app_related_applications',									// ID
 			esc_html__('Related Application', 'pwa-for-wp'),	// Title
 			'pwaforwp_related_applications_callback',								// Callback function
@@ -722,6 +729,13 @@ function pwaforwp_settings_init(){
 				'pwaforwp_other_setting_section'						// Settings Section ID
 			);
 		}
+		add_settings_field(
+			'pwaforwp_offline_message_setting',							// ID
+			esc_html__('Offline Message', 'pwa-for-wp'),	// Title
+			'pwaforwp_offline_message_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_section('pwaforwp_loaders_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -1613,6 +1627,19 @@ function pwaforwp_offline_google_setting_callback(){
 	<p><?php echo esc_html__('Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition', 'pwa-for-wp'); ?></p>
 	<?php
 }
+function pwaforwp_offline_message_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$offline_message_checked = 'checked="checked';
+	if(!isset( $settings['offline_message_setting'] ) || $settings['offline_message_setting'] == 0){
+		$offline_message_checked = '';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[offline_message_setting]" id="pwaforwp_settings[offline_message_setting]" class="" <?php echo $offline_message_checked; ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('To check whether user is offline and display message You are offline', 'pwa-for-wp'); ?></p>
+	<?php
+}
 function pwaforwp_prefetch_manifest_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -2314,6 +2341,9 @@ function pwaforpw_display_callback(){
 			<option value="minimal-ui" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'minimal-ui' ); } ?>>
 				<?php echo esc_html__( 'Minimal-ui', 'pwa-for-wp' ); ?>
 			</option>
+			<option value="browser" <?php if ( isset( $settings['display'] ) ) { selected( $settings['display'], 'browser' ); } ?>>
+				<?php echo esc_html__( 'Browser', 'pwa-for-wp' ); ?>
+			</option>
 		</select>
 	</label>
 	
@@ -2350,8 +2380,14 @@ function pwaforwp_apple_status_bar_callback(){
 
 function pwaforwp_related_applications_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
+	$settings = pwaforwp_defaultSettings();
+	$related_applications_div = 'none';
+	if(isset( $settings['prefer_related_applications'] ) && $settings['prefer_related_applications'] == 1){
+		$related_applications_div = '';
+	}
 	
+	?>
+	<div id="related_applications_div" style="display:<?php echo $related_applications_div; ?>">
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications]">PlayStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="com.example.app" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
@@ -2360,7 +2396,20 @@ function pwaforwp_related_applications_callback(){
 		<label for="pwaforwp_settings[related_applications_ios]">AppStore App ID</label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="id123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
 	</fieldset>
+	</div>
 
+	<?php
+}
+
+function pwaforwp_prefer_related_applications_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();	
+	$prefer_related_applications = '';
+	if(isset( $settings['prefer_related_applications'] ) && $settings['prefer_related_applications'] == 1){
+		$prefer_related_applications = 'checked="checked';
+	}
+	?>        
+	<input type="checkbox" name="pwaforwp_settings[prefer_related_applications]" id="prefer_related_applications" class="" <?php echo $prefer_related_applications; ?> data-uncheck-val="0" value="1">
 	<?php
 }
 

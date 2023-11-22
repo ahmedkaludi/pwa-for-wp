@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.1
 
-Stable tag: 1.7.56
+Stable tag: 1.7.64
 
 License: GPLv2 or later
 
@@ -75,6 +75,58 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.64 (22 November 2023) =
+* Improvement  : Make the offline message "You are offline" as an option #727
+* Improvement  : Add support for prefer_related_applications #819
+* Bug Fixed  : Conflict issue with the plugin Category Icon #851
+* Feature Added  : Added browser option in Display #829
+* Improvement : Added "Alt" attribute is missing in logo images #852
+* Improvement : License key area should be proper #759
+
+= 1.7.63 (16 October 2023) =
+* Bug Fixed  : Offlineforms are not working with Contact Form7 #844
+* Improvement  : Need to change menu icon for pwa #843
+* Bug Fixed  : Warning appears in Offline Forms for PWAforWP extension. #840
+* Feature Added  : Add compatibility with the Signature module and the Date-Time modules of fluent forms with offline forms for PWA #847
+
+= 1.7.62 (14 Sept 2023) =
+* Bug Fixed  : Push notification is not working on IOS. #66
+* Bug Fixed  : Need to put a proper display message on license activation/deactivation timeout #831
+* Bug Fixed  : The messages do not redirect when the extension Buddypress for PWAforWP is activated on the user-end #839
+* Feature Added  : Need to create a feature for Role managers #824
+* Feature Added  : Need to add support to display badge on mobile PWA icon #821
+* Feature Added  : Need to add a new feature for BuddyPress Group Notification in buddypress for PWAforWP pro extension #841
+
+= 1.7.61 (01 Sept 2023) =
+* Bug Fixed  : QR code activation issue #827
+* Bug Fixed  : Add logo in WordPress Menu for PWAforWP #803
+* Bug Fixed  : PWA dashboard Enable / Disable option not working properly #820
+* Bug Fixed  : Login header are visible after logout #826
+* Bug Fixed  : Offline form issue with Formidable form #825
+* Feature Added  : Option to upload multiple images in APP Screenshots section #807
+* Feature Added  : Install Link for PWA for WP #735
+* Feature Added  : Add a feature by which Search bar should work offline #815
+* Feature Added  : Add a feature to force disable the pull to refresh on an Android device #814
+
+= 1.7.60 (26 May 2023) =
+* Bug Fixed  : Navigation Bar saving button is not working properly. #811
+* Bug Fixed  : Conflict issue in loader extension #812
+* Bug Fixed  : formidable forms File Upload feature is not supported in offline form #801
+
+= 1.7.59 (05 May 2023) =
+* Feature Added  : Label should be clickable for all checkbox labels #802
+* Feature Added  : Add functionality that user can install app using QR Code #806
+
+= 1.7.58 (20 April 2023) =
+* Feature Added  : Add monochrome icons to manifest #795
+* Feature Added  : Add "related_applications" to manifest #794
+* Bug Fixed : Auto-save forms feature is not working properly. #799
+
+= 1.7.57 (18 March 2023) =
+* Bug Fixed  : Download button href changing into link attribute on click #790
+* Bug Fixed  : Rewrite rules are being flush on every page load #765
+* Bug Fixed  : Undefined function "pwaforwp_t_string" and undefined variable "pwaforwp_addon_license_info" #796
 
 = 1.7.56 (16 February 2023) =
 * Improvement: Code Improvement as per WP guidlines #787
