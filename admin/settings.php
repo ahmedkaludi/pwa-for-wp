@@ -3779,10 +3779,30 @@ function pwaforwp_update_features_options(){
     }
 	$allFields = $_POST['fields_data'];
 	$actualFields = array();
+	$navigation_bar_data = array();
 	if(is_array($allFields) && !empty($allFields)){
-		foreach ($allFields as $key => $field) {			
+		foreach ($allFields as $key => $field) {
+			// navigation bar features start			
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_size]') {
+				$navigation_bar_data['navigation']['text_font_size'] = sanitize_textarea_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_color]') {
+				$navigation_bar_data['navigation']['text_font_color'] = sanitize_textarea_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
+				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
+			}
+			if(!empty($navigation_bar_data)){
+				if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
+					$pre_settings = pwaforwp_defaultSettings();
+					$merge_navigation_bar_data = wp_parse_args($navigation_bar_data, $pre_settings);
+					update_option( 'pwaforwp_settings', $merge_navigation_bar_data );
+					echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$navigation_bar_data));die;
+				}
+			}
+			// navigation bar features end
+					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
-
 			if(strpos($variable, '[')!==false){
 				$varArray = explode("[", $variable);
 				$newArr = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
