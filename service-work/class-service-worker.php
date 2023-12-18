@@ -660,7 +660,7 @@ class PWAFORWP_Service_Worker{
             }
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
-                echo '<link rel="apple-touch-screenshots-precomposed" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
             endif;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
