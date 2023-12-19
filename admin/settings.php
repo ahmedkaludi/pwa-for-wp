@@ -736,6 +736,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_scrollbar_setting',							// ID
+			esc_html__('Disable Scrollbar', 'pwa-for-wp'),	// Title
+			'pwaforwp_scrollbar_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_section('pwaforwp_loaders_setting_section', esc_html__(' ','pwa-for-wp'), '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -1638,6 +1645,19 @@ function pwaforwp_offline_message_setting_callback(){
         
 	<input type="checkbox" name="pwaforwp_settings[offline_message_setting]" id="pwaforwp_settings[offline_message_setting]" class="" <?php echo $offline_message_checked; ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('To check whether user is offline and display message You are offline', 'pwa-for-wp'); ?></p>
+	<?php
+}
+function pwaforwp_scrollbar_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$scrollbar_checked = 'checked="checked';
+	if(!isset( $settings['scrollbar_setting'] ) || $settings['scrollbar_setting'] == 0){
+		$scrollbar_checked = '';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[scrollbar_setting]" id="pwaforwp_settings[scrollbar_setting]" class="" <?php echo $scrollbar_checked; ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('To hide scrollbar in pwa', 'pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_prefetch_manifest_setting_callback(){

@@ -199,6 +199,10 @@ function pwaforwp_frontend_enqueue(){
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , $force_update_sw_setting_value );       
         wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
 
+        if (isset($settings['scrollbar_setting']) && $settings['scrollbar_setting']) {
+            wp_enqueue_style( 'pwa-scrollbar-css', PWAFORWP_PLUGIN_URL . "assets/css/pwaforwp-scrollbar.css",false,$force_update_sw_setting_value );
+        }
+
         }
 
         wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), $force_update_sw_setting_value, true); 
