@@ -77,8 +77,8 @@ class PWAforWP_wppwa{
 		$scope = (int) $GLOBALS['wp']->query_vars[ self::INSTALL_SERVICE_WORKER_AMP_QUERY_VAR ];
 		if ( WP_Service_Workers::SCOPE_ADMIN !== $scope && WP_Service_Workers::SCOPE_FRONT !== $scope ) {
 			wp_die(
-				esc_html__( 'No service workers registered for the requested scope.', 'amp' ),
-				esc_html__( 'Service Worker Installation', 'amp' ),
+				esc_html__( 'No service workers registered for the requested scope.', 'pwa-for-wp' ),
+				esc_html__( 'Service Worker Installation', 'pwa-for-wp' ),
 				[ 'response' => 404 ]
 			);
 		}
@@ -90,10 +90,10 @@ class PWAforWP_wppwa{
 		<html>
 			<head>
 				<meta charset="utf-8">
-				<title><?php esc_html_e( 'Service Worker Installation', 'amp' ); ?></title>
+				<title><?php esc_html_e( 'Service Worker Installation', 'pwa-for-wp' ); ?></title>
 			</head>
 			<body>
-				<?php esc_html_e( 'Installing service worker...', 'amp' ); ?>
+				<?php esc_html_e( 'Installing service worker...', 'pwa-for-wp' ); ?>
 				<?php
 				printf(
 					'<script>navigator.serviceWorker.register( %s, %s );</script>',
