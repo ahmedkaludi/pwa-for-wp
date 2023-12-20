@@ -669,7 +669,7 @@ function pwaforwp_check_root_writable($wppath){
   return trailingslashit($wppath);
 }
 
-function service_workerUrls($url, $filename){
+function pwaforwp_service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
   $settings = pwaforwp_defaultSettings(); 

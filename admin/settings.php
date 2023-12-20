@@ -2525,7 +2525,7 @@ function pwaforwp_files_status_callback(){
 		$nonamp_sw_status = true;
 		if(!pwaforwp_is_enabled_pwa_wp()){
 			$swUrl = esc_url(pwaforwp_home_url().$swFile);
-			$swUrl = service_workerUrls($swUrl, $swFile);
+			$swUrl = pwaforwp_service_workerUrls($swUrl, $swFile);
 			$nonamp_sw_status = @pwaforwp_checkStatus($swUrl);
 		}
 		if(!$nonamp_sw_status && $nonAmpStatusMsg==''){
@@ -2560,7 +2560,7 @@ function pwaforwp_files_status_callback(){
 			$amp_sw_status = true;
 			if(!pwaforwp_is_enabled_pwa_wp()){
 				$swUrl = esc_url(pwaforwp_home_url().$swFile);
-				$swUrl = service_workerUrls($swUrl, $swFile);
+				$swUrl = pwaforwp_service_workerUrls($swUrl, $swFile);
 				$amp_sw_status = @pwaforwp_checkStatus($swUrl);
 			}
 			if(!$amp_sw_status && $ampStatusMsg==''){

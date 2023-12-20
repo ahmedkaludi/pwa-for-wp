@@ -121,7 +121,7 @@ class PWAFORWP_Service_Worker{
                     $pn_api_key = $pn_options->api_key;
 
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
-                    $url = service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
+                    $url = pwaforwp_service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
@@ -583,7 +583,7 @@ class PWAFORWP_Service_Worker{
                             
                 //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
-                $swhtml            = service_workerUrls($swhtml, 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html');
+                $swhtml            = pwaforwp_service_workerUrls($swhtml, 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html');
 
                 $url = pwaforwp_site_url();
                 $home_url = pwaforwp_home_url();
@@ -591,7 +591,7 @@ class PWAFORWP_Service_Worker{
                     $filename = apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
                     $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename;   
 
-                    $swjs_path_amp = service_workerUrls($swjs_path_amp, $filename);
+                    $swjs_path_amp = pwaforwp_service_workerUrls($swjs_path_amp, $filename);
                 }else{
                     $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 }
@@ -622,7 +622,7 @@ class PWAFORWP_Service_Worker{
 		if( $manualfileSetup ){//&& !class_exists('OneSignal')
             $filename = apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js");
             $url = $url.$filename;
-            $url = service_workerUrls($url, $filename);
+            $url = pwaforwp_service_workerUrls($url, $filename);
              
              wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
             wp_enqueue_script( "pwa-main-script");     
