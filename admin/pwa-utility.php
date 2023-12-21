@@ -61,7 +61,7 @@ class PWA_Utility{
 	    }
 	    if(!current_user_can('activate_plugins')){ echo json_encode(array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') )); die; }
 	    $addonLists = pwaforwp_list_addons();
-	    $target_file = $_POST['target_file'];
+	    $target_file = sanitize_text_field($_POST['target_file']);
 	    $slug = isset($addonLists[$target_file]['p-slug'])? $addonLists[$target_file]['p-slug'] : '';
 	    if( $slug ){ 
 	    	$response = activate_plugin($slug); 
