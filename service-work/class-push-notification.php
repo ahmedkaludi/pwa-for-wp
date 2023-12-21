@@ -234,7 +234,23 @@ class pushNotification{
             );
 
             $response = wp_remote_post( 'https://fcm.googleapis.com/fcm/send', $args);
-            $response = wp_remote_retrieve_body( $response );
+            if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+              if(!empty($response->get_error_message())){
+                $error_message = strtolower($response->get_error_message());
+                $error_pos = strpos($error_message, 'operation timed out');
+                if($error_pos !== false){
+                  $message = __('Request timed out, please try again');
+                }else{
+                  $message = esc_html($response->get_error_message());
+                }
+              }
+              if(empty($message)){ 
+                   $message =   __( 'An error occurred, please try again.');
+              }
+              $response = array('success'=>0,'message'=>$message);
+            }else{
+              $response = wp_remote_retrieve_body( $response );
+            }
             return $response;          
       }
                  
