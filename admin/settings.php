@@ -1317,7 +1317,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><textarea placeholder="https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2 "  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
+        <label><textarea placeholder="<?php esc_attr__('https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2','pwa-for-wp') ?>"  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated, do not add enter in urls', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -1326,7 +1326,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 
 function pwaforwp_urlhandler_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
-	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
+	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='".esc_attr__('https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com','pwa-for-wp')."'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
 	?><p><?php echo esc_html__('Note: Put one url in single line', 'pwa-for-wp'); ?></p>
 	<br>
 	<?php
@@ -1419,7 +1419,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>    
                     <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
-                       <label><textarea placeholder="https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/ "  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
+                       <label><textarea placeholder="<?php esc_attr__('https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/','pwa-for-wp')?>"  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
@@ -1920,9 +1920,9 @@ function pwaforwp_push_notification_callback(){
                             <input  type="checkbox" name="pwaforwp_settings[on_add_post]" id="pwaforwp_settings[on_add_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_add_post'] ) &&  $settings['on_add_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_add_post']) && $settings['on_add_post'] == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="'.esc_attr__('New Post', 'pwa-for-wp').'" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="New Post" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_post_notification_title]" id="on_add_post_notification_title" placeholder="'.esc_attr__('New Post', 'pwa-for-wp').'" value="'.esc_attr($settings['on_add_post_notification_title']).'"></p>';  
                             }
                             ?>
                             
@@ -1933,9 +1933,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_post]" id="pwaforwp_settings[on_update_post]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_post'] ) &&  $settings['on_update_post'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_post']) && $settings['on_update_post']== 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']): '').'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="'.esc_attr__("Update Post","pwa-for-wp").'" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']): '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']) : '').'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_post_notification_title]" id="on_update_post_notification_title" placeholder="'.esc_attr__("Update Post","pwa-for-wp").'" value="'.(isset($settings['on_update_post_notification_title']) ? esc_attr($settings['on_update_post_notification_title']) : '').'"></p>';  
                             }
                             ?>
                         </td>
@@ -1946,9 +1946,9 @@ function pwaforwp_push_notification_callback(){
                             
                             <?php
                             if(isset($settings['on_add_page']) && $settings['on_add_page'] == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="'.esc_attr__("New Page","pwa-for-wp").'" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="New Page" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_add_page_notification_title]" id="on_add_page_notification_title" placeholder="'.esc_attr__("New Page","pwa-for-wp").'" value="'.(isset($settings['on_add_page_notification_title']) ? esc_attr($settings['on_add_page_notification_title']) : '').'"></p>';  
                             }
                             ?>
                             
@@ -1959,9 +1959,9 @@ function pwaforwp_push_notification_callback(){
                         <td><input type="checkbox" name="pwaforwp_settings[on_update_page]" id="pwaforwp_settings[on_update_page]" class="pwaforwp-fcm-checkbox" <?php echo (isset( $settings['on_update_page'] ) &&  $settings['on_update_page'] == 1 ? 'checked="checked"' : ''); ?> value="1">
                             <?php
                             if(isset($settings['on_update_page']) && $settings['on_update_page'] == 1){
-                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';   
+                             echo '<p>'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="'.esc_attr__("Update Post","pwa-for-wp").'" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';   
                             }else{
-                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="Update Post" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';  
+                             echo  '<p class="pwaforwp-hide">'.esc_html__('Notification Title', 'pwa-for-wp').' <input type="text" name="pwaforwp_settings[on_update_page_notification_title]" id="on_update_page_notification_title" placeholder="'.esc_attr__("Update Post","pwa-for-wp").'" value="'.(isset($settings['on_update_page_notification_title']) ? esc_attr($settings['on_update_page_notification_title']) : '').'"></p>';  
                             }
                             ?>
                         </td>
@@ -1975,7 +1975,7 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     
                     <tr>
-                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="Title" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
+                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="<?php esc_attr__("Title","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
                             <br>
 			                   
                         </th>  
@@ -1984,7 +1984,7 @@ function pwaforwp_push_notification_callback(){
                      <tr>
                         <th>
                         	<?php echo esc_html__('Redirection Url Onclick of notification', 'pwa-for-wp') ?>:<br/>
-                        	<input style="width: 100%" placeholder="URL" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo pwaforwp_home_url(); ?>">
+                        	<input style="width: 100%" placeholder="<?php esc_attr__("URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo pwaforwp_home_url(); ?>">
                             <br>
 			                   
                         </th>  
@@ -1993,7 +1993,7 @@ function pwaforwp_push_notification_callback(){
                     <tr>
                         <th>
                         	<?php echo esc_html__('Image Url', 'pwa-for-wp') ?>:<br/>
-                        	<input style="width: 100%" placeholder="Image URL" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
+                        	<input style="width: 100%" placeholder="<?php esc_attr__("Image URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
                             <br>
 			                   
                         </th>  
@@ -2240,7 +2240,7 @@ function pwaforwp_offline_page_callback(){
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_html__('Other custom page (Must in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other custom page (Must in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
@@ -2410,11 +2410,11 @@ function pwaforwp_related_applications_callback(){
 	<div id="related_applications_div" style="display:<?php echo $related_applications_div; ?>">
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications]">PlayStore App ID</label>&nbsp;
-		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="com.example.app" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="<?php esc_attr__("com.example.app","pwa-for-wp") ?>" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
 	</fieldset>
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications_ios]">AppStore App ID</label>&nbsp;
-		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="id123456789" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="<?php esc_attr__("id123456789","pwa-for-wp") ?>" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
 	</fieldset>
 	</div>
 
