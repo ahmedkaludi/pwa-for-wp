@@ -4198,15 +4198,36 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 	add_action('wp_ajax_pwaforwp_subscribe_newsletter','pwaforwp_subscribe_newsletter');
 
 	function pwaforwp_subscribe_newsletter(){
+		if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+			return; 
+		}   
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 	    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 	    $api_params = array(
 	        'name' => sanitize_text_field($_POST['name']),
-	        'email'=> sanitize_text_field($_POST['email']),
+	        'email'=> sanitize_email($_POST['email']),
 	        'website'=> sanitize_text_field($_POST['website']),
 	        'type'=> 'pwa'
 	    );
 	    $response = wp_remote_post( $api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
-	    $response = wp_remote_retrieve_body( $response );
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			if(!empty($response->get_error_message())){
+				$error_message = strtolower($response->get_error_message());
+				$error_pos = strpos($error_message, 'operation timed out');
+				if($error_pos !== false){
+					$message = __('Request timed out, please try again');
+				}else{
+					$message = esc_html($response->get_error_message());
+				}
+			}
+			if(empty($message)){ 
+					 $message =   __( 'An error occurred, please try again.');
+			}
+		}else{
+			$response = wp_remote_retrieve_body( $response );
+		}
 	    echo $response;
 	    die;
 	} 	
