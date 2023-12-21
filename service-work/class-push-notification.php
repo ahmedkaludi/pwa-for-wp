@@ -29,8 +29,8 @@ class pushNotification{
             }         
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
-            $url              = esc_url(sanitize_text_field($_POST['url']));
-            $image_url              = esc_url(sanitize_text_field($_POST['image_url']));
+            $url              = sanitize_text_field($_POST['url']);
+            $image_url              = sanitize_text_field($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
             $message['image_url']   = (!empty($image_url)? $image_url : '');
