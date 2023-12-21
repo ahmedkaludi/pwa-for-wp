@@ -204,9 +204,9 @@ function pwaforwp_admin_notice(){
                     </p>
                     <p class="notice-action">                     
                         <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews" class="button button-secondry">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-remindme">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-remindme">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
                     </p>
                 </div>',
                 esc_html__('Excellent! You\'ve been using PWA For WP plugin for over a week. Hope you are enjoying it so far. We have spent countless hours developing this 
