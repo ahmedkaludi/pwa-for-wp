@@ -39,9 +39,9 @@ class pushNotification{
             
             $result = json_decode($result, true);                         
             if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
-            echo json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
+            echo json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
-            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
+            echo json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
            }
            wp_die();
      }
@@ -193,9 +193,9 @@ class pushNotification{
             } 
             
             if($result){
-                echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-                echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }

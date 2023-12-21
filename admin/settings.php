@@ -2884,9 +2884,9 @@ function pwaforwp_send_query_message(){
             $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
             
             if($sent){
-            echo json_encode(array('status'=>'t'));            
+            echo json_encode(array('status'=>esc_html__('t','pwa-for-wp')));            
             }else{
-            echo json_encode(array('status'=>'f'));            
+            echo json_encode(array('status'=>esc_html__('f','pwa-for-wp')));            
             }
             
         }
@@ -3817,7 +3817,7 @@ function pwaforwp_update_features_options(){
 					$pre_settings = pwaforwp_defaultSettings();
 					$merge_navigation_bar_data = wp_parse_args($navigation_bar_data, $pre_settings);
 					update_option( 'pwaforwp_settings', $merge_navigation_bar_data );
-					echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$navigation_bar_data));die;
+					echo json_encode(array('status'=> 200, 'message'=> esc_html__('Settings Saved.','pwa-for-wp'), 'options'=>$navigation_bar_data));die;
 				}
 			}
 			// navigation bar features end
@@ -3950,10 +3950,10 @@ function pwaforwp_update_features_options(){
 		global $pwaforwp_settings;
 		$pwaforwp_settings = array();
 		pwaforwp_required_file_creation();
-		echo json_encode(array('status'=> 200, 'message'=> 'Settings Saved.', 'options'=>$actualFields));
+		echo json_encode(array('status'=> 200, 'message'=> esc_html__('Settings Saved.','pwa-for-wp'), 'options'=>$actualFields));
 			die;
 	}else{
-		echo json_encode(array('status'=> 503, 'message'=> 'Fields not defined'));	
+		echo json_encode(array('status'=> 503, 'message'=> esc_html__('Fields not defined','pwa-for-wp')));	
 		die;
 	}
 }
@@ -4063,7 +4063,7 @@ function pwaforwp_include_visibility_setting_callback(){
         }}
     }
 
-    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    $data = array('success' => 1,'message'=>esc_html__('Success','pwa-for-wp'),'option'=>$option );
     echo json_encode($data);    exit;
 
 }
@@ -4091,7 +4091,7 @@ function pwaforwp_include_visibility_condition_callback() {
     $option .= '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.$include_targeting_type.' - '.$include_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
-    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    $data = array('success' => 1,'message'=>esc_html__('Success','pwa-for-wp'),'option'=>$option );
     echo json_encode($data);    exit;
 }
 
@@ -4119,7 +4119,7 @@ function pwaforwp_exclude_visibility_condition_callback() {
     $option .= '<span class="pwaforwp-visibility-target-item"><span class="visibility-include-target-label">'.$exclude_targeting_type.' - '.$exclude_targeting_data.'</span>
         <span class="pwaforwp-visibility-target-icon" data-index="0"><span class="dashicons dashicons-no-alt " aria-hidden="true" onclick="removeIncluded_visibility('.$rand.')"></span></span></span></span>';
 
-    $data = array('success' => 1,'message'=>'Success','option'=>$option );
+    $data = array('success' => 1,'message'=>esc_html__('Success','pwa-for-wp'),'option'=>$option );
     echo json_encode($data);    exit;
 }
 
@@ -4238,15 +4238,15 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 
 	function pwaforwp_splashscreen_uploader(){
 		if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
-            echo json_encode(array("status"=>500, "message"=> "Failed! Security check not active"));
+            echo json_encode(array("status"=>500, "message"=> esc_html__('Failed! Security check not active','pwa-for-wp')));
             die;
         }
         if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           echo json_encode(array("status"=>500, "message"=> "Failed! Security check"));
+           echo json_encode(array("status"=>500, "message"=> esc_html__("Failed! Security check",'pwa-for-wp')));
            die;
         }
         if( !current_user_can('manage_options') ){
-        	echo json_encode(array("status"=>401, "message"=> "Failed! you are not autherized to save"));
+        	echo json_encode(array("status"=>401, "message"=> esc_html__("Failed! you are not autherized to save",'pwa-for-wp')));
         	die;
         }
 		$pwaforwp_settings = pwaforwp_defaultSettings();
