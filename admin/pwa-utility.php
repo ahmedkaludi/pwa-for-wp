@@ -66,7 +66,7 @@ class PWA_Utility{
 	    if( $slug ){ 
 	    	$response = activate_plugin($slug); 
 	    }else{ 
-	    	$response = new WP_Error( 'broke', esc_html__( "invalid slug provided", "my_textdomain" ) );
+	    	$response = new WP_Error( 'broke', esc_html__( "invalid slug provided", "pwa-for-wp" ) );
 	    }
 	    if($response instanceof  WP_Error){
 	    	echo json_encode(array("status"=>500, 'message'=>$response->get_error_message()));die;
