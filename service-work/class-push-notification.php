@@ -39,9 +39,9 @@ class pushNotification{
             
             $result = json_decode($result, true);                         
             if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
-            echo json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'success'=> $result['success'], 'failure'=> $result['failure']));    
+            echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
-            echo json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
+            echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
            }
            wp_die();
      }
@@ -188,14 +188,14 @@ class pushNotification{
                 do_action('pwaforwp_before_save_token_action', $token);
                 $get_token_list = (array)json_decode(get_option('pwa_token_list'), true);               
                 array_push($get_token_list, $token);                
-                $result = update_option('pwa_token_list', json_encode($get_token_list));
+                $result = update_option('pwa_token_list', wp_json_encode($get_token_list));
                 
             } 
             
             if($result){
-                echo json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-                echo json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }
@@ -227,7 +227,7 @@ class pushNotification{
             ];
 
             $args = array(
-              'body'        => json_encode($payload),
+              'body'        => wp_json_encode($payload),
               'timeout'     => '15',
               'headers'     => $header,
               'sslverify'   => false,

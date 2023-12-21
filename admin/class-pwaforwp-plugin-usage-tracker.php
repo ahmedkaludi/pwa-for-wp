@@ -952,7 +952,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'pwaforwp_goodbye_form', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = json_encode( wp_unslash( $_POST['values'] ) );
+				$values = wp_json_encode( wp_unslash( $_POST['values'] ) );
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {

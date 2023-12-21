@@ -40,11 +40,11 @@ function pwaforwp_reset_all_settings(){
         
         if($result){    
             
-            echo json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
         
         }else{
             
-            echo json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
         
         }        
         wp_die();           
@@ -68,9 +68,9 @@ function pwaforwp_review_notice_close(){
        
         $result =  update_option( "pwaforwp_review_never", 'never');               
         if($result){           
-        echo json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+        echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
         }else{
-        echo json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+        echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
         }        
         wp_die();           
 }
@@ -89,9 +89,9 @@ function pwaforwp_review_notice_remindme(){
        
         $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
         if($result){           
-            echo json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
         }else{
-            echo json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
         }        
         wp_die();           
 }

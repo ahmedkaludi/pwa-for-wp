@@ -736,7 +736,7 @@ class pwaforwpFileCreation{
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
-                return json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
+                return wp_json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
 	}        
 
   public function pwaforwp_getlayoutfiles($filePath){
