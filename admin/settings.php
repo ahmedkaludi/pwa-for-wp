@@ -2899,18 +2899,30 @@ add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message')
 // Setting transient after expiry
 add_action('wp_ajax_pwaforwp_license_transient', 'pwaforwp_license_transient');
 function pwaforwp_license_transient(){
-            $transient_load =  'pwaforwp_addons_expired';
-            $value_load =  'pwaforwp_addons_expired_value';
-            $expiration_load =  3600 ;
-            set_transient( $transient_load, $value_load, $expiration_load );
+	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+		return; 
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$transient_load =  'pwaforwp_addons_expired';
+	$value_load =  'pwaforwp_addons_expired_value';
+	$expiration_load =  3600 ;
+	set_transient( $transient_load, $value_load, $expiration_load );
 }
 // Setting transient for 0-7 Days
 add_action('wp_ajax_pwaforwp_license_transient_zto7', 'pwaforwp_license_transient_zto7');
 function pwaforwp_license_transient_zto7(){
-            $transient_load =  'pwaforwp_addon_zto7';
-            $value_load =  'pwaforwp_addon_zto7_value';
-            $expiration_load =  86400 ;
-            set_transient( $transient_load, $value_load, $expiration_load );
+	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+		return; 
+	}
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$transient_load =  'pwaforwp_addon_zto7';
+	$value_load =  'pwaforwp_addon_zto7_value';
+	$expiration_load =  86400 ;
+	set_transient( $transient_load, $value_load, $expiration_load );
 }
 
 function pwaforwp_get_license_section_html($on){
