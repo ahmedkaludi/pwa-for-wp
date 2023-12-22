@@ -200,13 +200,13 @@ function pwaforwp_admin_interface_render(){
     					    $color = 'color:red';
                         }else{
                             if ($one_of_plugin_expired == 1) {
-                                $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('One of your').' <span class=">than_30" style="color:red;">'.esc_html__('license key is').'</span></span>';    
+                                $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('One of your','pwa-for-wp').' <span class=">than_30" style="color:red;">'.esc_html__('license key is','pwa-for-wp').'</span></span>';    
                             }else{
                                 $expire_msg_before = '<span class="pwaforwp_before_msg_active">'.esc_html__('Your License is', 'pwa-for-wp').'</span>';
                             }
                             if ($one_of_plugin_expired == 1) {
                                 $renew_url = "https://pwa-for-wp.com/order/?edd_license_key=".$license_k."&download_id=".$download_id."";
-                                $expire_msg = " <span class='pwaforwp_one_of_expired'>".esc_html__('Expired')."</span> ";
+                                $expire_msg = " <span class='pwaforwp_one_of_expired'>".esc_html__('Expired','pwa-for-wp')."</span> ";
                                 $renew_mesg = '<a target="blank" class="pwaforwp-renewal-license" href="'.esc_url($renew_url).'"><span class="pwaforwp-renew-lic">'.esc_html__('Renew', 'pwa-for-wp').'</span></a>';
                             }else{
                                 $expire_msg = " Active ";
@@ -2077,9 +2077,9 @@ function pwaforwp_app_icon_callback(){
 	
 	<p class="description">
 		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
-			esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly'),
-			esc_html__('192x192 in size.'),
-			esc_html__('- For Apple mobile exact sizes is necessary')
+			esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly','pwa-for-wp'),
+			esc_html__('192x192 in size.','pwa-for-wp'),
+			esc_html__('- For Apple mobile exact sizes is necessary','pwa-for-wp')
 				);
 		?>
 	</p>
@@ -2098,9 +2098,9 @@ function pwaforwp_monochrome_callback(){
 	
 	<p class="description">
 		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
-			esc_html__('Monochrome Icon for the application .Must be PNG having transparent background'),
-			esc_html__('512x512 in size.'),
-			esc_html__('- For Apple mobile exact sizes is necessary')
+			esc_html__('Monochrome Icon for the application .Must be PNG having transparent background','pwa-for-wp'),
+			esc_html__('512x512 in size.','pwa-for-wp'),
+			esc_html__('- For Apple mobile exact sizes is necessary','pwa-for-wp')
 				);
 		?>
 	</p>
@@ -2208,9 +2208,9 @@ function pwaforwp_app_screenshots_callback(){
 	?>
     <p class="description">
         <?php echo sprintf('%s <strong>%s</strong><br/> %s',
-            esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly'),
-            esc_html__('512x512 in size.'),
-            esc_html__('- For all mobiles exact sizes is necessary')
+            esc_html__('Screenshots of your application when installed on the phone. Must be a PNG image exactly','pwa-for-wp'),
+            esc_html__('512x512 in size.','pwa-for-wp'),
+            esc_html__('- For all mobiles exact sizes is necessary','pwa-for-wp')
                 );
         ?>
     </p>
@@ -3163,13 +3163,13 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
 				$error_message = strtolower($response->get_error_message());
 				$error_pos = strpos($error_message, 'operation timed out');
 				if($error_pos !== false){
-					$message = __('Request timed out, please try again');
+					$message = __('Request timed out, please try again','pwa-for-wp');
 				}else{
 					$message = esc_html($response->get_error_message());
 				}
 			}
 			if(empty($message)){ 
-					 $message =   __( 'An error occurred, please try again.');
+					 $message =   __( 'An error occurred, please try again.','pwa-for-wp');
 			}
 			// $message =  ( is_wp_error( $response ) && ! empty( $response->get_error_message() ) ) ? $response->get_error_message() : __( 'An error occurred, please try again.' );
 		} else {
@@ -3451,7 +3451,7 @@ function pwaforwp_show_premium_options($section){
 function pwaforwp_loading_icon_premium_callback(){
 	echo sprintf("%s <a target='_blank' href='%s'>%s</a>",
 			esc_html__('This feature requires', 'pwa-for-wp'),
-			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/"),
+			esc_url("https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/",'pwa-for-wp'),
 			esc_html__("Loading Icon Library for PWA extension", 'pwa-for-wp')
 
 		);
@@ -4237,13 +4237,13 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 				$error_message = strtolower($response->get_error_message());
 				$error_pos = strpos($error_message, 'operation timed out');
 				if($error_pos !== false){
-					$message = __('Request timed out, please try again');
+					$message = __('Request timed out, please try again','pwa-for-wp');
 				}else{
 					$message = esc_html($response->get_error_message());
 				}
 			}
 			if(empty($message)){ 
-					 $message =   __( 'An error occurred, please try again.');
+					 $message =   __( 'An error occurred, please try again.','pwa-for-wp');
 			}
 		}else{
 			$response = wp_remote_retrieve_body( $response );
