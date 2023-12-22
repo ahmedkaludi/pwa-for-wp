@@ -2853,7 +2853,9 @@ add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
  * @return type json string
  */
 function pwaforwp_send_query_message(){   
-    
+		if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+			return;
+		}
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
             return; 
         }
@@ -3981,8 +3983,10 @@ function pwaforwp_deactivate_update_transient($plugin){
 
 add_action("wp_ajax_pwaforwp_include_visibility_setting_callback", 'pwaforwp_include_visibility_setting_callback');
 function pwaforwp_include_visibility_setting_callback(){
-   
-     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
+	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
+    if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
     }
     if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
@@ -4083,7 +4087,9 @@ function pwaforwp_include_visibility_setting_callback(){
 add_action("wp_ajax_pwaforwp_include_visibility_condition_callback", 'pwaforwp_include_visibility_condition_callback');
 
 function pwaforwp_include_visibility_condition_callback() {
-
+	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
     }
@@ -4110,7 +4116,9 @@ function pwaforwp_include_visibility_condition_callback() {
 add_action("wp_ajax_pwaforwp_exclude_visibility_condition_callback", 'pwaforwp_exclude_visibility_condition_callback');
 
 function pwaforwp_exclude_visibility_condition_callback() {
-
+	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
     }

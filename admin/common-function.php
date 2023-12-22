@@ -58,7 +58,9 @@ function pwaforwp_load_plugin_textdomain() {
 add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
 function pwaforwp_review_notice_close(){    
-    
+        if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+            return;
+        }
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -79,7 +81,9 @@ add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close
 
 
 function pwaforwp_review_notice_remindme(){   
-    
+        if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+            return;
+        }
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }

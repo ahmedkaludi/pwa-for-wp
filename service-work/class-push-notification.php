@@ -19,7 +19,10 @@ class pushNotification{
                            
      }
 
-     public function pwaforwp_send_notification_manually(){                  
+     public function pwaforwp_send_notification_manually(){
+      if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+        return;
+      }              
          
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
                 return; 

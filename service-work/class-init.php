@@ -114,7 +114,10 @@ class PWAFORWP_File_Creation_Init {
 
 add_action('wp_ajax_pwaforwp_download_setup_files', 'pwaforwp_download_setup_files');
 
-function pwaforwp_download_setup_files(){   
+function pwaforwp_download_setup_files(){
+    if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
     
     if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
         return; 

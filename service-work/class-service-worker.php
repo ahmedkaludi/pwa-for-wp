@@ -452,7 +452,9 @@ class PWAFORWP_Service_Worker{
             }
         }
         public function pwaforwp_update_pre_caching_urls(){
-                        
+            if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+                return;
+            }           
             if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
                 return; 
             }       
