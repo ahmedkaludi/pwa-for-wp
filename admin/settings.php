@@ -3997,7 +3997,7 @@ function pwaforwp_include_visibility_setting_callback(){
             'posts_per_page' => -1,
          );  
         $query = new WP_Query($args);
-        $option ='<option value="">Select '.esc_attr($include_type).' Type</option>';
+        $option ='<option value="">Select '.esc_html__($include_type).' Type</option>';
         while ($query->have_posts()) : $query->the_post();
                     
             $option .= '<option value="'.get_the_title().'">'.get_the_title().'</option>';
@@ -4015,7 +4015,7 @@ function pwaforwp_include_visibility_setting_callback(){
         }
 		if(!empty($get_option) && is_array($get_option)){        
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.esc_attr($options_array).'">'.esc_attr($options_array).'</option>';
+            $option .= '<option value="'.esc_attr($options_array).'">'.esc_html__($options_array).'</option>';
         }}
     }
 
@@ -4026,7 +4026,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">'.esc_html__( 'Select Post Category', 'pwa-for-wp' ).'</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_html__($options_array->name).'</option>';
         }}
        
     }
@@ -4037,7 +4037,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">'.esc_html__( 'Select Taxonomy', 'pwa-for-wp' ).'</option>';
 		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_html__($options_array->name).'</option>';
         }}
     }
 
@@ -4048,7 +4048,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">'.esc_html__( 'Select Tag', 'pwa-for-wp' ).'</option>';
 		if(!empty($get_option) && is_array($get_option)){  
         foreach ($get_option as $options_array) {
-            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_attr($options_array->name).'</option>';
+            $option .= '<option value="'.esc_attr($options_array->name).'">'.esc_html__($options_array->name).'</option>';
         }
 	}
 
@@ -4060,7 +4060,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">'.esc_html__( 'Select User', 'pwa-for-wp' ).'</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
-            $option .= '<option value="'.esc_attr($key).'">'.esc_attr($value).'</option>';
+            $option .= '<option value="'.esc_attr($key).'">'.esc_html__($value).'</option>';
         }}
 
     }
@@ -4070,7 +4070,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $option ='<option value="">'.esc_html__( 'Select Page Template', 'pwa-for-wp' ).'</option>';
 		if(!empty($get_option) && is_array($get_option)){   
         foreach ($get_option as $key => $value) {
-            $option .= '<option value="'.esc_attr($value).'">'.esc_attr($value).'</option>';
+            $option .= '<option value="'.esc_attr($value).'">'.esc_html__($value).'</option>';
         }}
     }
 
