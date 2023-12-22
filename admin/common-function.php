@@ -776,8 +776,10 @@ function pwaforwp_ios_splashscreen_files_data(){
 function pwaforwp_get_user_roles(){
     global $wp_roles;
     $allroles = array();
-    foreach ( $wp_roles->roles as $key=>$value ){
-        $allroles[esc_attr($key)] = esc_html($value['name']);
+    if (!empty($wp_roles->roles)) {
+        foreach ( $wp_roles->roles as $key=>$value ){
+            $allroles[esc_attr($key)] = esc_html($value['name']);
+        }
     }
     return $allroles;
 }
