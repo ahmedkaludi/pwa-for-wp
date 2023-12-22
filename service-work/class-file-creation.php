@@ -103,17 +103,17 @@ class pwaforwpFileCreation{
                                     return cur; /*will return null if not found*/
                                   }
                                   document.addEventListener("click",function(e){
-                                    if(e.target && e.target.id== "'.substr($settings['add_to_home_selector'], 1).'"){
+                                    if(e.target && e.target.id== "'.esc_js(substr($settings['add_to_home_selector'], 1)).'"){
                                        addToHome();
                                      }
-                                     if(findParentBySelector(e.target, "'.$settings['add_to_home_selector'].'")){
+                                     if(findParentBySelector(e.target, "'.esc_js($settings['add_to_home_selector']).'")){
                                       addToHome();
                                      }
                                   });';    
                                                
          }
          if(strchr($settings['add_to_home_selector'], '.')){
-            $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");
+            $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.esc_js(substr($settings['add_to_home_selector'], 1)).'");
                                                 if(a2hsBtn !== null){
                                                     for (var i = 0; i < a2hsBtn.length; i++) {
                                                       a2hsBtn[i].addEventListener("click", addToHome); 
@@ -162,7 +162,7 @@ class pwaforwpFileCreation{
                                     }
                                     if (st > lastScrollTop){
                                        if(deferredPrompt !=null){
-                                       '.$banner_on_desktop.'                                                                 
+                                       '.esc_js($banner_on_desktop).'                                                                 
                                        }                                              
                                     } else {
                                     var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
@@ -237,7 +237,7 @@ class pwaforwpFileCreation{
                  $swHtmlContent         = $swHtmlContentbody;
                     
                  if($server_key !='' && $config !=''){
-                 $firebaseconfig   = 'var config ='.$config.';'
+                 $firebaseconfig   = 'var config ='.esc_js($config).';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
                  $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
