@@ -125,8 +125,8 @@ class PWAFORWP_Service_Worker{
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
@@ -214,8 +214,8 @@ class PWAFORWP_Service_Worker{
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
