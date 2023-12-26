@@ -723,8 +723,8 @@ class pwaforwpFileCreation{
                 }
                 $manifest['start_url']        = esc_url_raw($homeUrl);
                 $manifest['scope']            = esc_url_raw($scope_url);
-                if (is_bool($prefer_related_applications)) {
-                  $manifest['prefer_related_applications'] = esc_html($prefer_related_applications); 
+                if ($prefer_related_applications) {
+                  $manifest['prefer_related_applications'] = $prefer_related_applications; 
                 }
 
                 if(isset($defaults['urlhandler_feature']) && $defaults['urlhandler_feature']==1 && isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
