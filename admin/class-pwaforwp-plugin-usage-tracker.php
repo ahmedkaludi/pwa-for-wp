@@ -180,7 +180,6 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					'user-agent'  => 'PUT/1.0.0; ' . home_url()
 				)
 			);
-			//print_r($request['body']); die;
 		 	
 			$this->set_track_time();
 	
@@ -307,7 +306,6 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			if( false !== get_option( 'wisdom_deactivation_reason_' . $this->plugin_name ) ) {
 				$body['deactivation_reason'] = get_option( 'wisdom_deactivation_reason_' . $this->plugin_name );
 			}
-		//	print_r($body); die;
 			// Return the data
 			return $body;
 	
@@ -330,18 +328,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * Deactivating plugin
 		 * @since 1.0.0
 		 */
-		public function deactivate_this_plugin() {
-			// Check to see if the user has opted in to tracking
-			/*if( $this->what_am_i == 'theme' ) {
-				$allow_tracking = $this->theme_allows_tracking;
-			} else {
-				$allow_tracking = $this->get_is_tracking_allowed();
-			}
-			
-			if( ! $allow_tracking ) {
-				return;
-			}*/
-			
+		public function deactivate_this_plugin() {			
 			$body = $this->get_data();
 			$body['status'] = 'Deactivated'; // Never translated
 			$body['deactivated_date'] = time();
@@ -365,13 +352,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 * Is tracking allowed?
 		 * @since 1.0.0
 		 */
-		public function get_is_tracking_allowed() {
-			// First, check if the user has changed their mind and opted out of tracking
-			/*if( $this->has_user_opted_out() ) {
-				$this->set_is_tracking_allowed( false, $this->plugin_name );
-				return false;
-			}*/
-			
+		public function get_is_tracking_allowed() {			
 			if( $this->what_am_i == 'theme' ) {
 				
 				$mod = get_theme_mod( 'wisdom-allow-tracking', 0 );

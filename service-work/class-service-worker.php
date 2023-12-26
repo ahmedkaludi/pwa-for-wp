@@ -694,14 +694,6 @@ class PWAFORWP_Service_Worker{
         }
         echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
-
-        //$screenshots_linktags = '';
-        // if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
-        //     $screenshots_linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['screenshots'])) .'">'.PHP_EOL;
-        //     $screenshots_linktags .= '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['screenshots'])) . '">'.PHP_EOL;
-        // endif;  
-        //echo apply_filters('pwaforwp_apple_touch_icons',$screenshots_linktags);
-        //$this->screenshotScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		

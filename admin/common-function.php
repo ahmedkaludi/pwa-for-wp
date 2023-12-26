@@ -115,7 +115,6 @@ function pwaforwp_frontend_enqueue(){
             if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
                 $settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
             }
-            // echo esc_attr($settings['force_update_sw_setting']);
             $force_update_sw_setting_value = $settings['force_update_sw_setting'];
         }else{ 
             $force_update_sw_setting_value = PWAFORWP_PLUGIN_VERSION;
