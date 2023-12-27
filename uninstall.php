@@ -19,6 +19,8 @@ if ( isset( $options['pwa_uninstall_data'] ) && 1 == $options['pwa_uninstall_dat
 		delete_site_option('pwaforwp_review_never');
 		delete_site_option('pwaforwp_activation_date');
 		delete_site_option('_transient_pwaforwp_restapi_check');
+		delete_site_option('pwaforwp_review_notice_bar_close_date');
+		delete_site_option('pwa_token_list');
 		delete_site_option('pwa_uninstall_data');
 	}else{
 
@@ -29,6 +31,25 @@ if ( isset( $options['pwa_uninstall_data'] ) && 1 == $options['pwa_uninstall_dat
 		delete_option("pwaforwp_review_never");
 		delete_option("pwaforwp_activation_date");
 		delete_option("_transient_pwaforwp_restapi_check");
+		delete_option('pwaforwp_review_notice_bar_close_date');
+		delete_option('pwa_token_list');
 		delete_option('pwa_uninstall_data');
+	}
+
+	global $wp_filesystem;
+
+	if(isset($wp_filesystem)){		
+		// deleting manifest file
+		if($wp_filesystem->is_file(ABSPATH.'pwa-manifest.json')){
+			$wp_filesystem->delete(ABSPATH.'pwa-manifest.json');
+		}
+		// deleting service worker file
+		if($wp_filesystem->is_file(ABSPATH.'pwa-sw.js')){
+			$wp_filesystem->delete(ABSPATH.'pwa-sw.js');
+		}
+
+		if($wp_filesystem->is_file(ABSPATH.'pwa-register-sw.js')){
+			$wp_filesystem->delete(ABSPATH.'pwa-register-sw.js');
+		}
 	}
 }
