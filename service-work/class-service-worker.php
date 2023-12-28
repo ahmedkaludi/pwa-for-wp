@@ -468,7 +468,7 @@ class PWAFORWP_Service_Worker{
             
             update_option('pwaforwp_update_pre_cache_list', 'disable'); 
             delete_transient( 'pwaforwp_pre_cache_post_ids' );
-            echo wp_json_encode(array('status' => esc_html__('t','pwa-for-wp')));
+            echo wp_json_encode(array('status' => 't'));
             
             wp_die();   
         }

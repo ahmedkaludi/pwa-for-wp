@@ -148,9 +148,9 @@ function pwaforwp_download_setup_files(){
             break;
     }            
     if($result){
-      echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'message'=>esc_html__( 'File has been created', 'pwa-for-wp' )));  
+      echo wp_json_encode(array('status'=>'t', 'message'=>esc_html__( 'File has been created', 'pwa-for-wp' )));  
     }else{
-      echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'message'=>esc_html__( 'Check permission or download from manual', 'pwa-for-wp' )));  
+      echo wp_json_encode(array('status'=>'f', 'message'=>esc_html__( 'Check permission or download from manual', 'pwa-for-wp' )));  
     }
     wp_die();           
 }

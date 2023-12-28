@@ -1317,7 +1317,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><textarea placeholder="<?php esc_attr__('https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2','pwa-for-wp') ?>"  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
+        <label><textarea placeholder="<?php esc_attr('https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2') ?>"  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated, do not add enter in urls', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -1326,7 +1326,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 
 function pwaforwp_urlhandler_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
-	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='".esc_attr__('https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com','pwa-for-wp')."'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
+	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='".esc_attr('https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com')."'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
 	?><p><?php echo esc_html__('Note: Put one url in single line', 'pwa-for-wp'); ?></p>
 	<br>
 	<?php
@@ -1419,7 +1419,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>    
                     <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
-                       <label><textarea placeholder="<?php esc_attr__('https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/','pwa-for-wp')?>"  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
+                       <label><textarea placeholder="<?php esc_attr('https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/')?>"  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
@@ -2886,9 +2886,9 @@ function pwaforwp_send_query_message(){
             $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
             
             if($sent){
-            echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'t'));            
             }else{
-            echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'f'));            
             }
             
         }
@@ -2904,6 +2904,9 @@ function pwaforwp_license_transient(){
 	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 		return; 
 	}
+	if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+		return;  
+	}
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
@@ -2917,6 +2920,9 @@ add_action('wp_ajax_pwaforwp_license_transient_zto7', 'pwaforwp_license_transien
 function pwaforwp_license_transient_zto7(){
 	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 		return; 
+	}
+	if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+		return;  
 	}
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
@@ -3806,7 +3812,7 @@ function pwaforwp_update_features_options(){
         echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','pwa-for-wp')));
 		die;
     }
-	$allFields = $_POST['fields_data'];
+	$allFields = wp_unslash($_POST['fields_data']);
 	$actualFields = array();
 	$navigation_bar_data = array();
 	if(is_array($allFields) && !empty($allFields)){
@@ -3820,14 +3826,6 @@ function pwaforwp_update_features_options(){
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
 				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
-			}
-			if(!empty($navigation_bar_data)){
-				if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
-					$pre_settings = pwaforwp_defaultSettings();
-					$merge_navigation_bar_data = wp_parse_args($navigation_bar_data, $pre_settings);
-					update_option( 'pwaforwp_settings', $merge_navigation_bar_data );
-					echo wp_json_encode(array('status'=> 200, 'message'=> esc_html__('Settings Saved.','pwa-for-wp'), 'options'=>$navigation_bar_data));die;
-				}
 			}
 			// navigation bar features end
 					
@@ -3850,6 +3848,13 @@ function pwaforwp_update_features_options(){
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
 		}
+		if(!empty($navigation_bar_data)){
+			if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
+				$pre_settings = pwaforwp_defaultSettings();
+				$actualFields = wp_parse_args($navigation_bar_data, $pre_settings);
+			}
+		}
+
 		if(isset($actualFields['precaching_feature'])){
 			if($actualFields['precaching_feature']==1){
 				$actualFields['precaching_automatic'] = 1;
@@ -3864,11 +3869,12 @@ function pwaforwp_update_features_options(){
         
         if(!empty($allFields) && is_array($allFields)){
                 foreach ($allFields as $key => $value) {
+					$key = sanitize_key($key);
                     if($value['var_name']=="include_targeting_type"){
-                        $include_targeting_type_array[] = $value['var_value'];
+                        $include_targeting_type_array[] = sanitize_text_field($value['var_value']);
                     }
                     if($value['var_name']=="include_targeting_data"){
-                            $include_targeting_value_array[] = $value['var_value'];
+                            $include_targeting_value_array[] = sanitize_text_field($value['var_value']);
                     }
                 }
         }
@@ -3891,14 +3897,14 @@ function pwaforwp_update_features_options(){
         $exclude_targeting_value_array = array();
         
         if(!empty($allFields) && is_array($allFields)){
-                foreach ($allFields as $key => $value) {
-                    if($value['var_name']=="exclude_targeting_type"){
-                        $exclude_targeting_type_array[] = $value['var_value'];
-                    }
-                    if($value['var_name']=="exclude_targeting_data"){
-                            $exclude_targeting_value_array[] = $value['var_value'];
-                    }
-                }
+			foreach ($allFields as $key => $value) {
+				if($value['var_name']=="exclude_targeting_type"){
+					$exclude_targeting_type_array[] = sanitize_text_field($value['var_value']);
+				}
+				if($value['var_name']=="exclude_targeting_data"){
+						$exclude_targeting_value_array[] = sanitize_text_field($value['var_value']);
+				}
+			}
         }
         if(!empty($exclude_targeting_type_array)){
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
@@ -4215,7 +4221,10 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 	function pwaforwp_subscribe_newsletter(){
 		if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 			return; 
-		}   
+		}
+		if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
+			return;  
+		}
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
@@ -4375,6 +4384,8 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
     $merged = $array1;
 	if(is_array($array2) && !empty($array2)){
     foreach ($array2 as $key => & $value) {
+		$key = sanitize_key($key);
+		$value = sanitize_text_field($value);
         if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
             $merged[$key] = pwaforwp_merge_recursive_ex($merged[$key], $value);
         } else if (is_numeric($key)) {

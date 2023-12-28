@@ -32,8 +32,8 @@ class pushNotification{
             }         
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
-            $url              = sanitize_text_field($_POST['url']);
-            $image_url              = sanitize_text_field($_POST['image_url']);
+            $url              = esc_url($_POST['url']);
+            $image_url              = esc_url($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
             $message['image_url']   = (!empty($image_url)? $image_url : '');
@@ -42,9 +42,9 @@ class pushNotification{
             
             $result = json_decode($result, true);                         
             if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
-            echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'success'=> $result['success'], 'failure'=> $result['failure']));    
+            echo wp_json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
-            echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
+            echo wp_json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
            }
            wp_die();
      }
@@ -196,9 +196,9 @@ class pushNotification{
             } 
             
             if($result){
-                echo wp_json_encode(array('status'=>esc_html__('t','pwa-for-wp'), 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-                echo wp_json_encode(array('status'=>esc_html__('f','pwa-for-wp'), 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }

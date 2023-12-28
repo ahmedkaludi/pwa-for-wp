@@ -162,7 +162,8 @@ class pwaforwpFileCreation{
                                     }
                                     if (st > lastScrollTop){
                                        if(deferredPrompt !=null){
-                                       '.esc_js($banner_on_desktop).'                                                                 
+                                        /* The variable $banner_on_desktop has contain static javascript code */ 
+                                       '.$banner_on_desktop.'                                                                 
                                        }                                              
                                     } else {
                                     var bhidescroll = document.getElementById("pwaforwp-add-to-home-click");
