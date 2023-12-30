@@ -67,7 +67,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 = 1.7.65 (30 December 2023) =
 * Bug Fixed  : The Text Font color and the Selected Text Font color of the Navigation Bar are not getting saved #855
 * Bug Fixed  : Media Feature Errors in Blog Splash Screen Images Validation #832
-* Feature Added  : Need to add a functionality to disable the Page navigation scroll bar in PWA #853
+* Feature Added  : Functionality to disable the Page navigation scroll bar in PWA #853
 * Improvement : Code Improvemnt #856
 
 = 1.7.64 (22 November 2023) =
