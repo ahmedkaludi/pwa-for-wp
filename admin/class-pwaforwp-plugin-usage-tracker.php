@@ -689,11 +689,11 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$notice_text = apply_filters( 'wisdom_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
 
 				<div class="notice notice-info updated put-dismiss-notice">
-					<p><?php echo '<strong>Love using PWA for WP & AMP?</strong>'; ?></p>
-					<p><?php echo esc_html( $notice_text ); ?> <a href="https://pwa-for-wp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__( 'Learn more.', 'singularity' ); ?></a></p>
+					<p><?php echo "<strong>".esc_html__( 'Love using PWA for WP & AMP?', 'pwa-for-wp' )."</strong>"; ?></p>
+					<p><?php echo esc_html( $notice_text ); ?> <a href="https://pwa-for-wp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__( 'Learn more.', 'pwa-for-wp' ); ?></a></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php echo _e( 'Sure! I\'d love to help', 'singularity' ); ?></a>&nbsp;&nbsp;
-						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php echo _e( 'No thanks', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-primary"><?php echo esc_html__( 'Sure! I\'d love to help', 'pwa-for-wp' ); ?></a>&nbsp;&nbsp;
+						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php echo esc_html__( 'No thanks', 'pwa-for-wp' ); ?></a>
 					</p>
 				</div>
 			<?php

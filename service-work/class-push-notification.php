@@ -32,8 +32,8 @@ class pushNotification{
             }         
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
-            $url              = esc_url($_POST['url']);
-            $image_url              = esc_url($_POST['image_url']);
+            $url              = sanitize_url($_POST['url']);
+            $image_url              = sanitize_url($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
             $message['image_url']   = (!empty($image_url)? $image_url : '');
@@ -242,13 +242,13 @@ class pushNotification{
                 $error_message = strtolower($response->get_error_message());
                 $error_pos = strpos($error_message, 'operation timed out');
                 if($error_pos !== false){
-                  $message = __('Request timed out, please try again');
+                  $message = esc_html__('Request timed out, please try again', 'pwa-for-wp');
                 }else{
                   $message = esc_html($response->get_error_message());
                 }
               }
               if(empty($message)){ 
-                   $message =   __( 'An error occurred, please try again.');
+                   $message =   esc_html__( 'An error occurred, please try again.', 'pwa-for-wp');
               }
               $response = array('success'=>0,'message'=>$message);
             }else{

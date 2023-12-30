@@ -12,7 +12,7 @@ function pwaforwp_loading_icon() {
         if($color){
             $color_style = 'border-top-color: '.$color;
         }
-        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.$bgcolor; }
+        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.esc_attr($bgcolor); }
         echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
     }
@@ -40,11 +40,11 @@ function pwaforwp_reset_all_settings(){
         
         if($result){    
             
-            echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'t'));            
         
         }else{
             
-            echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'f'));            
         
         }        
         wp_die();           
@@ -70,9 +70,9 @@ function pwaforwp_review_notice_close(){
        
         $result =  update_option( "pwaforwp_review_never", 'never');               
         if($result){           
-        echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+        echo wp_json_encode(array('status'=>'t'));            
         }else{
-        echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+        echo wp_json_encode(array('status'=>'f'));            
         }        
         wp_die();           
 }
@@ -93,9 +93,9 @@ function pwaforwp_review_notice_remindme(){
        
         $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
         if($result){           
-            echo wp_json_encode(array('status'=>esc_html__("t",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'t'));            
         }else{
-            echo wp_json_encode(array('status'=>esc_html__("f",'pwa-for-wp')));            
+            echo wp_json_encode(array('status'=>'f'));            
         }        
         wp_die();           
 }

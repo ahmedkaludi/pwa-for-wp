@@ -463,8 +463,8 @@ class PWAFORWP_Service_Worker{
             } 
             
             $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-            $result = $file_creation_init_obj->pwaforwp_swjs_init();
-            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+            $file_creation_init_obj->pwaforwp_swjs_init();
+            $file_creation_init_obj->pwaforwp_swjs_init_amp();
             
             update_option('pwaforwp_update_pre_cache_list', 'disable'); 
             delete_transient( 'pwaforwp_pre_cache_post_ids' );
@@ -516,15 +516,15 @@ class PWAFORWP_Service_Worker{
                             set_transient('pwaforwp_pre_cache_post_ids', wp_json_encode($post_ids));
                             update_option('pwaforwp_update_pre_cache_list', 'enable');
                             $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-                            $result = $file_creation_init_obj->pwaforwp_swjs_init();
-                            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                            $file_creation_init_obj->pwaforwp_swjs_init();
+                            $file_creation_init_obj->pwaforwp_swjs_init_amp();
                             update_option('pwaforwp_update_pre_cache_list', 'disable');
                         }
                     }else{
                         set_transient('pwaforwp_pre_cache_post_ids', wp_json_encode($post_ids));
                         $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-                        $result = $file_creation_init_obj->pwaforwp_swjs_init();
-                        $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                        $file_creation_init_obj->pwaforwp_swjs_init();
+                        $file_creation_init_obj->pwaforwp_swjs_init_amp();
                     }
                 }
 
@@ -549,8 +549,8 @@ class PWAFORWP_Service_Worker{
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
             }else{                             
                     echo '<div id="pwaforwp-add-to-home-click" style="background-color:'.esc_attr($settings['custom_banner_background_color']).'" class="pwaforwp-footer-prompt pwaforwp-bounceInUp pwaforwp-animated"> <span id="pwaforwp-prompt-close" class="pwaforwp-prompt-close"></span>'
-                       . '<h3 style="color:'.esc_attr($settings['custom_banner_title_color']).'">'. esc_html__($banner_title, 'pwa-for-wp').'</h3>'
-                       . '<div style="background-color:'.esc_attr($settings['custom_banner_btn_color']).'; color:'.esc_attr($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html__($button_text, 'pwa-for-wp').'</div>'
+                       . '<h3 style="color:'.esc_attr($settings['custom_banner_title_color']).'">'. esc_html($banner_title).'</h3>'
+                       . '<div style="background-color:'.esc_attr($settings['custom_banner_btn_color']).'; color:'.esc_attr($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html($button_text).'</div>'
                        . '</div>'; 
             }
             
