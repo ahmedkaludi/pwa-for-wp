@@ -11,12 +11,12 @@ class PWA_Utility{
 
 	public function enable_modules(){
 		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'verify_request' ) ) {
-	        echo json_encode(array("status"=>300,"message"=>'Request not valid'));
+	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__("Request not valid",'pwa-for-wp')));
 	        exit();
 	    }
 	    // Exit if the user does not have proper permissions
 	    if(! current_user_can( 'install_plugins' ) ) {
-	        echo json_encode(array("status"=>300,"message"=>'User Request not valid'));
+	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__('User Request not valid','pwa-for-wp')));
 	        exit();
 	    }
 
@@ -46,9 +46,9 @@ class PWA_Utility{
 	    }
 
 	    if(count($plugins)>0){
-	       echo json_encode( array( "status"=>200, "message"=>"Module successfully Added",'redirect_url'=>esc_url($redirectSettingsUrl) , "slug"=>$plugins[0]['name'], 'path'=> $plugins[0]['path'] ) );
+	       echo wp_json_encode( array( "status"=>200, "message"=>esc_html__("Module successfully Added",'pwa-for-wp'),'redirect_url'=>esc_url($redirectSettingsUrl) , "slug"=>$plugins[0]['name'], 'path'=> $plugins[0]['path'] ) );
 	    }else{
-	        echo json_encode(array("status"=>300, "message"=>"Modules not Found"));
+	        echo wp_json_encode(array("status"=>300, "message"=>esc_html__("Modules not Found",'pwa-for-wp')));
 	    }
 	    wp_die();
 
@@ -56,22 +56,22 @@ class PWA_Utility{
 
 	public function enable_modules_active_dashboard(){
 		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'wp_pro_activate' ) ) {
-	        echo json_encode(array("status"=>300,"message"=>'Request not valid')); die;
+	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__('Request not valid','pwa-for-wp'))); die;
 	        exit();
 	    }
-	    if(!current_user_can('activate_plugins')){ echo json_encode(array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') )); die; }
+	    if(!current_user_can('activate_plugins')){ echo wp_json_encode(array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') )); die; }
 	    $addonLists = pwaforwp_list_addons();
-	    $target_file = $_POST['target_file'];
+	    $target_file = sanitize_text_field($_POST['target_file']);
 	    $slug = isset($addonLists[$target_file]['p-slug'])? $addonLists[$target_file]['p-slug'] : '';
 	    if( $slug ){ 
 	    	$response = activate_plugin($slug); 
 	    }else{ 
-	    	$response = new WP_Error( 'broke', esc_html__( "invalid slug provided", "my_textdomain" ) );
+	    	$response = new WP_Error( 'broke', esc_html__( "invalid slug provided", "pwa-for-wp" ) );
 	    }
 	    if($response instanceof  WP_Error){
-	    	echo json_encode(array("status"=>500, 'message'=>$response->get_error_message()));die;
+	    	echo wp_json_encode(array("status"=>500, 'message'=>$response->get_error_message()));die;
 	    }else{
-	    	echo json_encode(array("status"=>200, 'message'=>esc_html__('Plugin Activating. please wait..', 'pwa-for-wp') ));die;
+	    	echo wp_json_encode(array("status"=>200, 'message'=>esc_html__('Plugin Activating. please wait..', 'pwa-for-wp') ));die;
 	    }
 	}
 }

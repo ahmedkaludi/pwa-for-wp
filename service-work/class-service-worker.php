@@ -121,12 +121,12 @@ class PWAFORWP_Service_Worker{
                     $pn_api_key = $pn_options->api_key;
 
                     $url = ($home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'pwa-sw'.$site_id.'-js');
-                    $url = service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
+                    $url = pwaforwp_service_workerUrls($url, 'pwa-sw'.$site_id.'-js');
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
@@ -214,8 +214,8 @@ class PWAFORWP_Service_Worker{
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".$url."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".$pn_api_key."')".PHP_EOL;
+                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content = preg_replace('/\s+/', ' ', $content);
                     echo $content;
                     exit;
@@ -452,7 +452,9 @@ class PWAFORWP_Service_Worker{
             }
         }
         public function pwaforwp_update_pre_caching_urls(){
-                        
+            if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+                return;
+            }           
             if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
                 return; 
             }       
@@ -461,12 +463,12 @@ class PWAFORWP_Service_Worker{
             } 
             
             $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-            $result = $file_creation_init_obj->pwaforwp_swjs_init();
-            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+            $file_creation_init_obj->pwaforwp_swjs_init();
+            $file_creation_init_obj->pwaforwp_swjs_init_amp();
             
             update_option('pwaforwp_update_pre_cache_list', 'disable'); 
             delete_transient( 'pwaforwp_pre_cache_post_ids' );
-            echo json_encode(array('status' => 't'));
+            echo wp_json_encode(array('status' => 't'));
             
             wp_die();   
         }
@@ -511,18 +513,18 @@ class PWAFORWP_Service_Worker{
                     if($previousIds){
                         $previousIds = json_decode($previousIds);
                         if(array_diff($post_ids, $previousIds)){
-                            set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));
+                            set_transient('pwaforwp_pre_cache_post_ids', wp_json_encode($post_ids));
                             update_option('pwaforwp_update_pre_cache_list', 'enable');
                             $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-                            $result = $file_creation_init_obj->pwaforwp_swjs_init();
-                            $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                            $file_creation_init_obj->pwaforwp_swjs_init();
+                            $file_creation_init_obj->pwaforwp_swjs_init_amp();
                             update_option('pwaforwp_update_pre_cache_list', 'disable');
                         }
                     }else{
-                        set_transient('pwaforwp_pre_cache_post_ids', json_encode($post_ids));
+                        set_transient('pwaforwp_pre_cache_post_ids', wp_json_encode($post_ids));
                         $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
-                        $result = $file_creation_init_obj->pwaforwp_swjs_init();
-                        $result = $file_creation_init_obj->pwaforwp_swjs_init_amp();
+                        $file_creation_init_obj->pwaforwp_swjs_init();
+                        $file_creation_init_obj->pwaforwp_swjs_init_amp();
                     }
                 }
 
@@ -547,8 +549,8 @@ class PWAFORWP_Service_Worker{
             if ((function_exists( 'ampforwp_is_amp_endpoint' ) && ampforwp_is_amp_endpoint()) || function_exists( 'is_amp_endpoint' ) && is_amp_endpoint()) {                  
             }else{                             
                     echo '<div id="pwaforwp-add-to-home-click" style="background-color:'.esc_attr($settings['custom_banner_background_color']).'" class="pwaforwp-footer-prompt pwaforwp-bounceInUp pwaforwp-animated"> <span id="pwaforwp-prompt-close" class="pwaforwp-prompt-close"></span>'
-                       . '<h3 style="color:'.esc_attr($settings['custom_banner_title_color']).'">'. esc_html__($banner_title, 'pwa-for-wp').'</h3>'
-                       . '<div style="background-color:'.esc_attr($settings['custom_banner_btn_color']).'; color:'.esc_attr($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html__($button_text, 'pwa-for-wp').'</div>'
+                       . '<h3 style="color:'.esc_attr($settings['custom_banner_title_color']).'">'. esc_html($banner_title).'</h3>'
+                       . '<div style="background-color:'.esc_attr($settings['custom_banner_btn_color']).'; color:'.esc_attr($settings['custom_banner_btn_text_color']).'" class="pwaforwp-btn pwaforwp-btn-add-to-home">'.esc_html($button_text).'</div>'
                        . '</div>'; 
             }
             
@@ -583,7 +585,7 @@ class PWAFORWP_Service_Worker{
                             
                 //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
-                $swhtml            = service_workerUrls($swhtml, 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html');
+                $swhtml            = pwaforwp_service_workerUrls($swhtml, 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html');
 
                 $url = pwaforwp_site_url();
                 $home_url = pwaforwp_home_url();
@@ -591,7 +593,7 @@ class PWAFORWP_Service_Worker{
                     $filename = apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
                     $swjs_path_amp   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename;   
 
-                    $swjs_path_amp = service_workerUrls($swjs_path_amp, $filename);
+                    $swjs_path_amp = pwaforwp_service_workerUrls($swjs_path_amp, $filename);
                 }else{
                     $swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 }
@@ -622,7 +624,7 @@ class PWAFORWP_Service_Worker{
 		if( $manualfileSetup ){//&& !class_exists('OneSignal')
             $filename = apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js");
             $url = $url.$filename;
-            $url = service_workerUrls($url, $filename);
+            $url = pwaforwp_service_workerUrls($url, $filename);
              
              wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
             wp_enqueue_script( "pwa-main-script");     
@@ -660,7 +662,7 @@ class PWAFORWP_Service_Worker{
             }
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
-                echo '<link rel="apple-touch-screenshots-precomposed" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
+                echo '<link rel="apple-touch-icon" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
             endif;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
@@ -692,14 +694,6 @@ class PWAFORWP_Service_Worker{
         }
         echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
         $this->iosSplashScreen();
-
-        //$screenshots_linktags = '';
-        // if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
-        //     $screenshots_linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['screenshots'])) .'">'.PHP_EOL;
-        //     $screenshots_linktags .= '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['screenshots'])) . '">'.PHP_EOL;
-        // endif;  
-        //echo apply_filters('pwaforwp_apple_touch_icons',$screenshots_linktags);
-        //$this->screenshotScreen();
     }
     public function pwaforwp_is_amp_activated() {    
 		

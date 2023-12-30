@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.64
+Version: 1.7.65
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.64');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.65');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -66,7 +66,7 @@ function pwaforwp_init_plugin(){
     }
 }
 function pwaforwp_add_action_links($links){
-    $mylinks = array('<a href="' . admin_url( 'admin.php?page=pwaforwp' ) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
+    $mylinks = array('<a href="' . esc_url(admin_url( 'admin.php?page=pwaforwp' )) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
     return array_merge( $links, $mylinks );
 }
 
@@ -78,16 +78,18 @@ function pwaforwp_revert_src($content){
             
             preg_match("/<link rel=\"manifest\" href=\"(.*?)"."pwa-amp-manifest".pwaforwp_multisite_postfix()."\.json\">/i", $content, $manifest_match);
         
-            if(isset($manifest_match[0])){
-               $replacewith = '<link rel="manifest" href="'.esc_url($url).'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json">'; 
+            if(isset($manifest_match[0])){               
+               $amp_mf_url = $url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json';
+               $replacewith = '<link rel="manifest" href="'.esc_url($amp_mf_url).'">'; 
                $content = str_replace($manifest_match[0],$replacewith,$content);
             }
                         
             preg_match("/<amp\-install\-serviceworker(.*?)src=\"(.*?)pwa-amp-sw".pwaforwp_multisite_postfix()."\.js\"(.*?)data-iframe-src=\"(.*?)pwa-amp-sw".pwaforwp_multisite_postfix()."\.html/s", $content, $amp_sw_match);
 
             if(isset($amp_sw_match[0])){
+               $amp_sw_url = $url.'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                $dataset_src = 'data-iframe-src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html'; 
-               $replacewith = '<amp-install-serviceworker '.$amp_sw_match[1].' src="'.esc_url($url).'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js"'.$amp_sw_match[3].$dataset_src; 
+               $replacewith = '<amp-install-serviceworker '.$amp_sw_match[1].' src="'.esc_url($amp_sw_url).'"'.$amp_sw_match[3].$dataset_src; 
                $content = str_replace($amp_sw_match[0],$replacewith,$content);
             }
                        
@@ -96,7 +98,8 @@ function pwaforwp_revert_src($content){
             preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $sw_match);
 
             if(isset($sw_match[0])){
-               $replacewith = '<script src="'.esc_url($url).'pwa-register-sw'.pwaforwp_multisite_postfix().'.js">';  
+               $pwa_r_url = $url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+               $replacewith = '<script src="'.esc_url($pwa_r_url).'">';
                $content = str_replace($sw_match[0],$replacewith,$content);
             }
             
@@ -204,9 +207,9 @@ function pwaforwp_admin_notice(){
                     </p>
                     <p class="notice-action">                     
                         <a target="_blank" href="https://wordpress.org/plugins/pwa-for-wp/#reviews" class="button button-secondry">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-remindme">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
-                        <a href="javascript:void(0);" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-remindme">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
+                        <a href="#" style="margin-left:10px;cursor:pointer;font-size:12px;text-decoration:underline;" class="pwaforwp-feedback-notice-close">%s</a>
                     </p>
                 </div>',
                 esc_html__('Excellent! You\'ve been using PWA For WP plugin for over a week. Hope you are enjoying it so far. We have spent countless hours developing this 
@@ -229,8 +232,7 @@ add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     
     if ( PWAFORWP_PLUGIN_BASENAME == $file ) {
-      $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";   
-      $hire_url = "https://ampforwp.com/hire/";
+      $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";         
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
     }
 

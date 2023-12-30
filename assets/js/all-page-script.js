@@ -129,7 +129,7 @@ jQuery(document).ready(function($){
         var name = form.find('input[name="name"]').val();
         var email = form.find('input[name="email"]').val();
         var website = form.find('input[name="company"]').val();
-        jQuery.post(pwaforwp_obj.ajax_url, {action:'pwaforwp_subscribe_newsletter',name:name, email:email,website:website},
+        jQuery.post(pwaforwp_obj.ajax_url, {action:'pwaforwp_subscribe_newsletter',name:name, email:email,website:website,pwaforwp_security_nonce:pwaforwp_obj.pwaforwp_security_nonce},
           function(data) {
               jQuery.post (pwaforwp_obj.ajax_url, {
                       pointer: 'pwaforwp_subscribe_pointer',

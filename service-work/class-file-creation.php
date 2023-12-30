@@ -17,7 +17,7 @@ class pwaforwpFileCreation{
 
           if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot() ){
             $ServiceWorkerfileName   = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');   
-			       $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'));
+			       $ServiceWorkerfileName = pwaforwp_service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js'));
           }else{
             $ServiceWorkerfileName          = $url.apply_filters('pwaforwp_amp_sw_name_modify', 'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js');
           }
@@ -103,17 +103,17 @@ class pwaforwpFileCreation{
                                     return cur; /*will return null if not found*/
                                   }
                                   document.addEventListener("click",function(e){
-                                    if(e.target && e.target.id== "'.substr($settings['add_to_home_selector'], 1).'"){
+                                    if(e.target && e.target.id== "'.esc_js(substr($settings['add_to_home_selector'], 1)).'"){
                                        addToHome();
                                      }
-                                     if(findParentBySelector(e.target, "'.$settings['add_to_home_selector'].'")){
+                                     if(findParentBySelector(e.target, "'.esc_js($settings['add_to_home_selector']).'")){
                                       addToHome();
                                      }
                                   });';    
                                                
          }
          if(strchr($settings['add_to_home_selector'], '.')){
-            $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.substr($settings['add_to_home_selector'], 1).'");
+            $addtohomemanually    ='var a2hsBtn = document.getElementsByClassName("'.esc_js(substr($settings['add_to_home_selector'], 1)).'");
                                                 if(a2hsBtn !== null){
                                                     for (var i = 0; i < a2hsBtn.length; i++) {
                                                       a2hsBtn[i].addEventListener("click", addToHome); 
@@ -162,6 +162,7 @@ class pwaforwpFileCreation{
                                     }
                                     if (st > lastScrollTop){
                                        if(deferredPrompt !=null){
+                                        /* The variable $banner_on_desktop has contain static javascript code */ 
                                        '.$banner_on_desktop.'                                                                 
                                        }                                              
                                     } else {
@@ -213,7 +214,7 @@ class pwaforwpFileCreation{
     $swFilename = apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
     $ServiceWorkerfileName   = $url.$swFilename;
     if( trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()){
-      $ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, $swFilename);
+      $ServiceWorkerfileName = pwaforwp_service_workerUrls($ServiceWorkerfileName, $swFilename);
     }
     /*Default Bar will be disabled if custom add to home banners are enabled*/
     $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
@@ -237,7 +238,7 @@ class pwaforwpFileCreation{
                  $swHtmlContent         = $swHtmlContentbody;
                     
                  if($server_key !='' && $config !=''){
-                 $firebaseconfig   = 'var config ='.$config.';'
+                 $firebaseconfig   = 'var config ='.esc_js($config).';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
                  $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
@@ -722,8 +723,10 @@ class pwaforwpFileCreation{
                   $manifest['orientation']      = esc_html( $orientation );
                 }
                 $manifest['start_url']        = esc_url_raw($homeUrl);
-                $manifest['scope']            = esc_url_raw($scope_url);     
-                $manifest['prefer_related_applications']            = esc_html($prefer_related_applications);     
+                $manifest['scope']            = esc_url_raw($scope_url);
+                if ($prefer_related_applications) {
+                  $manifest['prefer_related_applications'] = $prefer_related_applications; 
+                }
 
                 if(isset($defaults['urlhandler_feature']) && $defaults['urlhandler_feature']==1 && isset($defaults['urlhandler']) && !empty($defaults['urlhandler'])){
                     $urls = explode("\n", $defaults['urlhandler']);
@@ -736,7 +739,7 @@ class pwaforwpFileCreation{
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
 		
-                return json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
+                return wp_json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
 	}        
 
   public function pwaforwp_getlayoutfiles($filePath){

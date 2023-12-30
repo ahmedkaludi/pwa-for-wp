@@ -19,7 +19,10 @@ class pushNotification{
                            
      }
 
-     public function pwaforwp_send_notification_manually(){                  
+     public function pwaforwp_send_notification_manually(){
+      if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+        return;
+      }              
          
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
                 return; 
@@ -29,8 +32,8 @@ class pushNotification{
             }         
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
-            $url              = esc_url(sanitize_text_field($_POST['url']));
-            $image_url              = esc_url(sanitize_text_field($_POST['image_url']));
+            $url              = sanitize_url($_POST['url']);
+            $image_url              = sanitize_url($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
             $message['image_url']   = (!empty($image_url)? $image_url : '');
@@ -39,9 +42,9 @@ class pushNotification{
             
             $result = json_decode($result, true);                         
             if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
-            echo json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
+            echo wp_json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
                }else{
-            echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
+            echo wp_json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
            }
            wp_die();
      }
@@ -188,14 +191,14 @@ class pushNotification{
                 do_action('pwaforwp_before_save_token_action', $token);
                 $get_token_list = (array)json_decode(get_option('pwa_token_list'), true);               
                 array_push($get_token_list, $token);                
-                $result = update_option('pwa_token_list', json_encode($get_token_list));
+                $result = update_option('pwa_token_list', wp_json_encode($get_token_list));
                 
             } 
             
             if($result){
-                echo json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>'t', 'mesg'=> esc_html__('Token Saved Successfully','pwa-for-wp')));    
             }else{
-                echo json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
+                echo wp_json_encode(array('status'=>'f', 'mesg'=> esc_html__('Token Not Saved','pwa-for-wp')));    
             }
              wp_die();
       }
@@ -227,14 +230,30 @@ class pushNotification{
             ];
 
             $args = array(
-              'body'        => json_encode($payload),
+              'body'        => wp_json_encode($payload),
               'timeout'     => '15',
               'headers'     => $header,
               'sslverify'   => false,
             );
 
             $response = wp_remote_post( 'https://fcm.googleapis.com/fcm/send', $args);
-            $response = wp_remote_retrieve_body( $response );
+            if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+              if(!empty($response->get_error_message())){
+                $error_message = strtolower($response->get_error_message());
+                $error_pos = strpos($error_message, 'operation timed out');
+                if($error_pos !== false){
+                  $message = esc_html__('Request timed out, please try again', 'pwa-for-wp');
+                }else{
+                  $message = esc_html($response->get_error_message());
+                }
+              }
+              if(empty($message)){ 
+                   $message =   esc_html__( 'An error occurred, please try again.', 'pwa-for-wp');
+              }
+              $response = array('success'=>0,'message'=>$message);
+            }else{
+              $response = wp_remote_retrieve_body( $response );
+            }
             return $response;          
       }
                  

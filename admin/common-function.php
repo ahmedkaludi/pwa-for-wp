@@ -12,7 +12,7 @@ function pwaforwp_loading_icon() {
         if($color){
             $color_style = 'border-top-color: '.$color;
         }
-        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.$bgcolor; }
+        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.esc_attr($bgcolor); }
         echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
     }
@@ -40,11 +40,11 @@ function pwaforwp_reset_all_settings(){
         
         if($result){    
             
-            echo json_encode(array('status'=>'t'));            
+            echo wp_json_encode(array('status'=>'t'));            
         
         }else{
             
-            echo json_encode(array('status'=>'f'));            
+            echo wp_json_encode(array('status'=>'f'));            
         
         }        
         wp_die();           
@@ -58,7 +58,9 @@ function pwaforwp_load_plugin_textdomain() {
 add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
 function pwaforwp_review_notice_close(){    
-    
+        if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+            return;
+        }
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -68,9 +70,9 @@ function pwaforwp_review_notice_close(){
        
         $result =  update_option( "pwaforwp_review_never", 'never');               
         if($result){           
-        echo json_encode(array('status'=>'t'));            
+        echo wp_json_encode(array('status'=>'t'));            
         }else{
-        echo json_encode(array('status'=>'f'));            
+        echo wp_json_encode(array('status'=>'f'));            
         }        
         wp_die();           
 }
@@ -79,7 +81,9 @@ add_action('wp_ajax_pwaforwp_review_notice_close', 'pwaforwp_review_notice_close
 
 
 function pwaforwp_review_notice_remindme(){   
-    
+        if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+            return;
+        }
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
@@ -89,9 +93,9 @@ function pwaforwp_review_notice_remindme(){
        
         $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
         if($result){           
-            echo json_encode(array('status'=>'t'));            
+            echo wp_json_encode(array('status'=>'t'));            
         }else{
-            echo json_encode(array('status'=>'f'));            
+            echo wp_json_encode(array('status'=>'f'));            
         }        
         wp_die();           
 }
@@ -111,7 +115,6 @@ function pwaforwp_frontend_enqueue(){
             if(!version_compare($settings['force_update_sw_setting'],PWAFORWP_PLUGIN_VERSION, '>=') ){
                 $settings['force_update_sw_setting'] = PWAFORWP_PLUGIN_VERSION;
             }
-            // echo esc_attr($settings['force_update_sw_setting']);
             $force_update_sw_setting_value = $settings['force_update_sw_setting'];
         }else{ 
             $force_update_sw_setting_value = PWAFORWP_PLUGIN_VERSION;
@@ -198,6 +201,10 @@ function pwaforwp_frontend_enqueue(){
                 
         wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , $force_update_sw_setting_value );       
         wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
+
+        if (isset($settings['scrollbar_setting']) && $settings['scrollbar_setting']) {
+            wp_enqueue_style( 'pwa-scrollbar-css', PWAFORWP_PLUGIN_URL . "assets/css/pwaforwp-scrollbar.css",false,$force_update_sw_setting_value );
+        }
 
         }
 
@@ -665,7 +672,7 @@ function pwaforwp_check_root_writable($wppath){
   return trailingslashit($wppath);
 }
 
-function service_workerUrls($url, $filename){
+function pwaforwp_service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
   $uploadBasePath = trailingslashit($uploadArray['basedir']);
   $settings = pwaforwp_defaultSettings(); 
@@ -768,8 +775,10 @@ function pwaforwp_ios_splashscreen_files_data(){
 function pwaforwp_get_user_roles(){
     global $wp_roles;
     $allroles = array();
-    foreach ( $wp_roles->roles as $key=>$value ){
-        $allroles[esc_attr($key)] = esc_html($value['name']);
+    if (!empty($wp_roles->roles)) {
+        foreach ( $wp_roles->roles as $key=>$value ){
+            $allroles[esc_attr($key)] = esc_html($value['name']);
+        }
     }
     return $allroles;
 }

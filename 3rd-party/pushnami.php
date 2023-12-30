@@ -102,7 +102,7 @@ class PWAforwp_pushnami{
 
 		if( is_multisite() || trim($url)!==trim($home_url) || !pwaforwp_is_file_inroot()) {
 			$ServiceWorkerfileName = $home_url.'?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
-			$ServiceWorkerfileName = service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js'));
+			$ServiceWorkerfileName = pwaforwp_service_workerUrls($ServiceWorkerfileName, apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js'));
 		} else {
 			$ServiceWorkerfileName = $url.apply_filters('pwaforwp_sw_name_modify', 'pwa-sw'.pwaforwp_multisite_postfix().'.js');
 		}

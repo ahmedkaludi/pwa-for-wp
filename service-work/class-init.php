@@ -94,9 +94,7 @@ class PWAFORWP_File_Creation_Init {
         $swjsContent    = $this->fileCreation->pwaforwp_swr();
         $status         = pwaforwp_write_a_file($this->swr_init, $swjsContent, $action);
         
-        /*$swjsContent    = '{"gcm_sender_id": "103953800507"}';
-        $status         =  pwaforwp_write_a_file($this->firebase_manifest_init, $swjsContent, $action);*/
-                         
+
         //Dummy file to work FCM perfectly 
         
         if($server_key !='' && $config !=''){
@@ -114,7 +112,10 @@ class PWAFORWP_File_Creation_Init {
 
 add_action('wp_ajax_pwaforwp_download_setup_files', 'pwaforwp_download_setup_files');
 
-function pwaforwp_download_setup_files(){   
+function pwaforwp_download_setup_files(){
+    if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
     
     if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
         return; 
@@ -147,9 +148,9 @@ function pwaforwp_download_setup_files(){
             break;
     }            
     if($result){
-      echo json_encode(array('status'=>'t', 'message'=>esc_html__( 'File has been created', 'pwa-for-wp' )));  
+      echo wp_json_encode(array('status'=>'t', 'message'=>esc_html__( 'File has been created', 'pwa-for-wp' )));  
     }else{
-      echo json_encode(array('status'=>'f', 'message'=>esc_html__( 'Check permission or download from manual', 'pwa-for-wp' )));  
+      echo wp_json_encode(array('status'=>'f', 'message'=>esc_html__( 'Check permission or download from manual', 'pwa-for-wp' )));  
     }
     wp_die();           
 }
