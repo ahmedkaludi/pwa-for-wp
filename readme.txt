@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.4
-Stable tag: 1.7.64
+Stable tag: 1.7.65
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+
+= 1.7.65 (30 December 2023) =
+* Bug Fixed  : The Text Font color and the Selected Text Font color of the Navigation Bar are not getting saved #855
+* Bug Fixed  : Media Feature Errors in Blog Splash Screen Images Validation #832
+* Feature Added  : Need to add a functionality to disable the Page navigation scroll bar in PWA #853
+* Improvement : Code Improvemnt #856
 
 = 1.7.64 (22 November 2023) =
 * Improvement  : Make the offline message "You are offline" as an option #727
