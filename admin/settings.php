@@ -415,6 +415,7 @@ function pwaforwp_settings_init(){
     	add_action('admin_print_footer_scripts', 'pwaforwp_loading_icon_scripts');
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
 	}
+	add_action('admin_print_styles', 'pwaforwp_loading_select2_styles');
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
@@ -1469,7 +1470,7 @@ function pwaforwp_visibility_setting_callback(){
                 <div class="include_error">&nbsp;</div>
             </td>
             <td class="visibility_options_select">
-                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text pwaforwp_visibility_options_select visibility_include_select_type">
+                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text pwaforwp_visibility_options_select visibility_include_select_type pwa_for_wp-select2">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>                    
                 </select>
                 <div class="include_type_error">&nbsp;</div>
@@ -1521,7 +1522,7 @@ function pwaforwp_visibility_setting_callback(){
             </td>
 
             <td class="visibility_options_select">
-                <select  class="regular-text pwaforwp_visibility_options_select visibility_exclude_select_type">
+                <select  class="regular-text pwaforwp_visibility_options_select visibility_exclude_select_type pwa_for_wp-select2_exclude">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     
                     
@@ -3968,7 +3969,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $args = array(
             'post_type' => $include_type,
             'post_status' => 'publish',
-            'posts_per_page' => -1,
+            'posts_per_page' => 50,
          );  
         $query = new WP_Query($args);
         $option ='<option value="">Select '.esc_html($include_type).' Type</option>';
@@ -4343,6 +4344,10 @@ function pwaforwp_loading_icon_styles(){
 	</style>';
 }
 
+function pwaforwp_loading_select2_styles(){
+	echo '<style>.select2-container{z-index:999999}</style>';
+}
+
 /**
  * pwaforwp_merge_recursive_ex merge any multidimensional Array
  * @param Array1(array) Array2(array)
@@ -4367,3 +4372,67 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
 
     return $merged;
 }
+
+function pwaforwp_get_select2_data(){
+	if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
+	  return; 
+	}
+	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
+	
+	if ( (wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) )){
+
+		$search        = isset( $_GET['q'] ) ? sanitize_text_field( $_GET['q'] ) : '';                                    
+		$type          = isset( $_GET['type'] ) ? sanitize_text_field( $_GET['type'] ) : '';
+
+		$arg['post_type']      = $type;
+		$arg['posts_per_page'] = 50;  
+		$arg['post_status']    = 'any'; 
+
+		if(!empty($search)){
+		  $arg['s']              = $search;
+		}
+		$result = array();
+		$posts  = get_posts( $arg );
+		if(!empty($posts)){
+			foreach($posts as $post){  
+				$result[] = array('id' => $post->ID, 'text' => $post->post_title);
+			}
+		}
+		wp_send_json(['results' => $result] );            
+
+	}else{
+	  return;  
+	}                
+	
+	wp_die();
+}
+
+add_action( 'wp_ajax_pwaforwp_get_select2_data', 'pwaforwp_get_select2_data');
+
+function pwaforwp_enqueue_select2_js( $hook ) {
+	if($hook  == 'toplevel_page_pwaforwp'){
+
+		wp_dequeue_script( 'select2-js' );   
+		wp_dequeue_script( 'select2' );
+		wp_deregister_script( 'select2' );
+		//conflict with jupitor theme fixed starts here
+		wp_dequeue_script( 'mk-select2' );
+		wp_deregister_script( 'mk-select2' );                
+		//conflict with jupitor theme fixed ends here                
+		wp_dequeue_script( 'wds-shared-ui' );
+		wp_deregister_script( 'wds-shared-ui' );
+		wp_dequeue_script( 'pum-admin-general' );
+		wp_deregister_script( 'pum-admin-general' );
+		//Hide vidoe pro select2 on schema type dashboard
+		wp_dequeue_script( 'cmb-select2' );
+		wp_deregister_script( 'cmb-select2' );
+
+		wp_enqueue_style('pwaforwp-select2-style', PWAFORWP_PLUGIN_URL. 'assets/css/select2.min.css' , false, PWAFORWP_PLUGIN_VERSION);
+		wp_enqueue_script('select2', PWAFORWP_PLUGIN_URL. 'assets/js/select2.min.js', array( 'jquery'), PWAFORWP_PLUGIN_VERSION, true);
+		wp_enqueue_script('select2-extended-script', PWAFORWP_PLUGIN_URL. 'assets/js/select2-extended.min.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+	}
+
+}
+add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_select2_js',9999 );
