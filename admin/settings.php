@@ -3981,7 +3981,8 @@ function pwaforwp_include_visibility_setting_callback(){
     }
     if(in_array($include_type, array('post_type','globally'))) {
         if($include_type == 'post_type'){
-            $get_option = array('post', 'page', 'product');
+            // $get_option = array('post', 'page', 'product');
+            $get_option = get_post_types();;
             $option ='<option value="">'.esc_html__( 'Select Post Type', 'pwa-for-wp' ).'</option>';
         }
         if($include_type == 'globally'){ 
@@ -4345,7 +4346,16 @@ function pwaforwp_loading_icon_styles(){
 }
 
 function pwaforwp_loading_select2_styles(){
-	echo '<style>.select2-container{z-index:999999}</style>';
+	echo '<style>
+	.select2-container .select2-selection--single {
+		height:44px !important;
+		vertical-align: middle;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__rendered {
+		line-height: 40px !important;
+	}
+	.select2-container{z-index:999999}
+	</style>';
 }
 
 /**
@@ -4373,6 +4383,95 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
     return $merged;
 }
 
+function pwaforwp_get_data_by_type($include_type='post',$search=null){
+	$result = array();
+	$posts_per_page = 2;
+	$args = array(
+		'post_type' => $include_type,
+		'post_status' => 'any',
+		'posts_per_page' => $posts_per_page,
+	);
+	if(!empty($search)){
+		$args['s']	= $search;
+	}
+	if($include_type == 'post' || $include_type == 'page'){
+        $args['post_status'] = 'publish';
+		$posts  = get_posts( $args );
+		if(!empty($posts)){
+			foreach($posts as $post){  
+				$result[] = array('id' => $post->ID, 'text' => $post->post_title);
+			}
+		}
+		wp_reset_postdata();
+		
+    }
+    if(in_array($include_type, array('post_type','globally'))) {
+        if($include_type == 'post_type'){
+            // $get_option = array('post', 'page', 'product');
+            $get_option = get_post_types();
+        }
+        if($include_type == 'globally'){ 
+            $get_option = array('Globally');
+        }
+		if(!empty($get_option) && is_array($get_option)){        
+        foreach ($get_option as $options_array) {
+			$result[] = array('id' => $options_array, 'text' => $options_array);
+        }}
+    }
+
+     if($include_type == 'post_category'){
+		$args['hide_empty'] = true;
+        $get_option = get_categories($args);
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+       
+    }
+    if($include_type == 'taxonomy'){
+		$args['hide_empty'] = true;
+        $get_option = get_terms($args);
+		if(!empty($get_option) && is_array($get_option)){  
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+    }
+
+    if($include_type == 'tags'){
+		$args['hide_empty'] = false;
+        $get_option = get_tags($args);
+		if(!empty($get_option) && is_array($get_option)){  
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+	}
+
+    if($include_type == 'user_type'){ 
+        $get_options = array("administrator"=>"Administrator", "editor"=>"Editor", "author"=>"Author", "contributor"=>"Contributor","subscriber"=>"Subscriber");
+        $get_option = $get_options;
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $key => $value) {
+				$result[] = array('id' => $key, 'text' => $value);
+			}
+		}
+
+    }
+
+    if($include_type == 'page_template'){ 
+        $get_option = wp_get_theme()->get_page_templates();
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $key => $value) {
+				$result[] = array('id' => $value, 'text' => $value);
+			}
+		}
+    }
+
+	return $result;
+}
+
 function pwaforwp_get_select2_data(){
 	if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
 	  return; 
@@ -4385,27 +4484,13 @@ function pwaforwp_get_select2_data(){
 
 		$search        = isset( $_GET['q'] ) ? sanitize_text_field( $_GET['q'] ) : '';                                    
 		$type          = isset( $_GET['type'] ) ? sanitize_text_field( $_GET['type'] ) : '';
-
-		$arg['post_type']      = $type;
-		$arg['posts_per_page'] = 50;  
-		$arg['post_status']    = 'any'; 
-
-		if(!empty($search)){
-		  $arg['s']              = $search;
-		}
-		$result = array();
-		$posts  = get_posts( $arg );
-		if(!empty($posts)){
-			foreach($posts as $post){  
-				$result[] = array('id' => $post->ID, 'text' => $post->post_title);
-			}
-		}
+		
+		$result = pwaforwp_get_data_by_type($type,$search);		
 		wp_send_json(['results' => $result] );            
 
 	}else{
 	  return;  
-	}                
-	
+	}
 	wp_die();
 }
 
