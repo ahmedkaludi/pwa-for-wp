@@ -4385,30 +4385,36 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
 
 function pwaforwp_get_data_by_type($include_type='post',$search=null){
 	$result = array();
-	$posts_per_page = 2;
-	$args = array(
-		'post_type' => $include_type,
-		'post_status' => 'any',
-		'posts_per_page' => $posts_per_page,
-	);
-	if(!empty($search)){
-		$args['s']	= $search;
-	}
+	$posts_per_page = 50;
+	
 	if($include_type == 'post' || $include_type == 'page'){
-        $args['post_status'] = 'publish';
-		$posts  = get_posts( $args );
-		if(!empty($posts)){
-			foreach($posts as $post){  
-				$result[] = array('id' => $post->ID, 'text' => $post->post_title);
-			}
+		$args = array(
+			'post_type' => $include_type,
+			'post_status' => 'publish',
+			'posts_per_page' => $posts_per_page,
+		);
+		if(!empty($search)){
+			$args['s']	= $search;
 		}
-		wp_reset_postdata();
+
+    	$meta_query = new WP_Query($args);        
+            
+      	if($meta_query->have_posts()) {
+			while($meta_query->have_posts()) {
+				$meta_query->the_post();
+				$result[] = array('id' => get_the_ID(), 'text' => get_the_title());
+          	}
+			wp_reset_postdata();
+      	}
 		
     }
     if(in_array($include_type, array('post_type','globally'))) {
         if($include_type == 'post_type'){
-            // $get_option = array('post', 'page', 'product');
-            $get_option = get_post_types();
+			$args['public'] = true;
+			if(!empty($search)){
+				$args['name']	= $search;
+			}
+          	$get_option = get_post_types( $args, 'names');
         }
         if($include_type == 'globally'){ 
             $get_option = array('Globally');
@@ -4420,8 +4426,16 @@ function pwaforwp_get_data_by_type($include_type='post',$search=null){
     }
 
      if($include_type == 'post_category'){
-		$args['hide_empty'] = true;
-        $get_option = get_categories($args);
+		$args = array( 
+			'hide_empty' => true,
+			'number'     => $posts_per_page, 
+		);
+
+		if(!empty($search)){
+			$args['name__like'] = $search;
+		}
+		$get_option = get_terms( 'category', $args);
+        // $get_option = get_categories($args);
 		if(!empty($get_option) && is_array($get_option)){   
 			foreach ($get_option as $options_array) {
 				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
@@ -4429,8 +4443,16 @@ function pwaforwp_get_data_by_type($include_type='post',$search=null){
 		}
        
     }
+
     if($include_type == 'taxonomy'){
-		$args['hide_empty'] = true;
+		$args = array( 
+			'hide_empty' => true,
+			'number'     => $posts_per_page, 
+		);
+
+		if(!empty($search)){
+			$args['name__like'] = $search;
+		}
         $get_option = get_terms($args);
 		if(!empty($get_option) && is_array($get_option)){  
 			foreach ($get_option as $options_array) {
