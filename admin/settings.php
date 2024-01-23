@@ -415,6 +415,7 @@ function pwaforwp_settings_init(){
     	add_action('admin_print_footer_scripts', 'pwaforwp_loading_icon_scripts');
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
 	}
+	add_action('admin_print_styles', 'pwaforwp_loading_select2_styles');
 	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
@@ -1469,7 +1470,7 @@ function pwaforwp_visibility_setting_callback(){
                 <div class="include_error">&nbsp;</div>
             </td>
             <td class="visibility_options_select">
-                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text pwaforwp_visibility_options_select visibility_include_select_type">
+                <select  id="pwaforwp_settings[visibility_included_options]" class="regular-text pwaforwp_visibility_options_select visibility_include_select_type pwa_for_wp-select2">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>                    
                 </select>
                 <div class="include_type_error">&nbsp;</div>
@@ -1521,7 +1522,7 @@ function pwaforwp_visibility_setting_callback(){
             </td>
 
             <td class="visibility_options_select">
-                <select  class="regular-text pwaforwp_visibility_options_select visibility_exclude_select_type">
+                <select  class="regular-text pwaforwp_visibility_options_select visibility_exclude_select_type pwa_for_wp-select2_exclude">
                     <option value=""><?php echo esc_html__("Select Visibility Type",'pwa-for-wp');?></option>
                     
                     
@@ -3968,7 +3969,7 @@ function pwaforwp_include_visibility_setting_callback(){
         $args = array(
             'post_type' => $include_type,
             'post_status' => 'publish',
-            'posts_per_page' => -1,
+            'posts_per_page' => 50,
          );  
         $query = new WP_Query($args);
         $option ='<option value="">Select '.esc_html($include_type).' Type</option>';
@@ -3980,7 +3981,8 @@ function pwaforwp_include_visibility_setting_callback(){
     }
     if(in_array($include_type, array('post_type','globally'))) {
         if($include_type == 'post_type'){
-            $get_option = array('post', 'page', 'product');
+            // $get_option = array('post', 'page', 'product');
+            $get_option = get_post_types();;
             $option ='<option value="">'.esc_html__( 'Select Post Type', 'pwa-for-wp' ).'</option>';
         }
         if($include_type == 'globally'){ 
@@ -4343,6 +4345,19 @@ function pwaforwp_loading_icon_styles(){
 	</style>';
 }
 
+function pwaforwp_loading_select2_styles(){
+	echo '<style>
+	.select2-container .select2-selection--single {
+		height:44px !important;
+		vertical-align: middle;
+	}
+	.select2-container--default .select2-selection--single .select2-selection__rendered {
+		line-height: 40px !important;
+	}
+	.select2-container{z-index:999999}
+	</style>';
+}
+
 /**
  * pwaforwp_merge_recursive_ex merge any multidimensional Array
  * @param Array1(array) Array2(array)
@@ -4367,3 +4382,164 @@ function pwaforwp_merge_recursive_ex(array $array1, array $array2)
 
     return $merged;
 }
+
+function pwaforwp_get_data_by_type($include_type='post',$search=null){
+	$result = array();
+	$posts_per_page = 50;
+	
+	if($include_type == 'post' || $include_type == 'page'){
+		$args = array(
+			'post_type' => $include_type,
+			'post_status' => 'publish',
+			'posts_per_page' => $posts_per_page,
+		);
+		if(!empty($search)){
+			$args['s']	= $search;
+		}
+
+    	$meta_query = new WP_Query($args);        
+            
+      	if($meta_query->have_posts()) {
+			while($meta_query->have_posts()) {
+				$meta_query->the_post();
+				$result[] = array('id' => get_the_ID(), 'text' => get_the_title());
+          	}
+			wp_reset_postdata();
+      	}
+		
+    }
+    if(in_array($include_type, array('post_type','globally'))) {
+        if($include_type == 'post_type'){
+			$args['public'] = true;
+			if(!empty($search)){
+				$args['name']	= $search;
+			}
+          	$get_option = get_post_types( $args, 'names');
+        }
+        if($include_type == 'globally'){ 
+            $get_option = array('Globally');
+        }
+		if(!empty($get_option) && is_array($get_option)){        
+        foreach ($get_option as $options_array) {
+			$result[] = array('id' => $options_array, 'text' => $options_array);
+        }}
+    }
+
+     if($include_type == 'post_category'){
+		$args = array( 
+			'hide_empty' => true,
+			'number'     => $posts_per_page, 
+		);
+
+		if(!empty($search)){
+			$args['name__like'] = $search;
+		}
+		$get_option = get_terms( 'category', $args);
+        // $get_option = get_categories($args);
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+       
+    }
+
+    if($include_type == 'taxonomy'){
+		$args = array( 
+			'hide_empty' => true,
+			'number'     => $posts_per_page, 
+		);
+
+		if(!empty($search)){
+			$args['name__like'] = $search;
+		}
+        $get_option = get_terms($args);
+		if(!empty($get_option) && is_array($get_option)){  
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+    }
+
+    if($include_type == 'tags'){
+		$args['hide_empty'] = false;
+        $get_option = get_tags($args);
+		if(!empty($get_option) && is_array($get_option)){  
+			foreach ($get_option as $options_array) {
+				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+			}
+		}
+	}
+
+    if($include_type == 'user_type'){ 
+        $get_options = array("administrator"=>"Administrator", "editor"=>"Editor", "author"=>"Author", "contributor"=>"Contributor","subscriber"=>"Subscriber");
+        $get_option = $get_options;
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $key => $value) {
+				$result[] = array('id' => $key, 'text' => $value);
+			}
+		}
+
+    }
+
+    if($include_type == 'page_template'){ 
+        $get_option = wp_get_theme()->get_page_templates();
+		if(!empty($get_option) && is_array($get_option)){   
+			foreach ($get_option as $key => $value) {
+				$result[] = array('id' => $value, 'text' => $value);
+			}
+		}
+    }
+
+	return $result;
+}
+
+function pwaforwp_get_select2_data(){
+	if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
+	  return; 
+	}
+	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+		return;
+	}
+	
+	if ( (wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) )){
+
+		$search        = isset( $_GET['q'] ) ? sanitize_text_field( $_GET['q'] ) : '';                                    
+		$type          = isset( $_GET['type'] ) ? sanitize_text_field( $_GET['type'] ) : '';
+		
+		$result = pwaforwp_get_data_by_type($type,$search);		
+		wp_send_json(['results' => $result] );            
+
+	}else{
+	  return;  
+	}
+	wp_die();
+}
+
+add_action( 'wp_ajax_pwaforwp_get_select2_data', 'pwaforwp_get_select2_data');
+
+function pwaforwp_enqueue_select2_js( $hook ) {
+	if($hook  == 'toplevel_page_pwaforwp'){
+
+		wp_dequeue_script( 'select2-js' );   
+		wp_dequeue_script( 'select2' );
+		wp_deregister_script( 'select2' );
+		//conflict with jupitor theme fixed starts here
+		wp_dequeue_script( 'mk-select2' );
+		wp_deregister_script( 'mk-select2' );                
+		//conflict with jupitor theme fixed ends here                
+		wp_dequeue_script( 'wds-shared-ui' );
+		wp_deregister_script( 'wds-shared-ui' );
+		wp_dequeue_script( 'pum-admin-general' );
+		wp_deregister_script( 'pum-admin-general' );
+		//Hide vidoe pro select2 on schema type dashboard
+		wp_dequeue_script( 'cmb-select2' );
+		wp_deregister_script( 'cmb-select2' );
+
+		wp_enqueue_style('pwaforwp-select2-style', PWAFORWP_PLUGIN_URL. 'assets/css/select2.min.css' , false, PWAFORWP_PLUGIN_VERSION);
+		wp_enqueue_script('select2', PWAFORWP_PLUGIN_URL. 'assets/js/select2.min.js', array( 'jquery'), PWAFORWP_PLUGIN_VERSION, true);
+		wp_enqueue_script('select2-extended-script', PWAFORWP_PLUGIN_URL. 'assets/js/select2-extended.min.js', array( 'jquery' ), PWAFORWP_PLUGIN_VERSION, true);
+	}
+
+}
+add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_select2_js',9999 );
