@@ -2258,9 +2258,18 @@ function pwaforwp_404_page_callback(){
 }
 function pwaforwp_start_page_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
+	$settings = pwaforwp_defaultSettings();
+	$custom_start_url_checkbox = '';
+	$custom_start_url_display = 'display:none;';
+	$custom_start_url_disabled = 'disabled=disabled;';
+	if(isset( $settings['custom_start_url_checkbox'] ) && $settings['custom_start_url_checkbox'] == 1){
+		$custom_start_url_checkbox = 'checked="checked';
+		$custom_start_url_display = 'display:block;';
+		$custom_start_url_disabled = '';
+	}
+	
+	?>
 	<!-- WordPress Pages Dropdown -->
-	<label for="pwaforwp_settings[start_page]">
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();        
         echo wp_kses(wp_dropdown_pages( array( 
@@ -2270,11 +2279,20 @@ function pwaforwp_start_page_callback(){
 			'option_none_value' => '0', 
 			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
 		)), $allowed_html); ?>
-	</label>
+	
+		<input type="checkbox" name="pwaforwp_settings[custom_start_url_checkbox]" id="custom_start_url_checkbox" class="" <?php echo $custom_start_url_checkbox; ?> data-uncheck-val="0" value="1"><span for="custom_start_url_checkbox">Add Custom Start Url.</span>
+		<fieldset style="<?php echo $custom_start_url_display ?>" id="js_custom_start_url">
+			<input type="text" name="pwaforwp_settings[custom_start_url]" class="regular-text" value="<?php if ( isset( $settings['custom_start_url'] ) && ( ! empty($settings['custom_start_url']) ) ) echo esc_attr($settings['custom_start_url']); ?>" placeholder="<?php esc_html__( 'Enter custom url', 'pwa-for-wp' ) ?>" id="custom_start_url" style="margin-top:10px;" <?php echo $custom_start_url_disabled; ?>/>
+		</fieldset>
 	
 	<p class="description">
 		<?php 
-                $current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
+                $current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):'';
+				if(isset( $settings['custom_start_url_checkbox'] ) && $settings['custom_start_url_checkbox'] == 1){
+					if ( isset( $settings['custom_start_url'] ) && ( ! empty($settings['custom_start_url']) ) ){
+						$current_page = $settings['custom_start_url'];
+					}
+				}
                 printf( esc_html__( 'From where you want to launch PWA APP. Current start page is %s', 'pwa-for-wp' ), $current_page); ?>
 	</p>
 

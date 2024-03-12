@@ -627,6 +627,11 @@ class pwaforwpFileCreation{
 	        }
           $scope_url = pwaforwp_home_url();//Scope Url should be serving url      
         }
+        if(isset( $settings['custom_start_url_checkbox'] ) && $settings['custom_start_url_checkbox'] == 1){
+          if ( isset( $settings['custom_start_url'] ) && ( ! empty($settings['custom_start_url']) ) ){
+            $homeUrl = $settings['custom_start_url'];
+          }
+        }
         $homeUrl        = pwaforwp_https($homeUrl);
         $scope_url      = pwaforwp_https($scope_url);
         $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "";
