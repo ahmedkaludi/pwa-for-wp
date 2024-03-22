@@ -2208,21 +2208,22 @@ function pwaforwp_offline_page_callback(){
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();
 		$selected = isset($settings['offline_page']) ? esc_attr($settings['offline_page']) : '';
-		$showother = 'style="display:none"';$selectedother = '';
-		if($selected=='other'){ $showother = ''; $selectedother= 'selected';}
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other'){ $selectedother= 'selected';} 
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if(!$extension_active){ $pro = "style='display:inline-block'";}else{$showother="";} 
         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[offline_page]', 
 			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Default &mdash;', 
-			'option_none_value' => '0', 
 			'selected'          =>  $selected,
 		)), $allowed_html);
-		echo str_replace("</select>", "\t<option value='other' ".$selectedother."> ".esc_html__('Other', 'pwa-for-wp')." </option>\n</select>", $selectHtml); 
+		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other custom page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Other offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
@@ -2242,23 +2243,22 @@ function pwaforwp_404_page_callback(){
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();
 		$selected = isset($settings['404_page']) ? esc_attr($settings['404_page']) : '';
-		$showother = 'style="display:none"';$selectedother = '';$selecteddefault = '';
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
 		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
-		if($selected=='other' && $extension_active){ $selectedother= 'selected';$showother = '';}  
+		if($selected=='other'){ $selectedother= 'selected';} 
 		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if(!$extension_active){ $pro = "style='display:inline-block'";}else{$showother="";} 
         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[404_page]', 
 			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0,
 			'selected'          => isset($settings['404_page']) ? esc_attr($settings['404_page']) : '',
 		)), $allowed_html); 
-		if($extension_active){
-			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Other', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
-		}else{
-			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option>>$2</select>", $selectHtml); 
-		}
+	
+		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
+		
 		?>
-		<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
+		<div class="pwaforwp-sub-tab-headings"><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text"  <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
@@ -2276,10 +2276,11 @@ function pwaforwp_start_page_callback(){
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();  
 		$selected = isset($settings['start_page']) ? esc_attr($settings['start_page']) : '';
-		$showother = 'style="display:none"';$selectedother = '';
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
 		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
-		if($selected=='other' && $extension_active){ $selectedother= 'selected';$showother = '';}  
+		if($selected=='other'){ $selectedother= 'selected';} 
 		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if(!$extension_active){ $pro = "style='display:inline-block'";}else{$showother="";} 
          $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[start_page]', 
 			'class'             => 'pwaforwp_select_with_other', 
@@ -2287,15 +2288,11 @@ function pwaforwp_start_page_callback(){
 			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
 		)), $allowed_html); 
 
-		if($extension_active){
-			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selectedother)."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Other', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
-		}else{
-			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".$selectedother."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
-		}
-		
+	
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selectedother)."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 		?>
-		<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div>
+		<div class="pwaforwp-sub-tab-headings" ><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div>
 	</label>
 	<p class="description">
 		<?php
