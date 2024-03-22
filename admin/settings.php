@@ -3821,6 +3821,9 @@ function pwaforwp_update_features_options(){
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
 				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
 			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][excluded_pages]') {
+				$navigation_bar_data['navigation']['excluded_pages'] = sanitize_textarea_field(implode(',',$field['var_value']));
+			}
 			// navigation bar features end
 					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
