@@ -856,3 +856,26 @@ function pwaforwp_is_any_extension_active() {
     }
     return false; // None of the plugins from the list are active
 }
+
+/*
+*@package PWAforWP
+*@version 1.7.67
+*@description update icon urls in manhifest when WP Hide & Security Enhancer is used
+* https://wp-hide.com/
+*/
+add_filter('pwaforwp_manifest_images_src','pwaforwp_manifest_images_src',10,1);
+function pwaforwp_manifest_images_src($src){
+	// if WP Hide & Security Enhancer is active 
+	if(class_exists('WPH')){
+        $pwafrowp_wph = get_option('wph_settings', false );
+        if( $pwafrowp_wph && !empty($pwafrowp_wph['module_settings']['new_upload_path'])){
+            $new_url =$pwafrowp_wph['module_settings']['new_upload_path'];
+            $src = str_replace('wp-content/uploads', $new_url, $src);
+        }
+        if( $pwafrowp_wph && !empty($pwafrowp_wph['module_settings']['new_plugin_path'])){
+            $new_url =$pwafrowp_wph['module_settings']['new_plugin_path'];
+            $src = str_replace('wp-content/plugins', $new_url, $src);
+        }
+	}
+	return $src;
+}

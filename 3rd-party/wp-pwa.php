@@ -143,18 +143,18 @@ class PWAforWP_wppwa{
 
             //icons cache
             if(isset($settings['icon'])){
-              $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['icon']))."',\n";
-              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['icon']))."',\n";
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
             }
             if(isset($settings['splash_icon'])){
-              $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
-              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['splash_icon']))."',\n";
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
             }
              
             //screenshots cache
             if(isset($settings['screenshots'])){
-              $pre_cache_urls .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";
-              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https($settings['screenshots']))."',\n";
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['screenshots'])))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['screenshots'])))."',\n";
             }
 
             if(isset($settings['precaching_manual']) && isset($settings['precaching_urls']) && $settings['precaching_urls'] !=''){
@@ -451,13 +451,13 @@ class PWAforWP_wppwa{
         $icons = array();
         //App icon
         $icons[] = array(
-            'src' 	=> esc_url(pwaforwp_https($defaults['icon'])),
+            'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['icon']))),
             'sizes'	=> '192x192', 
             'type'	=> 'image/png', 
         );
         //Splash icon
         $icons[] = array(
-            'src' 	=> esc_url(pwaforwp_https($defaults['splash_icon'])),
+            'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['splash_icon']))),
             'sizes'	=> '512x512', 
             'type'	=> 'image/png', 
         );
@@ -465,7 +465,7 @@ class PWAforWP_wppwa{
         $screenshots = array();
         //App screenshots
         $screenshots[] = array(
-            'src' 	=> esc_url(pwaforwp_https($defaults['screenshots'])),
+            'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['screenshots']))),
             'sizes'	=> '512x512', 
             'type'	=> 'image/png', 
             "platform"=> "wide",
@@ -476,7 +476,7 @@ class PWAforWP_wppwa{
 			foreach ($defaults['screenshots_multiple'] as $key => $screenshots_multiple) {
 				if (!empty($screenshots_multiple)) {
 					$screenshots[] = array(
-						'src' 	=> esc_url(pwaforwp_https($screenshots_multiple)),
+						'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$screenshots_multiple))),
 						'sizes'	=> '512x512', 
 						'type'	=> 'image/png', 
 						"platform"=> "wide",
