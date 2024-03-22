@@ -301,7 +301,9 @@ function pwaforwp_get_default_settings_array(){
         'offline_page' 		=> 0,
         'offline_page_other'=> '',
         '404_page' 		    => 0,
+        '404_page_other'    => '',
         'start_page' 		=> 0,
+        'start_page_other' 	=> '',
         'orientation'		=> 'portrait',
         'display'           => 'standalone',
         'ios_status_bar'    => 'default',
@@ -839,4 +841,18 @@ function pwaforwp_current_user_allowed(){
 function pwaforwp_current_user_can(){
     $capability = pwaforwp_current_user_allowed() ? pwaforwp_get_capability_by_role(pwaforwp_current_user_allowed()) : 'manage_options';
     return $capability;                    
+}
+
+
+
+// Function to check if any plugin from the extension is active
+function pwaforwp_is_any_extension_active() {
+    $addons_list = array('call-to-action-for-pwa/call-to-action-for-pwa.php', 'buddypress-for-pwaforwp/buddypress-for-pwaforwp.php', 'data-analytics-for-pwa/data-analytics-for-pwa.php', 'loading-icon-library-for-pwa/loading-icon-library-for-pwa.php', 'multilingual-compatibility-for-pwa/multilingual-compatibility-for-pwa.php', 'navigation-bar-for-pwa/navigation-bar-for-pwa.php', 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php', 'pull-to-refresh-for-pwa/pull-to-refresh-for-pwa.php', 'pwa-to-apk-plugin/pwa-to-apk-plugin.php', 'qr-code-for-pwa/qr-code-for-pwa.php','quick-action-for-pwa/quick-action-for-pwa.php','scroll-progress-bar-for-pwa/scroll-progress-bar-for-pwa.php','rewards-on-pwa-install/rewards-on-pwa-install.php');
+    $active_list = apply_filters('active_plugins', get_option('active_plugins'));
+    $addons_active_list = array_intersect($addons_list, $active_list);
+
+    if(!empty($addons_active_list)){
+        return true;
+    }
+    return false; // None of the plugins from the list are active
 }

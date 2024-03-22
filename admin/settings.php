@@ -2212,7 +2212,7 @@ function pwaforwp_offline_page_callback(){
 		if($selected=='other'){ $showother = ''; $selectedother= 'selected';}
         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[offline_page]', 
-			'id'                => 'pwaforwp_settings_offline_page', 
+			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0, 
 			'show_option_none'  => '&mdash; Default &mdash;', 
 			'option_none_value' => '0', 
@@ -2222,7 +2222,7 @@ function pwaforwp_offline_page_callback(){
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other custom page (Must in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other custom page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
@@ -2240,14 +2240,26 @@ function pwaforwp_404_page_callback(){
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[404_page]">
 	<?php 
-        $allowed_html = pwaforwp_expanded_allowed_tags();        
-        echo wp_kses(wp_dropdown_pages( array( 
+        $allowed_html = pwaforwp_expanded_allowed_tags();
+		$selected = isset($settings['404_page']) ? esc_attr($settings['404_page']) : '';
+		$showother = 'style="display:none"';$selectedother = '';$selecteddefault = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other' && $extension_active){ $selectedother= 'selected';$showother = '';}  
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+        $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[404_page]', 
-			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Default &mdash;', 
-			'option_none_value' => '0', 
+			'class'             => 'pwaforwp_select_with_other', 
+			'echo'              => 0,
 			'selected'          => isset($settings['404_page']) ? esc_attr($settings['404_page']) : '',
-		)), $allowed_html); ?>
+		)), $allowed_html); 
+		if($extension_active){
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Other', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
+		}else{
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option>>$2</select>", $selectHtml); 
+		}
+		?>
+		<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
+	
 	</label>
 	
 	<p class="description">
@@ -2258,41 +2270,36 @@ function pwaforwp_404_page_callback(){
 }
 function pwaforwp_start_page_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings();
-	$custom_start_url_checkbox = '';
-	$custom_start_url_display = 'display:none;';
-	$custom_start_url_disabled = 'disabled=disabled;';
-	if(isset( $settings['custom_start_url_checkbox'] ) && $settings['custom_start_url_checkbox'] == 1){
-		$custom_start_url_checkbox = 'checked="checked';
-		$custom_start_url_display = 'display:block;';
-		$custom_start_url_disabled = '';
-	}
-	
-	?>
+	$settings = pwaforwp_defaultSettings();?>
 	<!-- WordPress Pages Dropdown -->
+	<label for="pwaforwp_settings[start_page]">
 	<?php 
-        $allowed_html = pwaforwp_expanded_allowed_tags();        
-        echo wp_kses(wp_dropdown_pages( array( 
+        $allowed_html = pwaforwp_expanded_allowed_tags();  
+		$selected = isset($settings['start_page']) ? esc_attr($settings['start_page']) : '';
+		$showother = 'style="display:none"';$selectedother = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other' && $extension_active){ $selectedother= 'selected';$showother = '';}  
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[start_page]', 
-			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Homepage &mdash;', 
-			'option_none_value' => '0', 
+			'class'             => 'pwaforwp_select_with_other', 
+			'echo'              => 0,
 			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
-		)), $allowed_html); ?>
-	
-		<input type="checkbox" name="pwaforwp_settings[custom_start_url_checkbox]" id="custom_start_url_checkbox" class="" <?php echo $custom_start_url_checkbox; ?> data-uncheck-val="0" value="1"><span for="custom_start_url_checkbox">Add Custom Start Url.</span>
-		<fieldset style="<?php echo $custom_start_url_display ?>" id="js_custom_start_url">
-			<input type="text" name="pwaforwp_settings[custom_start_url]" class="regular-text" value="<?php if ( isset( $settings['custom_start_url'] ) && ( ! empty($settings['custom_start_url']) ) ) echo esc_attr($settings['custom_start_url']); ?>" placeholder="<?php esc_html__( 'Enter custom url', 'pwa-for-wp' ) ?>" id="custom_start_url" style="margin-top:10px;" <?php echo $custom_start_url_disabled; ?>/>
-		</fieldset>
-	
+		)), $allowed_html); 
+
+		if($extension_active){
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selectedother)."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Other', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
+		}else{
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".$selectedother."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option>$2</select>", $selectHtml); 
+		}
+		
+		
+		?>
+		<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div>
+	</label>
 	<p class="description">
-		<?php 
-                $current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):'';
-				if(isset( $settings['custom_start_url_checkbox'] ) && $settings['custom_start_url_checkbox'] == 1){
-					if ( isset( $settings['custom_start_url'] ) && ( ! empty($settings['custom_start_url']) ) ){
-						$current_page = $settings['custom_start_url'];
-					}
-				}
+		<?php
+		  		$current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
                 printf( esc_html__( 'From where you want to launch PWA APP. Current start page is %s', 'pwa-for-wp' ), $current_page); ?>
 	</p>
 
