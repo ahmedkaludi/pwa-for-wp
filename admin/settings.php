@@ -810,6 +810,14 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
+
+		add_settings_field(
+			'pwaforwp_wphide_support',							// ID
+			__('<label for="pwaforwp_settings[wphide_support_setting]"><b>WP Hide & Security Enhancer</b></label>', 'pwa-for-wp'),					// Title
+			'pwaforwp_wphide_support_callback',					// CB
+			'pwaforwp_compatibility_setting_section',				// Page slug
+			'pwaforwp_compatibility_setting_section'				// Settings Section ID
+		);
                                
 		add_settings_section('pwaforwp_visibility_setting_section', '', '__return_false', 'pwaforwp_visibility_setting_section');
 		add_settings_field(
@@ -2459,6 +2467,15 @@ function pwaforwp_webpushr_support_callback(){
 	$settings = pwaforwp_defaultSettings();
 	?>
 	<input type="checkbox" name="pwaforwp_settings[webpusher_support_setting]" id="pwaforwp_settings[webpusher_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['webpusher_support_setting'] ) &&  $settings['webpusher_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+
+	<?php
+}
+
+function pwaforwp_wphide_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	?>
+	<input type="checkbox" name="pwaforwp_settings[wphide_support_setting]" id="pwaforwp_settings[wphide_support_setting]" class="pwaforwp-wphide-support" <?php echo (isset( $settings['wphide_support_setting'] ) &&  $settings['wphide_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 
 	<?php
 }

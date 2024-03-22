@@ -229,8 +229,8 @@ class PWAforWP_wppwa{
 			$pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
 			if($settings['404_page']!='other'){
 				$page404 		= user_trailingslashit(get_permalink( $settings['404_page'] ) ?  pwaforwp_https(get_permalink( $settings['404_page'] ))  :  pwaforwp_home_url());
-			}else if($pro_extension_exists){
-			  $page404 		= user_trailingslashit( $settings['404_page_other'] ?  pwaforwp_https(esc_url( $settings['404_page_other'] ))  :  pwaforwp_home_url());
+			}else{
+			  $page404 		= ($pro_extension_exists && user_trailingslashit( $settings['404_page_other']) ?  pwaforwp_https(esc_url( $settings['404_page_other'] ))  :  pwaforwp_home_url());
 			}
 
 			$cacheTimerHtml = 3600; $cacheTimerCss = 86400;

@@ -866,7 +866,8 @@ function pwaforwp_is_any_extension_active() {
 add_filter('pwaforwp_manifest_images_src','pwaforwp_manifest_images_src',10,1);
 function pwaforwp_manifest_images_src($src){
 	// if WP Hide & Security Enhancer is active 
-	if(class_exists('WPH')){
+    $settings       = pwaforwp_defaultSettings();
+	if(class_exists('WPH') && !empty($settings['wphide_support_setting']) && $settings['wphide_support_setting'] ==1){
         $pwafrowp_wph = get_option('wph_settings', false );
         if( $pwafrowp_wph && !empty($pwafrowp_wph['module_settings']['new_upload_path'])){
             $new_url =$pwafrowp_wph['module_settings']['new_upload_path'];
