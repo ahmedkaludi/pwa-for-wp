@@ -917,10 +917,24 @@ function PWAforwpreadCookie(name) {
         var selfp = jQuery(this);
         if(selfp.val()=='other'){
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").show();
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").show();
         }else{
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").hide();
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").hide();
         }
     });
+
+    jQuery(".pwaforwp_select_with_other").each(function(e){
+        var selfp = jQuery(this);
+        if(selfp.val()=='other'){
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").show();
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").show();
+        }else{
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").hide();
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").hide();
+        }
+    });
+
     
 });
 var pushnotificationIntegrationLogic = function(opt){
