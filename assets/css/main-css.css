@@ -1273,3 +1273,6 @@ span.one_of_expired {
     letter-spacing: 1px;
     border-radius: 5px;
 }
+.pwaforwp_dinline{
+	display:inline-block;
+}

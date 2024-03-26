@@ -1348,3 +1348,6 @@ span.pwaforwp-addon-active {
     font-weight: 600;
     border-radius: 5px;
 }
+.pwaforwp_dinline{
+	display:inline-block;
+}
