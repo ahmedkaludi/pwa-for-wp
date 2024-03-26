@@ -64,7 +64,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
 
-= 1.7.67 (23 January 2024) =
+= 1.7.67 (26 March 2024) =
 * Feature Added : New option so that category pages can be configured as the start page in PWA #861
 * Improvement: Compatibility with WP-Hide plugin. #732
 * Feature Added : Option where we can hide the navigation bar on certain pages. #868
