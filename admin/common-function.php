@@ -181,6 +181,7 @@ function pwaforwp_frontend_enqueue(){
             if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
                 $reset_cookies=1;
             }
+           
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
@@ -191,6 +192,7 @@ function pwaforwp_frontend_enqueue(){
               'user_admin'  => is_user_logged_in(),
               'loader_only_pwa'  => $loader_only_pwa,
               'reset_cookies'  => $reset_cookies,
+              'force_rememberme'=>$force_rememberme
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
@@ -210,8 +212,16 @@ function pwaforwp_frontend_enqueue(){
 
         wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), $force_update_sw_setting_value, true); 
         wp_enqueue_script('pwaforwp-video-js');
-
+        $force_rememberme=0;
+        if(isset($settings['force_rememberme']) && $settings['force_rememberme']==1){
+            $force_rememberme=1;
+        }
         wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), $force_update_sw_setting_value, true); 
+        $object_js_download = array(
+            'force_rememberme'=>$force_rememberme
+          );
+          
+        wp_localize_script('pwaforwp-download-js', 'pwaforwp_download_js_obj', $object_js_download);
         wp_enqueue_script('pwaforwp-download-js');
         
 }

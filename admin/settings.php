@@ -737,6 +737,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_force_rememberme_setting',							// ID
+			esc_html__('Force Remember me', 'pwa-for-wp'),	// Title
+			'pwaforwp_force_rememberme_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
 		add_settings_section('pwaforwp_loaders_setting_section', ' ', '__return_false', 'pwaforwp_loaders_setting_section');
 		add_settings_field(
 			'pwaforwp_loading_setting',							// ID
@@ -1648,6 +1655,20 @@ function pwaforwp_scrollbar_setting_callback(){
         
 	<input type="checkbox" name="pwaforwp_settings[scrollbar_setting]" id="pwaforwp_settings[scrollbar_setting]" class="" <?php echo $scrollbar_checked; ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('To hide scrollbar in pwa', 'pwa-for-wp'); ?></p>
+	<?php
+}
+
+function pwaforwp_force_rememberme_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$rememberme_checked = 'checked="checked';
+	if(!isset( $settings['force_rememberme'] ) || $settings['force_rememberme'] == 0){
+		$rememberme_checked = '';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[force_rememberme]" id="pwaforwp_settings[force_rememberme]" class="" <?php echo $rememberme_checked; ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('This option forces remember me while log in. Use this option when user is getting logged out while reopening PWA app.', 'pwa-for-wp'); ?></p>
 	<?php
 }
 function pwaforwp_prefetch_manifest_setting_callback(){
