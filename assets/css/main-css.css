@@ -1258,13 +1258,13 @@ span.one_of_expired {
 }.zero_to_30{
 	color: red;
 }
-.pwaforwp-upgrade-pro-inline{
+.pwaforwp-upgrade-pro-inline {
 	display:none;
 }
 .pwaforwp-upgrade-pro-inline a{
 	background: #43a047;
     padding: 10px 0;
-    display: block;
+    display: inline-block;
     text-align: center;
     color: #fff;
     text-decoration: none;
@@ -1275,4 +1275,7 @@ span.one_of_expired {
 }
 .pwaforwp_dinline{
 	display:inline-block;
+}
+.pwaforwp_dnone{
+	display:none;
 }

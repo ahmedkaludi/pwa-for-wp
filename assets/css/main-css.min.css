@@ -1351,3 +1351,6 @@ span.pwaforwp-addon-active {
 .pwaforwp_dinline{
 	display:inline-block;
 }
+.pwaforwp_dnone{
+	display:none;
+}
