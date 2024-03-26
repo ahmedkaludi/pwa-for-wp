@@ -1334,3 +1334,26 @@ span.pwaforwp-addon-active {
   -webkit-animation: rotation 1s linear infinite;
           animation: rotation 1s linear infinite;
 }
+.pwaforwp-upgrade-pro-inline{
+	display:none;
+	padding-left: 10px;
+}
+.pwaforwp-upgrade-pro-inline a{
+	background: #43a047;
+    padding: 5px;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+.pwaforwp_dinline{
+	display:inline-block;
+}
+.pwaforwp_dnone{
+	display:none;
+}
+.pwaforwp-tools label{
+	cursor: pointer;
+}

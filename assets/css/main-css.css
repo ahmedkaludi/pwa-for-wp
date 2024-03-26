@@ -1258,3 +1258,27 @@ span.one_of_expired {
 }.zero_to_30{
 	color: red;
 }
+.pwaforwp-upgrade-pro-inline {
+	display:none;
+}
+.pwaforwp-upgrade-pro-inline a{
+	background: #43a047;
+    padding: 10px 0;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 5px;
+}
+.pwaforwp_dinline{
+	display:inline-block;
+}
+.pwaforwp_dnone{
+	display:none;
+}
+.pwaforwp-tools label{
+	cursor: pointer;
+}

@@ -725,15 +725,22 @@ function pwaforwp_settings_init(){
 		}
 		add_settings_field(
 			'pwaforwp_offline_message_setting',							// ID
-			esc_html__('Offline Message', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[offline_message_setting]">'.esc_html__('Offline Message', 'pwa-for-wp').'</label>',	// Title
 			'pwaforwp_offline_message_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_scrollbar_setting',							// ID
-			esc_html__('Disable Scrollbar', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[scrollbar_setting]">'.esc_html__('Disable Scrollbar', 'pwa-for-wp').'</label>',	// Title
 			'pwaforwp_scrollbar_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
+			'pwaforwp_force_rememberme_setting',							// ID
+			'<label for="pwaforwp_settings[force_rememberme]">'.esc_html__('Force Remember me', 'pwa-for-wp').'</label>',	// Title
+			'pwaforwp_force_rememberme_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
@@ -807,6 +814,14 @@ function pwaforwp_settings_init(){
 			'pwaforwp_webpushr_support',							// ID
 			__('<label for="pwaforwp_settings[webpusher_support_setting]"><b>Webpushr</b></label>', 'pwa-for-wp'),					// Title
 			'pwaforwp_webpushr_support_callback',					// CB
+			'pwaforwp_compatibility_setting_section',				// Page slug
+			'pwaforwp_compatibility_setting_section'				// Settings Section ID
+		);
+
+		add_settings_field(
+			'pwaforwp_wphide_support',							// ID
+			__('<label for="pwaforwp_settings[wphide_support_setting]"><b>WP Hide & Security Enhancer</b></label>', 'pwa-for-wp'),					// Title
+			'pwaforwp_wphide_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
@@ -1642,6 +1657,20 @@ function pwaforwp_scrollbar_setting_callback(){
 	<p><?php echo esc_html__('To hide scrollbar in pwa', 'pwa-for-wp'); ?></p>
 	<?php
 }
+
+function pwaforwp_force_rememberme_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$rememberme_checked = 'checked="checked';
+	if(!isset( $settings['force_rememberme'] ) || $settings['force_rememberme'] == 0){
+		$rememberme_checked = '';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[force_rememberme]" id="pwaforwp_settings[force_rememberme]" class="" <?php echo $rememberme_checked; ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__('This option forces remember me while log in. Use this option when user is getting logged out while reopening PWA app.', 'pwa-for-wp'); ?></p>
+	<?php
+}
 function pwaforwp_prefetch_manifest_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
@@ -2208,21 +2237,22 @@ function pwaforwp_offline_page_callback(){
 	<?php 
         $allowed_html = pwaforwp_expanded_allowed_tags();
 		$selected = isset($settings['offline_page']) ? esc_attr($settings['offline_page']) : '';
-		$showother = 'style="display:none"';$selectedother = '';
-		if($selected=='other'){ $showother = ''; $selectedother= 'selected';}
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other'){ $selectedother= 'selected';} 
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if($extension_active){$showother="";$pro="style='visibility:hidden'";} 
         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[offline_page]', 
-			'id'                => 'pwaforwp_settings_offline_page', 
+			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Default &mdash;', 
-			'option_none_value' => '0', 
 			'selected'          =>  $selected,
 		)), $allowed_html);
-		echo str_replace("</select>", "\t<option value='other' ".$selectedother."> ".esc_html__('Other', 'pwa-for-wp')." </option>\n</select>", $selectHtml); 
+		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings" <?php echo $showother; ?>><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" placeholder="<?php echo esc_attr__('Other custom page (Must in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
@@ -2240,14 +2270,25 @@ function pwaforwp_404_page_callback(){
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[404_page]">
 	<?php 
-        $allowed_html = pwaforwp_expanded_allowed_tags();        
-        echo wp_kses(wp_dropdown_pages( array( 
+        $allowed_html = pwaforwp_expanded_allowed_tags();
+		$selected = isset($settings['404_page']) ? esc_attr($settings['404_page']) : '';
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other'){ $selectedother= 'selected';} 
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if($extension_active){$showother="";$pro="style='visibility:hidden'";} 
+        $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[404_page]', 
-			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Default &mdash;', 
-			'option_none_value' => '0', 
+			'class'             => 'pwaforwp_select_with_other', 
+			'echo'              => 0,
 			'selected'          => isset($settings['404_page']) ? esc_attr($settings['404_page']) : '',
-		)), $allowed_html); ?>
+		)), $allowed_html); 
+	
+		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
+		
+		?>
+		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text"  <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
+	
 	</label>
 	
 	<p class="description">
@@ -2258,23 +2299,33 @@ function pwaforwp_404_page_callback(){
 }
 function pwaforwp_start_page_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings(); ?>
+	$settings = pwaforwp_defaultSettings();?>
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[start_page]">
 	<?php 
-        $allowed_html = pwaforwp_expanded_allowed_tags();        
-        echo wp_kses(wp_dropdown_pages( array( 
+        $allowed_html = pwaforwp_expanded_allowed_tags();  
+		$selected = isset($settings['start_page']) ? esc_attr($settings['start_page']) : '';
+		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$pro = '';
+		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
+		if($selected=='other'){ $selectedother= 'selected';} 
+		if($selected=='0'){ $selecteddefault= 'selected';} 
+		if($extension_active){$showother="";$pro="style='visibility:hidden'";} 
+         $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[start_page]', 
-			'echo'              => 0, 
-			'show_option_none'  => '&mdash; Homepage &mdash;', 
-			'option_none_value' => '0', 
+			'class'             => 'pwaforwp_select_with_other', 
+			'echo'              => 0,
 			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
-		)), $allowed_html); ?>
-	</label>
+		)), $allowed_html); 
+
 	
+			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selectedother)."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
+		
+		?>
+		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone" ><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div>
+	</label>
 	<p class="description">
-		<?php 
-                $current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
+		<?php
+		  		$current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
                 printf( esc_html__( 'From where you want to launch PWA APP. Current start page is %s', 'pwa-for-wp' ), $current_page); ?>
 	</p>
 
@@ -2437,6 +2488,15 @@ function pwaforwp_webpushr_support_callback(){
 	$settings = pwaforwp_defaultSettings();
 	?>
 	<input type="checkbox" name="pwaforwp_settings[webpusher_support_setting]" id="pwaforwp_settings[webpusher_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['webpusher_support_setting'] ) &&  $settings['webpusher_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+
+	<?php
+}
+
+function pwaforwp_wphide_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	?>
+	<input type="checkbox" name="pwaforwp_settings[wphide_support_setting]" id="pwaforwp_settings[wphide_support_setting]" class="pwaforwp-wphide-support" <?php echo (isset( $settings['wphide_support_setting'] ) &&  $settings['wphide_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 
 	<?php
 }
@@ -3795,6 +3855,9 @@ function pwaforwp_update_features_options(){
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
 				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][excluded_pages]') {
+				$navigation_bar_data['navigation']['excluded_pages'] = sanitize_textarea_field(implode(',',$field['var_value']));
 			}
 			// navigation bar features end
 					

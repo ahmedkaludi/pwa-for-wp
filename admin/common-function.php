@@ -181,6 +181,7 @@ function pwaforwp_frontend_enqueue(){
             if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
                 $reset_cookies=1;
             }
+           
             $object_js_name = array(
               'ajax_url'       => admin_url( 'admin-ajax.php' ),
               'pwa_ms_prefix'  => pwaforwp_multisite_postfix(),
@@ -191,6 +192,7 @@ function pwaforwp_frontend_enqueue(){
               'user_admin'  => is_user_logged_in(),
               'loader_only_pwa'  => $loader_only_pwa,
               'reset_cookies'  => $reset_cookies,
+              'force_rememberme'=>$force_rememberme
             );
             
             wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
@@ -210,8 +212,16 @@ function pwaforwp_frontend_enqueue(){
 
         wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), $force_update_sw_setting_value, true); 
         wp_enqueue_script('pwaforwp-video-js');
-
+        $force_rememberme=0;
+        if(isset($settings['force_rememberme']) && $settings['force_rememberme']==1){
+            $force_rememberme=1;
+        }
         wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), $force_update_sw_setting_value, true); 
+        $object_js_download = array(
+            'force_rememberme'=>$force_rememberme
+          );
+          
+        wp_localize_script('pwaforwp-download-js', 'pwaforwp_download_js_obj', $object_js_download);
         wp_enqueue_script('pwaforwp-download-js');
         
 }
@@ -301,7 +311,9 @@ function pwaforwp_get_default_settings_array(){
         'offline_page' 		=> 0,
         'offline_page_other'=> '',
         '404_page' 		    => 0,
+        '404_page_other'    => '',
         'start_page' 		=> 0,
+        'start_page_other' 	=> '',
         'orientation'		=> 'portrait',
         'display'           => 'standalone',
         'ios_status_bar'    => 'default',
@@ -839,4 +851,42 @@ function pwaforwp_current_user_allowed(){
 function pwaforwp_current_user_can(){
     $capability = pwaforwp_current_user_allowed() ? pwaforwp_get_capability_by_role(pwaforwp_current_user_allowed()) : 'manage_options';
     return $capability;                    
+}
+
+
+
+// Function to check if any plugin from the extension is active
+function pwaforwp_is_any_extension_active() {
+    $addons_list = array('call-to-action-for-pwa/call-to-action-for-pwa.php', 'buddypress-for-pwaforwp/buddypress-for-pwaforwp.php', 'data-analytics-for-pwa/data-analytics-for-pwa.php', 'loading-icon-library-for-pwa/loading-icon-library-for-pwa.php', 'multilingual-compatibility-for-pwa/multilingual-compatibility-for-pwa.php', 'navigation-bar-for-pwa/navigation-bar-for-pwa.php', 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php', 'pull-to-refresh-for-pwa/pull-to-refresh-for-pwa.php', 'pwa-to-apk-plugin/pwa-to-apk-plugin.php', 'qr-code-for-pwa/qr-code-for-pwa.php','quick-action-for-pwa/quick-action-for-pwa.php','scroll-progress-bar-for-pwa/scroll-progress-bar-for-pwa.php','rewards-on-pwa-install/rewards-on-pwa-install.php');
+    $active_list = apply_filters('active_plugins', get_option('active_plugins'));
+    $addons_active_list = array_intersect($addons_list, $active_list);
+
+    if(!empty($addons_active_list)){
+        return true;
+    }
+    return false; // None of the plugins from the list are active
+}
+
+/*
+*@package PWAforWP
+*@version 1.7.67
+*@description update icon urls in manhifest when WP Hide & Security Enhancer is used
+* https://wp-hide.com/
+*/
+add_filter('pwaforwp_manifest_images_src','pwaforwp_manifest_images_src',10,1);
+function pwaforwp_manifest_images_src($src){
+	// if WP Hide & Security Enhancer is active 
+    $settings       = pwaforwp_defaultSettings();
+	if(class_exists('WPH') && !empty($settings['wphide_support_setting']) && $settings['wphide_support_setting'] ==1){
+        $pwafrowp_wph = get_option('wph_settings', false );
+        if( $pwafrowp_wph && !empty($pwafrowp_wph['module_settings']['new_upload_path'])){
+            $new_url =$pwafrowp_wph['module_settings']['new_upload_path'];
+            $src = str_replace('wp-content/uploads', $new_url, $src);
+        }
+        if( $pwafrowp_wph && !empty($pwafrowp_wph['module_settings']['new_plugin_path'])){
+            $new_url =$pwafrowp_wph['module_settings']['new_plugin_path'];
+            $src = str_replace('wp-content/plugins', $new_url, $src);
+        }
+	}
+	return $src;
 }
