@@ -1354,3 +1354,6 @@ span.pwaforwp-addon-active {
 .pwaforwp_dnone{
 	display:none;
 }
+.pwaforwp-tools label{
+	cursor: pointer;
+}

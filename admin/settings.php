@@ -725,21 +725,21 @@ function pwaforwp_settings_init(){
 		}
 		add_settings_field(
 			'pwaforwp_offline_message_setting',							// ID
-			esc_html__('Offline Message', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[offline_message_setting]">'.esc_html__('Offline Message', 'pwa-for-wp').'</label>',	// Title
 			'pwaforwp_offline_message_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_scrollbar_setting',							// ID
-			esc_html__('Disable Scrollbar', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[scrollbar_setting]">'.esc_html__('Disable Scrollbar', 'pwa-for-wp').'</label>',	// Title
 			'pwaforwp_scrollbar_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_force_rememberme_setting',							// ID
-			esc_html__('Force Remember me', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[force_rememberme]">'.esc_html__('Force Remember me', 'pwa-for-wp').'</label>',	// Title
 			'pwaforwp_force_rememberme_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -2252,7 +2252,7 @@ function pwaforwp_offline_page_callback(){
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Other offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
