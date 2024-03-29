@@ -3856,6 +3856,12 @@ function pwaforwp_update_features_options(){
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
 				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
 			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_menu_background_color]') {
+				$navigation_bar_data['navigation']['selected_menu_background_color'] = sanitize_textarea_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_background_color]') {
+				$navigation_bar_data['navigation']['text_background_color'] = sanitize_textarea_field($field['var_value']);
+			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][excluded_pages]') {
 				$navigation_bar_data['navigation']['excluded_pages'] = sanitize_textarea_field(implode(',',$field['var_value']));
 			}
