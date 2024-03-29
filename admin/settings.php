@@ -3829,6 +3829,7 @@ function pwaforwp_features_settings(){
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){
+	// print_r($_POST); die;
 	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
 		echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','pwa-for-wp')));
 		die;
@@ -3933,7 +3934,6 @@ function pwaforwp_update_features_options(){
         
         $exclude_targeting_type_array = array();
         $exclude_targeting_value_array = array();
-        
         if(!empty($allFields) && is_array($allFields)){
 			foreach ($allFields as $key => $value) {
 				if($value['var_name']=="exclude_targeting_type"){
@@ -3941,6 +3941,11 @@ function pwaforwp_update_features_options(){
 				}
 				if($value['var_name']=="exclude_targeting_data"){
 						$exclude_targeting_value_array[] = sanitize_text_field($value['var_value']);
+				}
+
+				// for call to action included_pages
+				if($value['var_name']=="pwaforwp_settings[included_pages][]"){
+					$actualFields['included_pages'] =  sanitize_textarea_field(implode(',',$field['var_value']));;
 				}
 			}
         }
@@ -3957,6 +3962,7 @@ function pwaforwp_update_features_options(){
         }else{
             $actualFields['exclude_targeting_value'] = ''; 
         }
+		
 
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
