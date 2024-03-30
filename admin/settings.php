@@ -3829,7 +3829,6 @@ function pwaforwp_features_settings(){
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){
-	// print_r($_POST); die;
 	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
 		echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','pwa-for-wp')));
 		die;
