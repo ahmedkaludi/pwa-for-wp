@@ -561,8 +561,7 @@ class pwaforwpFileCreation{
 		
 	}
       
-    public function pwaforwp_manifest($is_amp = false){ 
-        
+    public function pwaforwp_manifest($is_amp = false,$pageid=null){ 
     	$defaults = pwaforwp_defaultSettings();
         if($is_amp){ 
           if(function_exists('ampforwp_url_controller')){
@@ -633,9 +632,18 @@ class pwaforwpFileCreation{
         }
 
         $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-        if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other' && !empty($defaults['start_page_other'])){
-          $homeUrl = esc_url($defaults['start_page_other']);
-        }
+        if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other'){
+          
+          if ($pageid) {
+            $permalink = get_permalink($pageid);
+            if($permalink){
+              $homeUrl       = $permalink;
+							$manifest['is_static_manifest'] = 1;
+            }
+          }
+        }else{
+					$manifest['is_static_manifest'] = 0;
+				}
         $homeUrl        = pwaforwp_https($homeUrl);
         $scope_url      = pwaforwp_https($scope_url);
         $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "";
@@ -744,10 +752,10 @@ class pwaforwpFileCreation{
                             $manifest['url_handlers'][]['origin'] = trim($url);
                         }
                     }
-                }                        
+                }
                 
                 $manifest = apply_filters( 'pwaforwp_manifest', $manifest );
-		
+
                 return wp_json_encode($manifest, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE| JSON_PRETTY_PRINT);					
 	}        
 

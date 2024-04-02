@@ -239,3 +239,49 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     return $meta_fields;
     
   }
+
+  function pwaforwp_generate_sw_and_manifest_on_fly( $query ) {
+	if ( ! property_exists( $query, 'query_vars' ) || ! is_array( $query->query_vars ) ) {
+		return;
+	}
+	$query_vars_as_string = http_build_query( $query->query_vars );
+	$manifest_filename    = pwaforwp_get_manifest_filename();
+    
+	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
+		// Generate manifest from Settings and send the response w/ header.
+		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
+		header( 'Content-Type: application/json' );
+        $p_file_c = new pwaforwpFileCreation();
+		echo $p_file_c->pwaforwp_manifest(false,$pagemid);
+		exit();
+	}
+    // Needed new query_vars of pagename for Wp Fastest Cache 
+	if(class_exists('WpFastestCache')){
+		$query_vars_as_string = isset($query->query_vars['pagename']) ? $query->query_vars['pagename'] : false;
+		if($query_vars_as_string == false){
+		    $query_vars_as_string = isset($query->query_vars['name']) ? $query->query_vars['name'] : '';
+	    }
+    }
+	
+}
+
+function pwaforwp_add_rewrite_rules() {
+	$manifest_filename = pwaforwp_get_manifest_filename();
+	add_rewrite_rule( "^/{$manifest_filename}$",
+		"index.php?{$manifest_filename}=1"
+	);
+}
+
+
+function pwaforwp_setup_hooks() {
+	add_action( 'init', 'pwaforwp_add_rewrite_rules' );
+	add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
+}
+add_action( 'plugins_loaded', 'pwaforwp_setup_hooks' );
+
+add_filter('query_vars', 'pwaforwp_manifest_query_vars');
+
+function pwaforwp_manifest_query_vars($vars) {
+    $vars[] = 'pwaforwp_mid';
+    return $vars;
+}

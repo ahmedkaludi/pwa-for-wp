@@ -52,8 +52,11 @@ class PWAFORWP_File_Creation_Init {
         
         $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
         $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
-        return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
-                
+        $settings = pwaforwp_defaultSettings();
+
+        if (isset( $settings['start_page'] ) && $settings['start_page'] != 'other') {
+            return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
+        }
     }
     
     public function pwaforwp_swr_init($action = null){   

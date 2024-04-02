@@ -329,6 +329,7 @@ function pwaforwp_get_default_settings_array(){
         'default_caching_images'=> 'cacheFirst',
         'default_caching_fonts' => 'cacheFirst',
         'on_add_post_notification_title' => '',
+        'is_static_manifest' => 0,
 
     /*Push notification services*/
         'notification_options'  => '',
@@ -890,4 +891,85 @@ function pwaforwp_manifest_images_src($src){
         }
 	}
 	return $src;
+}
+
+function pwaforwp_get_manifest_filename() {
+    return 'pwa-manifest' . pwaforwp_multisite_postfix() . '.json';
+}
+
+function pwaforwp_manifest_url( $arg = 'src' ) {
+
+    $manifest_filename = pwaforwp_get_manifest_filename();
+
+    switch ( $arg ) {
+        case 'filename':
+            return $manifest_filename;
+            break;
+
+        
+        case 'abs':
+            $filepath = trailingslashit( ABSPATH ) . $manifest_filename;
+            if(!file_exists($filepath)){
+                $filepath = trailingslashit( get_home_path() ). $manifest_filename;
+            }
+            return $filepath;
+            break;
+
+        // Link to manifest
+        case 'src':
+        default:
+        
+            // Get Settings
+            $settings = pwaforwp_defaultSettings();
+
+            if ( $settings['is_static_manifest'] === 1 ) {
+                return trailingslashit( network_site_url() ) . $manifest_filename;
+            }
+            
+            // For dynamic files, return the home_url
+            return home_url( '/' ) . $manifest_filename;
+            
+            break;
+    }
+}
+
+function pwaforwp_add_manifest_variables($url) {
+    $settings = pwaforwp_defaultSettings();
+
+    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+
+    if ($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'other') {
+        $parsedUrl = parse_url( $url );
+        global $post;
+        $cache_version = PWAFORWP_PLUGIN_VERSION;
+        if(isset($settings['force_update_sw_setting']) && $settings['force_update_sw_setting'] !=''){
+            $cache_version =   $settings['force_update_sw_setting'];
+            if(!version_compare($cache_version,PWAFORWP_PLUGIN_VERSION, '>=') ){
+                $cache_version = PWAFORWP_PLUGIN_VERSION;
+            }
+        }
+        // Extract the query string parameters
+        $queryParams = [];
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParams);
+        }
+    
+        if (!isset($queryParams['pwaforwp_mid']) && isset($post->ID)) {
+            $queryParams['pwaforwp_mid'] = $post->ID;
+        }
+        if (!isset($queryParams['v'])) {
+            $queryParams['v'] = $cache_version;
+        }
+    
+        // Rebuild the query string
+        $newQueryString = http_build_query($queryParams);
+    
+        if (isset($parsedUrl['path'])) {
+            $newUrl = $parsedUrl['path'] . '?' . $newQueryString;
+        } else {
+            $newUrl = '?' . $newQueryString;
+        }	
+        return $newUrl;
+    }
+    return parse_url( $url, PHP_URL_PATH ) ;
 }

@@ -436,8 +436,17 @@ class PWAforWP_wppwa{
         }
 
 		$pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-		if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other' && !empty($defaults['start_page_other'])){
-			$homeUrl = esc_url($defaults['start_page_other']);
+		if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other'){
+			$pageid = get_the_ID();
+			if ($pageid) {
+				$permalink = get_permalink($pageid);
+				if($permalink){
+					$homeUrl       = $permalink;
+					$manifest['is_static_manifest'] = 1;
+				}
+			}
+		}else{
+			$manifest['is_static_manifest'] = 0;
 		}
 
         $homeUrl        = pwaforwp_https($homeUrl);

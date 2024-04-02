@@ -660,7 +660,10 @@ class PWAFORWP_Service_Worker{
             if(isset($settings['prefetch_manifest_setting']) && $settings['prefetch_manifest_setting']==1){
                 echo '<link rel="prefetch" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             }
-            echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            
+            $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_url( 'src' ));
+            // echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
+            echo '<link rel="manifest" href="'. $manifest_url.'">'.PHP_EOL;
             if (isset($settings['screenshots']) && ! empty( $settings['screenshots'] ) ) : 
                 echo '<link rel="apple-touch-icon" sizes="512x512" href="'.esc_url($settings['screenshots']).'">'.PHP_EOL;
             endif;
