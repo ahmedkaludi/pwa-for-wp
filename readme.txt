@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.5
-Stable tag: 1.7.67
+Stable tag: 1.7.68
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,10 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.68 (03 April 2024) =
+* Feature Added : added the navigation bar backgound feature. #874
+* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
+* Bug Fixed  : CTA delayed feature is not working properly in IOS chrome mobile version. #879
 
 = 1.7.67 (26 March 2024) =
 * Feature Added : New option so that category pages can be configured as the start page in PWA #861
