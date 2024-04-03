@@ -3942,11 +3942,6 @@ function pwaforwp_update_features_options(){
 				if($value['var_name']=="exclude_targeting_data"){
 						$exclude_targeting_value_array[] = sanitize_text_field($value['var_value']);
 				}
-
-				// for call to action included_pages
-				if($value['var_name']=="pwaforwp_settings[included_pages][]"){
-					$actualFields['included_pages'] =  sanitize_textarea_field(implode(',',$field['var_value']));;
-				}
 			}
         }
         if(!empty($exclude_targeting_type_array)){

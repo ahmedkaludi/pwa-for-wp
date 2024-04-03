@@ -274,14 +274,22 @@ function pwaforwp_add_rewrite_rules() {
 
 
 function pwaforwp_setup_hooks() {
-	add_action( 'init', 'pwaforwp_add_rewrite_rules' );
-	add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
+    $defaults = pwaforwp_defaultSettings();
+    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other'){
+        add_action( 'init', 'pwaforwp_add_rewrite_rules' );
+        add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
+    }
 }
 add_action( 'plugins_loaded', 'pwaforwp_setup_hooks' );
 
 add_filter('query_vars', 'pwaforwp_manifest_query_vars');
 
 function pwaforwp_manifest_query_vars($vars) {
-    $vars[] = 'pwaforwp_mid';
-    return $vars;
+    $defaults = pwaforwp_defaultSettings();
+    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'other'){
+        $vars[] = 'pwaforwp_mid';
+        return $vars;
+    }
 }

@@ -117,9 +117,4 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Feature Added  : Add a feature by which Search bar should work offline #815
 * Feature Added  : Add a feature to force disable the pull to refresh on an Android device #814
 
-= 1.7.60 (26 May 2023) =
-* Bug Fixed  : Navigation Bar saving button is not working properly. #811
-* Bug Fixed  : Conflict issue in loader extension #812
-* Bug Fixed  : formidable forms File Upload feature is not supported in offline form #801
-
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
