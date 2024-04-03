@@ -938,7 +938,7 @@ function pwaforwp_add_manifest_variables($url) {
 
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
 
-    if ($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'other') {
+    if ($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'active_url') {
         $parsedUrl = parse_url( $url );
         global $post;
         $cache_version = PWAFORWP_PLUGIN_VERSION;
