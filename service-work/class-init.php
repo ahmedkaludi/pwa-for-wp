@@ -54,8 +54,12 @@ class PWAFORWP_File_Creation_Init {
         $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
         $settings = pwaforwp_defaultSettings();
         $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-        if (!$pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] != 'active_url') {
+        if (!$pro_extension_exists) {
             return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
+        }else{
+            if(isset( $settings['start_page'] ) && $settings['start_page'] != 'active_url'){
+                return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
+            }
         }
     }
     

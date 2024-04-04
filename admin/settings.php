@@ -2299,7 +2299,8 @@ function pwaforwp_404_page_callback(){
 }
 function pwaforwp_start_page_callback(){
 	// Get Settings
-	$settings = pwaforwp_defaultSettings();?>
+	$settings = pwaforwp_defaultSettings();
+	?>
 	<!-- WordPress Pages Dropdown -->
 	<label for="pwaforwp_settings[start_page]">
 	<?php 
@@ -2308,7 +2309,12 @@ function pwaforwp_start_page_callback(){
 		$showother = 'disabled';$selectedother = '';$selecteddefault = '';$selectedActiveUrl = '';$pro = '';
 		$extension_active = function_exists('pwaforwp_is_any_extension_active') ? pwaforwp_is_any_extension_active() : false;
 		if($selected=='other'){ $selectedother= 'selected';} 
-		if($selected=='active_url'){ $selectedActiveUrl= 'selected';} 
+		if($selected=='active_url'){
+			$selectedActiveUrl= 'selected';
+			if(file_exists(ABSPATH.'pwa-manifest.json') && $extension_active){
+				wp_delete_file(ABSPATH.'pwa-manifest.json');
+			}
+		} 
 		if($selected=='0'){ $selecteddefault= 'selected';} 
 		if($extension_active){$showother="";$pro="style='visibility:hidden'";} 
          $selectHtml = wp_kses(wp_dropdown_pages( array( 
