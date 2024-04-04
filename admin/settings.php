@@ -2311,8 +2311,8 @@ function pwaforwp_start_page_callback(){
 		if($selected=='other'){ $selectedother= 'selected';} 
 		if($selected=='active_url'){
 			$selectedActiveUrl= 'selected';
-			if(file_exists(ABSPATH.'pwa-manifest.json') && $extension_active){
-				wp_delete_file(ABSPATH.'pwa-manifest.json');
+			if(file_exists(ABSPATH.'pwa-manifest'.pwaforwp_multisite_postfix().'.json') && $extension_active){
+				wp_delete_file(ABSPATH.'pwa-manifest'.pwaforwp_multisite_postfix().'.json');
 			}
 		} 
 		if($selected=='0'){ $selecteddefault= 'selected';} 
