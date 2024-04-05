@@ -63,10 +63,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
-= 1.7.68 (04 April 2024) =
+= 1.7.68 (05 April 2024) =
 * Feature Added : added the navigation bar backgound feature. #874
 * Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
 * Bug Fixed  : CTA delayed feature is not working properly in IOS chrome mobile version. #879
+* Bug Fixed  : Conflict issue with Polylang plugin #880
 
 = 1.7.67 (26 March 2024) =
 * Feature Added : New option so that category pages can be configured as the start page in PWA #861
