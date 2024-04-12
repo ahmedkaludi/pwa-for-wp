@@ -52,8 +52,15 @@ class PWAFORWP_File_Creation_Init {
         
         $swHtmlContent  = $this->fileCreation->pwaforwp_manifest();
         $swHtmlContent  = str_replace("&#038;", '&', $swHtmlContent);
-        return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
-                
+        $settings = pwaforwp_defaultSettings();
+        $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+        if (!$pro_extension_exists) {
+            return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
+        }else{
+            if(isset( $settings['start_page'] ) && $settings['start_page'] != 'active_url'){
+                return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
+            }
+        }
     }
     
     public function pwaforwp_swr_init($action = null){   

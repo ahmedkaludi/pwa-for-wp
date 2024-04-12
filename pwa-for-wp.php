@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.67
+Version: 1.7.68
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.67');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.68');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -239,3 +239,57 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
     return $meta_fields;
     
   }
+
+  function pwaforwp_generate_sw_and_manifest_on_fly( $query ) {
+	if ( ! property_exists( $query, 'query_vars' ) || ! is_array( $query->query_vars ) ) {
+		return;
+	}
+	$query_vars_as_string = http_build_query( $query->query_vars );
+	$manifest_filename    = pwaforwp_get_manifest_filename();
+    
+	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
+		// Generate manifest from Settings and send the response w/ header.
+		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
+		header( 'Content-Type: application/json' );
+        $p_file_c = new pwaforwpFileCreation();
+		echo $p_file_c->pwaforwp_manifest(false,$pagemid);
+		exit();
+	}
+    // Needed new query_vars of pagename for Wp Fastest Cache 
+	if(class_exists('WpFastestCache')){
+		$query_vars_as_string = isset($query->query_vars['pagename']) ? $query->query_vars['pagename'] : false;
+		if($query_vars_as_string == false){
+		    $query_vars_as_string = isset($query->query_vars['name']) ? $query->query_vars['name'] : '';
+	    }
+    }
+	
+}
+
+function pwaforwp_add_rewrite_rules() {
+	$manifest_filename = pwaforwp_get_manifest_filename();
+	add_rewrite_rule( "^/{$manifest_filename}$",
+		"index.php?{$manifest_filename}=1"
+	);
+}
+
+
+function pwaforwp_setup_hooks() {
+    $defaults = pwaforwp_defaultSettings();
+    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+        add_action( 'init', 'pwaforwp_add_rewrite_rules' );
+        add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
+    }
+}
+add_action( 'plugins_loaded', 'pwaforwp_setup_hooks' );
+
+add_filter('query_vars', 'pwaforwp_manifest_query_vars');
+
+function pwaforwp_manifest_query_vars($vars) {
+    $defaults = pwaforwp_defaultSettings();
+    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+        $vars[] = 'pwaforwp_mid';
+    }
+    return $vars;
+}
