@@ -915,31 +915,43 @@ function PWAforwpreadCookie(name) {
 
     jQuery(".pwaforwp_select_with_other").on("change", function(e){
         var selfp = jQuery(this);
+        if (selfp.val()=='active_url') {
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dinline');
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
+        }
         if(selfp.val()=='other'){
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").addClass('pwaforwp_dinline');
             selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").removeClass('pwaforwp_dnone');
             selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
         }else{
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").removeClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").addClass('pwaforwp_dnone');
+            if (selfp.val()!='active_url') {
+                selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dinline');
+                selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
+            }
         }
     });
 
     jQuery(".pwaforwp_select_with_other").each(function(e){
         var selfp = jQuery(this);
+        if (selfp.val()=='active_url') {
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dinline');
+            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
+        }
         if(selfp.val()=='other'){
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").addClass('pwaforwp_dinline');
             selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").removeClass('pwaforwp_dnone');
             selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dnone');
         }else{
             selfp.parent("label").find(".pwaforwp-sub-tab-headings").removeClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dinline');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
-            selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
+            selfp.parent("label").find(".pwaforwp-sub-tab-headings").addClass('pwaforwp_dnone');
+            if (selfp.val()!='active_url') {
+                selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").removeClass('pwaforwp_dinline');
+                selfp.parent("label").find(".pwaforwp-upgrade-pro-inline").addClass('pwaforwp_dnone');
+            }
         }
     });
 
