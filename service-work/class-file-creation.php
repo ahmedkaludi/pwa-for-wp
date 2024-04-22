@@ -128,24 +128,16 @@ class pwaforwpFileCreation{
         
         if(isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1){
           
-            if(isset($settings['enable_add_to_home_desktop_setting']) && $settings['enable_add_to_home_desktop_setting']==1){
-              $ios_devices_desktop = 'var isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);';
-              if(isset($settings['enable_add_to_home_ios_setting']) && $settings['enable_add_to_home_ios_setting']==1){
-                $ios_devices_desktop = 'var isMobile = false;';
-              }
+            if(isset($settings['enable_add_to_home_desktop_setting']) && $settings['enable_add_to_home_desktop_setting']==1){             
                 $banner_on_desktop ='var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
-                                    '.$ios_devices_desktop.'
+                                    var isMobile = /iPhone|iPad|iPod/i.test(navigator.userAgent);
                                     if(a2hsdesk !== null && checkbarClosedOrNot() && !isMobile){
                                         a2hsdesk.style.display = "block";
                                     }'; 
                         
                           
             }else{
-              $ios_devices ='';
-              if(isset($settings['enable_add_to_home_ios_setting']) && $settings['enable_add_to_home_ios_setting']==1){
-                $ios_devices = 'iPhone|iPad|iPod|';
-              }
-                $banner_on_desktop ='var isMobile = /'.$ios_devices.'Android/i.test(navigator.userAgent);   if(isMobile){                                                    
+                $banner_on_desktop ='var isMobile = /Android/i.test(navigator.userAgent);   if(isMobile){                                                    
                                             var a2hsdesk = document.getElementById("pwaforwp-add-to-home-click");
                                                     if(a2hsdesk !== null  && checkbarClosedOrNot()){
                                                         a2hsdesk.style.display = "block";
