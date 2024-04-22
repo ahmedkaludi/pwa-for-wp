@@ -1,3 +1,7 @@
+= 1.7.69 (22 April 2024) =
+* Feature Added : added a new feature so that users can be able to upload their own images to use as an icon in the Navigation Bar #869
+* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
+
 = 1.7.68 (05 April 2024) =
 * Feature Added : added the navigation bar backgound feature. #874
 * Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
