@@ -555,7 +555,7 @@ function pwaforwp_write_a_file($path, $content, $action = null){
         }
                 
         if(!$action){
-            if(!file_exists($path) && $content){            
+            if(!file_exists($path) && !is_writable($path) && $content){
             $handle      = @fopen($path, 'w');
             $writestatus = @fwrite($handle, $content);
             @fclose($handle);
