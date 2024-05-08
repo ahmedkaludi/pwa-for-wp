@@ -105,7 +105,8 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
 function pwaforwp_frontend_enqueue(){
-    if ( class_exists('\Elementor\Plugin') && \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
+        $force_rememberme=0;
+        if ( class_exists('\Elementor\Plugin') && \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
                                
         $server_key = $config = '';
         
@@ -146,7 +147,7 @@ function pwaforwp_frontend_enqueue(){
                 
             }
          
-            $force_rememberme=0;
+            
             if(isset($settings['force_rememberme']) && $settings['force_rememberme']==1){
                 $force_rememberme=1;
             }
@@ -220,7 +221,7 @@ function pwaforwp_frontend_enqueue(){
         wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), $force_update_sw_setting_value, true); 
         $object_js_download = array(
             'force_rememberme'=>$force_rememberme
-          );
+        );
           
         wp_localize_script('pwaforwp-download-js', 'pwaforwp_download_js_obj', $object_js_download);
         wp_enqueue_script('pwaforwp-download-js');
