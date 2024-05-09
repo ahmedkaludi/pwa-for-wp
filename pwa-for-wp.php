@@ -110,12 +110,12 @@ function pwaforwp_revert_src($content){
 /**
  * set user defined message on plugin activate
  */
-function pwaforwp_after_activation_redirect( $plugin ) {
-    if( $plugin == plugin_basename( __FILE__ ) ) {
-        exit( wp_redirect( admin_url( 'admin.php?page=pwaforwp' ) ) );
-    }
-}
-add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
+// function pwaforwp_after_activation_redirect( $plugin ) {
+//     if( $plugin == plugin_basename( __FILE__ ) ) {
+//         exit( wp_redirect( admin_url( 'admin.php?page=pwaforwp' ) ) );
+//     }
+// }
+// add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
 register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
 register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
