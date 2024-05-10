@@ -3836,7 +3836,7 @@ function pwaforwp_features_settings(){
 }
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
-function pwaforwp_update_features_options(){
+function pwaforwp_update_features_options(){	
 	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
 		echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','pwa-for-wp')));
 		die;
@@ -3849,7 +3849,7 @@ function pwaforwp_update_features_options(){
         echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','pwa-for-wp')));
 		die;
     }
-	$allFields = wp_unslash($_POST['fields_data']);
+	$allFields = wp_unslash($_POST['fields_data']);	
 	$actualFields = array();
 	$navigation_bar_data = array();
 	if(is_array($allFields) && !empty($allFields)){
@@ -3924,19 +3924,20 @@ function pwaforwp_update_features_options(){
                     }
                 }
         }
+        if(isset($actualFields['call_to_action']) && $actualFields['call_to_action'] == 1){
+            $actualFields['add_to_home_sticky'] = 1; 
+        }
         if(!empty($include_targeting_type_array)){
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
         }else{
-            $actualFields['include_targeting_type'] = ''; 
-
+            $actualFields['include_targeting_type'] = '';
         }  
         if(!empty($include_targeting_value_array)){
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
         }else{
-            $actualFields['include_targeting_value'] = ''; 
-
+            $actualFields['include_targeting_value'] = '';
         }
         
         $exclude_targeting_type_array = array();
@@ -3964,8 +3965,6 @@ function pwaforwp_update_features_options(){
         }else{
             $actualFields['exclude_targeting_value'] = ''; 
         }
-		
-
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
 				$actualFields['custom_add_to_home_setting'] = 1;
