@@ -3924,9 +3924,7 @@ function pwaforwp_update_features_options(){
                     }
                 }
         }
-        if(isset($actualFields['call_to_action']) && $actualFields['call_to_action'] == 1){
-            $actualFields['add_to_home_sticky'] = 1; 
-        }
+        
         if(!empty($include_targeting_type_array)){
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 

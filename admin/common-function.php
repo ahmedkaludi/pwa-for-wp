@@ -363,6 +363,7 @@ function pwaforwp_get_default_settings_array(){
         'loading_icon_color'=> '#3498db',
         'loading_icon_bg_color'=> '#ffffff',
         'loading_icon_display_admin'=>0,
+        'add_to_home_sticky'=>1,
 	);
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
