@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.5
-Stable tag: 1.7.69
+Stable tag: 1.7.70
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.70 (15 May 2024) =
+* Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
+* Bug Fixed  : Add to home on element click is not working when adding button via elementor #891
+* Bug Fixed  : While clicking the close button on the CTA banner it shows the pop-up to install #893
+
+= 1.7.69.1 (09 May 2024) =
+* Bug Fixed  : PWA: Activation Failed error with wordpress latest update. #886
+
 = 1.7.69 (22 April 2024) =
 * Feature Added : added a new feature so that users can be able to upload their own images to use as an icon in the Navigation Bar #869
 * Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
@@ -103,13 +111,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Warning appears in Offline Forms for PWAforWP extension. #840
 * Feature Added  : Add compatibility with the Signature module and the Date-Time modules of fluent forms with offline forms for PWA #847
 
-= 1.7.62 (14 Sept 2023) =
-* Bug Fixed  : Push notification is not working on IOS. #66
-* Bug Fixed  : Need to put a proper display message on license activation/deactivation timeout #831
-* Bug Fixed  : The messages do not redirect when the extension Buddypress for PWAforWP is activated on the user-end #839
-* Feature Added  : Need to create a feature for Role managers #824
-* Feature Added  : Need to add support to display badge on mobile PWA icon #821
-* Feature Added  : Need to add a new feature for BuddyPress Group Notification in buddypress for PWAforWP pro extension #841
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
