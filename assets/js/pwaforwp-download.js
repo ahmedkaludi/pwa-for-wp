@@ -36,7 +36,6 @@ Otherwise user will get logged out after sometime or after reopening the PWA app
 By rememberme wordpress keeps the login session valid for 14 days (As of now we can not change that) instead of current session
 */
 document.addEventListener('DOMContentLoaded', function() {
-	console.log(pwaforwp_download_js_obj);
 	if(pwaforwp_download_js_obj && pwaforwp_download_js_obj.hasOwnProperty('force_rememberme') && pwaforwp_download_js_obj.force_rememberme == 1)
 	{
 	  var rememberMeCheckbox = document.getElementById('rememberme');    // for forms extending default login form
