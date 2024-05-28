@@ -690,20 +690,30 @@ class pwaforwpFileCreation{
                       'purpose'=> 'monochrome',
                   );
                 }
+
+                $form_factor = 'wide';
+                if (isset($defaults['form_factor']) && !empty($defaults['form_factor'])) {
+                    $form_factor = $defaults['form_factor'];
+                }
                 $screenshots[] = array( 
                     'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['screenshots']))),   
                     'sizes' => '512x512',   
                     'type'  => 'image/png',     
                     'purpose'=> 'maskable', 
+                    'form_factor'=> $form_factor, 
                 );
                 if (isset($defaults['screenshots_multiple']) && !empty($defaults['screenshots_multiple'])) {
                   foreach ($defaults['screenshots_multiple'] as $key => $screenshots_multiple) {
                     if (!empty($screenshots_multiple)) {
+                      $form_factor_multiple = 'wide';
+                      if (isset($defaults['form_factor_multiple'][$key]) && !empty($defaults['form_factor_multiple'][$key])) {
+                          $form_factor_multiple = $defaults['form_factor_multiple'][$key];
+                      }
                       $screenshots[] = array(
                         'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$screenshots_multiple))),
                         'sizes'	=> '512x512', 
                         'type'	=> 'image/png', 
-                        "platform"=> "wide",
+                        "form_factor"=> $form_factor_multiple,
                         "label"=> "Homescreen of PWA App"
                       );
                     }

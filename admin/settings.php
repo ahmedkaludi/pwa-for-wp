@@ -2197,6 +2197,16 @@ function pwaforwp_app_screenshots_callback(){
 		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
 			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
 		</button>
+		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor">
+			<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+				</option>
+			<option value="narrow" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'narrow' ); } ?>>
+				<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="wide" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'wide' ); } ?>>
+				<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
+			</option>
+		</select>
 		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
 		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 		</button>
@@ -2210,7 +2220,17 @@ function pwaforwp_app_screenshots_callback(){
 			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
 				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
 			</button>
-				<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple">
+				<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+				</option>
+				<option value="narrow" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'narrow' ); } ?>>
+					<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
+				</option>
+				<option value="wide" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'wide' ); } ?>>
+					<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
+				</option>
+			</select>
+			<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 				</button>
 		</div>
 	<?php
