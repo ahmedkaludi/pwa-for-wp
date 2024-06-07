@@ -246,13 +246,13 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
 	}
 	$query_vars_as_string = http_build_query( $query->query_vars );
 	$manifest_filename    = pwaforwp_get_manifest_filename();
-    
 	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
 		// Generate manifest from Settings and send the response w/ header.
 		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
+		$user_path =  isset($query->query_vars['user_path'])? $query->query_vars['user_path'] : null;
 		header( 'Content-Type: application/json' );
         $p_file_c = new pwaforwpFileCreation();
-		echo $p_file_c->pwaforwp_manifest(false,$pagemid);
+		echo $p_file_c->pwaforwp_manifest(false,$pagemid,$user_path);
 		exit();
 	}
     // Needed new query_vars of pagename for Wp Fastest Cache 
@@ -276,7 +276,7 @@ function pwaforwp_add_rewrite_rules() {
 function pwaforwp_setup_hooks() {
     $defaults = pwaforwp_defaultSettings();
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url' || isset( $defaults['share_target'] ) && $defaults['share_target'] == 1){
         add_action( 'init', 'pwaforwp_add_rewrite_rules' );
         add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
     }
@@ -288,8 +288,10 @@ add_filter('query_vars', 'pwaforwp_manifest_query_vars');
 function pwaforwp_manifest_query_vars($vars) {
     $defaults = pwaforwp_defaultSettings();
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+    
+    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url' || (isset( $defaults['share_target'] ) && $defaults['share_target'] == 1)){
         $vars[] = 'pwaforwp_mid';
+        $vars[] = 'user_path';
     }
     return $vars;
 }
