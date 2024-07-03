@@ -1519,6 +1519,8 @@ jQuery("#screenshots_add_more").click(function(e) {  // Add more screenshots
     clone_tr = jQuery(this).parents('.js_clone_div:first').clone();
     clone_tr.find('input').val("")
     clone_tr.find('input').prop('name','pwaforwp_settings[screenshots_multiple][]')
+    clone_tr.find('select').prop('name','pwaforwp_settings[form_factor_multiple][]')
+    clone_tr.find('select').prop('selectedIndex', 0)
     clone_tr.find("#screenshots_add_more").remove()
     clone_tr.find(".js_remove_screenshot").show()
     clone_tr.find('.js_choose_button').addClass('pwaforwp-screenshots-multiple-upload')

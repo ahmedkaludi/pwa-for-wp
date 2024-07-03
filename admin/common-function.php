@@ -101,6 +101,7 @@ function pwaforwp_review_notice_remindme(){
 }
 
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
+
 /*
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
@@ -704,6 +705,7 @@ function pwaforwp_service_workerUrls($url, $filename){
       $home_url = add_query_arg(pwaforwp_query_var('sw_file_var'), $filename, $home_url);
       $url = $home_url;
   }
+  
   if(isset($settings['serve_js_cache_menthod']) && $settings['serve_js_cache_menthod']=='true'){
     $url = esc_url_raw(admin_url( 'admin-ajax.php?action=pwaforwp_sw_files&'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.$filename ));
   }
@@ -900,7 +902,6 @@ function pwaforwp_get_manifest_filename() {
 }
 
 function pwaforwp_manifest_url( $arg = 'src' ) {
-
     $manifest_filename = pwaforwp_get_manifest_filename();
 
     switch ( $arg ) {
@@ -923,13 +924,13 @@ function pwaforwp_manifest_url( $arg = 'src' ) {
         
             // Get Settings
             $settings = pwaforwp_defaultSettings();
-
             if ( $settings['is_static_manifest'] === 1 ) {
                 return trailingslashit( network_site_url() ) . $manifest_filename;
             }
+            return home_url( '/' ) . $manifest_filename;
             
             // For dynamic files, return the home_url
-            return home_url( '/' ) . $manifest_filename;
+            
             
             break;
     }
@@ -939,6 +940,8 @@ function pwaforwp_add_manifest_variables($url) {
     $settings = pwaforwp_defaultSettings();
 
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+
+    
 
     if ($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'active_url') {
         $parsedUrl = parse_url( $url );

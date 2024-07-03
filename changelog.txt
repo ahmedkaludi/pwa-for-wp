@@ -1,3 +1,11 @@
+= 1.7.71 (03 July 2024) =
+* Feature Added  : Make an option to select form factor from the option #899
+* Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
+* Bug Fixed  : Creation of dynamic property is deprecated #903
+* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
+* Bug Fixed  : Offline form radio group validation not working #900
+* Bug Fixed  : Fatal error in CTA #904
+
 = 1.7.70 (15 May 2024) =
 * Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
 * Bug Fixed  : Add to home on element click is not working when adding button via elementor #891

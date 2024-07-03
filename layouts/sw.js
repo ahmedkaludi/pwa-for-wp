@@ -605,6 +605,43 @@ self.addEventListener(
         if(pwaForWpisBlackListed(event.request.url)){
             return;   
         }
+
+        const url = new URL(event.request.url);
+        
+        
+        path_array = url.pathname.split('/')
+        if (event.request.method === 'POST' && path_array.includes('activity')) {
+            return event.respondWith((async () => {
+                const formData = await event.request.formData();
+                const title = formData.get('title');
+                const text = formData.get('text');
+                const link = formData.get('url');
+                const image = formData.get('externalMedia');
+                const reader = new FileReader();
+
+                reader.onload = async (event) => {
+                    const imageData = event.target.result;
+
+                    const db = await openDatabase();
+                    await saveData(db, {
+                        id: 'sharedData',
+                        title: title,
+                        text: text,
+                        url: link,
+                        image: imageData
+                    });
+
+                    console.log('Data saved to IndexedDB');
+           
+                    // return Response.redirect('/?share-target', 303);
+                    return Response.redirect(url.pathname+'/?share-target', 303);
+                };
+
+                reader.readAsDataURL(image);
+                return Response.redirect(url.pathname+'/?share-target', 303);
+                // return Response.redirect('/?share-target', 303);
+            })());
+        }
         
         // Return if request url protocal isn't http or https
         if ( ! event.request.url.match(/^(http|https):\/\//i) )
@@ -662,6 +699,42 @@ self.addEventListener(
 
     }
 );
+
+function openDatabase() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('shareTargetDB', 1);
+  
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        db.createObjectStore('sharedData', { keyPath: 'id' });
+      };
+  
+      request.onsuccess = (event) => {
+        resolve(event.target.result);
+      };
+  
+      request.onerror = (event) => {
+        reject(event.target.error);
+      };
+    });
+  }
+  
+  function saveData(db, data) {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction('sharedData', 'readwrite');
+      const store = transaction.objectStore('sharedData');
+  
+      const request = store.put(data);
+  
+      request.onsuccess = () => {
+        resolve();
+      };
+  
+      request.onerror = (event) => {
+        reject(event.target.error);
+      };
+    });
+  }
 
 
 self.addEventListener('message', (event) => {

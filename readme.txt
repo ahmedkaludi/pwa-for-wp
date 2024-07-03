@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.5
-Stable tag: 1.7.70
+Stable tag: 1.7.71
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.71 (03 July 2024) =
+* Feature Added  : Make an option to select form factor from the option #899
+* Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
+* Bug Fixed  : Creation of dynamic property is deprecated #903
+* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
+* Bug Fixed  : Offline form radio group validation not working #900
+* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
+
 = 1.7.70 (15 May 2024) =
 * Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
 * Bug Fixed  : Add to home on element click is not working when adding button via elementor #891
@@ -104,13 +112,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Feature Added  : Added browser option in Display #829
 * Improvement : Added "Alt" attribute is missing in logo images #852
 * Improvement : License key area should be proper #759
-
-= 1.7.63 (16 October 2023) =
-* Bug Fixed  : Offlineforms are not working with Contact Form7 #844
-* Improvement  : Need to change menu icon for pwa #843
-* Bug Fixed  : Warning appears in Offline Forms for PWAforWP extension. #840
-* Feature Added  : Add compatibility with the Signature module and the Date-Time modules of fluent forms with offline forms for PWA #847
-
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

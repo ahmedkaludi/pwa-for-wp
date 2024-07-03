@@ -596,7 +596,7 @@ function pwaforwp_settings_init(){
 
         add_settings_field(
             'pwaforwp_cleandataonuninstall_setting',                           // ID
-            __('<label for="pwaforwp_settings_navigation_uninstall_setting"><b>Remove Data on Uninstall?</b></label>', 'pwa-for-wp'),  // Title
+            '<label for="pwaforwp_settings_navigation_uninstall_setting"><b>'.esc_html__('Remove Data on Uninstall?', 'pwa-for-wp').'</b></label>',  // Title
             'pwaforwp_cleandataonuninstall_setting_callback',                          // CB
             'pwaforwp_tools_section',                       // Page slug
             'pwaforwp_tools_section'                        // Settings Section ID
@@ -607,21 +607,21 @@ function pwaforwp_settings_init(){
 		add_settings_section('pwaforwp_other_setting_section', ' ', '__return_false', 'pwaforwp_other_setting_section');
 		add_settings_field(
 			'pwaforwp_cdn_setting',							// ID
-			__('<label for="pwaforwp_settings_cdn_setting"><b>CDN Compatibility</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings_cdn_setting"><b>'.esc_html__('CDN Compatibility', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_cdn_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);                
         add_settings_field(
 			'pwaforwp_offline_google_setting',							// ID
-			__('<label for="pwaforwp_settings[offline_google_setting]"><b>Offline Google Analytics</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[offline_google_setting]"><b>'.esc_html__('Offline Google Analytics', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_offline_google_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_prefetch_manifest_setting',							// ID
-			__('<label for="pwaforwp_settings[prefetch_manifest_setting]"><b>Prefetch manifest URL link</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[prefetch_manifest_setting]"><b>'.esc_html__('Prefetch manifest URL link', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_prefetch_manifest_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -652,7 +652,7 @@ function pwaforwp_settings_init(){
        
         add_settings_field(
 			'pwaforwp_cache_external_links_setting',							// ID
-			__('<label for="pwaforwp_settings_external_links_setting"><b>Cache External Links</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings_external_links_setting"><b>'.esc_html__('Cache External Links', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_cache_external_links_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -681,28 +681,28 @@ function pwaforwp_settings_init(){
 		);
 		add_settings_field(
 			'pwaforwp_avoid_default_banner_setting',							// ID
-			__('<label for="pwaforwp_settings[avoid_default_banner]"><b>Remove default banner</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[avoid_default_banner]"><b>'.esc_html__('Remove default banner', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_avoid_default_banner_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_avoid_pwa_loggedin_setting',							// ID
-			__('<label for="pwaforwp_settings[avoid_loggedin_users]"><b>Remove pwa for logged in users</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[avoid_loggedin_users]"><b>'.esc_html__('Remove pwa for logged in users', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_avoid_pwa_loggedin_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
-			__('<label for="pwaforwp_settings[serve_js_cache_menthod]"><b>PWA alternative method</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[serve_js_cache_menthod]"><b>'.esc_html__('PWA alternative method', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_reset_cookies_method_setting',							// ID
-			__('<label for="pwaforwp_settings[reset_cookies]"><b>Reset cookies</b></label>', 'pwa-for-wp'),	// Title
+			'<label for="pwaforwp_settings[reset_cookies]"><b>'.esc_html__('Reset cookies','pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_reset_cookies_method_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -725,21 +725,21 @@ function pwaforwp_settings_init(){
 		}
 		add_settings_field(
 			'pwaforwp_offline_message_setting',							// ID
-			'<label for="pwaforwp_settings[offline_message_setting]">'.esc_html__('Offline Message', 'pwa-for-wp').'</label>',	// Title
+			'<label for="pwaforwp_settings[offline_message_setting]"><b>'.esc_html__('Offline Message', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_offline_message_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_scrollbar_setting',							// ID
-			'<label for="pwaforwp_settings[scrollbar_setting]">'.esc_html__('Disable Scrollbar', 'pwa-for-wp').'</label>',	// Title
+			'<label for="pwaforwp_settings[scrollbar_setting]"><b>'.esc_html__('Disable Scrollbar', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_scrollbar_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_force_rememberme_setting',							// ID
-			'<label for="pwaforwp_settings[force_rememberme]">'.esc_html__('Force Remember me', 'pwa-for-wp').'</label>',	// Title
+			'<label for="pwaforwp_settings[force_rememberme]"><b>'.esc_html__('Force Remember me', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_force_rememberme_setting_callback',							// CB
 			'pwaforwp_other_setting_section',						// Page slug
 			'pwaforwp_other_setting_section'						// Settings Section ID
@@ -1152,7 +1152,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 
 	?>
 	<tr>
-		<td><label><?php echo esc_html__('Default caching strategy', 'pwa-for-wp'); ?></label></td>
+		<td><label><b><?php echo esc_html__('Default caching strategy', 'pwa-for-wp'); ?></b></label></td>
 		<td><select name="pwaforwp_settings[default_caching]">
 			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
@@ -1166,13 +1166,13 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select>
 		<br/>
 		<label style="padding-top: 5px;">
-		<input type="checkbox" name="pwaforwp_settings[change_default_on_login]" value="1" <?php if( isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1 ){ echo 'checked'; }?>>
+		<input type="checkbox" name="pwaforwp_settings[change_default_on_login]" value="1" <?php if( isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1 ){ echo 'checked'; }?>><p>
 		<?php echo esc_html__('If you have a login for normal users (it help users to get updates content)', 'pwa-for-wp'); ?>
-		</label>
+		</p></label>
 		</td>
 	</tr>
 	<tr>
-		<td><label><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></label></td>
+		<td><label><b><?php echo esc_html__('Caching strategy for CSS and JS Files', 'pwa-for-wp'); ?></b></label></td>
 		<td><select name="pwaforwp_settings[default_caching_js_css]">
 			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
@@ -1185,7 +1185,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select></td>
 	</tr>
 	<tr>
-		<td><label><?php echo esc_html__('Caching strategy for images', 'pwa-for-wp'); ?></label></td>
+		<td><label><b><?php echo esc_html__('Caching strategy for images', 'pwa-for-wp'); ?></b></label></td>
 		<td><select name="pwaforwp_settings[default_caching_images]">
 			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
@@ -1198,7 +1198,7 @@ function pwaforwp_caching_strategies_setting_callback(){
 		</select></td>
 	</tr>
 	<tr>
-		<td><label><?php echo esc_html__('Caching strategy for fonts', 'pwa-for-wp'); ?></label></td>
+		<td><label><b><?php echo esc_html__('Caching strategy for fonts', 'pwa-for-wp'); ?></b></label></td>
 		<td><select name="pwaforwp_settings[default_caching_fonts]">
 			<?php if(is_array($arrayOPT) && !empty($arrayOPT)){
 				foreach ($arrayOPT as $key => $opval) {
@@ -1275,9 +1275,12 @@ function pwaforwp_role_based_access_setting_callback(){
 						<option value="<?php echo esc_attr($key);?>" <?php echo esc_html($selected);?>><?php echo esc_html($opval); ?></option>
 					<?php }
 				?>
-                </select><br/>
+                </select><br/><p>
 				<?php
 				echo esc_html__('Choose the users whom you want to allow full access of this plugin','pwa-for-wp');
+				?>
+				</p>
+				<?php
 
 		
 		
@@ -2197,6 +2200,16 @@ function pwaforwp_app_screenshots_callback(){
 		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
 			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
 		</button>
+		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor">
+			<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+				</option>
+			<option value="narrow" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'narrow' ); } ?>>
+				<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
+			</option>
+			<option value="wide" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'wide' ); } ?>>
+				<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
+			</option>
+		</select>
 		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
 		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 		</button>
@@ -2210,7 +2223,17 @@ function pwaforwp_app_screenshots_callback(){
 			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
 				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
 			</button>
-				<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
+			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple">
+				<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+				</option>
+				<option value="narrow" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'narrow' ); } ?>>
+					<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
+				</option>
+				<option value="wide" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'wide' ); } ?>>
+					<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
+				</option>
+			</select>
+			<button type="button" style="background-color: red; border-color: red; color: #fff;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 				</button>
 		</div>
 	<?php

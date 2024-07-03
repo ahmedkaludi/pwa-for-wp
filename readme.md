@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 6.1
+Tested up to: 6.5
 
-Stable tag: 1.7.64
+Stable tag: 1.7.71
 
 License: GPLv2 or later
 
@@ -75,6 +75,46 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+
+= 1.7.71 (03 July 2024) =
+* Feature Added  : Make an option to select form factor from the option #899
+* Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
+* Bug Fixed  : Creation of dynamic property is deprecated #903
+* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
+
+= 1.7.70 (15 May 2024) =
+* Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
+* Bug Fixed  : Add to home on element click is not working when adding button via elementor #891
+* Bug Fixed  : While clicking the close button on the CTA banner it shows the pop-up to install #893
+
+= 1.7.69.1 (09 May 2024) =
+* Bug Fixed  : PWA: Activation Failed error with wordpress latest update. #886
+
+= 1.7.69 (22 April 2024) =
+* Feature Added : added a new feature so that users can be able to upload their own images to use as an icon in the Navigation Bar #869
+* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
+
+= 1.7.68 (05 April 2024) =
+* Feature Added : added the navigation bar backgound feature. #874
+* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
+* Bug Fixed  : CTA delayed feature is not working properly in IOS chrome mobile version. #879
+* Bug Fixed  : Conflict issue with Polylang plugin #880
+
+= 1.7.67 (26 March 2024) =
+* Feature Added : New option so that category pages can be configured as the start page in PWA #861
+* Improvement: Compatibility with WP-Hide plugin. #732
+* Feature Added : Option where we can hide the navigation bar on certain pages. #868
+* Compatibility : Tested with  WordPress 6.5 #876
+
+= 1.7.66 (23 January 2024) =
+* Improvement : Visibility improvement #858
+* Bug Fixed  : offline form feature is not working with formidable forms. #862
+
+= 1.7.65 (30 December 2023) =
+* Bug Fixed  : The Text Font color and the Selected Text Font color of the Navigation Bar are not getting saved #855
+* Bug Fixed  : Media Feature Errors in Blog Splash Screen Images Validation #832
+* Feature Added  : Functionality to disable the Page navigation scroll bar in PWA #853
+* Improvement : Code Improvemnt #856
 
 = 1.7.64 (22 November 2023) =
 * Improvement  : Make the offline message "You are offline" as an option #727

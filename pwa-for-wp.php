@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.70
+Version: 1.7.71
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
 define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.70');
+define('PWAFORWP_PLUGIN_VERSION', '1.7.71');
 define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
 
@@ -246,7 +246,6 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
 	}
 	$query_vars_as_string = http_build_query( $query->query_vars );
 	$manifest_filename    = pwaforwp_get_manifest_filename();
-    
 	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
 		// Generate manifest from Settings and send the response w/ header.
 		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
@@ -288,6 +287,7 @@ add_filter('query_vars', 'pwaforwp_manifest_query_vars');
 function pwaforwp_manifest_query_vars($vars) {
     $defaults = pwaforwp_defaultSettings();
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    
     if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
         $vars[] = 'pwaforwp_mid';
     }

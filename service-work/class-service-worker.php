@@ -292,10 +292,9 @@ class PWAFORWP_Service_Worker{
         public function pwaforwp_service_worker_init(){
             
             $settings = pwaforwp_defaultSettings();
-			 if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
+			if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
             
             if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
-                
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
                 add_filter('amp_post_template_data',array($this, 'pwaforwp_service_worker_script'),35);
                 add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen_amp'),1);                
@@ -441,7 +440,6 @@ class PWAFORWP_Service_Worker{
                     }
 
                     /*Exldude code end*/
-                    
                     if($is_desplay==1){
                         add_action('wp_enqueue_scripts',array($this, 'pwaforwp_service_worker_non_amp'),35); 
                         add_action('wp_head',array($this, 'pwaforwp_paginated_post_add_homescreen'),1);  
@@ -449,6 +447,20 @@ class PWAFORWP_Service_Worker{
                     }
                 } 
                
+            }
+            $active_plugins = get_option( "active_plugins" );
+		    $plugin_path = 'mediapress/mediapress.php';
+		
+		    if(isset($settings['share_target']) && $settings['share_target'] == 1 && in_array( $plugin_path, $active_plugins ) ) {
+                wp_enqueue_script( 'pwa-share-target', PWAFORWP_PLUGIN_URL . 'assets/js/share_target.js', array('jquery'), PWAFORWP_PLUGIN_VERSION, true );
+                $current_user = wp_get_current_user();
+		        $user_login = $current_user->user_nicename;
+                $object_name = array(
+                    'user_path'                  => $user_login,
+                    'ajax_url'                  => admin_url( 'admin-ajax.php' ),
+                    'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce'),
+                );
+                wp_localize_script( 'pwa-share-target', 'pwa_share_target',  $object_name);
             }
         }
         public function pwaforwp_update_pre_caching_urls(){
@@ -656,12 +668,16 @@ class PWAFORWP_Service_Worker{
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
 		if($manualfileSetup){
+            
 
             if(isset($settings['prefetch_manifest_setting']) && $settings['prefetch_manifest_setting']==1){
                 echo '<link rel="prefetch" href="'. esc_url( pwaforwp_manifest_json_url() ).'">'.PHP_EOL;
             }
             $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+
+            
             $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_json_url());
+            
             if($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'active_url'){
                 $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_url( 'src' ));
             }
