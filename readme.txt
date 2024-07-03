@@ -68,6 +68,8 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
 * Bug Fixed  : Creation of dynamic property is deprecated #903
 * Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
+* Bug Fixed  : Offline form radio group validation not working #900
+* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
 
 = 1.7.70 (15 May 2024) =
 * Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
