@@ -77,7 +77,6 @@ class PWAFORWP_Service_Worker{
         public static function loadalernative_script_load_method(){
             add_action( 'wp_ajax_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
             add_action( 'wp_ajax_nopriv_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
-            // add_action( 'wp_ajax_pwaforwp_sw_files_share_target', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
         }
 		
 		function pwaforwp_onesignal_rewrite(){
@@ -294,8 +293,6 @@ class PWAFORWP_Service_Worker{
             
             $settings = pwaforwp_defaultSettings();
 			if ( pwaforwp_is_enabled_pwa_wp() ) { return; }
-
-            
             
             if(isset($settings['amp_enable']) && $settings['amp_enable']==1 && pwaforwp_amp_takeover_status()){
                 add_action('wp_footer',array($this, 'pwaforwp_service_worker'));
@@ -680,9 +677,7 @@ class PWAFORWP_Service_Worker{
 
             
             $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_json_url());
-            if($pro_extension_exists && isset( $settings['share_target'] ) && $settings['share_target'] == 1){
-                $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_url( 'src' ));
-            }
+            
             if($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'active_url'){
                 $manifest_url = pwaforwp_add_manifest_variables(pwaforwp_manifest_url( 'src' ));
             }

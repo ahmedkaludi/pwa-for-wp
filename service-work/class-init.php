@@ -57,7 +57,7 @@ class PWAFORWP_File_Creation_Init {
         if (!$pro_extension_exists) {
             return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
         }else{
-            if(isset( $settings['start_page'] ) && $settings['start_page'] != 'active_url' &&  $settings['share_target'] != 1){
+            if(isset( $settings['start_page'] ) && $settings['start_page'] != 'active_url'){
                 return pwaforwp_write_a_file($this->minifest_init, $swHtmlContent, $action);
             }
         }

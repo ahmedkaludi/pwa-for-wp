@@ -610,7 +610,7 @@ self.addEventListener(
         
         
         path_array = url.pathname.split('/')
-        if (event.request.method === 'POST' && path_array.includes('members')) {
+        if (event.request.method === 'POST' && path_array.includes('activity')) {
             return event.respondWith((async () => {
                 const formData = await event.request.formData();
                 const title = formData.get('title');

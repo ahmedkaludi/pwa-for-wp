@@ -562,7 +562,7 @@ class pwaforwpFileCreation{
 		
 	}
       
-    public function pwaforwp_manifest($is_amp = false,$pageid=null,$user_path){ 
+    public function pwaforwp_manifest($is_amp = false,$pageid=null){ 
     	$defaults = pwaforwp_defaultSettings();
         if($is_amp){ 
           if(function_exists('ampforwp_url_controller')){
@@ -633,35 +633,6 @@ class pwaforwpFileCreation{
         }
 
         $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
-        if($pro_extension_exists && isset( $defaults['share_target'] ) && $defaults['share_target'] == 1){          
-            $manifest['is_static_manifest'] = 1;
-            
-            if ($user_path) {            
-                $manifest['share_target']     = array(
-                    'action' => '/members/'.$user_path.'/',
-                    'method' => 'POST',
-                    'enctype' => 'multipart/form-data',
-                    'params' => array(
-                        "title"=> "title",
-                        "text"=> "text",
-                        "url"=> home_url( '/' ),
-                        "files"=> array([
-                                    "name"=> "externalMedia",
-                                    "accept"=> [
-                                        "image/jpeg",
-                                        "image/png",
-                                        "image/gif",
-                                        "video/quicktime",
-                                        "video/mp4"
-                                    ]
-                                ]
-                            )
-                        )
-                    );
-            }
-
-        
-        }
         if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
           if ($pageid) {
             $permalink = get_permalink($pageid);
