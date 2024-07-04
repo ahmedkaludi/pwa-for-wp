@@ -279,93 +279,116 @@ function pwaforwp_get_tab( $default = '', $available = array() ) {
 	return $tab;
 }
 
-function pwaforwp_get_default_settings_array(){
+function pwaforwp_fields_and_type($data_type = 'value'){
     
     $defaults = array(
-		'app_blog_name'		     => get_bloginfo( 'name' ),
-		'app_blog_short_name'	 => get_bloginfo( 'name' ),
-		'description'		     => get_bloginfo( 'description' ),
-		'icon'			         => PWAFORWP_PLUGIN_URL . 'images/logo.png',
-		'splash_icon'		     => PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
+		'app_blog_name'		     => array('type'=>'text','value'=>get_bloginfo( 'name' )),
+		'app_blog_short_name'	 => array('type'=>'text','value'=>get_bloginfo( 'name' )),
+		'description'		     => array('type'=>'text','value'=>get_bloginfo( 'description' )),
+		'icon'			         => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo.png'),
+		'splash_icon'		     => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png'),
         //Splash icon
-        'switch_apple_splash_screen'=>0,
-        'ios_splash_icon'=> array(
-                                '640x1136'=>'',
-                                '750x1334'=>'',
-                                '1242x2208'=>'',
-                                '1125x2436'=>'',
-                                '828x1792'=>'',
-                                '1242x2688'=>'',
-                                '1536x2048'=>'',
-                                '1668x2224'=>'',
-                                '1668x2388'=>'',
-                                '2048x2732'=>'',
-                                ),
-        'screenshots'            => PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png',
-        'custom_banner_background_color'=>'#D5E0EB',
-        'custom_banner_title_color'=>'#000',
-        'custom_banner_btn_color'=>'#006dda',
-        'custom_banner_btn_text_color'=>'#fff',
-        'fcm_push_icon'   => PWAFORWP_PLUGIN_URL . 'images/logo.png',
-        'background_color' 	=> '#D5E0EB',
-        'theme_color' 		=> '#D5E0EB',
-        'start_url' 		=> 0,
-        'start_url_amp'		=> 0,
-        'offline_page' 		=> 0,
-        'offline_page_other'=> '',
-        '404_page' 		    => 0,
-        '404_page_other'    => '',
-        'start_page' 		=> 0,
-        'start_page_other' 	=> '',
-        'orientation'		=> 'portrait',
-        'display'           => 'standalone',
-        'ios_status_bar'    => 'default',
-        'manualfileSetup'	=> 0,
-        'cdn_setting'           => 0,
-        'normal_enable'         => 1,
-        'amp_enable'            => 1,
-        'cached_timer'          => array('html'=>3600,'css'=>86400),
-        'serve_js_cache_menthod'=> "false",
-        'default_caching'       => 'cacheFirst',
-        'default_caching_js_css'=> 'cacheFirst',
-        'default_caching_images'=> 'cacheFirst',
-        'default_caching_fonts' => 'cacheFirst',
-        'on_add_post_notification_title' => '',
-        'is_static_manifest' => 0,
+        'switch_apple_splash_screen'=>array('type'=>'checkbox','value'=>0),
+        'ios_splash_icon'=> array('type'=>'text','value'=>array(
+                                                                '640x1136'=>'',
+                                                                '750x1334'=>'',
+                                                                '1242x2208'=>'',
+                                                                '1125x2436'=>'',
+                                                                '828x1792'=>'',
+                                                                '1242x2688'=>'',
+                                                                '1536x2048'=>'',
+                                                                '1668x2224'=>'',
+                                                                '1668x2388'=>'',
+                                                                '2048x2732'=>'',
+                                                                )),
+        'screenshots'            => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png'),
+        'custom_banner_background_color'=>array('type'=>'text','value'=>'#D5E0EB'),
+        'custom_banner_title_color'=>array('type'=>'text','value'=>'#000'),
+        'custom_banner_btn_color'=>array('type'=>'text','value'=>'#006dda'),
+        'custom_banner_btn_text_color'=>array('type'=>'text','value'=>'#fff'),
+        'fcm_push_icon'   => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo.png'),
+        'background_color' 	=> array('type'=>'text','value'=>'#D5E0EB'),
+        'theme_color' 		=> array('type'=>'text','value'=>'#D5E0EB'),
+        'start_url' 		=> array('type'=>'text','value'=>0),
+        'start_url_amp'		=> array('type'=>'text','value'=>0),
+        'offline_page' 		=> array('type'=>'text','value'=>0),
+        'offline_page_other'=> array('type'=>'text','value'=>''),
+        '404_page' 		    => array('type'=>'text','value'=>0),
+        '404_page_other'    => array('type'=>'text','value'=>''),
+        'start_page' 		=> array('type'=>'text','value'=>0),
+        'start_page_other' 	=> array('type'=>'text','value'=>''),
+        'orientation'		=> array('type'=>'text','value'=>'portrait'),
+        'display'           => array('type'=>'text','value'=>'standalone'),
+        'ios_status_bar'    => array('type'=>'text','value'=>'default'),
+        'manualfileSetup'	=> array('type'=>'text','value'=>0),
+        'cdn_setting'           => array('type'=>'checkbox','value'=>0),
+        'normal_enable'         => array('type'=>'checkbox','value'=>1),
+        'amp_enable'            => array('type'=>'checkbox','value'=>1),
+        'cached_timer'          => array('type'=>'text','value'=>array('html'=>3600,'css'=>86400)),
+        'serve_js_cache_menthod'=> array('type'=>'checkbox','value'=>false),
+        'default_caching'       => array('type'=>'text','value'=>'cacheFirst'),
+        'default_caching_js_css'=> array('type'=>'text','value'=>'cacheFirst'),
+        'default_caching_images'=> array('type'=>'text','value'=>'cacheFirst'),
+        'default_caching_fonts' => array('type'=>'text','value'=>'cacheFirst'),
+        'on_add_post_notification_title' => array('type'=>'text','value'=>''),
+        'is_static_manifest' => array('type'=>'checkbox','value'=>0),
 
     /*Push notification services*/
-        'notification_options'  => '',
+        'notification_options'  => array('type'=>'text','value'=>''),
     /*Features settings*/
-        'notification_feature'  => 0,
-        'precaching_feature'    => 0,
-        'addtohomebanner_feature'=> 0,
-        'utmtracking_feature'   => 0,
-        'loader_feature'         => 0,
+        'notification_feature'  => array('type'=>'checkbox','value'=>0),
+        'precaching_feature'    => array('type'=>'checkbox','value'=>0),
+        'addtohomebanner_feature'=> array('type'=>'checkbox','value'=>0),
+        'utmtracking_feature'   => array('type'=>'checkbox','value'=>0),
+        'loader_feature'         => array('type'=>'checkbox','value'=>0),
 
     /*UTM*/
-        'utm_setting'   => 0,
-        'utm_details' => array(
-                        'utm_source'=> 'pwa-app',
-                        'utm_medium'=> 'pwa-app',
-                        'utm_campaign'=> 'pwa-campaign',
-                        'utm_term'  => 'pwa-term',
-                        'utm_content'  => 'pwa-content',
-                        ),
+        'utm_setting'   => array('type'=>'checkbox','value'=>0),
+        'utm_details' => array('type'=>'text','value'=>array(
+            'utm_source'=> 'pwa-app',
+            'utm_medium'=> 'pwa-app',
+            'utm_campaign'=> 'pwa-campaign',
+            'utm_term'  => 'pwa-term',
+            'utm_content'  => 'pwa-content',
+            )),
     /*Pre caching*/
-        'precaching_automatic'=> 0,
-        'precaching_automatic_post'=> 0,
-        'precaching_automatic_page'=> 0,
-        'precaching_post_count'=> 5,
-        'precaching_automatic_custom_post'=> 0,
-        'precaching_manual'    => 0, 
-        'precaching_urls'    => '', 
+        'precaching_automatic'=> array('type'=>'checkbox','value'=>0),
+        'precaching_automatic_post'=> array('type'=>'checkbox','value'=>0),
+        'precaching_automatic_page'=> array('type'=>'checkbox','value'=>0),
+        'precaching_post_count'=> array('type'=>'number','value'=>5),
+        'precaching_automatic_custom_post'=> array('type'=>'checkbox','value'=>0),
+        'precaching_manual'    => array('type'=>'checkbox','value'=>0), 
+        'precaching_urls'    => array('type'=>'textarea','value'=>''), 
     /*loader icon*/
-        'loading_icon'      => 0,
-        'loading_icon_color'=> '#3498db',
-        'loading_icon_bg_color'=> '#ffffff',
-        'loading_icon_display_admin'=>0,
-        'add_to_home_sticky'=>1,
+        'loading_icon'      => array('type'=>'checkbox','value'=>0),
+        'loading_icon_color'=> array('type'=>'text','value'=>'#3498db'),
+        'loading_icon_bg_color'=> array('type'=>'text','value'=>'#ffffff'),
+        'loading_icon_display_admin'=>array('type'=>'checkbox','value'=>0),
+        'add_to_home_sticky'=>array('type'=>'checkbox','value'=>1),
 	);
+    $response = [];
+    switch ($data_type) {
+        case 'type':
+            foreach ($defaults as $key => $value) {
+                $response[$key] = $value['type'];
+            }
+            break;
+        case 'value':
+            foreach ($defaults as $key => $value) {
+                $response[$key] = $value['value'];
+            }
+            break;
+        
+        default:
+            $response = $defaults;
+            break;
+    }
+    
+    return $response;    
+}
+function pwaforwp_get_default_settings_array(){
+    
+    $defaults = pwaforwp_fields_and_type();
     $defaults = apply_filters("pwaforwp_default_settings_vals",$defaults);
     return $defaults;    
 }

@@ -416,7 +416,7 @@ function pwaforwp_settings_init(){
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
 	}
 	add_action('admin_print_styles', 'pwaforwp_loading_select2_styles');
-	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
+	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings','pwaforwp_sanitize_fields' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
 	                    <span class="pwafw-help-subtitle">'.esc_html__('PWA status verification', 'pwa-for-wp').' <a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
@@ -876,6 +876,54 @@ function pwaforwp_settings_init(){
                 
                 
 		
+}
+
+function pwaforwp_sanitize_fields($inputs){
+	$fields_type_data = pwaforwp_fields_and_type('type');
+	foreach ($inputs as $key => $value) {
+		if (isset($fields_type_data[$key])) {
+			$fields_type = $fields_type_data[$key];
+			if (is_array($value)) {
+				foreach ($value as $k => $val) {
+					switch ($fields_type) {
+						case 'text':
+							$value[$k] = sanitize_text_field($val);
+							break;
+						case 'checkbox':
+							$value[$k] = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
+							break;
+						case 'checkbox':
+							$value[$k] = sanitize_textarea_field($value);
+							break;
+						
+						default:
+							break;
+					}
+					$inputs[$key] = $value;
+				}
+						
+			}else{
+				switch ($fields_type) {
+					case 'text':
+						$inputs[$key] = sanitize_text_field($value);
+						break;
+					case 'textarea':
+						$inputs[$key] = sanitize_textarea_field($value);
+						break;
+					case 'checkbox':
+						$inputs[$key] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+						break;
+					
+					default:
+						# code...
+						break;
+				}
+				
+			}
+		}
+	}
+	return $inputs;
+	
 }
 
 function pwaforwp_addon_html(){
