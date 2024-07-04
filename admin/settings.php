@@ -3927,22 +3927,24 @@ function pwaforwp_update_features_options(){
 		foreach ($allFields as $key => $field) {
 			// navigation bar features start			
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_size]') {
-				$navigation_bar_data['navigation']['text_font_size'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_font_size'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_color]') {
-				$navigation_bar_data['navigation']['text_font_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_font_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
-				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_menu_background_color]') {
-				$navigation_bar_data['navigation']['selected_menu_background_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['selected_menu_background_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_background_color]') {
-				$navigation_bar_data['navigation']['text_background_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_background_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][excluded_pages]') {
-				$navigation_bar_data['navigation']['excluded_pages'] = sanitize_textarea_field(implode(',',$field['var_value']));
+				if (!empty($field['var_value']) && is_array($field['var_value'])) {
+					$navigation_bar_data['navigation']['excluded_pages'] = sanitize_text_field(implode(',',$field['var_value']));
+				}
 			}
 			// navigation bar features end
 					
