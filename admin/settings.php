@@ -3998,13 +3998,13 @@ function pwaforwp_update_features_options(){
                 }
         }
         
-        if(!empty($include_targeting_type_array)){
+        if (!empty($include_targeting_type_array) && is_array($include_targeting_type_array)) {
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
         }else{
             $actualFields['include_targeting_type'] = '';
         }  
-        if(!empty($include_targeting_value_array)){
+        if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
         }else{
@@ -4023,14 +4023,14 @@ function pwaforwp_update_features_options(){
 				}
 			}
         }
-        if(!empty($exclude_targeting_type_array)){
+        if (!empty($exclude_targeting_type_array) && is_array($exclude_targeting_type_array)) {
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
         }else{
             $actualFields['exclude_targeting_type'] = ''; 
 
         }  
-        if(!empty($exclude_targeting_value_array)){
+        if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
         }else{
@@ -4438,10 +4438,10 @@ function pwaforwp_update_force_update($value, $old_value, $option){
 		if($version){
 			$version = explode(".", $version);
 			if(count($version)<=3){
-				$version = implode(".", $version).".1";
+				$version = implode(".", (array)$version).".1";
 			}else{
 				$version[count($version)-1] = $version[count($version)-1]+1;
-				$version = implode(".", $version);
+				$version = implode(".", (array)$version);
 			}
 		}
 		$value['force_update_sw_setting'] = $version;
