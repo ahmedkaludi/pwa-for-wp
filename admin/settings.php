@@ -4000,14 +4000,10 @@ function pwaforwp_update_features_options(){
         if (!empty($include_targeting_type_array) && is_array($include_targeting_type_array)) {
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
-        }else{
-            $actualFields['include_targeting_type'] = '';
-        }  
+        } 
         if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
-        }else{
-            $actualFields['include_targeting_value'] = '';
         }
         
         $exclude_targeting_type_array = array();
@@ -4025,15 +4021,10 @@ function pwaforwp_update_features_options(){
         if (!empty($exclude_targeting_type_array) && is_array($exclude_targeting_type_array)) {
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
-        }else{
-            $actualFields['exclude_targeting_type'] = ''; 
-
         }  
         if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
-        }else{
-            $actualFields['exclude_targeting_value'] = ''; 
         }
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){

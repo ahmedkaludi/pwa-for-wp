@@ -1001,3 +1001,198 @@ function pwaforwp_add_manifest_variables($url) {
     }
     return parse_url( $url, PHP_URL_PATH ) ;
 }
+
+function pwaforwp_visibility_get_data_by_type($type,$from){
+    $response_array = array();
+    global $pwaforwp_settings;
+    $settings = $pwaforwp_settings;
+    if((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']))){
+        $expo_include_type = array();
+        $expo_include_data = array();
+
+        if (!empty($settings['include_targeting_type'])) {
+            $expo_include_type = explode(',', $settings['include_targeting_type']);
+        }
+        if (!empty($settings['include_targeting_value'])) {
+            $expo_include_data = explode(',', $settings['include_targeting_value']);
+        }
+
+        
+        $expo_exclude_type = array();
+        $expo_exclude_data = array();
+        if (!empty($settings['exclude_targeting_type'])) {
+            $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
+        }
+
+        if (!empty($settings['exclude_targeting_value'])) {
+            $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
+        }
+
+        if ($from == 'excluding') {
+            foreach ($expo_exclude_type as $key => $value) {
+                if ($value == $type) {
+                    $response_array[$key] = $expo_exclude_data[$key];
+                }
+            }
+        }else{
+            foreach ($expo_include_type as $key => $value) {
+                if ($value == $type) {
+                    $response_array[$key] = $expo_include_data[$key];
+                }
+            }
+        }
+    }
+
+    return $response_array;
+
+}
+
+function pwaforwp_visibility_check(){
+    global $pwaforwp_settings;
+    $settings = $pwaforwp_settings;
+    if((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
+        $expo_include_type = array();
+        $expo_include_data = array();
+
+        if (!empty($settings['include_targeting_type'])) {
+            $expo_include_type = explode(',', $settings['include_targeting_type']);
+        }
+        if (!empty($settings['include_targeting_value'])) {
+            $expo_include_data = explode(',', $settings['include_targeting_value']);
+        }
+
+        $expo_exclude_type = array();
+        $expo_exclude_data = array();
+        if (!empty($settings['exclude_targeting_type'])) {
+            $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
+        }
+
+        if (!empty($settings['exclude_targeting_value'])) {
+            $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
+        }
+
+        $current_page_type = get_post_type();
+        // $current_page_title = get_the_title();
+        $current_page_title = single_post_title("",false);
+
+        $is_desplay = 0;
+
+        if(!empty(get_the_category()[0]->cat_name)){
+            if(in_array(get_the_category()[0]->cat_name,$expo_include_data)){
+                $current_page_type= 'post_category';
+                $current_page_title =  get_the_category()[0]->cat_name;
+            }
+        }
+        
+        if(in_array('tags',$expo_include_type)){
+            $tag = get_queried_object();
+            if(in_array($tag->name,$expo_include_data)){
+                $current_page_title =  $tag->name;
+                $current_page_type = 'tags';
+            }
+        }
+
+        if(in_array('taxonomy',$expo_include_type)){
+            $tag = get_queried_object();
+            if(in_array($tag->name,$expo_include_data)){
+                $current_page_title =  $tag->name;
+                $current_page_type = 'taxonomy';
+            }
+        }
+
+        if(in_array('page_template',$expo_include_type)){
+            $page_template = wp_get_theme()->get_page_templates();
+            if(!empty($page_template) && is_array($page_template)){
+            foreach ($page_template as $key => $value) {
+                if(in_array($value,$expo_include_data)){
+                    $current_page_title =  $value;
+                    $current_page_type = 'page_template';
+                }
+            }}
+        }
+
+        if(function_exists('is_user_logged_in') && is_user_logged_in() ) {
+            $user = wp_get_current_user();
+            if(in_array($user->roles,$expo_include_data)){
+                $current_page_title =  $user->roles;
+                $current_page_type = 'user_type';
+            }
+        }
+               
+        if(in_array($current_page_type,$expo_include_type)){
+            $find_from = pwaforwp_visibility_get_data_by_type($current_page_type,'including');
+            if (in_array($current_page_title, $find_from)) {
+                $is_desplay = 1; 
+            }
+        }
+
+        if (in_array('post_type',$expo_include_type)) {
+            $find_from = pwaforwp_visibility_get_data_by_type('post_type','including');
+            if(in_array($current_page_type,$find_from)){
+                    $is_desplay = 1;
+            }
+        }
+
+        if(in_array('globally',$expo_include_type)){
+            $is_desplay = 1; 
+        }
+        /*Include code end */
+
+        /*Exldude code start*/
+    
+        if(in_array('tags',$expo_exclude_type)){
+            $tag = get_queried_object();
+            if(in_array($tag->name,$expo_exclude_data)){
+                $current_page_title =  $tag->name;
+                $current_page_type = 'tags';
+            }  
+        }
+
+        if(in_array('taxonomy',$expo_exclude_type)){
+            $tag = get_queried_object();
+            if(in_array($tag->name,$expo_exclude_data)){
+                $current_page_title =  $tag->name;
+                $current_page_type = 'taxonomy';
+            }
+        }
+
+        if(in_array('page_template',$expo_exclude_type)){
+            $page_template = wp_get_theme()->get_page_templates();
+            if(!empty($page_template) && is_array($page_template)){
+            foreach ($page_template as $key => $value) {
+                if(in_array($value,$expo_exclude_data)){
+                    $current_page_title =  $value;
+                    $current_page_type = 'page_template';
+                }
+            }}
+        }
+
+        if(function_exists('is_user_logged_in') && is_user_logged_in() ) {
+            $user = wp_get_current_user();
+            if(in_array($user->roles,$expo_exclude_data)){
+                $current_page_title =  $user->roles;
+                $current_page_type = 'user_type';
+            }
+        }
+        if(in_array($current_page_type,$expo_exclude_type)){
+            $find_from = pwaforwp_visibility_get_data_by_type($current_page_type,'excluding');
+            if (in_array($current_page_title, $find_from)) {
+                $is_desplay = 0; 
+            }
+        }
+
+        if (in_array('post_type',$expo_exclude_type)) {
+            $find_from = pwaforwp_visibility_get_data_by_type('post_type','excluding');
+            if(in_array($current_page_type,$find_from)){
+                $is_desplay = 0;
+            }
+        }
+        if(in_array('globally',$expo_exclude_type)){
+            $is_desplay = 0; 
+        }
+        return $is_desplay;
+
+    }else{
+        return 1;
+    }
+}
