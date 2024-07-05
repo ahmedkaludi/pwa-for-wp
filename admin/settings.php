@@ -892,7 +892,7 @@ function pwaforwp_sanitize_fields($inputs){
 						case 'checkbox':
 							$value[$k] = filter_var($val, FILTER_SANITIZE_NUMBER_INT);
 							break;
-						case 'checkbox':
+						case 'textarea':
 							$value[$k] = sanitize_textarea_field($value);
 							break;
 						
@@ -900,8 +900,7 @@ function pwaforwp_sanitize_fields($inputs){
 							break;
 					}
 					$inputs[$key] = $value;
-				}
-						
+				}		
 			}else{
 				switch ($fields_type) {
 					case 'text':
