@@ -907,6 +907,8 @@ function pwaforwp_sanitize_fields($inputs){
 				}
 				
 			}
+		}else{
+			$inputs[sanitize_key($key)] = sanitize_text_field($value);
 		}
 	}
 	return $inputs;
