@@ -1058,6 +1058,9 @@ var datafeatureSubmit = function(opt){
                     success:function(response){
                         staticAjaxCalled = false;
                         if(response["status"]==200){
+                            if (fields[0].var_name == "pwaforwp_settings[data_analytics]") {
+                                location.reload();
+                            }
                             pwaforwp_show_message_toast('success', response.message);
                         }else{
                             pwaforwp_show_message_toast('error', response.message);
