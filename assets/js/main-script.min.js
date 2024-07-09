@@ -761,9 +761,9 @@ function PWAforwpreadCookie(name) {
     //ios splash screen start
     jQuery(".switch_apple_splash_screen").click(function(){
         if(jQuery(this).is(':checked')){
-            jQuery('.ios-splash-images').show();
+            jQuery('.pwaforwp-ios-splash-images').show();
         }else{
-            jQuery('.ios-splash-images').hide();
+            jQuery('.pwaforwp-ios-splash-images').hide();
         }
     });
     jQuery(".pwaforwp-ios-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
