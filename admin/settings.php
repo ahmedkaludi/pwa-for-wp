@@ -2231,12 +2231,12 @@ function pwaforwp_app_screenshots_callback(){
     $settings = pwaforwp_defaultSettings();
 	?>
 	<div class="js_clone_div" style="margin-top: 10px;">
-		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots regular-text"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
+		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
 		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
-			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshot', 'pwa-for-wp'); ?> 
 		</button>
-		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor">
-			<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor" style="width:8em;">
+			<option value="" ><?php esc_html_e( 'Form Factor', 'pwa-for-wp' ); ?>
 				</option>
 			<option value="narrow" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'narrow' ); } ?>>
 				<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
@@ -2245,7 +2245,7 @@ function pwaforwp_app_screenshots_callback(){
 				<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
 			</option>
 		</select>
-		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
+		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add', 'pwa-for-wp'); ?> </button>
 		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 		</button>
 	</div>
@@ -2254,12 +2254,12 @@ function pwaforwp_app_screenshots_callback(){
 		foreach ($settings['screenshots_multiple'] as $key => $screenshot) {
 	?>	
 		<div class="js_clone_div" style="margin-top: 10px;">
-			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
+			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
 			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshot', 'pwa-for-wp'); ?> 
 			</button>
-			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple">
-				<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple" style="width:8em;">
+				<option value="" ><?php esc_html_e( 'Form Factor', 'pwa-for-wp' ); ?>
 				</option>
 				<option value="narrow" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'narrow' ); } ?>>
 					<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
