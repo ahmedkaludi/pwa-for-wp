@@ -387,7 +387,7 @@ function pwaforwp_admin_interface_render(){
 			</div>
 			<div class="pwaforwp-settings-second-div">
 		        <?php
-				if(!pwaforwp_addons_is_active() && !in_array($_GET['tab'],['premium_features','features'])) { ?>
+				if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
 		        	<ul>

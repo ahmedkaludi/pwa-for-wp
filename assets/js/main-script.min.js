@@ -120,11 +120,6 @@ jQuery(document).ready(function($){
         }
         jQuery(this).siblings().removeClass("nav-tab-active");
         jQuery(this).addClass("nav-tab-active");
-        if(currentTab=="premium_features" || currentTab=='features'){
-            jQuery('.pwaforwp-settings-second-div').hide();
-        }else{
-            jQuery('.pwaforwp-settings-second-div').show();
-        }
         if(currentTab=="premium_features" && jQuery(this).attr('data-extmgr')=='yes'){
             window.location.href = "admin.php?page=pwawp-extension-manager";
         }else{
