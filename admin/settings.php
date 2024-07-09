@@ -886,23 +886,23 @@ function pwaforwp_sanitize_fields($inputs){
 			$fields_type = $fields_type_data[$key];
 			if (is_array($value)) {
 				foreach ($value as $k => $val) {
-					$value[$k] = sanitize_text_field($val);
+					$value[sanitize_key($k)] = sanitize_text_field($val);
 				}		
-				$inputs[$key] = $value;
+				$inputs[sanitize_key($key)] = $value;
 			}else{
 				switch ($fields_type) {
 					case 'text':
-						$inputs[$key] = sanitize_text_field($value);
+						$inputs[sanitize_key($key)] = sanitize_text_field($value);
 						break;
 					case 'textarea':
-						$inputs[$key] = sanitize_textarea_field($value);
+						$inputs[sanitize_key($key)] = sanitize_textarea_field($value);
 						break;
 					case 'checkbox':
-						$inputs[$key] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+						$inputs[sanitize_key($key)] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
 						break;
 					
 					default:
-						$inputs[$key] = sanitize_text_field($value);
+						$inputs[sanitize_key($key)] = sanitize_text_field($value);
 						break;
 				}
 				
