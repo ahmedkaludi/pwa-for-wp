@@ -67,6 +67,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : The visibility option is not working for the CTA feature. #905
 * Bug Fixed  : Navigation bar extension conflict issue #910
 * Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
+* Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
 * Improvement  : Code improvement.
 
 = 1.7.71 (03 July 2024) =

@@ -879,7 +879,7 @@ function pwaforwp_settings_init(){
 		
 }
 
-function pwaforwp_sanitize_fields($inputs){
+function pwaforwp_sanitize_fields($inputs=array()){
 	$fields_type_data = pwaforwp_fields_and_type('type');
 	foreach ($inputs as $key => $value) {
 		if (isset($fields_type_data[$key])) {
@@ -908,7 +908,14 @@ function pwaforwp_sanitize_fields($inputs){
 				
 			}
 		}else{
-			$inputs[sanitize_key($key)] = sanitize_text_field($value);
+			if (is_array($value)) {
+				foreach ($value as $k => $val) {
+					$value[sanitize_key($k)] = sanitize_text_field($val);
+				}		
+				$inputs[sanitize_key($key)] = $value;
+			}else{
+				$inputs[sanitize_key($key)] = sanitize_text_field($value);
+			}
 		}
 	}
 	return $inputs;
