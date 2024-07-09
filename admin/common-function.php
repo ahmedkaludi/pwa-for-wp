@@ -1071,7 +1071,10 @@ function pwaforwp_visibility_check(){
             $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
         }
 
-        $current_page_type = get_post_type();
+        $current_page_type = '';
+        if(is_singular() && !is_front_page()){
+            $current_page_type = get_post_type();
+        }        
         // $current_page_title = get_the_title();
         $current_page_title = single_post_title("",false);
 
