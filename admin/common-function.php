@@ -365,6 +365,32 @@ function pwaforwp_fields_and_type($data_type = 'value'){
         'loading_icon_bg_color'=> array('type'=>'text','value'=>'#ffffff'),
         'loading_icon_display_admin'=>array('type'=>'checkbox','value'=>0),
         'add_to_home_sticky'=>array('type'=>'checkbox','value'=>1),
+
+        'change_default_on_login'=>array('type'=>'checkbox','value'=>0),
+        'force_rememberme'=>array('type'=>'checkbox','value'=>0),
+        'offline_message_setting'=>array('type'=>'checkbox','value'=>0),
+        'reset_cookies'=>array('type'=>'checkbox','value'=>0),
+        'avoid_loggedin_users'=>array('type'=>'checkbox','value'=>0),
+        'avoid_default_banner'=>array('type'=>'checkbox','value'=>0),
+        'external_links_setting'=>array('type'=>'checkbox','value'=>0),
+        'prefetch_manifest_setting'=>array('type'=>'checkbox','value'=>0),
+        'offline_google_setting'=>array('type'=>'checkbox','value'=>0),
+
+        'one_signal_support_setting'=>array('type'=>'checkbox','value'=>0),
+        'pushnami_support_setting'=>array('type'=>'checkbox','value'=>0),
+        'webpusher_support_setting'=>array('type'=>'checkbox','value'=>0),
+        'wphide_support_setting'=>array('type'=>'checkbox','value'=>0),
+
+        'pwa_uninstall_data'=>array('type'=>'checkbox','value'=>0),
+
+        'prefer_related_applications'=>array('type'=>'checkbox','value'=>0),
+
+        'excluded_urls'=>array('type'=>'textarea','value'=>''),
+        'add_to_home_selector'=>array('type'=>'text','value'=>''),
+        'force_update_sw_setting'=>array('type'=>'text','value'=>''),
+        'related_applications'=>array('type'=>'text','value'=>''),
+        'related_applications_ios'=>array('type'=>'text','value'=>''),
+        'screenshots_multiple'=>array('type'=>'text','value'=>''),
 	);
     $response = [];
     switch ($data_type) {
