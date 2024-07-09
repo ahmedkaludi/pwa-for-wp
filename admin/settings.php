@@ -3910,6 +3910,7 @@ function pwaforwp_update_features_options(){
 	$allFields = wp_unslash($_POST['fields_data']);	
 	$actualFields = array();
 	$navigation_bar_data = array();
+	$utm_trackings = array();
 	if(is_array($allFields) && !empty($allFields)){
 		foreach ($allFields as $key => $field) {
 			// navigation bar features start			
@@ -3934,6 +3935,27 @@ function pwaforwp_update_features_options(){
 				}
 			}
 			// navigation bar features end
+
+			// UTM Tracking features start
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_source]') {
+				$utm_trackings['utm_details']['utm_source'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_medium]') {
+				$utm_trackings['utm_details']['utm_medium'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_campaign]') {
+				$utm_trackings['utm_details']['utm_campaign'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_term]') {
+				$utm_trackings['utm_details']['utm_term'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_content]') {
+				$utm_trackings['utm_details']['utm_content'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][pwa_utm_change_track]') {
+				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
+			}
+			// UTM Tracking features end
 					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
@@ -3959,6 +3981,10 @@ function pwaforwp_update_features_options(){
 				$pre_settings = pwaforwp_defaultSettings();
 				$actualFields = wp_parse_args($navigation_bar_data, $pre_settings);
 			}
+		}
+		if(!empty($utm_trackings) && isset($utm_trackings['utm_details'])){
+				$pre_settings = pwaforwp_defaultSettings();
+				$actualFields = wp_parse_args($utm_trackings, $pre_settings);
 		}
 
 		if(isset($actualFields['precaching_feature'])){
@@ -4038,6 +4064,7 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['fcm_config']) && $actualFields['fcm_config']){
 			$actualFields['fcm_config'] = wp_unslash($actualFields['fcm_config']);
 		}
+		
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
 
@@ -4048,6 +4075,8 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['loading_icon']) && $actualFields['loading_icon']==0){
 			$actualFields['loader_feature'] = $actualFields['loading_icon'];
 		}
+
+		
 		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
