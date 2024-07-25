@@ -1225,3 +1225,35 @@ function pwaforwp_visibility_check(){
         return 1;
     }
 }
+
+add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_fix_empty_option_update', 10, 3);
+
+/**
+ * Prevents empty values from overwriting existing ones in the pwaforwp_settings option.
+ * Special case only for visibility settings.
+ *
+ * @param mixed $new_value The new value of the option.
+ * @param mixed $old_value The old value of the option.
+ * @param string $option The name of the option.
+ * @return mixed The updated option value.
+ */
+function pwaforwp_fix_empty_option_update($new_value, $old_value, $option) {
+
+    if (!empty($old_value['include_targeting_type']) && empty($new_value['include_targeting_type'])) {
+        $new_value['include_targeting_type'] = $old_value['include_targeting_type'];
+    }
+
+    if (!empty($old_value['include_targeting_value']) && empty($new_value['include_targeting_value'])) {
+        $new_value['include_targeting_value'] = $old_value['include_targeting_value'];
+    }
+
+    if (!empty($old_value['exclude_targeting_type']) && empty($new_value['exclude_targeting_type'])) {
+        $new_value['exclude_targeting_type'] = $old_value['exclude_targeting_type'];
+    }
+
+    if (!empty($old_value['exclude_targeting_value']) && empty($new_value['exclude_targeting_value'])) {
+        $new_value['exclude_targeting_value'] = $old_value['exclude_targeting_value'];
+    }
+
+    return $new_value;
+}
