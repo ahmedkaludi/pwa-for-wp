@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.5
-Stable tag: 1.7.71
+Stable tag: 1.7.72
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
@@ -63,6 +63,13 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.72 (09 July 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : Navigation bar extension conflict issue #910
+* Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
+* Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
+* Improvement  : Code improvement.
+
 = 1.7.71 (03 July 2024) =
 * Feature Added  : Make an option to select form factor from the option #899
 * Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
@@ -104,14 +111,5 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Media Feature Errors in Blog Splash Screen Images Validation #832
 * Feature Added  : Functionality to disable the Page navigation scroll bar in PWA #853
 * Improvement : Code Improvemnt #856
-
-= 1.7.64 (22 November 2023) =
-* Improvement  : Make the offline message "You are offline" as an option #727
-* Improvement  : Add support for prefer_related_applications #819
-* Bug Fixed  : Conflict issue with the plugin Category Icon #851
-* Feature Added  : Added browser option in Display #829
-* Improvement : Added "Alt" attribute is missing in logo images #852
-* Improvement : License key area should be proper #759
-
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

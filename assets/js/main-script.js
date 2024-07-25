@@ -756,9 +756,9 @@ function PWAforwpreadCookie(name) {
     //ios splash screen start
     jQuery(".switch_apple_splash_screen").click(function(){
         if(jQuery(this).is(':checked')){
-            jQuery('.ios-splash-images').show();
+            jQuery('.pwaforwp-ios-splash-images').show();
         }else{
-            jQuery('.ios-splash-images').hide();
+            jQuery('.pwaforwp-ios-splash-images').hide();
         }
     });
     jQuery(".pwaforwp-ios-splash-icon-upload").click(function(e) {   // Splash Screen Icon upload
@@ -1053,6 +1053,9 @@ var datafeatureSubmit = function(opt){
                     success:function(response){
                         staticAjaxCalled = false;
                         if(response["status"]==200){
+                            if (fields[0].var_name == "pwaforwp_settings[data_analytics]") {
+                                location.reload();
+                            }
                             pwaforwp_show_message_toast('success', response.message);
                         }else{
                             pwaforwp_show_message_toast('error', response.message);
@@ -1433,6 +1436,7 @@ function add_included_condition(){
                     if (jd.success == 1) {
                         jQuery(".visibility-include-target-item-list").append(jd.option);
                         jQuery(".pwaforwp-visibility-loader").css("display","none");
+                        apply_or_condition('visibility-include-target-item-list');
                     } 
     
                 }
@@ -1484,11 +1488,26 @@ function add_exclude_condition(){
                     if (jd.success == 1) {
                         jQuery(".visibility-exclude-target-item-list").append(jd.option);
                         jQuery(".pwaforwp-visibility-loader").css("display","none");
+                        apply_or_condition('visibility-exclude-target-item-list');
+                        
                     } 
 
                 }
             });
     }
+}
+
+apply_or_condition('visibility-include-target-item-list');
+apply_or_condition('visibility-exclude-target-item-list');
+function apply_or_condition(class_name){
+    jQuery("."+class_name).find('.pwa_visibility_or').remove();
+    var span_length = jQuery( "."+class_name ).children('span').length;
+    span_length = span_length-1;
+    jQuery( "."+class_name ).children('span').each(function(k) {
+        if (k < span_length) {
+            jQuery(this).append('<b class="pwa_visibility_or">OR</b>');
+        }
+    })
 }
 
 function removeIncluded_visibility(sr){

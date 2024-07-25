@@ -1,3 +1,10 @@
+= 1.7.72 (09 July 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : Navigation bar extension conflict issue #910
+* Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
+* Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
+* Improvement  : Code improvement.
+
 = 1.7.71 (03 July 2024) =
 * Feature Added  : Make an option to select form factor from the option #899
 * Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591

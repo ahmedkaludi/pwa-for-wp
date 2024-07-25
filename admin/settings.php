@@ -386,7 +386,8 @@ function pwaforwp_admin_interface_render(){
 
 			</div>
 			<div class="pwaforwp-settings-second-div">
-		        <?php if(!pwaforwp_addons_is_active()) { ?>
+		        <?php
+				if(!pwaforwp_addons_is_active()) { ?>
 		         <div class="pwaforwp-upgrade-pro">
 		        	<h2><?php echo esc_html__('Upgrade to Pro!','pwa-for-wp') ?></h2>
 		        	<ul>
@@ -416,7 +417,7 @@ function pwaforwp_settings_init(){
     	add_action('admin_print_styles', 'pwaforwp_loading_icon_styles');
 	}
 	add_action('admin_print_styles', 'pwaforwp_loading_select2_styles');
-	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings' );
+	register_setting( 'pwaforwp_setting_dashboard_group', 'pwaforwp_settings','pwaforwp_sanitize_fields' );
 
 	add_settings_section('pwaforwp_dashboard_section', esc_html__('Installation Status','pwa-for-wp').'<span class="pwafw-tooltip"><i class="dashicons dashicons-editor-help"></i> 
 	                    <span class="pwafw-help-subtitle">'.esc_html__('PWA status verification', 'pwa-for-wp').' <a href="https://pwa-for-wp.com/docs/article/how-to-install-setup-pwa-in-amp/" target="_blank">'.esc_html__('Learn more', 'pwa-for-wp').'</a></span>
@@ -876,6 +877,49 @@ function pwaforwp_settings_init(){
                 
                 
 		
+}
+
+function pwaforwp_sanitize_fields($inputs=array()){
+	$fields_type_data = pwaforwp_fields_and_type('type');
+	foreach ($inputs as $key => $value) {
+		if (isset($fields_type_data[$key])) {
+			$fields_type = $fields_type_data[$key];
+			if (is_array($value)) {
+				foreach ($value as $k => $val) {
+					$value[sanitize_key($k)] = sanitize_text_field($val);
+				}		
+				$inputs[sanitize_key($key)] = $value;
+			}else{
+				switch ($fields_type) {
+					case 'text':
+						$inputs[sanitize_key($key)] = sanitize_text_field($value);
+						break;
+					case 'textarea':
+						$inputs[sanitize_key($key)] = sanitize_textarea_field($value);
+						break;
+					case 'checkbox':
+						$inputs[sanitize_key($key)] = filter_var($value, FILTER_SANITIZE_NUMBER_INT);
+						break;
+					
+					default:
+						$inputs[sanitize_key($key)] = sanitize_text_field($value);
+						break;
+				}
+				
+			}
+		}else{
+			if (is_array($value)) {
+				foreach ($value as $k => $val) {
+					$value[sanitize_key($k)] = sanitize_text_field($val);
+				}		
+				$inputs[sanitize_key($key)] = $value;
+			}else{
+				$inputs[sanitize_key($key)] = sanitize_text_field($value);
+			}
+		}
+	}
+	return $inputs;
+	
 }
 
 function pwaforwp_addon_html(){
@@ -2196,12 +2240,12 @@ function pwaforwp_app_screenshots_callback(){
     $settings = pwaforwp_defaultSettings();
 	?>
 	<div class="js_clone_div" style="margin-top: 10px;">
-		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots regular-text"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
+		<input type="text" name="pwaforwp_settings[screenshots]" id="pwaforwp_settings[screenshots]"  class="pwaforwp-screenshots"  value="<?php echo isset( $settings['screenshots'] ) ? esc_attr( pwaforwp_https($settings['screenshots'])) : ''; ?>">
 		<button type="button" class="button js_choose_button pwaforwp-screenshots-upload" data-editor="content">
-			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+			<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshot', 'pwa-for-wp'); ?> 
 		</button>
-		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor">
-			<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+		<select name="pwaforwp_settings[form_factor]" class="pwaforwp_settings_form_factor" style="width:8em;vertical-align:top;">
+			<option value="" ><?php esc_html_e( 'Form Factor', 'pwa-for-wp' ); ?>
 				</option>
 			<option value="narrow" <?php if ( isset( $settings['form_factor'] ) ) { selected( $settings['form_factor'], 'narrow' ); } ?>>
 				<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
@@ -2210,7 +2254,7 @@ function pwaforwp_app_screenshots_callback(){
 				<?php esc_html_e( 'Wide', 'pwa-for-wp' ); ?>
 			</option>
 		</select>
-		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add More', 'pwa-for-wp'); ?> </button>
+		<button type="button" class="button button-primary" id="screenshots_add_more"> <?php echo esc_html__('Add', 'pwa-for-wp'); ?> </button>
 		<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button js_remove_screenshot" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?> 
 		</button>
 	</div>
@@ -2219,12 +2263,12 @@ function pwaforwp_app_screenshots_callback(){
 		foreach ($settings['screenshots_multiple'] as $key => $screenshot) {
 	?>	
 		<div class="js_clone_div" style="margin-top: 10px;">
-			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots regular-text" size="50" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
+			<input type="text" name="pwaforwp_settings[screenshots_multiple][]"  class="pwaforwp-screenshots" value="<?php echo isset( $screenshot ) ? esc_attr( pwaforwp_https($screenshot)) : ''; ?>">
 			<button type="button" class="button js_choose_button pwaforwp-screenshots-multiple-upload" data-editor="content">
-				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshots', 'pwa-for-wp'); ?> 
+				<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Screenshot', 'pwa-for-wp'); ?> 
 			</button>
-			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple">
-				<option value="" ><?php esc_html_e( 'Select Form Factor', 'pwa-for-wp' ); ?>
+			<select name="pwaforwp_settings[form_factor_multiple][]" class="pwaforwp_settings_form_factor_multiple" style="width:8em;vertical-align:top;">
+				<option value="" ><?php esc_html_e( 'Form Factor', 'pwa-for-wp' ); ?>
 				</option>
 				<option value="narrow" <?php if ( isset( $settings['form_factor_multiple'][$key] ) ) { selected( $settings['form_factor_multiple'][$key], 'narrow' ); } ?>>
 					<?php esc_html_e( 'Narrow', 'pwa-for-wp' ); ?>
@@ -3875,28 +3919,52 @@ function pwaforwp_update_features_options(){
 	$allFields = wp_unslash($_POST['fields_data']);	
 	$actualFields = array();
 	$navigation_bar_data = array();
+	$utm_trackings = array();
 	if(is_array($allFields) && !empty($allFields)){
 		foreach ($allFields as $key => $field) {
 			// navigation bar features start			
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_size]') {
-				$navigation_bar_data['navigation']['text_font_size'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_font_size'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_color]') {
-				$navigation_bar_data['navigation']['text_font_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_font_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_text_font_color]') {
-				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['selected_text_font_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][selected_menu_background_color]') {
-				$navigation_bar_data['navigation']['selected_menu_background_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['selected_menu_background_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_background_color]') {
-				$navigation_bar_data['navigation']['text_background_color'] = sanitize_textarea_field($field['var_value']);
+				$navigation_bar_data['navigation']['text_background_color'] = sanitize_text_field($field['var_value']);
 			}
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][excluded_pages]') {
-				$navigation_bar_data['navigation']['excluded_pages'] = sanitize_textarea_field(implode(',',$field['var_value']));
+				if (!empty($field['var_value']) && is_array($field['var_value'])) {
+					$navigation_bar_data['navigation']['excluded_pages'] = sanitize_text_field(implode(',',$field['var_value']));
+				}
 			}
 			// navigation bar features end
+
+			// UTM Tracking features start
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_source]') {
+				$utm_trackings['utm_details']['utm_source'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_medium]') {
+				$utm_trackings['utm_details']['utm_medium'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_campaign]') {
+				$utm_trackings['utm_details']['utm_campaign'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_term]') {
+				$utm_trackings['utm_details']['utm_term'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_content]') {
+				$utm_trackings['utm_details']['utm_content'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][pwa_utm_change_track]') {
+				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
+			}
+			// UTM Tracking features end
 					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
@@ -3923,6 +3991,10 @@ function pwaforwp_update_features_options(){
 				$actualFields = wp_parse_args($navigation_bar_data, $pre_settings);
 			}
 		}
+		if(!empty($utm_trackings) && isset($utm_trackings['utm_details'])){
+				$pre_settings = pwaforwp_defaultSettings();
+				$actualFields = wp_parse_args($utm_trackings, $pre_settings);
+		}
 
 		if(isset($actualFields['precaching_feature'])){
 			if($actualFields['precaching_feature']==1){
@@ -3948,17 +4020,13 @@ function pwaforwp_update_features_options(){
                 }
         }
         
-        if(!empty($include_targeting_type_array)){
+        if (!empty($include_targeting_type_array) && is_array($include_targeting_type_array)) {
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
-        }else{
-            $actualFields['include_targeting_type'] = '';
-        }  
-        if(!empty($include_targeting_value_array)){
+        } 
+        if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
-        }else{
-            $actualFields['include_targeting_value'] = '';
         }
         
         $exclude_targeting_type_array = array();
@@ -3973,18 +4041,13 @@ function pwaforwp_update_features_options(){
 				}
 			}
         }
-        if(!empty($exclude_targeting_type_array)){
+        if (!empty($exclude_targeting_type_array) && is_array($exclude_targeting_type_array)) {
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
-        }else{
-            $actualFields['exclude_targeting_type'] = ''; 
-
         }  
-        if(!empty($exclude_targeting_value_array)){
+        if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
-        }else{
-            $actualFields['exclude_targeting_value'] = ''; 
         }
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
@@ -4010,6 +4073,7 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['fcm_config']) && $actualFields['fcm_config']){
 			$actualFields['fcm_config'] = wp_unslash($actualFields['fcm_config']);
 		}
+		
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
 
@@ -4020,6 +4084,8 @@ function pwaforwp_update_features_options(){
 		if(isset($actualFields['loading_icon']) && $actualFields['loading_icon']==0){
 			$actualFields['loader_feature'] = $actualFields['loading_icon'];
 		}
+
+		
 		if(isset($actualFields['custom_add_to_home_setting']) && $actualFields['custom_add_to_home_setting']==0){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
@@ -4388,10 +4454,10 @@ function pwaforwp_update_force_update($value, $old_value, $option){
 		if($version){
 			$version = explode(".", $version);
 			if(count($version)<=3){
-				$version = implode(".", $version).".1";
+				$version = implode(".", (array)$version).".1";
 			}else{
 				$version[count($version)-1] = $version[count($version)-1]+1;
-				$version = implode(".", $version);
+				$version = implode(".", (array)$version);
 			}
 		}
 		$value['force_update_sw_setting'] = $version;
