@@ -14,7 +14,7 @@ function pwaforwp_loading_icon() {
         }
         if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.esc_attr($bgcolor); }
         echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
-        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- output is already escaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- output is already escaped
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
     }
         
@@ -231,14 +231,15 @@ function pwaforwp_frontend_enqueue(){
 }
 add_action( 'wp_enqueue_scripts', 'pwaforwp_frontend_enqueue', 35 );
 
-if(!function_exists('pwaforwp_is_admin')){
+if ( ! function_exists('pwaforwp_is_admin') ) {
     
-	function pwaforwp_is_admin(){
+	function pwaforwp_is_admin() {
             
 		if ( is_admin() ) {
 			return true;
 		}                
-		if ( isset( $_GET['page'] ) && false !== strpos( sanitize_text_field($_GET['page']), 'pwaforwp' ) ) {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+		if ( isset( $_GET['page'] ) && false !== strpos( $_GET['page'], 'pwaforwp' ) ) {
 			return true;
 		}
 		return false;
@@ -270,8 +271,8 @@ function pwaforwp_admin_link($tab = '', $args = array()){
 
 
 function pwaforwp_get_tab( $default = '', $available = array() ) {
-
-	$tab = isset( $_GET['tab'] ) ? sanitize_text_field($_GET['tab']) : $default;
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $default;
         
 	if ( ! in_array( $tab, $available ) ) {
 		$tab = $default;

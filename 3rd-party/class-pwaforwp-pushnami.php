@@ -128,11 +128,11 @@ class PWAFORWP_Pushnami {
 		$options = \WPPushnami::get_script_options();
 		$options->swPath = $ServiceWorkerfileName;
 		$script = \WPPushnami::render_inline_script($options);
-		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
 		echo PHP_EOL
 			.'<meta name="pushnami" content="wordpress-plugin"/>'.PHP_EOL
 			.'<script>'.PHP_EOL
-			.	\WPPushnami::render_inline_script($options).PHP_EOL //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
+			.	\WPPushnami::render_inline_script($options).PHP_EOL // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
 			.'</script>'.PHP_EOL
 		;
 	}

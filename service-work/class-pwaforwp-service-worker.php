@@ -96,13 +96,13 @@ class PWAFORWP_Service_Worker{
         * Only for Ajax time
         */
         public static function pwaforwp_load_service_worker_ajax(){
-            //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
             $returnFile = ( ( isset($_GET[pwaforwp_query_var('sw_query_var')]) && isset($_GET[pwaforwp_query_var('sw_file_var')]) ) || isset($_GET[pwaforwp_query_var('site_id_var')]) );
             if ( $returnFile ) {
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
@@ -116,7 +116,7 @@ class PWAFORWP_Service_Worker{
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
                     $home_url = pwaforwp_home_url();
-                    //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
                     $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
 
@@ -131,7 +131,7 @@ class PWAFORWP_Service_Worker{
                     $content_escaped .= "importScripts('".esc_js($url)."')".PHP_EOL;
                     $content_escaped .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content_escaped = preg_replace('/\s+/', ' ', $content_escaped);
-                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
                     echo $content_escaped; 
                     exit;
                 }
@@ -186,7 +186,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }         
-                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped       
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped       
                 echo $file_data_escaped;
 
                 exit;
@@ -222,7 +222,7 @@ class PWAFORWP_Service_Worker{
                     $content_escaped .= "importScripts('".esc_js($url)."')".PHP_EOL;
                     $content_escaped .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
                     $content_escaped = preg_replace('/\s+/', ' ', $content_escaped);
-                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
                     echo $content_escaped;
                     exit;
                 }
@@ -279,7 +279,7 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped
                 echo $file_data_escaped;
 
                 exit;
@@ -587,7 +587,7 @@ class PWAFORWP_Service_Worker{
         if ( isset( $settings['splash_icon'] ) && ! empty( $settings['splash_icon'] ) ) {
             $linktags_escaped .=  '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url( pwaforwp_https( $settings['splash_icon'] ) ) . '">'.PHP_EOL;
         }
-        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is fully escaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is fully escaped
         echo apply_filters( 'pwaforwp_apple_touch_icons', $linktags_escaped );
 
         $this->iosSplashScreen();
@@ -695,7 +695,7 @@ class PWAFORWP_Service_Worker{
                 }//if closed
             }//foreach closed
         }
-            //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
             echo apply_filters( "pwaforwp_apple_startup_images", $startup_images_escaped );
 
         }//if closed
@@ -711,7 +711,7 @@ class PWAFORWP_Service_Worker{
 
                     $screenData = $settings['screenshots'];
                     $startup_images_escaped .= '<link rel="apple-touch-startup-image" href="'.esc_url( $screenData ).'"/>'."\n";
-                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
                     echo apply_filters( "pwaforwp_apple_startup_images", $startup_images_escaped );
 
         }//if closed

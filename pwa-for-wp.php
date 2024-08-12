@@ -95,11 +95,12 @@ function pwaforwp_revert_src($content){
             }
                        
         }else{
-                        
+            // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript	-- not registered/enqueued script here            
             preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $sw_match);
 
             if(isset($sw_match[0])){
                $pwa_r_url = $url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+               // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript	-- not registered/enqueued script here            
                $replacewith = '<script src="'.esc_url($pwa_r_url).'">';
                $content = str_replace($sw_match[0],$replacewith,$content);
             }
@@ -146,7 +147,7 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
     global $pagenow, $pwaforwp_globe_admin_notice;
-    //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
         return false;
     }
@@ -255,7 +256,7 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
 		header( 'Content-Type: application/json' );
         $p_file_c = new PWAforwp_File_Creation();		
         $p_file_escaped = $p_file_c->pwaforwp_manifest( false, $pagemid );
-        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped
         echo $p_file_escaped;
 		exit();
 	}

@@ -6,17 +6,19 @@ class PWAFORWP_Newsletter {
         
 	public function __construct () {
 		
-                add_filter( 'pwaforwp_localize_filter',array($this,'pwaforwp_add_localize_footer_data'),10,2);
+                add_filter( 'pwaforwp_localize_filter', array( $this, 'pwaforwp_add_localize_footer_data' ), 10, 2 );
 	}
 	        
-        public function pwaforwp_add_localize_footer_data($object, $object_name){
+        public function pwaforwp_add_localize_footer_data( $object, $object_name ) {
             
-        $dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                                
-        $do_tour   = !in_array ('pwaforwp_subscribe_pointer', $dismissed); 
+        $dismissed = explode ( ',', get_user_meta ( wp_get_current_user()->ID, 'dismissed_wp_pointers', true ) );                                
+        $do_tour   = ! in_array ( 'pwaforwp_subscribe_pointer', $dismissed ); 
         
-        if ($do_tour) {
-                wp_enqueue_style ('wp-pointer');
-                wp_enqueue_script ('wp-pointer');						
+        if ( $do_tour ) {
+
+                wp_enqueue_style ( 'wp-pointer' );
+                wp_enqueue_script ( 'wp-pointer' );
+
 	}
                         
         if ( $object_name == 'pwaforwp_obj' ) {
@@ -24,10 +26,10 @@ class PWAFORWP_Newsletter {
                 global $current_user;                                
 		$tour     = array ();                
                 $tab      = '';              
-
-                if ( isset( $_GET['tab'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended - we are not processing form here
-                        
-                        $tab      = $_GET['tab']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended - we are not processing form here
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+                if ( isset( $_GET['tab'] ) ) { 
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+                        $tab      = $_GET['tab'];
                 }
                                 
                 if ( ! array_key_exists( $tab, $tour ) ) {

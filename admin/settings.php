@@ -56,7 +56,7 @@ function pwaforwp_admin_interface_render(){
 		return;
 	}			
 	// Handing save settings
-	//phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
 	if ( isset( $_GET['settings-updated'] ) ) {	
                                                                                     
         $service_worker = new PWAFORWP_Service_Worker();
