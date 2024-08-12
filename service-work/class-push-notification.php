@@ -182,6 +182,9 @@ class pushNotification{
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
             }
+            if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+              return;
+            }
          
             $get_token_list = array();  
             $result         = false;
