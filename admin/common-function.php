@@ -91,7 +91,7 @@ function pwaforwp_review_notice_remindme(){
            return;  
         }    
        
-        $result =  update_option( "pwaforwp_review_notice_bar_close_date", date("Y-m-d"));               
+        $result =  update_option( "pwaforwp_review_notice_bar_close_date", gmdate("Y-m-d"));               
         if($result){           
             echo wp_json_encode(array('status'=>'t'));            
         }else{

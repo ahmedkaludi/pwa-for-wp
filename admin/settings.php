@@ -8,9 +8,9 @@ function pwaforpw_add_menu_links() {
     $days = '';
         $get_license_info = get_option( 'pwawppro_license_info');
         if($get_license_info){
-            $pwawp_pro_expires = date('Y-m-d', strtotime($get_license_info->expires));
+            $pwawp_pro_expires = gmdate('Y-m-d', strtotime($get_license_info->expires));
             $license_info_lifetime = $get_license_info->expires;
-                    $today = date('Y-m-d');
+                    $today = gmdate('Y-m-d');
         $exp_date = $pwawp_pro_expires;
         $date1 = date_create($today);
         $date2 = date_create($exp_date);
@@ -219,13 +219,14 @@ function pwaforwp_admin_interface_render(){
                         $pwaforwp_addon_license_info = "<div class='pwaforwp-main'>
                 <span class='pwaforwp-info'>
                 ".$alert_icon."<span class='pwaforwp-activated-plugins'>".esc_html__('Hi', 'pwa-for-wp')." <span class='pwaforwp_key_user_name'>".esc_html($license_user_name)."</span>".','."
-                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='pwaforwp_expiredinner_span' id=".$exp_id.">".$expire_msg."</span></span>
+                <span id='activated-plugins-days_remaining' days_remaining=".$days."> ".$expire_msg_before." <span expired-days-data=".$days." class='pwaforwp_expiredinner_span' id=".esc_attr($exp_id).">".$expire_msg."</span></span>
                 <span class='".$span_class."'></span>".$renew_mesg.$refresh_addon.$refresh_addon_user ;
                 $trans_check = get_transient( 'pwaforwp_addons_set_transient' );
             
             $pwaforwp_addon_license_info .= $ZtoS_days."
             </span>
             </div>";
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all data already escapped.
 			echo $pwaforwp_addon_license_info;
                     }
                 }
@@ -263,10 +264,10 @@ function pwaforwp_admin_interface_render(){
                            || function_exists('mcfp_plugin_for_pwa_updater') ) {
                         $license_alert = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warningpwaforwp_pro_alert' ></span>": ''  ;
                 }
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all data already escapped.
+		        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.' ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.' ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
-
-					echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
+				echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
 				</h2>
 	            <form action="options.php" method="post" enctype="multipart/form-data" class="pwaforwp-settings-form">		
@@ -799,21 +800,21 @@ function pwaforwp_settings_init(){
 		add_settings_section('pwaforwp_compatibility_setting_section', '', '__return_false', 'pwaforwp_compatibility_setting_section');
                 add_settings_field(
 			'pwaforwp_one_signal_support',									// ID
-			__('<label for="pwaforwp_settings[one_signal_support_setting]"><b>OneSignal</b></label>', 'pwa-for-wp'),		// Title
+			'<label for="pwaforwp_settings[one_signal_support_setting]"><b>'.esc_html__('OneSignal', 'pwa-for-wp').'</b></label>',		// Title
 			'pwaforwp_one_signal_support_callback',								// CB
 			'pwaforwp_compatibility_setting_section',						// Page slug
 			'pwaforwp_compatibility_setting_section'						// Settings Section ID
 		);
         add_settings_field(
 			'pwaforwp_pushnami_support',							// ID
-			__('<label for="pwaforwp_settings[pushnami_support_setting]"><b>Pushnami</b></label>', 'pwa-for-wp'),					// Title
+			'<label for="pwaforwp_settings[pushnami_support_setting]"><b>'.esc_html__('Pushnami', 'pwa-for-wp').'</b></label>',					// Title
 			'pwaforwp_pushnami_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
 		add_settings_field(
 			'pwaforwp_webpushr_support',							// ID
-			__('<label for="pwaforwp_settings[webpusher_support_setting]"><b>Webpushr</b></label>', 'pwa-for-wp'),					// Title
+			'<label for="pwaforwp_settings[webpusher_support_setting]"><b>'.esc_html__('Webpushr', 'pwa-for-wp').'</b></label>',					// Title
 			'pwaforwp_webpushr_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
@@ -821,7 +822,7 @@ function pwaforwp_settings_init(){
 
 		add_settings_field(
 			'pwaforwp_wphide_support',							// ID
-			__('<label for="pwaforwp_settings[wphide_support_setting]"><b>WP Hide & Security Enhancer</b></label>', 'pwa-for-wp'),					// Title
+			'<label for="pwaforwp_settings[wphide_support_setting]"><b>'.esc_html__('WP Hide & Security Enhancer', 'pwa-for-wp').'</b></label>',					// Title
 			'pwaforwp_wphide_support_callback',					// CB
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
@@ -1158,11 +1159,15 @@ function pwaforwp_premium_features_callback(){
         <div class="pwaforwp-subheading-wrap">
 
 	       <div id="pwaforwp-ext-container-for-all" class="pwaforwp-subheading">
-	            <?php echo $container; ?>       
+	            <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all required data already escapped.
+				echo $container; ?>       
 	           <div class="pwaforwp-ext-container selected" id="pwaforwp-addon">
 	           	<div class="pwaforwp-ext-wrap">
 	    <ul class="pwaforwp-features-blocks">
-	                <?php echo pwaforwp_addon_html(); ?>
+	                <?php 
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all required data already escapped.
+					echo pwaforwp_addon_html(); ?>
 	            </ul>
 	           </div>
 	           </div>
@@ -1173,10 +1178,11 @@ function pwaforwp_premium_features_callback(){
         <?php 
          
      }else{
-        
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all required data already escapped.
          echo ' <div class="pwaforwp-ext-wrap" style="width:100%">
-        <ul class="pwaforwp-features-blocks">      
-             '.pwaforwp_addon_html().'
+        <ul class="pwaforwp-features-blocks">'.
+			  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all required data already escapped
+			pwaforwp_addon_html().'
             </ul>
             </div>';
          
@@ -1352,7 +1358,7 @@ function pwaforwp_disallow_data_tracking_setting_callback(){
 				), $live_url);
 	}
 	?>
-	<input type="checkbox" <?php echo $checked; ?> onclick="window.location = '<?php echo esc_js($tracker_url); ?>'">
+	<input type="checkbox" <?php echo esc_attr($checked); ?> onclick="window.location = '<?php echo esc_js($tracker_url); ?>'">
 	<p><?php echo esc_html__('We guarantee no sensitive data is collected', 'pwa-for-wp'); ?>. <a target="_blank" href="https://pwa-for-wp.com/docs/article/usage-data-tracking/" target="_blank"><?php echo esc_html__('Learn more', 'pwa-for-wp'); ?></a>.</p>
 	<?php
 }
@@ -1370,7 +1376,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 
 function pwaforwp_urlhandler_setting_callback(){
 	$settings = pwaforwp_defaultSettings(); 
-	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='".esc_attr('https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com')."'>". (isset($settings['urlhandler'])? $settings['urlhandler']: '') ."</textarea>";
+	echo "<textarea name='pwaforwp_settings[urlhandler]' rows='10' cols='80' placeholder='".esc_attr('https://music.example.com\nhttps://*.music.example.com\nhttps://chat.example.com\nhttps://*.music.example.com')."'>". (isset($settings['urlhandler'])? esc_attr($settings['urlhandler']): '') ."</textarea>";
 	?><p><?php echo esc_html__('Note: Put one url in single line', 'pwa-for-wp'); ?></p>
 	<br>
 	<?php
@@ -1501,7 +1507,7 @@ function pwaforwp_visibility_setting_callback(){
             <td colspan="3">
                     
                 <div class="visibility-include-target-item-list">
-                    <?php $rand = time().rand(000,999);
+                    <?php $rand = time().wp_rand(000,999);
                     
                     if(!empty( $settings['include_targeting_type']))  {
                         $expo_include_type = explode(',', $settings['include_targeting_type']);
@@ -1549,7 +1555,7 @@ function pwaforwp_visibility_setting_callback(){
             <td colspan="3">
                     
                 <div class="visibility-exclude-target-item-list">
-                    <?php $rand = time().rand(000,999);
+                    <?php $rand = time().wp_rand(000,999);
                     if(!empty( $settings['exclude_targeting_type']))  {
                         $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
                         $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
@@ -1687,7 +1693,7 @@ function pwaforwp_offline_message_setting_callback(){
 	}
 	?>
         
-	<input type="checkbox" name="pwaforwp_settings[offline_message_setting]" id="pwaforwp_settings[offline_message_setting]" class="" <?php echo $offline_message_checked; ?> data-uncheck-val="0" value="1">
+	<input type="checkbox" name="pwaforwp_settings[offline_message_setting]" id="pwaforwp_settings[offline_message_setting]" class="" <?php echo esc_attr($offline_message_checked); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('To check whether user is offline and display message You are offline', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1700,7 +1706,7 @@ function pwaforwp_scrollbar_setting_callback(){
 	}
 	?>
         
-	<input type="checkbox" name="pwaforwp_settings[scrollbar_setting]" id="pwaforwp_settings[scrollbar_setting]" class="" <?php echo $scrollbar_checked; ?> data-uncheck-val="0" value="1">
+	<input type="checkbox" name="pwaforwp_settings[scrollbar_setting]" id="pwaforwp_settings[scrollbar_setting]" class="" <?php echo esc_attr($scrollbar_checked); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('To hide scrollbar in pwa', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1714,7 +1720,7 @@ function pwaforwp_force_rememberme_setting_callback(){
 	}
 	?>
         
-	<input type="checkbox" name="pwaforwp_settings[force_rememberme]" id="pwaforwp_settings[force_rememberme]" class="" <?php echo $rememberme_checked; ?> data-uncheck-val="0" value="1">
+	<input type="checkbox" name="pwaforwp_settings[force_rememberme]" id="pwaforwp_settings[force_rememberme]" class="" <?php echo esc_attr($rememberme_checked); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('This option forces remember me while log in. Use this option when user is getting logged out while reopening PWA app.', 'pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1885,7 +1891,9 @@ function pwaforwp_push_notification_callback(){
         			</td>
         		</tbody>
         	</table>
-            <table class="pwaforwp-push-notificatoin-table" <?php echo $fcm_service_style; ?>>
+            <table class="pwaforwp-push-notificatoin-table" <?php 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using style in variable no need to esc.
+			echo $fcm_service_style; ?>>
                 <tbody>
                     <tr>
                         <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
@@ -1921,7 +1929,9 @@ function pwaforwp_push_notification_callback(){
                     </tr>                                                            
                 </tbody>   
             </table>                   
-            <div class="pwaforwp-pn-recommended-options" <?php echo $pushnotifications_style; ?>>
+            <div class="pwaforwp-pn-recommended-options" <?php 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- its has style only.
+			echo $pushnotifications_style; ?>>
             	<div class="notification-banner" style="width:90%">
             			<?php if(class_exists('Push_Notification_Admin')){ 
             				$auth_settings = push_notification_auth_settings();
@@ -1956,7 +1966,7 @@ function pwaforwp_push_notification_callback(){
 	            			<p><?php echo esc_html__('This feature requires a Free plugin which integrates with a Free Push Notification service', 'pwa-for-wp'); ?>
 	            			</p>
 	            			<span data-activate-url="<?php echo esc_url($activate_url); ?>" 
-	            				 class="pwaforwp-install-require-plugin button button-primary <?php echo $class; ?>" data-secure="<?php echo wp_create_nonce('verify_request'); ?>"
+	            				 class="pwaforwp-install-require-plugin button button-primary <?php echo esc_attr($class); ?>" data-secure="<?php echo esc_attr(wp_create_nonce('verify_request')); ?>"
 	            				id="pushnotification">
 	            				<?php echo esc_html__('Install Plugin', 'pwa-for-wp'); ?>
 	            			</span>
@@ -1967,7 +1977,9 @@ function pwaforwp_push_notification_callback(){
             	</div>
             </div>
         </div>
-        <div class="pwaforwp-notification-condition-section" <?php echo $fcm_service_style; ?> >
+        <div class="pwaforwp-notification-condition-section" <?php 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using style only in this variable.
+		echo $fcm_service_style; ?> >
         <div>
             <h2><?php echo esc_html__('Send Notification On', 'pwa-for-wp') ?></h2>
             <table class="pwaforwp-push-notificatoin-table">
@@ -2033,7 +2045,7 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     
                     <tr>
-                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="<?php esc_attr__("Title","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo get_bloginfo(); ?>">
+                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="<?php esc_attr__("Title","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo esc_attr(get_bloginfo()); ?>">
                             <br>
 			                   
                         </th>  
@@ -2080,7 +2092,7 @@ function pwaforwp_custom_banner_design_callback(){
         
         <h2><?php echo esc_html__('Custom Add To Homescreen Customization', 'pwa-for-wp') ?></h2>
         <table class="" style="display: block;">
-            <tr><th><strong><?php echo esc_html__('Title', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title]" id="pwaforwp_settings[custom_banner_title]" class="" value="<?php echo isset( $settings['custom_banner_title'] ) ? esc_attr( $settings['custom_banner_title']) : 'Add '.get_bloginfo().' to your Homescreen!'; ?>"></td></tr> 
+            <tr><th><strong><?php echo esc_html__('Title', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title]" id="pwaforwp_settings[custom_banner_title]" class="" value="<?php echo isset( $settings['custom_banner_title'] ) ? esc_attr( $settings['custom_banner_title']) : 'Add '.esc_attr(get_bloginfo()).' to your Homescreen!'; ?>"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Button Text', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_button_text]" id="pwaforwp_settings[custom_banner_button_text]" class="" value="<?php echo isset( $settings['custom_banner_button_text'] ) ? esc_attr( $settings['custom_banner_button_text']) : 'Add'; ?>"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Banner Background Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_background_color]" id="pwaforwp_settings[custom_banner_background_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_background_color'] ) ? esc_attr( $settings['custom_banner_background_color']) : '#D5E0EB'; ?>" data-default-color="#D5E0EB"></td></tr> 
             <tr><th><strong><?php echo esc_html__('Banner Title Color', 'pwa-for-wp'); ?></strong></th><td><input type="text" name="pwaforwp_settings[custom_banner_title_color]" id="pwaforwp_settings[custom_banner_title_color]" class="pwaforwp-colorpicker" data-alpha-enabled="true" value="<?php echo isset( $settings['custom_banner_title_color'] ) ? esc_attr( $settings['custom_banner_title_color']) : '#000'; ?>" data-default-color="#000"></td></tr> 
@@ -2198,8 +2210,9 @@ function pwaforwp_splash_icon_callback(){
 		$currentpic = $splashIcons = pwaforwp_ios_splashscreen_files_data();
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
-           			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.rand(00,99).'" width="60" height="40">';
+           			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.wp_rand(00,99).'" width="60" height="40">';
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html.
 		echo '<div class="panel pwaforwp-hide" id="generate-auto-1"  style="max-height: 100%;">
 				<div class="pwaforwp-ios-splash-screen-creator" style="display:inline-block; width:90%">
 					<div class="field"><label>'.esc_html__('Select image (Only PNG)', 'pwa-for-wp').'</label><input type="file" id="file-upload-ios" accept="image/png"><img style="display:none" id="thumbnail"></div>
@@ -2207,8 +2220,9 @@ function pwaforwp_splash_icon_callback(){
 					<div style="padding-left: 25%;"><input type="button" onclick="pwa_getimageZip(this)" class="button" value="'.esc_attr__('Generate','pwa-for-wp').'">
 					<span id="pwa-ios-splashmessage" style="font-size:17px"> </span></div>
 				</div>
-				<div class="splash_preview_wrp" style="display:inline-block; width:9%">
-				'.$previewImg.'
+				<div class="splash_preview_wrp" style="display:inline-block; width:9%">'.
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- i am using custom html in variable
+				$previewImg.'
 				</div>
 			</div>
 			
@@ -2222,7 +2236,7 @@ function pwaforwp_splash_icon_callback(){
 		?>
 			<div class="pwaforwp-ios-splash-images-field">
 				<label><?php echo esc_html($splashValue['name']." ($key) [".ucfirst($splashValue['orientation'])."]") ?></label>
-				<input type="text" name="pwaforwp_settings[ios_splash_icon][<?php echo esc_attr($key) ?>]" id="pwaforwp_settings[ios_splash_icon][<?php echo $key ?>]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon'][$key] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon'][$key])) : ''; ?>">
+				<input type="text" name="pwaforwp_settings[ios_splash_icon][<?php echo esc_attr($key) ?>]" id="pwaforwp_settings[ios_splash_icon][<?php echo esc_attr($key) ?>]" class="pwaforwp-splash-icon regular-text" size="50" value="<?php echo isset( $settings['ios_splash_icon'][$key] ) ? esc_attr( pwaforwp_https($settings['ios_splash_icon'][$key])) : ''; ?>">
 				<button type="button" class="button pwaforwp-ios-splash-icon-upload" data-editor="content">
 					<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
 				</button>
@@ -2313,19 +2327,23 @@ function pwaforwp_offline_page_callback(){
 			'name'              => 'pwaforwp_settings[offline_page]', 
 			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0, 
-			'selected'          =>  $selected,
+			'selected'          =>  esc_attr($selected),
 		)), $allowed_html);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
 		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 	
 	?>
-	<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
+	<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[offline_page_other]" id="offline_page_other" class="regular-text" <?php echo esc_attr($showother); ?> placeholder="<?php echo esc_attr__('Custom offline page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['offline_page_other']) ? esc_attr($settings['offline_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
 	
 	<p class="description">
-		<?php printf( esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? get_permalink( $settings['offline_page'] ) : esc_url(get_bloginfo( 'wpurl' )) ); ?>
+		<?php
+		printf( 
+			// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+			esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? esc_url(get_permalink( $settings['offline_page'] )) : esc_url(get_bloginfo( 'wpurl' )) ); ?>
 	</p>
 
 	<?php
@@ -2350,16 +2368,18 @@ function pwaforwp_404_page_callback(){
 			'echo'              => 0,
 			'selected'          => isset($settings['404_page']) ? esc_attr($settings['404_page']) : '',
 		)), $allowed_html); 
-	
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
 		echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selecteddefault)."> ".esc_html__('&mdash; Default &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 		?>
-		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text"  <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
+		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone"><input type="text" name="pwaforwp_settings[404_page_other]" id="404_page_other" class="regular-text"  <?php echo esc_attr($showother); ?> placeholder="<?php echo esc_attr__('Custom 404 page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['404_page_other']) ? esc_attr($settings['404_page_other']) : ''; ?>"></div>
 	
 	</label>
 	
 	<p class="description">
-		<?php printf( esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' )); ?>
+		<?php printf( 
+			// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
+			esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' )); ?>
 	</p>
 
 	<?php
@@ -2385,24 +2405,25 @@ function pwaforwp_start_page_callback(){
 		} 
 		if($selected=='0'){ $selecteddefault= 'selected';} 
 		if($extension_active){$showother="";$pro="style='visibility:hidden'";} 
-         $selectHtml = wp_kses(wp_dropdown_pages( array( 
+        $selectHtml = wp_kses(wp_dropdown_pages( array( 
 			'name'              => 'pwaforwp_settings[start_page]', 
 			'class'             => 'pwaforwp_select_with_other', 
 			'echo'              => 0,
 			'selected'          => isset($settings['start_page']) ? esc_attr($settings['start_page']) : '',
 		)), $allowed_html); 
 
-	
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
 			echo preg_replace('/<select(.*?)>(.*?)<\/select>/s', "<select$1><option value='0' ".esc_attr($selectedother)."> ".esc_html__('&mdash; Homepage &mdash;', 'pwa-for-wp')." </option><option value='other' ".esc_attr($selectedother)."> ".esc_html__('Custom URL', 'pwa-for-wp')." </option><option value='active_url' ".esc_attr($selectedActiveUrl)."> ".esc_html__('Dynamic URL', 'pwa-for-wp')." </option>$2</select><div class='pwaforwp-upgrade-pro-inline pwaforwp_dnone' ".$pro.">".esc_html__("To use this feature",'pwa-for-wp')." <a target='_blank' href='https://pwa-for-wp.com/pricing/'>".esc_html__('Upgrade', 'pwa-for-wp')." </a></div>", $selectHtml); 
 		
 		?>
-		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone" ><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" <?php echo $showother; ?> placeholder="<?php echo esc_attr__('Custom Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div> 
+		<div class="pwaforwp-sub-tab-headings pwaforwp_dnone" ><input type="text" name="pwaforwp_settings[start_page_other]" id="start_page_other" class="regular-text" <?php echo esc_attr($showother); ?> placeholder="<?php echo esc_attr__('Custom Start page (Must be in same origin)', 'pwa-for-wp'); ?>" value="<?php echo isset($settings['start_page_other']) ? esc_attr($settings['start_page_other']) : ''; ?>"></div> 
 		
 	</label>
 	<p class="description">
 		<?php
-		  		$current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
-                printf( esc_html__( 'From where you want to launch PWA APP. Current start page is %s', 'pwa-for-wp' ), $current_page); ?>
+			$current_page = isset($settings['start_page'])? get_permalink($settings['start_page']):''; 
+			echo esc_html__( 'From where you want to launch PWA APP. Current start page is ', 'pwa-for-wp' ) . esc_url($current_page); 
+		?>
 	</p>
 
 	<?php
@@ -2516,7 +2537,7 @@ function pwaforwp_related_applications_callback(){
 	}
 	
 	?>
-	<div id="related_applications_div" style="display:<?php echo $related_applications_div; ?>">
+	<div id="related_applications_div" style="display:<?php echo esc_attr($related_applications_div); ?>">
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications]"><?php echo esc_html__( 'PlayStore App ID', 'pwa-for-wp' ); ?></label>&nbsp;
 		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="<?php esc_attr__("com.example.app","pwa-for-wp") ?>" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
@@ -2538,7 +2559,7 @@ function pwaforwp_prefer_related_applications_callback(){
 		$prefer_related_applications = 'checked="checked';
 	}
 	?>        
-	<input type="checkbox" name="pwaforwp_settings[prefer_related_applications]" id="prefer_related_applications" class="" <?php echo $prefer_related_applications; ?> data-uncheck-val="0" value="1">
+	<input type="checkbox" name="pwaforwp_settings[prefer_related_applications]" id="prefer_related_applications" class="" <?php echo esc_attr($prefer_related_applications); ?> data-uncheck-val="0" value="1">
 	<?php
 }
 
@@ -2707,9 +2728,13 @@ function pwaforwp_files_status_callback(){
                 <?php } ?>
 				<tr>
                     <th style="width:20%"><?php echo esc_html__( 'Status', 'pwa-for-wp' ) ?></th>
-                    <td style="width:40%"><p><?php echo $nonampStatusIcon .' '. esc_html( $nonAmpStatusMsg ). ' '.$nonAmpLearnMoreLink ?></p></td>
+                    <td style="width:40%"><p><?php 
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
+					echo $nonampStatusIcon .' '. esc_html( $nonAmpStatusMsg ). ' '.$nonAmpLearnMoreLink ?></p></td>
 					<?php if($is_amp) { ?>
-                    <td style="width:40%"><p><?php echo $ampStatusIcon.' '.esc_html( $ampStatusMsg ); ?></p></td>
+                    <td style="width:40%"><p><?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
+					echo $ampStatusIcon.' '.esc_html( $ampStatusMsg ); ?></p></td>
 					<?php } ?>
                 </tr>
                 
@@ -2718,13 +2743,13 @@ function pwaforwp_files_status_callback(){
 	                <td>
 						<label>
 							<input type="checkbox"  <?php echo (isset( $settings['normal_enable'] ) && $settings['normal_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1" class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[normal_enable]" id="pwaforwp_settings_normal_enable"> 
-							<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo $settings['normal_enable']; ?>" >
+							<input type="hidden" name="pwaforwp_settings[normal_enable]" id="pwaforwp_settings[normal_enable]" value="<?php echo esc_attr($settings['normal_enable']); ?>" >
 						</label>
 	               	</td>
                     <td>
                         <?php if($is_amp) { ?>
                         <label><input type="checkbox"  <?php echo (isset( $settings['amp_enable'] ) &&  $settings['amp_enable'] == 1 ? 'checked="checked"' : ''); ?> value="1"  class="pwaforwp-checkbox-tracker" data-id="pwaforwp_settings[amp_enable]"> 
-                        	<input type="hidden" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo $settings['amp_enable']; ?>" >
+                        	<input type="hidden" name="pwaforwp_settings[amp_enable]" id="pwaforwp_settings[amp_enable]" value="<?php echo esc_attr($settings['amp_enable']); ?>" >
                         </label>
                          <?php } ?>
                     </td>    
@@ -3137,8 +3162,8 @@ function pwaforwp_get_license_section_html($on){
                     $license_expires_class = "expire_msg";
                  }
                 else{
-                    $expire_msg_before = '<span class="pwaforwp-addon-active">'.esc_html__('', 'pwa-for-wp').'</span>';
-                    $single_expire_msg = "".esc_html__('', 'pwa-for-wp')." ".$license_expires ." ".esc_html__("days remaning", "pwa-for-wp")." ";
+                    $expire_msg_before = '<span class="pwaforwp-addon-active"></span>';
+                    $single_expire_msg = " ".$license_expires ." ".esc_html__("days remaning", "pwa-for-wp")." ";
                     $license_expires_class = "lic_is_active";
                     $renew_text = esc_html__('Renew License','pwa-for-wp');
                 }
@@ -3352,9 +3377,9 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                      $fname =  ucwords($fname);
                       } 
               // Get Expiring Date 
-              $license_exp = date('Y-m-d', strtotime($license_data->expires)); 
+              $license_exp = gmdate('Y-m-d', strtotime($license_data->expires)); 
               $license_info_lifetime = $license_data->expires; 
-              $today = date('Y-m-d');
+              $today = gmdate('Y-m-d');
                $exp_date =$license_exp; 
                $date1 = date_create($today);
                 $date2 = date_create($exp_date);
@@ -3382,6 +3407,7 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                $days_remaining = $days; 
                $username = $fname;
 						$message = sprintf(
+							// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 							__( 'Your license key expired on %s.' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 						);
@@ -3469,9 +3495,9 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                           }
 
                           // Get Expiring Date
-                          $license_exp = date('Y-m-d', strtotime($license_data->expires));
+                          $license_exp = gmdate('Y-m-d', strtotime($license_data->expires));
                           $license_info_lifetime = $license_data->expires;
-                          $today = date('Y-m-d');
+                          $today = gmdate('Y-m-d');
                           $exp_date =$license_exp;
                           $date1 = date_create($today);
                           $date2 = date_create($exp_date);
@@ -3865,7 +3891,9 @@ function pwaforwp_features_settings(){
 						);
 	}}
 	echo '<ul class="pwaforwp-feature-cards">
-			'.$featuresHtml.'
+			'.
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
+			$featuresHtml.'
 		</ul>
 		<div class="pwawp-modal-mask pwaforwp-hide">
     <div class="pwawp-modal-wrapper">
@@ -4234,7 +4262,7 @@ function pwaforwp_include_visibility_condition_callback() {
     $include_targeting_type = sanitize_text_field($_POST['include_targeting_type']);
     $include_targeting_data = sanitize_text_field($_POST['include_targeting_data']);
 
-    $rand = time().rand(000,999);
+    $rand = time().wp_rand(000,999);
     $option .= '<span class="pwaforwp-visibility-target-icon-'.esc_attr($rand).'">
     <input type="hidden" name="include_targeting_type" value="'.esc_attr($include_targeting_type).'">
     <input type="hidden" name="include_targeting_data" value="'.esc_attr($include_targeting_data).'">';
@@ -4263,7 +4291,7 @@ function pwaforwp_exclude_visibility_condition_callback() {
     $exclude_targeting_type = sanitize_text_field($_POST['exclude_targeting_type']);
     $exclude_targeting_data = sanitize_text_field($_POST['exclude_targeting_data']);
 
-    $rand = time().rand(000,999);
+    $rand = time().wp_rand(000,999);
     $option .= '<span class="pwaforwp-visibility-target-icon-'.esc_attr($rand).'">
     <input type="hidden" name="exclude_targeting_type" value="'.esc_attr($exclude_targeting_type).'">
     <input type="hidden" name="exclude_targeting_data" value="'.esc_attr($exclude_targeting_data).'">';
@@ -4328,9 +4356,9 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 
 						// If there's no problem, save it; otherwise, print the problem.
 						if (!is_wp_error($result)) {
-						  $newImage = $editor->save($editor->generate_filename());
-						  $newfilename = str_replace($uploadPath['basedir'], $uploadPath['baseurl'], $newImage['path']);
-						  $new_value['ios_splash_icon'][$newkey] = sanitize_text_field($newfilename);
+							$newImage = $editor->save($editor->generate_filename());
+							$newfilename = str_replace($uploadPath['basedir'], $uploadPath['baseurl'], $newImage['path']);
+							$new_value['ios_splash_icon'][$newkey] = sanitize_text_field($newfilename);
 						}else{
 							error_log($result->get_error_message()." Width: ".$newWidth." Height:".$newHeight);
 						}
@@ -4385,6 +4413,7 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 		}else{
 			$response = wp_remote_retrieve_body( $response );
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html
 	    echo $response;
 	    die;
 	} 	

@@ -613,12 +613,16 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function optin_notice() {
 			global $pagenow, $pwaforwp_globe_admin_notice;
 			if($pwaforwp_globe_admin_notice!=false){ return; }
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
 		        return false;
 		    }
 			// Check for plugin args
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			if( isset( $_GET['plugin'] ) && isset( $_GET['plugin_action'] ) ) {
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 				$plugin = sanitize_text_field( $_GET['plugin'] );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 				$action = sanitize_text_field( $_GET['plugin_action'] );
 				if( $action == 'yes' ) {
 					$this->set_is_tracking_allowed( true, $plugin );
@@ -674,6 +678,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				if( $this->marketing != 1 ) {
 					// Standard notice text
 					$notice_text = sprintf(
+						// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 						__( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.'),
 						$this->what_am_i
 						
@@ -681,6 +686,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				} else {
 					// If we have option 1 for marketing, we include reference to sending product information here
 					$notice_text = sprintf(
+						// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
 						$this->what_am_i
 					);
@@ -710,15 +716,19 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function marketing_notice() {
 			global $pagenow,$pwaforwp_globe_admin_notice;
 			if($pwaforwp_globe_admin_notice!=false){ return;}
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 		    if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']!='pwaforwp'){
 		        return ;
 		    }
 			// Check if user has opted in to marketing
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			if( isset( $_GET['marketing_optin'] ) ) {
 				// Set marketing optin
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 				$this->set_can_collect_email( sanitize_text_field( $_GET['marketing_optin'] ), $this->plugin_name );
 				// Do tracking
 				$this->do_tracking( true );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			} else if( isset( $_GET['marketing'] ) && $_GET['marketing']=='yes' ) {
 				// Display the notice requesting permission to collect email address
 				// Retrieve current plugin information
@@ -735,6 +745,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				
 				$pwaforwp_globe_admin_notice = true;
 				$marketing_text = sprintf(
+					// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' ),
 					$this->what_am_i
 				);
@@ -744,8 +755,8 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo esc_html( $marketing_text ); ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php _e( 'Yes Please', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php _e( 'No Thank You', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'singularity' ); ?></a>
 					</p>
 				</div>
 				<?php }
@@ -887,7 +898,10 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 						var url = document.getElementById("put-goodbye-link-<?php echo esc_attr( $this->plugin_name ); ?>");
 						$('body').toggleClass('put-form-active');
 						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").fadeIn();
-						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo $html; ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php _e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php _e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
+						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php 
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $html; 
+						?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
 						$('#put-submit-form').on('click', function(e){
 							// As soon as we click, the body of the form should disappear
 							$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?> .put-goodbye-form-body").fadeOut();
@@ -904,7 +918,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 								'action': 'goodbye_form',
 								'values': values,
 								'details': details,
-								'security': "<?php echo wp_create_nonce ( 'pwaforwp_goodbye_form' ); ?>",
+								'security': "<?php echo esc_html(wp_create_nonce ( 'pwaforwp_goodbye_form' )); ?>",
 								'dataType': "json"
 							}
 							$.post(
