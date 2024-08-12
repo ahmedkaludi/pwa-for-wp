@@ -25,9 +25,9 @@ class PWAFORWP_Newsletter {
 		$tour     = array ();                
                 $tab      = '';              
 
-                if ( isset( $_GET['tab']) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                if ( isset( $_GET['tab'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended - we are not processing form here
                         
-                        $tab      = $_GET['tab']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                        $tab      = $_GET['tab']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended - we are not processing form here
                 }
                                 
                 if ( ! array_key_exists( $tab, $tour ) ) {

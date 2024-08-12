@@ -128,10 +128,11 @@ class PWAFORWP_Service_Worker{
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
-                    $content = preg_replace('/\s+/', ' ', $content);
-                    echo $content;
+                    $content_escaped .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content_escaped .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
+                    $content_escaped = preg_replace('/\s+/', ' ', $content_escaped);
+                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
+                    echo $content_escaped; 
                     exit;
                 }
                 if( strrpos($filename, '-js', -3) !== false ){
@@ -151,11 +152,11 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
-                $file_data = '';
+                $file_data_escaped = '';
                 if( file_exists($filename) ){
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
-                    $file_data = file_get_contents( $filename );
+                    $file_data_escaped = file_get_contents( $filename );
                 }else{
                     $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){
@@ -166,27 +167,28 @@ class PWAFORWP_Service_Worker{
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_name_modify', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $file_data = $fileCreation->pwaforwp_swjs();
+                            $file_data_escaped = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $file_data = $fileCreation->pwaforwp_swr();
+                            $file_data_escaped = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $file_data = $fileCreation->pwaforwp_swjs(true);
+                            $file_data_escaped = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $file_data = $fileCreation->pwaforwp_swhtml(true);
+                            $file_data_escaped = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
                             # code...
                             break;
                     }
-                }
-                //$file_data = preg_replace('/\s+/', ' ', $file_data);
-                echo $file_data;
+                }         
+                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped       
+                echo $file_data_escaped;
+
                 exit;
             }
         }
@@ -217,10 +219,11 @@ class PWAFORWP_Service_Worker{
                     header("Service-Worker-Allowed: /");
                     header("Content-Type: application/javascript");
                     header("X-Robots-Tag: none");
-                    $content .= "importScripts('".esc_js($url)."')".PHP_EOL;
-                    $content .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
-                    $content = preg_replace('/\s+/', ' ', $content);
-                    echo $content;
+                    $content_escaped .= "importScripts('".esc_js($url)."')".PHP_EOL;
+                    $content_escaped .= "importScripts('https://api.pushnami.com/scripts/v2/pushnami-sw/".esc_js($pn_api_key)."')".PHP_EOL;
+                    $content_escaped = preg_replace('/\s+/', ' ', $content_escaped);
+                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped all contents
+                    echo $content_escaped;
                     exit;
                 }
                 if( strrpos($filename, '-js', -3) !== false ){
@@ -242,11 +245,11 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
-                 $file_data = '';
+                 $file_data_escaped = '';
                 if( file_exists($filename) ){
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
-                    $file_data = file_get_contents( $filename );
+                    $file_data_escaped = file_get_contents( $filename );
                 }else{
                     $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){
@@ -257,18 +260,18 @@ class PWAFORWP_Service_Worker{
                     switch ($fileRawName) {
                         case apply_filters('pwaforwp_sw_file_name', "pwa-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $file_data = $fileCreation->pwaforwp_swjs();
+                            $file_data_escaped = $fileCreation->pwaforwp_swjs();
                             break;
                         case apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js"):
-                            $file_data = $fileCreation->pwaforwp_swr();
+                            $file_data_escaped = $fileCreation->pwaforwp_swr();
                             break;
                         case apply_filters('pwaforwp_amp_sw_file_name',       "pwa-amp-sw".pwaforwp_multisite_postfix().".js"):
                             header("Service-Worker-Allowed: /");
-                            $file_data = $fileCreation->pwaforwp_swjs(true);
+                            $file_data_escaped = $fileCreation->pwaforwp_swjs(true);
                             break;
                         case apply_filters('pwaforwp_amp_sw_html_file_name',  "pwa-amp-sw".pwaforwp_multisite_postfix().".html"):
                             @header( 'Content-Type: text/html; charset=utf-8' );
-                            $file_data = $fileCreation->pwaforwp_swhtml(true);
+                            $file_data_escaped = $fileCreation->pwaforwp_swhtml(true);
                             break;
                         
                         default:
@@ -276,8 +279,9 @@ class PWAFORWP_Service_Worker{
                             break;
                     }
                 }
-                //$file_data = preg_replace('/\s+/', ' ', $file_data);
-                echo $file_data;
+                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- all file data is already escaped
+                echo $file_data_escaped;
+
                 exit;
             }
         }
@@ -478,14 +482,15 @@ class PWAFORWP_Service_Worker{
                 }
             
                 ?>
-                        <amp-install-serviceworker data-scope="<?php echo trailingslashit(pwaforwp_home_url()); ?>" 
-                        src="<?php echo esc_url_raw($swjs_path_amp); ?>" 
-                        data-iframe-src="<?php echo esc_url_raw($swhtml); ?>"  
-                        layout="nodisplay">
-			</amp-install-serviceworker>
-		<?php
+                        <amp-install-serviceworker data-scope="<?php echo esc_attr( trailingslashit( pwaforwp_home_url() ) ); ?>" 
+                            src="<?php echo esc_url_raw($swjs_path_amp); ?>" 
+                            data-iframe-src="<?php echo esc_url_raw($swhtml); ?>"  
+                            layout="nodisplay">
+			            </amp-install-serviceworker>
+		    <?php
                 
 	}	
+
 	public function pwaforwp_service_worker_script( $data ){
             
 		if ( empty( $data['amp_component_scripts']['amp-install-serviceworker'] ) ) {
@@ -494,41 +499,42 @@ class PWAFORWP_Service_Worker{
 		return $data;
                 
 	}       	
-	public function pwaforwp_service_worker_non_amp(){
+	public function pwaforwp_service_worker_non_amp() {
 
         $url 			 = pwaforwp_site_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup         = $settings['manualfileSetup'];
                 
-		if( $manualfileSetup ){//&& !class_exists('OneSignal')
+		if ( $manualfileSetup ) {
+            
             $filename = apply_filters('pwaforwp_sw_file_name', "pwa-register-sw".pwaforwp_multisite_postfix().".js");
             $url = $url.$filename;
             $url = pwaforwp_service_workerUrls($url, $filename);
              
-             wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
+            wp_register_script( "pwa-main-script", esc_url_raw($url), array(), PWAFORWP_PLUGIN_VERSION, true );
             wp_enqueue_script( "pwa-main-script");     
-            //echo '<script src="'.esc_url($url).'"></script>'; 
-               
+                           
 		}  
                 
 	}                  
-        public function pwaforwp_paginated_post_add_homescreen_amp(){  
+        public function pwaforwp_paginated_post_add_homescreen_amp() {  
             
 		$url 			 = pwaforwp_site_url();	
 		$settings 		 = pwaforwp_defaultSettings();
 		$manualfileSetup         = $settings['manualfileSetup'];
 		
-		if($manualfileSetup){
-                    
-		    //<link rel="manifest" href="'. esc_url($url.'pwa-amp-manifest'.pwaforwp_multisite_postfix().'.json').'">
+		if ( $manualfileSetup ) {
+                    		    
             echo '<link rel="manifest" href="'. esc_url( pwaforwp_manifest_json_url(true) ).'">'.PHP_EOL;
             if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
                 echo '<link rel="apple-touch-icon-precomposed" sizes="192x192" href="'.esc_url($settings['icon']).'">'.PHP_EOL;
             endif;
 
 		}
+
 	}
-	public function pwaforwp_paginated_post_add_homescreen(){    
+
+	public function pwaforwp_paginated_post_add_homescreen() {    
             
 		$url 			 = pwaforwp_site_url();	
 		$settings 		 = pwaforwp_defaultSettings();
@@ -560,6 +566,7 @@ class PWAFORWP_Service_Worker{
 	}
 
     public function apple_icons_support(){
+
         $settings        = pwaforwp_defaultSettings();
 
         echo '<meta name="pwaforwp" content="wordpress-plugin"/>
@@ -571,16 +578,18 @@ class PWAFORWP_Service_Worker{
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-touch-fullscreen" content="yes">'.PHP_EOL;
         
-        $linktags = '';
-        if (isset($settings['icon']) && ! empty( $settings['icon'] ) ) : 
-            //$linktags .= '<link rel="apple-touch-startup-image" href="'. esc_url(pwaforwp_https($settings['icon'])) .'">'.PHP_EOL;
-            $linktags .= '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url(pwaforwp_https($settings['icon'])) . '">'.PHP_EOL;
+        $linktags_escaped = '';
+
+        if ( isset( $settings['icon'] ) && ! empty( $settings['icon'] ) ) :             
+            $linktags_escaped .= '<link rel="apple-touch-icon" sizes="192x192" href="' . esc_url( pwaforwp_https( $settings['icon'] ) ) . '">'.PHP_EOL;
         endif; 
                 
-        if(isset($settings['splash_icon']) && !empty($settings['splash_icon'])){
-            $linktags .=  '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url(pwaforwp_https($settings['splash_icon'])) . '">'.PHP_EOL;
+        if ( isset( $settings['splash_icon'] ) && ! empty( $settings['splash_icon'] ) ) {
+            $linktags_escaped .=  '<link rel="apple-touch-icon" sizes="512x512" href="' . esc_url( pwaforwp_https( $settings['splash_icon'] ) ) . '">'.PHP_EOL;
         }
-        echo apply_filters('pwaforwp_apple_touch_icons',$linktags);
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is fully escaped
+        echo apply_filters( 'pwaforwp_apple_touch_icons', $linktags_escaped );
+
         $this->iosSplashScreen();
     }
     public function pwaforwp_is_amp_activated() {    
@@ -595,8 +604,10 @@ class PWAFORWP_Service_Worker{
      * Registers the rest route to get the manifest.
      */
     public function register_manifest_rest_route() {
+
         $rest_namepace = 'pwa-for-wp/v2';
         $route = 'pwa-manifest-json';
+
         register_rest_route(
             $rest_namepace,
             'pwa-manifest-json',
@@ -627,14 +638,18 @@ class PWAFORWP_Service_Worker{
      * @return true|WP_Error True if the request is allowed, WP_Error if the request is in the 'edit' context.
      */
     public function rest_permission( WP_REST_Request $request ) {
+
         if ( 'edit' === $request['context'] ) {
             return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'default' ), array( 'status' => rest_authorization_required_code() ) );
         }
+
         return true;
     }
 
-    public function get_manifest($request){
+    public function get_manifest( $request ) {
+
         $dataObj = new PWAforwp_File_Creation();
+
         if(isset($request['is_amp']) && $request['is_amp'] == 'amp' && defined('AMP_QUERY_VAR')){
             return json_decode($dataObj->pwaforwp_manifest(true),true);
         }else{
@@ -659,36 +674,55 @@ class PWAFORWP_Service_Worker{
      * 
      * @return splash screen for header section
      */
-    protected function iosSplashScreen(){
+    protected function iosSplashScreen() {
+
+        $startup_images_escaped   = '';
         $settings        = pwaforwp_defaultSettings();
-        $startupImages = '';
-        if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']){
+        
+        if( isset( $settings['switch_apple_splash_screen'] ) && $settings['switch_apple_splash_screen'] ) {
+
             $otherData = pwaforwp_ios_splashscreen_files_data();
-            if(is_array($settings['ios_splash_icon']) && !empty($settings['ios_splash_icon'])){
-            foreach ($settings['ios_splash_icon'] as $key => $value) {
-                if(!empty($value) && !empty($key) && isset($otherData[$key])){
-                    $screenData = $otherData[$key];
-                    $startupImages .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.$screenData['device-width'].') and (device-height: '.$screenData['device-height'].') and (-webkit-device-pixel-ratio: '.$screenData['ratio'].') and (orientation: '.$screenData['orientation'].')" href="'.esc_url($value).'"/>'."\n";
+
+            if( is_array( $settings['ios_splash_icon'] ) && ! empty( $settings['ios_splash_icon'] ) ) {
+
+            foreach ( $settings['ios_splash_icon'] as $key => $value ) {
+
+                if ( ! empty( $value ) && ! empty( $key ) && isset( $otherData[ $key ] ) ) {
+
+                    $screenData = $otherData[ $key ];
+                    $startup_images_escaped .= '<link rel="apple-touch-startup-image" media="screen and (device-width: '.esc_attr( $screenData['device-width'] ).') and (device-height: '.esc_attr( $screenData['device-height'] ).') and (-webkit-device-pixel-ratio: '.esc_attr( $screenData['ratio'] ).') and (orientation: '.esc_attr( $screenData['orientation'] ).')" href="'.esc_url( $value ).'"/>'."\n";
+
                 }//if closed
             }//foreach closed
         }
-              echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
+            //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
+            echo apply_filters( "pwaforwp_apple_startup_images", $startup_images_escaped );
+
         }//if closed
+
     }//function iosSplashScreen closed
-    protected function screenshotScreen(){
+
+    protected function screenshotScreen() {
+
+        $startup_images_escaped = '';
         $settings        = pwaforwp_defaultSettings();
-        $startupImages = '';
-        if(isset($settings['screenshots']) && $settings['screenshots']){
+        
+        if ( isset( $settings['screenshots'] ) && $settings['screenshots'] ) {
+
                     $screenData = $settings['screenshots'];
-                    $startupImages .= '<link rel="apple-touch-startup-image" href="'.esc_url($screenData).'"/>'."\n";
-                    
-            echo apply_filters("pwaforwp_apple_startup_images",$startupImages);
+                    $startup_images_escaped .= '<link rel="apple-touch-startup-image" href="'.esc_url( $screenData ).'"/>'."\n";
+                    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- data is already escaped
+                    echo apply_filters( "pwaforwp_apple_startup_images", $startup_images_escaped );
+
         }//if closed
     }//function iosSplashScreen closed
 
-    function on_user_logged_in(){
+    public function on_user_logged_in(){
+
         $settings = pwaforwp_defaultSettings();
+
         if($settings['default_caching']=='cacheFirst' && isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1){
+
             $settings['default_caching'] = 'networkFirst';
             global $pwaforwp_settings;
             update_option( 'pwaforwp_settings', $settings ) ;
@@ -701,24 +735,38 @@ class PWAFORWP_Service_Worker{
      * @param  array {$meta_tags} array of meta tags  generated by core
      * @return array             array without apple-touch-icon meta tag
      */
-    public function site_icon_apple_touch_remove($meta_tags){
-        if(is_customize_preview() && is_admin()){
+    public function site_icon_apple_touch_remove( $meta_tags ) {
+
+        if ( is_customize_preview() && is_admin() ) {
+
             return $meta_tags;
+
         }
-        if(is_array($meta_tags) && !empty($meta_tags)){
-        foreach ($meta_tags as $key => $value) {
-            if(strpos($value, 'apple-touch-icon') !== false){
-                unset($meta_tags[$key]);
+        if ( is_array( $meta_tags ) && ! empty( $meta_tags ) ) {
+
+        foreach ( $meta_tags as $key => $value ) {
+                if ( strpos( $value, 'apple-touch-icon' ) !== false ) {
+
+                    unset( $meta_tags[$key] );
+
+                }
             }
-        }}
+        }
+
         return $meta_tags;
+
     }
                 
 }
-if (class_exists('PWAFORWP_Service_Worker')) {
+
+if ( class_exists( 'PWAFORWP_Service_Worker' ) ) {
+
 	$pwaServiceWorker = new PWAFORWP_Service_Worker;
-    if( wp_doing_ajax() ){
+
+    if ( wp_doing_ajax() ) {
+
         PWAFORWP_Service_Worker::loadalernative_script_load_method();
+
     }
-    
+  
 };
