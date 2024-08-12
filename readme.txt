@@ -1,11 +1,12 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.5
+Tested up to: 6.6
 Stable tag: 1.7.72
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: PWA, Review, Progressive Web Apps, Mobile, Web Manifest, Manifest, Offline Support, Cache, Pagespeed, Service Worker, Web app, pwa
+Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
+PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level.
 
 
 == Description ==

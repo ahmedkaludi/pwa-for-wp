@@ -38,12 +38,13 @@ if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
     );
   }
   pwaforwp_start_plugin_tracking();
-} 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
-require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/3rd-party/3rd-party-common.php";
+}
+require_once PWAFORWP_PLUGIN_DIR."/admin/class-pwaforwp-newsletter.php"; 
+
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-file-creation.php";
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-file-creation-init.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-push-notification.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/3rd-party/3rd-party-file-loading.php";
 if( pwaforwp_is_admin() ){
     add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
     require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
@@ -53,9 +54,9 @@ function pwaforwp_init_plugin(){
     global $pwaforwp_globe_admin_notice;
     $pwaforwp_globe_admin_notice = false;
 
-    require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
+    require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-service-worker.php"; 
     if ( class_exists( 'WP_Service_Workers' ) ) { 
-      require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
+      require_once PWAFORWP_PLUGIN_DIR."/3rd-party/class-pwaforwp-wpwa.php"; 
     }
     //For CDN CODES
     if ( !is_admin() ) { 
@@ -145,6 +146,7 @@ add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
     global $pagenow, $pwaforwp_globe_admin_notice;
+    //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
         return false;
     }
@@ -249,9 +251,12 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
 	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
 		// Generate manifest from Settings and send the response w/ header.
 		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
+
 		header( 'Content-Type: application/json' );
-        $p_file_c = new pwaforwpFileCreation();
-		echo $p_file_c->pwaforwp_manifest(false,$pagemid);
+        $p_file_c = new PWAforwp_File_Creation();		
+        $p_file_escaped = $p_file_c->pwaforwp_manifest( false, $pagemid );
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped
+        echo $p_file_escaped;
 		exit();
 	}
     // Needed new query_vars of pagename for Wp Fastest Cache 

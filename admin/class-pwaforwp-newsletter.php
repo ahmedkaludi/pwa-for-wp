@@ -2,14 +2,14 @@
 // Exit if accessed directly
 if ( ! defined('ABSPATH') ) exit;
 
-class pwaforwp_ads_newsletter {
+class PWAFORWP_Newsletter {
         
-	function __construct () {
+	public function __construct () {
 		
                 add_filter( 'pwaforwp_localize_filter',array($this,'pwaforwp_add_localize_footer_data'),10,2);
 	}
 	        
-        function pwaforwp_add_localize_footer_data($object, $object_name){
+        public function pwaforwp_add_localize_footer_data($object, $object_name){
             
         $dismissed = explode (',', get_user_meta (wp_get_current_user ()->ID, 'dismissed_wp_pointers', true));                                
         $do_tour   = !in_array ('pwaforwp_subscribe_pointer', $dismissed); 
@@ -19,13 +19,18 @@ class pwaforwp_ads_newsletter {
                 wp_enqueue_script ('wp-pointer');						
 	}
                         
-        if($object_name == 'pwaforwp_obj'){
+        if ( $object_name == 'pwaforwp_obj' ) {
                         
-                global $current_user;                
-		$tour     = array ();
-                $tab      = isset($_GET['tab']) ? esc_attr($_GET['tab']) : '';                   
-                
-                if (!array_key_exists($tab, $tour)) {                
+                global $current_user;                                
+		$tour     = array ();                
+                $tab      = '';              
+
+                if ( isset( $_GET['tab']) ) { //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                        
+                        $tab      = $_GET['tab']; //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
+                }
+                                
+                if ( ! array_key_exists( $tab, $tour ) ) {
 			                                           			            	
                         $object['do_tour']            = $do_tour;        
                         $object['get_home_url']       = get_home_url();                
@@ -43,5 +48,5 @@ class pwaforwp_ads_newsletter {
     }
        
 }
-$pwaforwp_ads_newsletter = new pwaforwp_ads_newsletter();
-?>
+
+new PWAFORWP_Newsletter();

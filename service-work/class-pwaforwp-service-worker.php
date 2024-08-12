@@ -70,7 +70,7 @@ class PWAFORWP_Service_Worker{
             }
         }
         
-        function load_scripts($hooks){
+        public function load_scripts($hooks){
             wp_enqueue_script( 'pwa-cache-clear-js', PWAFORWP_PLUGIN_URL . '/assets/js/clear-cache.js',array(),PWAFORWP_PLUGIN_VERSION, true );
         }
 
@@ -79,14 +79,14 @@ class PWAFORWP_Service_Worker{
             add_action( 'wp_ajax_nopriv_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
         }
 		
-		function pwaforwp_onesignal_rewrite(){
+		public function pwaforwp_onesignal_rewrite(){
 
 			add_rewrite_rule("onesignal_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("onesignal_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
 
 		}
 
-        function pwaforwp_pushnami_rewrite(){
+        public function pwaforwp_pushnami_rewrite(){
             add_rewrite_rule("pushnami_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("pushnami_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
         }
@@ -95,12 +95,14 @@ class PWAFORWP_Service_Worker{
         * This function will work similar as "pwaforwp_load_service_worker" 
         * Only for Ajax time
         */
-        static function pwaforwp_load_service_worker_ajax(){
+        public static function pwaforwp_load_service_worker_ajax(){
+            //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
             $returnFile = ( ( isset($_GET[pwaforwp_query_var('sw_query_var')]) && isset($_GET[pwaforwp_query_var('sw_file_var')]) ) || isset($_GET[pwaforwp_query_var('site_id_var')]) );
             if ( $returnFile ) {
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
@@ -114,6 +116,7 @@ class PWAFORWP_Service_Worker{
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
                     $home_url = pwaforwp_home_url();
+                    //phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
                     $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
 
@@ -154,7 +157,7 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $file_data = file_get_contents( $filename );
                 }else{
-                    $fileCreation = new pwaforwpFileCreation();
+                    $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
                     }if( strrpos($filename, '-html', -5) !== false ){
@@ -188,7 +191,7 @@ class PWAFORWP_Service_Worker{
             }
         }
 
-        function pwaforwp_load_service_worker( WP_Query $query ){
+        public function pwaforwp_load_service_worker( WP_Query $query ){
 
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
@@ -245,7 +248,7 @@ class PWAFORWP_Service_Worker{
                     header("X-Robots-Tag: none");
                     $file_data = file_get_contents( $filename );
                 }else{
-                    $fileCreation = new pwaforwpFileCreation();
+                    $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
                     }if( strrpos($filename, '-html', -5) !== false ){
@@ -279,7 +282,7 @@ class PWAFORWP_Service_Worker{
             }
         }
 
-        function pwa_add_error_template_query_var() {
+        public function pwa_add_error_template_query_var() {
             global $wp;
             $allQueryVar = pwaforwp_query_var();
             if(is_array($allQueryVar) && !empty($allQueryVar)){
@@ -457,7 +460,7 @@ class PWAFORWP_Service_Worker{
             }
             
         }	        
-	public function pwaforwp_service_worker(){ 
+	    public function pwaforwp_service_worker(){ 
                             
                 //$swjs_path_amp     = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.js';
                 $swhtml            = pwaforwp_site_url().'pwa-amp-sw'.pwaforwp_multisite_postfix().'.html';
@@ -631,7 +634,7 @@ class PWAFORWP_Service_Worker{
     }
 
     public function get_manifest($request){
-        $dataObj = new pwaforwpFileCreation();
+        $dataObj = new PWAforwp_File_Creation();
         if(isset($request['is_amp']) && $request['is_amp'] == 'amp' && defined('AMP_QUERY_VAR')){
             return json_decode($dataObj->pwaforwp_manifest(true),true);
         }else{

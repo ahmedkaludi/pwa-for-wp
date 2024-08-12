@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-class pushNotification{
+class PWAFORWP_Push_Notification {
             
      public function pwaforwp_push_notification_hooks(){
         $pwaSettings = pwaforwp_defaultSettings();
@@ -261,7 +261,7 @@ class pushNotification{
       }
                  
 }
-if (class_exists('pushNotification')) {
-	$object = new pushNotification;
+if (class_exists('PWAFORWP_Push_Notification')) {
+	$object = new PWAFORWP_Push_Notification;
         $object->pwaforwp_push_notification_hooks();
 };

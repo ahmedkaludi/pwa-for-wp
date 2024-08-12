@@ -2,17 +2,23 @@
 // Exit if accessed directly
 if ( ! defined('ABSPATH') ) exit;
 
-class PWAforwp_pushnami{
+class PWAFORWP_Pushnami {
+
 	public function __construct(){
+
 		$settings = pwaforwp_defaultSettings();
+
 		if(isset($settings['pushnami_support_setting']) && $settings['pushnami_support_setting']==1){
+
 			add_filter( 'pwaforwp_manifest', array($this, 'pushnami_insert_gcm_sender_id') );
 			add_filter( 'pwaforwp_sw_name_modify', array($this, 'pwaforwp_pushnami_change_sw_name' ));
 			add_action("wp", array($this, 'pushnami_for_multisite'));
+
 		}
 	}
 
 	public function pushnami_compatiblity($action = null) {
+
 		if ( class_exists( 'WPPushnami' ) ) {
 			$this->use_custom_manifest($action);
 			if ( ! is_multisite() ) {              
@@ -26,10 +32,13 @@ class PWAforwp_pushnami{
 		}
 	}
 
-	function use_custom_manifest($action = null) {
+	public function use_custom_manifest($action = null) {
+
 		$url = pwaforwp_home_url();
 		$pushnami_option = \WPPushnami::get_script_options();
+
 		if ( $pushnami_option->use_custom_manifest == false ) {
+
 			$pushnami_option->use_custom_manifest = true;
 			if ( $action ) {
 				$pushnami_option->use_custom_manifest = false;
@@ -48,25 +57,30 @@ class PWAforwp_pushnami{
 		update_option('pwaforwp_settings', $get_pwaforwp_options);
 
 	}
-	function pushnami_insert_gcm_sender_id( $manifest ) {
+	public function pushnami_insert_gcm_sender_id( $manifest ) {
+
 		if ( class_exists( 'WPPushnami' ) ) {
 			if(is_array($manifest)){
 				$manifest['gcm_sender_id'] = '733213273952';
 			}
 		}
+
 		return $manifest;
 	}
 
-	function pwaforwp_pushnami_change_sw_name( $name ) {
+	public function pwaforwp_pushnami_change_sw_name( $name ) {
+
 		if ( ! is_multisite() ) {
 			if ( class_exists( 'WPPushnami' ) ) {
 				$name = 'service-worker.js';
 			}
 		}
+
 		return $name;
 	}
 
-	function add_sw_to_pushnami_sw( $action = null ) {
+	public function add_sw_to_pushnami_sw( $action = null ) {
+
 		$abs_path     = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/");
 		$pn_worker = $abs_path.'service-worker.js';
 		$url = pwaforwp_site_url();
@@ -88,15 +102,19 @@ class PWAforwp_pushnami{
 		}
 		$status = pwaforwp_write_a_file($pn_worker, $content);
 		return $status;
+
 	}
 
-	function pushnami_for_multisite() {
+	public function pushnami_for_multisite() {
+
 		if (  class_exists('WPPushnami') ) {//is_multisite() &&
 			remove_action( 'wp_head', [ 'Pushnami_Public', 'pushnami_header' ] );
 			add_action( 'wp_head',  'pwaforwp_pushnami_init_pushnami_head' );
 		}
+
 	}
-	function pwaforwp_pushnami_init_pushnami_head() {
+	public function pwaforwp_pushnami_init_pushnami_head() {
+		
 		$url = pwaforwp_site_url();
 		$home_url = pwaforwp_home_url();
 
@@ -110,21 +128,27 @@ class PWAforwp_pushnami{
 		$options = \WPPushnami::get_script_options();
 		$options->swPath = $ServiceWorkerfileName;
 		$script = \WPPushnami::render_inline_script($options);
-
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
 		echo PHP_EOL
 			.'<meta name="pushnami" content="wordpress-plugin"/>'.PHP_EOL
 			.'<script>'.PHP_EOL
-			.	\WPPushnami::render_inline_script($options).PHP_EOL
+			.	\WPPushnami::render_inline_script($options).PHP_EOL //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped by WPPushnami
 			.'</script>'.PHP_EOL
 		;
 	}
 }
+
 global $pwaforwp_pushnami;
-function pwaforwp_pushnami(){
+
+function pwaforwp_pushnami() {
+
 	global $pwaforwp_pushnami;
-	if(! $pwaforwp_pushnami instanceof PWAforwp_pushnami){
-		$pwaforwp_pushnami = new PWAforwp_pushnami();
+
+	if ( ! $pwaforwp_pushnami instanceof PWAFORWP_Pushnami ) {
+		$pwaforwp_pushnami = new PWAFORWP_Pushnami();
 	}
+
 	return $pwaforwp_pushnami;
 }
+
 pwaforwp_pushnami();

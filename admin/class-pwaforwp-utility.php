@@ -2,7 +2,7 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class PWA_Utility{
+class PWAFORWP_Utility{
 	public function init(){
 		add_action("wp_ajax_pwafowp_enable_modules_upgread", array($this, 'enable_modules') );
 		add_action("wp_ajax_pwafowp_enable_modules_active", array($this, 'enable_modules_active_dashboard') );
@@ -76,5 +76,5 @@ class PWA_Utility{
 	}
 }
 
-$PWA_UtilityObj = new PWA_Utility();
+$PWA_UtilityObj = new PWAFORWP_Utility();
 $PWA_UtilityObj->init();

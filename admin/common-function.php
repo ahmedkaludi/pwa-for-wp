@@ -14,6 +14,7 @@ function pwaforwp_loading_icon() {
         }
         if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.esc_attr($bgcolor); }
         echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- output is already escaped
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
     }
         
@@ -53,7 +54,7 @@ function pwaforwp_reset_all_settings(){
 add_action('wp_ajax_pwaforwp_reset_all_settings', 'pwaforwp_reset_all_settings');
 
 function pwaforwp_load_plugin_textdomain() {
-    load_plugin_textdomain( 'pwa-for-wp', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'pwa-for-wp', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
@@ -602,7 +603,7 @@ function pwaforwp_write_a_file($path, $content, $action = null){
         $writestatus = '';                        
         
         if(file_exists($path)){
-         $writestatus =  unlink($path);
+            $writestatus =  wp_delete_file( $path );
         }
                 
         if(!$action){

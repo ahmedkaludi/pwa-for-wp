@@ -1,7 +1,8 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-require_once PWAFORWP_PLUGIN_DIR.'/admin/pwa-utility.php';
+require_once PWAFORWP_PLUGIN_DIR.'/admin/class-pwaforwp-utility.php';
+
 function pwaforpw_add_menu_links() {
 
     $license_alert_icon = '';
@@ -55,6 +56,7 @@ function pwaforwp_admin_interface_render(){
 		return;
 	}			
 	// Handing save settings
+	//phpcs:ignore WordPress.Security.NonceVerification.Recommended	- we are not processing form here
 	if ( isset( $_GET['settings-updated'] ) ) {	
                                                                                     
         $service_worker = new PWAFORWP_Service_Worker();
@@ -1902,7 +1904,7 @@ function pwaforwp_push_notification_callback(){
                     <tr>
                         <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
                         <td>
-                            <textarea class="regular-text" placeholder="{ <?="\n"?>apiKey: '<Your Api Key>', <?="\n"?>authDomain: '<Your Auth Domain>',<?="\n"?>databaseURL: '<Your Database URL>',<?="\n"?>projectId: '<Your Project Id>',<?="\n"?>storageBucket: '<Your Storage Bucket>', <?="\n"?>messagingSenderId: '<Your Messaging Sender Id>' <?="\n"?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
+                            <textarea class="regular-text" placeholder="{ <?php echo "\n"; ?>apiKey: '<Your Api Key>', <?php echo "\n"; ?>authDomain: '<Your Auth Domain>',<?php echo "\n"; ?>databaseURL: '<Your Database URL>',<?php echo "\n"; ?>projectId: '<Your Project Id>',<?php echo "\n"; ?>storageBucket: '<Your Storage Bucket>', <?php echo "\n"; ?>messagingSenderId: '<Your Messaging Sender Id>' <?php echo "\n"; ?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
                             <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
                             <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
                         </td>
@@ -2995,6 +2997,7 @@ add_action( 'admin_enqueue_scripts', 'pwaforwp_enqueue_style_js' );
  * @return type json string
  */
 function pwaforwp_send_query_message(){   
+
 		if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
 			return;
 		}
@@ -3025,7 +3028,7 @@ function pwaforwp_send_query_message(){
             $headers = 'From: '. esc_attr($user_email) . "\r\n" .
             'Reply-To: ' . esc_attr($user_email) . "\r\n";
             // Load WP components, no themes.                      
-            $sent = wp_mail($to, $subject, strip_tags($message), $headers);        
+            $sent = wp_mail($to, $subject, wp_strip_all_tags($message), $headers);        
             
             if($sent){
             echo wp_json_encode(array('status'=>'t'));            
@@ -3035,7 +3038,7 @@ function pwaforwp_send_query_message(){
             
         }
                         
-           wp_die();           
+        wp_die();           
 }
 
 add_action('wp_ajax_pwaforwp_send_query_message', 'pwaforwp_send_query_message');
@@ -4455,16 +4458,19 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 		unzip_file($zipfilename, $path);
 		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
 		$iosdata = pwaforwp_ios_splashscreen_files_data();
-		if(is_array($iosdata) && !empty($iosdata)){
-		foreach ($iosdata as $key => $value) {
-			$pwaforwp_settings['ios_splash_icon'][sanitize_key($key)] = sanitize_text_field($pathURL.$value['file']);
-		}}
+
+		if ( is_array( $iosdata ) && ! empty( $iosdata ) ) {
+
+			foreach ( $iosdata as $key => $value ) {
+				$pwaforwp_settings['ios_splash_icon'][sanitize_key($key)] = sanitize_text_field($pathURL.$value['file']);
+			}}
+
 		$pwaforwp_settings['iosSplashScreenOpt']='generate-auto';
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
-		unlink($zipfilename);
-		echo wp_json_encode(array("status"=>200, "message"=> esc_html__("Splash screen uploaded successfully"),'pwa-for-wp'));
-		  die;
+		wp_delete_file( $zipfilename );
+		echo wp_json_encode( array( "status" => 200, "message" => esc_html__( "Splash screen uploaded successfully", "pwa-for-wp" ) ) );
+		die;
 	} 	
 } 
 
@@ -4617,8 +4623,10 @@ function pwaforwp_get_data_by_type($include_type='post',$search=null){
         }}
     }
 
-     if($include_type == 'post_category'){
+     if ( $include_type == 'post_category' ) {
+
 		$args = array( 
+			'taxonomy'   => 'category',
 			'hide_empty' => true,
 			'number'     => $posts_per_page, 
 		);
@@ -4626,11 +4634,13 @@ function pwaforwp_get_data_by_type($include_type='post',$search=null){
 		if(!empty($search)){
 			$args['name__like'] = $search;
 		}
-		$get_option = get_terms( 'category', $args);
-        // $get_option = get_categories($args);
-		if(!empty($get_option) && is_array($get_option)){   
-			foreach ($get_option as $options_array) {
-				$result[] = array('id' => $options_array->name, 'text' => $options_array->name);
+
+		$get_option = get_terms( $args );
+
+		if ( ! empty( $get_option ) && is_array( $get_option ) ) {   
+
+			foreach ( $get_option as $options_array ) {
+				$result[] = array( 'id' => $options_array->name, 'text' => $options_array->name );
 			}
 		}
        
