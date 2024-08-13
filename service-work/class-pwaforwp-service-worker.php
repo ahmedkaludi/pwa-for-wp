@@ -46,15 +46,10 @@ class PWAFORWP_Service_Worker {
                 * load manifest on using Rest API
                 * This change for manifest
                 */
-                add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );
+                add_action( 'rest_api_init', array( $this, 'register_manifest_rest_route' ) );                                
+                add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
+                add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
                 
-                //Only when Searve url & Installation Url Different
-                //$url = pwaforwp_site_url();
-                //$home_url = pwaforwp_home_url();
-                //if(is_multisite() || $url!==$home_url || !pwaforwp_is_file_inroot()){
-                    add_action( 'init', array($this, 'pwa_add_error_template_query_var') );
-                    add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
-                //}
                       
                 if ( $settings['default_caching']=='cacheFirst' && isset( $settings['change_default_on_login'] ) && $settings['change_default_on_login'] == 1 ) {
                     add_action( 'wp_login', array($this,'on_user_logged_in' ) );
@@ -63,6 +58,7 @@ class PWAFORWP_Service_Worker {
                  * Remove apple-touch-icon from theme side
                  */
                 add_filter( "site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove' ) );
+                
             }
 
             if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {

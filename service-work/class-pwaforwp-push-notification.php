@@ -2,12 +2,13 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 class PWAFORWP_Push_Notification {
             
-     public function pwaforwp_push_notification_hooks(){
+     public function pwaforwp_push_notification_hooks() {
+
         $pwaSettings = pwaforwp_defaultSettings();
         $showFirebase = true;
-        $showFirebase = apply_filters("pwaforwp_show_pwa_firebase", $showFirebase);
+        $showFirebase = apply_filters("pwaforwp_show_pwa_firebase", $showFirebase);        
         
-        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='fcm_push' && $showFirebase){
+        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='fcm_push' && $showFirebase ) {
           
             add_action('transition_post_status', array($this, 'pwaforwp_send_notification_on_post_save'), 10, 3);                          
             add_filter('pwaforwp_manifest', array($this, 'pwaforwp_load_pn_manifest'), 35); 
@@ -19,10 +20,11 @@ class PWAFORWP_Push_Notification {
                            
      }
 
-     public function pwaforwp_send_notification_manually(){
-      if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
-        return;
-      }              
+     public function pwaforwp_send_notification_manually() {
+      
+            if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
+              return;
+            }              
          
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
                 return; 
@@ -33,19 +35,25 @@ class PWAFORWP_Push_Notification {
             $body             = sanitize_textarea_field($_POST['message']);                        
             $message['title'] = sanitize_text_field($_POST['title']);
             $url              = sanitize_url($_POST['url']);
-            $image_url              = sanitize_url($_POST['image_url']);
+            $image_url        = sanitize_url($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
             $message['image_url']   = (!empty($image_url)? $image_url : '');
                         
             $result           = $this->pwaforwp_send_push_notification($message); 
             
-            $result = json_decode($result, true);                         
-            if(!empty($result) && isset($result['success']) && $result['success'] !=0 ){             
-            echo wp_json_encode(array('status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure']));    
-               }else{
-            echo wp_json_encode(array('status'=>'f', 'mesg'=> esc_html__('Notification not sent. Something went wrong','pwa-for-wp'), 'result'=>$result));    
+            $result = json_decode($result, true);                 
+
+            if ( ! empty( $result ) && isset( $result['success'] ) && $result['success'] != 0 ) {             
+
+            echo wp_json_encode( array( 'status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure'] ) );    
+
+            } else {
+
+            echo wp_json_encode( array( 'status'=> 'f', 'mesg' => esc_html__( 'Notification not sent. Something went wrong','pwa-for-wp' ), 'result' => $result ) );    
+
            }
+
            wp_die();
      }
      
@@ -261,7 +269,7 @@ class PWAFORWP_Push_Notification {
       }
                  
 }
-if (class_exists('PWAFORWP_Push_Notification')) {
-	$object = new PWAFORWP_Push_Notification;
+if ( class_exists( 'PWAFORWP_Push_Notification' ) ) {
+	      $object = new PWAFORWP_Push_Notification;
         $object->pwaforwp_push_notification_hooks();
 };
