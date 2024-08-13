@@ -2343,9 +2343,8 @@ function pwaforwp_offline_page_callback(){
 	
 	<p class="description">
 		<?php
-		printf( 
-			// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-			esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? esc_url(get_permalink( $settings['offline_page'] )) : esc_url(get_bloginfo( 'wpurl' )) ); ?>
+		/* translators: %s: offline page */
+		printf(	esc_html__( 'Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s', 'pwa-for-wp' ), get_permalink($settings['offline_page']) ? esc_url(get_permalink( $settings['offline_page'] )) : esc_url(get_bloginfo( 'wpurl' )) ); ?>
 	</p>
 
 	<?php
@@ -2379,9 +2378,9 @@ function pwaforwp_404_page_callback(){
 	</label>
 	
 	<p class="description">
-		<?php printf( 
-			// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-			esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(get_permalink($settings['404_page']) ? get_permalink( $settings['404_page'] ) : '' )); ?>
+		<?
+		/* translators: %s: 404 page */
+		printf(	esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(	get_permalink($settings['404_page']	) ? get_permalink( $settings['404_page'] ) : '' )); ?>
 	</p>
 
 	<?php
@@ -3406,33 +3405,32 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                $license[strtolower($add_on).'_addon_license_key_expires_normal'] = $license_exp;  
                $license[strtolower($add_on).'_addon_license_key_download_id'] = $download_id; 
                $current_status = 'active'; 
-               $message = esc_html__('Activated','pwa-for-wp'); 
+               $message = esc_html__( 'Activated', 'pwa-for-wp'	); 
                $days_remaining = $days; 
                $username = $fname;
-						$message = sprintf(
-							// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-							__( 'Your license key expired on %s.' ),
+			   			/* translators: %s: date */
+						$message = sprintf(	__( 'Your license key expired on %s.' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 						);
 						break;
 					case 'revoked' :
-						$message = __( 'Your license key has been disabled.' );
+						$message = esc_html__( 'Your license key has been disabled.', 'pwa-for-wp'	);
 						break;
 					case 'missing' :
-						$message = __( 'Invalid license.' );
+						$message = esc_html__( 'Invalid license.', 'pwa-for-wp'	);
 						break;
 					case 'invalid' :
 					case 'site_inactive' :
-						$message = __( 'Your license is not active for this URL.' );
+						$message = esc_html__( 'Your license is not active for this URL.', 'pwa-for-wp'	);
 						break;
 					case 'item_name_mismatch' :
-						$message = __( 'This appears to be an invalid license key.' );
+						$message = esc_html__( 'This appears to be an invalid license key.', 'pwa-for-wp'	);
 						break;
 					case 'no_activations_left':
-						$message = __( 'Your license key has reached its activation limit.' );
+						$message = esc_html__( 'Your license key has reached its activation limit.', 'pwa-for-wp'	);
 						break;
 					default :
-						$message = __( 'An error occurred, please try again.' );
+						$message = esc_html__( 'An error occurred, please try again.', 'pwa-for-wp'	);
 						break;
 				}
 			}

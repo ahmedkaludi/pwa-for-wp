@@ -677,17 +677,14 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				// Decide on notice text
 				if( $this->marketing != 1 ) {
 					// Standard notice text
-					$notice_text = sprintf(
-						// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-						__( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.'),
+					/* translators: %1$s: what_am_i */
+					$notice_text = sprintf( __( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.'),
 						$this->what_am_i
-						
 					);
 				} else {
 					// If we have option 1 for marketing, we include reference to sending product information here
-					$notice_text = sprintf(
-						// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'pwa-for-wp' ),
+					/* translators: %1$s: what_am_i */
+					$notice_text = sprintf( __( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'pwa-for-wp' ),
 						$this->what_am_i
 					);
 				}
@@ -744,9 +741,8 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				) );
 				
 				$pwaforwp_globe_admin_notice = true;
-				$marketing_text = sprintf(
-					// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'pwa-for-wp' ),
+				/* translators: %s: what_am_i */
+				$marketing_text = sprintf(	__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'pwa-for-wp' ),
 					$this->what_am_i
 				);
 				$marketing_text = apply_filters( 'wisdom_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>
