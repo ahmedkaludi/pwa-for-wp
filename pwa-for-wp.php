@@ -4,7 +4,7 @@ Plugin Name: PWA for WP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.72
+Version: 1.7.73
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -14,20 +14,25 @@ License: GPL2+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define('PWAFORWP_PLUGIN_FILE',  __FILE__ );
-define('PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ));
-define('PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('PWAFORWP_PLUGIN_VERSION', '1.7.72');
-define('PWAFORWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
-define('PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/');
+define( 'PWAFORWP_PLUGIN_FILE',  __FILE__ );
+define( 'PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'PWAFORWP_PLUGIN_VERSION', '1.7.73' );
+define( 'PWAFORWP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/' );
 
 require_once PWAFORWP_PLUGIN_DIR."/admin/common-function.php"; 
-if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
+
+if ( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
   require_once PWAFORWP_PLUGIN_DIR. '/admin/class-pwaforwp-plugin-usage-tracker.php';
 }
-if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
+
+if ( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
+
   function pwaforwp_start_plugin_tracking() {
+
     $settings = array('pwaforwp_settings' );
+
     $wisdom = new PWAFORWP_Plugin_Usage_Tracker(
       __FILE__,
       'https://data.ampforwp.com/pwaforwp',
@@ -36,41 +41,57 @@ if( ! function_exists( 'pwaforwp_start_plugin_tracking' ) ) {
       true,
       0
     );
+
   }
+
   pwaforwp_start_plugin_tracking();
-} 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-file-creation.php";
-require_once PWAFORWP_PLUGIN_DIR."/admin/newsletter.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-init.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/service-work/class-push-notification.php"; 
-require_once PWAFORWP_PLUGIN_DIR."/3rd-party/3rd-party-common.php";
-if( pwaforwp_is_admin() ){
+
+}
+
+require_once PWAFORWP_PLUGIN_DIR."/admin/class-pwaforwp-newsletter.php"; 
+
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-file-creation.php";
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-file-creation-init.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-push-notification.php"; 
+require_once PWAFORWP_PLUGIN_DIR."/3rd-party/3rd-party-file-loading.php";
+
+if ( pwaforwp_is_admin() ) {
+
     add_filter( 'plugin_action_links_' . PWAFORWP_PLUGIN_BASENAME,'pwaforwp_add_action_links');
     require_once PWAFORWP_PLUGIN_DIR."admin/settings.php";
+
 }
-add_action('plugins_loaded', 'pwaforwp_init_plugin');
-function pwaforwp_init_plugin(){
+
+add_action( 'plugins_loaded', 'pwaforwp_init_plugin' );
+
+function pwaforwp_init_plugin() {
+
     global $pwaforwp_globe_admin_notice;
     $pwaforwp_globe_admin_notice = false;
 
-    require_once PWAFORWP_PLUGIN_DIR."/service-work/class-service-worker.php"; 
+    require_once PWAFORWP_PLUGIN_DIR."/service-work/class-pwaforwp-service-worker.php"; 
+
     if ( class_exists( 'WP_Service_Workers' ) ) { 
-      require_once PWAFORWP_PLUGIN_DIR."/3rd-party/wp-pwa.php"; 
+      require_once PWAFORWP_PLUGIN_DIR."/3rd-party/class-pwaforwp-wpwa.php"; 
     }
     //For CDN CODES
-    if ( !is_admin() ) { 
+    if ( ! is_admin() ) {
             $settings = pwaforwp_defaultSettings(); 
-            if(isset($settings['cdn_setting']) && $settings['cdn_setting']==1){
-                ob_start('pwaforwp_revert_src');
+            if( isset( $settings['cdn_setting'] ) && $settings['cdn_setting']==1 ){
+                ob_start( 'pwaforwp_revert_src' );
             }
     }
-}
-function pwaforwp_add_action_links($links){
-    $mylinks = array('<a href="' . esc_url(admin_url( 'admin.php?page=pwaforwp' )) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
-    return array_merge( $links, $mylinks );
+
 }
 
-function pwaforwp_revert_src($content){
+function pwaforwp_add_action_links( $links ) {
+
+    $mylinks = array('<a href="' . esc_url(admin_url( 'admin.php?page=pwaforwp' )) . '">'.esc_html__( 'Settings', 'pwa-for-wp' ).'</a>');
+    return array_merge( $links, $mylinks );
+
+}
+
+function pwaforwp_revert_src( $content ) {
                                  
 	$url = pwaforwp_site_url();                                 
                 
@@ -94,11 +115,12 @@ function pwaforwp_revert_src($content){
             }
                        
         }else{
-                        
+            // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript	-- not registered/enqueued script here            
             preg_match("/<script src=\"(.*?)"."pwa-register-sw".pwaforwp_multisite_postfix()."\.js\">/i", $content, $sw_match);
 
             if(isset($sw_match[0])){
                $pwa_r_url = $url.'pwa-register-sw'.pwaforwp_multisite_postfix().'.js';
+               // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript	-- not registered/enqueued script here            
                $replacewith = '<script src="'.esc_url($pwa_r_url).'">';
                $content = str_replace($sw_match[0],$replacewith,$content);
             }
@@ -107,27 +129,19 @@ function pwaforwp_revert_src($content){
                         
 	return $content;
 }
-/**
- * set user defined message on plugin activate
- */
-// function pwaforwp_after_activation_redirect( $plugin ) {
-//     if( $plugin == plugin_basename( __FILE__ ) ) {
-//         exit( wp_redirect( admin_url( 'admin.php?page=pwaforwp' ) ) );
-//     }
-// }
-// add_action( 'activated_plugin', 'pwaforwp_after_activation_redirect' );
 
 register_activation_hook( __FILE__, 'pwaforwp_on_activation' );
 register_deactivation_hook( __FILE__, 'pwaforwp_on_deactivation' );
 
-function pwaforwp_on_deactivation(){
+function pwaforwp_on_deactivation() {
     global $wp_rewrite;
     $wp_rewrite->flush_rules();        
     pwaforwp_delete_pwa_files();
     
 }
 
-function pwaforwp_on_activation(){
+function pwaforwp_on_activation() {
+
     flush_rewrite_rules();
     // Flushing rewrite urls ONLY on activation
     global $wp_rewrite;
@@ -139,12 +153,15 @@ function pwaforwp_on_activation(){
 
 function pwaforwp_admin_notice_activation_hook() {
     set_transient( 'pwaforwp_admin_notice_transient', true );
-    update_option( "pwaforwp_activation_date", date("Y-m-d"));
+    update_option( "pwaforwp_activation_date", gmdate("Y-m-d"));
 }
+
 add_action( 'admin_notices', 'pwaforwp_admin_notice' );
 
 function pwaforwp_admin_notice(){
+
     global $pagenow, $pwaforwp_globe_admin_notice;
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
     if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
         return false;
     }
@@ -179,14 +196,14 @@ function pwaforwp_admin_notice(){
         //Feedback notice
         $activation_date =  get_option("pwaforwp_activation_date");  
 
-        $one_day    = date('Y-m-d',strtotime("+1 day", strtotime($activation_date))); 
-        $seven_days = date('Y-m-d',strtotime("+7 day", strtotime($activation_date)));
-        $one_month  = date('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
-        $sixty_days = date('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
-        $six_month  = date('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
-        $one_year   = date('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
+        $one_day    = gmdate('Y-m-d',strtotime("+1 day", strtotime($activation_date))); 
+        $seven_days = gmdate('Y-m-d',strtotime("+7 day", strtotime($activation_date)));
+        $one_month  = gmdate('Y-m-d',strtotime("+30 day", strtotime($activation_date)));
+        $sixty_days = gmdate('Y-m-d',strtotime("+60 day", strtotime($activation_date)));
+        $six_month  = gmdate('Y-m-d',strtotime("+180 day", strtotime($activation_date)));
+        $one_year   = gmdate('Y-m-d',strtotime("+365 day", strtotime($activation_date))); 
                      
-        $current_date = date("Y-m-d");    
+        $current_date = gmdate("Y-m-d");    
         $list_of_date = array($one_day, $seven_days, $one_month, $sixty_days, $six_month, $one_year);
         
         $review_notice_bar_status_date = get_option( "pwaforwp_review_notice_bar_close_date");
@@ -229,11 +246,13 @@ add_filter('plugin_row_meta' , 'pwaforwp_add_plugin_meta_links', 10, 2);
 /**
   * Add meta actions to plugins list
   */
-function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
+function pwaforwp_add_plugin_meta_links( $meta_fields, $file ) {
     
     if ( PWAFORWP_PLUGIN_BASENAME == $file ) {
+
       $plugin_url = "https://wordpress.org/support/plugin/pwa-for-wp";         
       $meta_fields[] = "<a href='" . esc_url($plugin_url) . "' target='_blank'>" . esc_html__('Support Forum', 'pwa-for-wp') . "</a>";
+
     }
 
     return $meta_fields;
@@ -241,25 +260,34 @@ function pwaforwp_add_plugin_meta_links($meta_fields, $file) {
   }
 
   function pwaforwp_generate_sw_and_manifest_on_fly( $query ) {
+
 	if ( ! property_exists( $query, 'query_vars' ) || ! is_array( $query->query_vars ) ) {
 		return;
 	}
+    
 	$query_vars_as_string = http_build_query( $query->query_vars );
 	$manifest_filename    = pwaforwp_get_manifest_filename();
+
 	if ( strpos( $query_vars_as_string, $manifest_filename ) !== false ) {
 		// Generate manifest from Settings and send the response w/ header.
 		$pagemid =  isset($query->query_vars['pwaforwp_mid'])? $query->query_vars['pwaforwp_mid'] : null;
+
 		header( 'Content-Type: application/json' );
-        $p_file_c = new pwaforwpFileCreation();
-		echo $p_file_c->pwaforwp_manifest(false,$pagemid);
+        $p_file_c = new PWAforwp_File_Creation();		
+        $p_file_escaped = $p_file_c->pwaforwp_manifest( false, $pagemid );
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- already escaped
+        echo $p_file_escaped;
 		exit();
+
 	}
     // Needed new query_vars of pagename for Wp Fastest Cache 
-	if(class_exists('WpFastestCache')){
+	if ( class_exists('WpFastestCache') ) {
+
 		$query_vars_as_string = isset($query->query_vars['pagename']) ? $query->query_vars['pagename'] : false;
-		if($query_vars_as_string == false){
+		if ( $query_vars_as_string == false ) {
 		    $query_vars_as_string = isset($query->query_vars['name']) ? $query->query_vars['name'] : '';
 	    }
+
     }
 	
 }
@@ -273,23 +301,32 @@ function pwaforwp_add_rewrite_rules() {
 
 
 function pwaforwp_setup_hooks() {
+
     $defaults = pwaforwp_defaultSettings();
     $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+
     if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+
         add_action( 'init', 'pwaforwp_add_rewrite_rules' );
         add_action( 'parse_request', 'pwaforwp_generate_sw_and_manifest_on_fly' );
+
     }
 }
+
 add_action( 'plugins_loaded', 'pwaforwp_setup_hooks' );
 
 add_filter('query_vars', 'pwaforwp_manifest_query_vars');
 
 function pwaforwp_manifest_query_vars($vars) {
+
     $defaults = pwaforwp_defaultSettings();
-    $pro_extension_exists = function_exists('pwaforwp_is_any_extension_active')?pwaforwp_is_any_extension_active():false;
+    $pro_extension_exists = function_exists( 'pwaforwp_is_any_extension_active' ) ? pwaforwp_is_any_extension_active() : false;
     
-    if($pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url'){
+    if ( $pro_extension_exists && isset( $defaults['start_page'] ) && $defaults['start_page'] == 'active_url' ) {
+
         $vars[] = 'pwaforwp_mid';
+
     }
+    
     return $vars;
 }

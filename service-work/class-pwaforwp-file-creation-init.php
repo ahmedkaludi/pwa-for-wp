@@ -20,7 +20,7 @@ class PWAFORWP_File_Creation_Init {
         
         $this->wppath                 = str_replace("//","/",str_replace("\\","/",realpath(ABSPATH))."/"); 
         $this->wppath                 = apply_filters("pwaforwp_file_creation_path", $this->wppath);
-        $this->fileCreation           = new pwaforwpFileCreation();
+        $this->fileCreation           = new PWAforwp_File_Creation();
         $this->swjs_init              = $this->wppath.apply_filters('pwaforwp_sw_name_modify',           "pwa-sw".pwaforwp_multisite_postfix().".js");
         $this->minifest_init          = $this->wppath.apply_filters('pwaforwp_manifest_file_name',     "pwa-manifest".pwaforwp_multisite_postfix().".json");
         $this->swr_init               = $this->wppath.apply_filters('pwaforwp_sw_file_name',           "pwa-register-sw".pwaforwp_multisite_postfix().".js");

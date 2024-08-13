@@ -1,6 +1,8 @@
 <?php
+
 if ( ! defined( 'ABSPATH' ) ) exit;
-class pwaforwpFileCreation{
+
+class PWAforwp_File_Creation {
                 
     public function pwaforwp_swhtml($is_amp = false){      
             

@@ -2,17 +2,22 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class PWA_Utility{
-	public function init(){
+class PWAFORWP_Utility{
+
+	public function init() {
+
 		add_action("wp_ajax_pwafowp_enable_modules_upgread", array($this, 'enable_modules') );
 		add_action("wp_ajax_pwafowp_enable_modules_active", array($this, 'enable_modules_active_dashboard') );
 
 	}
 
 	public function enable_modules(){
+
 		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'verify_request' ) ) {
+
 	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__("Request not valid",'pwa-for-wp')));
 	        exit();
+
 	    }
 	    // Exit if the user does not have proper permissions
 	    if(! current_user_can( 'install_plugins' ) ) {
@@ -23,8 +28,11 @@ class PWA_Utility{
 	    $plugins = array();
 	    $redirectSettingsUrl = '';
 	    $currentActivateModule = sanitize_text_field( wp_unslash($_REQUEST['activate']));
+
 	    switch($currentActivateModule){
+
 	    	case 'pushnotification': 
+
 	            $nonceUrl = add_query_arg(
 	                                    array(
 	                                        'action'        => 'activate',
@@ -59,7 +67,13 @@ class PWA_Utility{
 	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__('Request not valid','pwa-for-wp'))); die;
 	        exit();
 	    }
-	    if(!current_user_can('activate_plugins')){ echo wp_json_encode(array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') )); die; }
+	    if(!current_user_can('activate_plugins')){ 
+
+			echo wp_json_encode( array("status"=>400,"message"=>esc_html__('User not authorized to access', 'pwa-for-wp') ) ); 
+			die; 
+
+		}
+		
 	    $addonLists = pwaforwp_list_addons();
 	    $target_file = sanitize_text_field($_POST['target_file']);
 	    $slug = isset($addonLists[$target_file]['p-slug'])? $addonLists[$target_file]['p-slug'] : '';
@@ -76,5 +90,5 @@ class PWA_Utility{
 	}
 }
 
-$PWA_UtilityObj = new PWA_Utility();
+$PWA_UtilityObj = new PWAFORWP_Utility();
 $PWA_UtilityObj->init();

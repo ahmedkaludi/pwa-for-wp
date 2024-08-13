@@ -2,24 +2,28 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class PWAforWP_wppwa{
+class PWAFORWP_WPwa{
 	
 	const INSTALL_SERVICE_WORKER_AMP_QUERY_VAR = 'pwa_amp_install_service_worker_iframe';
-	function init(){
-		if(class_exists('WP_Web_App_Manifest')){
-			$wp_web_app_manifest = new WP_Web_App_Manifest();
-			add_action( 'amp_post_template_head', array( $wp_web_app_manifest, 'manifest_link_and_meta' ) );
 
-		
+	public function init(){
+
+		if(class_exists('WP_Web_App_Manifest')){
+
+			$wp_web_app_manifest = new WP_Web_App_Manifest();
+
+			add_action( 'amp_post_template_head', array( $wp_web_app_manifest, 'manifest_link_and_meta' ) );		
 			add_filter("web_app_manifest", array($this, 'manifest_submit'), 10, 1);
 			add_action( 'wp_front_service_worker', array( $this, 'add_cdn_script_caching' ) );
 			add_action("wp", array($this, 'remove_all_pwa_wp_actions'));
+
 			if(defined('AMPFORWP_VERSION')){
-				add_filter( 'query_vars', [ __CLASS__, 'add_query_var' ] );
-				
+
+				add_filter( 'query_vars', [ __CLASS__, 'add_query_var' ] );				
 				add_action( 'parse_request', [ __CLASS__, 'handle_service_worker_iframe_install' ] );
 				add_action( 'wp', [ __CLASS__, 'add_install_hooks' ] );
 				add_action( 'wp_front_service_worker', [ __CLASS__, 'add_amp_cdn_script_caching' ] );
+
 			}
 		}
 	}
@@ -118,7 +122,7 @@ class PWAforWP_wppwa{
 		wp_die();
 	}
 
-	function add_cdn_script_caching( $service_workers ){
+	public function add_cdn_script_caching( $service_workers ){
 		if ( ! ( $service_workers instanceof WP_Service_Worker_Scripts ) ) {
 			/* translators: %s: WP_Service_Worker_Cache_Registry. */
 			_doing_it_wrong( __METHOD__, sprintf( esc_html__( 'Please update to PWA v0.2. Expected argument to be %s.', 'pwa-for-wp' ), 'WP_Service_Worker_Cache_Registry' ), '1.1' );
@@ -399,7 +403,7 @@ class PWAforWP_wppwa{
 	* Updated Manifest of PWA-WP 
 	* Added Our custom options value related with option panel 
 	*/
-	function manifest_submit($manifest){
+	public function manifest_submit($manifest){
 		$defaults = pwaforwp_defaultSettings();  
 		$is_amp = false;
 		if($is_amp){ 
@@ -624,5 +628,5 @@ class PWAforWP_wppwa{
 		<?php
 	}
 }
-$PWAforWP_wppwa = new PWAforWP_wppwa();
+$PWAforWP_wppwa = new PWAFORWP_WPwa();
 $PWAforWP_wppwa->init();
