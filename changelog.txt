@@ -1,3 +1,9 @@
+= 1.7.73 (13 August 2024) =
+* Bug Fixed  : Warning appears in Call to Action extension. #915
+* Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
+* Compatibility  : Tested with WordPress version 6.6 #914.
+* Improvement  : Code improvement.
+
 = 1.7.72 (09 July 2024) =
 * Bug Fixed  : The visibility option is not working for the CTA feature. #905
 * Bug Fixed  : Navigation bar extension conflict issue #910
