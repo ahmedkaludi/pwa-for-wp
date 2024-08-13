@@ -257,7 +257,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			if( empty( $plugin ) ) {
 				// We can't find the plugin data
 				// Send a message back to our home site
-				$body['message'] .= __( 'We can\'t detect any product information. This is most probably because you have not included the code snippet.', 'singularity' );
+				$body['message'] .= __( 'We can\'t detect any product information. This is most probably because you have not included the code snippet.', 'pwa-for-wp' );
 				$body['status'] = 'Data not found'; // Never translated
 			} else {
 				if( isset( $plugin['Name'] ) ) {
@@ -687,7 +687,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					// If we have option 1 for marketing, we include reference to sending product information here
 					$notice_text = sprintf(
 						// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'pwa-for-wp' ),
 						$this->what_am_i
 					);
 				}
@@ -746,7 +746,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$pwaforwp_globe_admin_notice = true;
 				$marketing_text = sprintf(
 					// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' ),
+					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'pwa-for-wp' ),
 					$this->what_am_i
 				);
 				$marketing_text = apply_filters( 'wisdom_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>
@@ -755,8 +755,8 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo esc_html( $marketing_text ); ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'pwa-for-wp' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'pwa-for-wp' ); ?></a>
 					</p>
 				</div>
 				<?php }
@@ -787,18 +787,18 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 */
 		public function form_default_text() {
 			$form = array();
-			$form['heading'] = __( 'Sorry to see you go', 'singularity' );
-			$form['body'] = __( 'Before you deactivate the plugin, would you quickly give us your reason for doing so?', 'singularity' );
+			$form['heading'] = __( 'Sorry to see you go', 'pwa-for-wp' );
+			$form['body'] = __( 'Before you deactivate the plugin, would you quickly give us your reason for doing so?', 'pwa-for-wp' );
 			$form['options'] = array(
-				__( 'Set up is too difficult', 'singularity' ),
-				__( 'Lack of documentation', 'singularity' ),
-				__( 'Not the features I wanted', 'singularity' ),
-				__( 'Found a better plugin', 'singularity' ),
-				__( 'Installed by mistake', 'singularity' ),
-				__( 'Only required temporarily', 'singularity' ),
-				__( 'Didn\'t work', 'singularity' )
+				__( 'Set up is too difficult', 'pwa-for-wp' ),
+				__( 'Lack of documentation', 'pwa-for-wp' ),
+				__( 'Not the features I wanted', 'pwa-for-wp' ),
+				__( 'Found a better plugin', 'pwa-for-wp' ),
+				__( 'Installed by mistake', 'pwa-for-wp' ),
+				__( 'Only required temporarily', 'pwa-for-wp' ),
+				__( 'Didn\'t work', 'pwa-for-wp' )
 			);
-			$form['details'] = __( 'Details (optional)', 'singularity' );
+			$form['details'] = __( 'Details (optional)', 'pwa-for-wp' );
 			return $form;
 		}
 		
@@ -838,7 +838,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$html .= '</div><!-- .put-goodbye-options -->';
 			}
 			$html .= '</div><!-- .put-goodbye-form-body -->';
-			$html .= '<p class="deactivating-spinner"><span class="spinner"></span> ' . __( 'Submitting form', 'singularity' ) . '</p>';
+			$html .= '<p class="deactivating-spinner"><span class="spinner"></span> ' . __( 'Submitting form', 'pwa-for-wp' ) . '</p>';
 			?>
 			<div class="put-goodbye-form-bg"></div>
 			<style type="text/css">
@@ -901,7 +901,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php 
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $html; 
-						?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
+						?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'pwa-for-wp' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'pwa-for-wp' ); ?></a></p></div>');
 						$('#put-submit-form').on('click', function(e){
 							// As soon as we click, the body of the form should disappear
 							$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?> .put-goodbye-form-body").fadeOut();
