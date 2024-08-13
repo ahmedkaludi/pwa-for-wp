@@ -1,7 +1,7 @@
 <?php  
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class PWAFORWP_Service_Worker{
+class PWAFORWP_Service_Worker {
 	
         public $is_amp = false;       
         /**
@@ -24,21 +24,21 @@ class PWAFORWP_Service_Worker{
                  add_action('wp_footer', array($this, 'pwaforwp_custom_add_to_home_screen'));   
                 }        
                     
-                if(isset($settings['amp_enable']) && $settings['amp_enable']==1){
-                 add_action('pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point'));
-                 //Automattic AMP will be done here
-                 add_action('wp', array($this, 'pwaforwp_automattic_amp_entry_point'));      
-                 //pixelative Amp 
-                 add_action('wp', array($this, 'pixelative_amp_entry_point'));      
+                if( isset( $settings['amp_enable'] ) && $settings['amp_enable'] == 1 ) {
+                    add_action( 'pre_amp_render_post', array($this, 'pwaforwp_amp_entry_point' ) );
+                    //Automattic AMP will be done here
+                    add_action( 'wp', array($this, 'pwaforwp_automattic_amp_entry_point' ) );      
+                    //pixelative Amp 
+                    add_action( 'wp', array($this, 'pixelative_amp_entry_point' ) );      
                 }  
                 
                 add_action( 'publish_post', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
                 add_action( 'publish_page', array($this, 'pwaforwp_store_latest_post_ids'), 10, 2 );
                 add_action( 'wp_ajax_pwaforwp_update_pre_caching_urls', array($this, 'pwaforwp_update_pre_caching_urls'));
-                if(isset($settings['one_signal_support_setting']) && $settings['one_signal_support_setting']==1){
+                if ( isset( $settings['one_signal_support_setting'] ) && $settings['one_signal_support_setting'] == 1 ){
         		    add_action( 'init',  array($this,'pwaforwp_onesignal_rewrite' ));
                 }
-                if(isset($settings['pushnami_support_setting']) && $settings['pushnami_support_setting']==1){
+                if ( isset($settings['pushnami_support_setting'] ) && $settings['pushnami_support_setting'] == 1 ) {
                     add_action( 'init',  array($this,'pwaforwp_pushnami_rewrite' ));
                 }
                 
@@ -56,37 +56,37 @@ class PWAFORWP_Service_Worker{
                     add_action( 'parse_query', array($this, 'pwaforwp_load_service_worker') );
                 //}
                       
-                if($settings['default_caching']=='cacheFirst' && isset($settings['change_default_on_login']) && $settings['change_default_on_login']==1){
-                    add_action('wp_login', array($this,'on_user_logged_in'));
+                if ( $settings['default_caching']=='cacheFirst' && isset( $settings['change_default_on_login'] ) && $settings['change_default_on_login'] == 1 ) {
+                    add_action( 'wp_login', array($this,'on_user_logged_in' ) );
                 }
                 /**
                  * Remove apple-touch-icon from theme side
                  */
-                add_filter("site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove'));
+                add_filter( "site_icon_meta_tags", array($this, 'site_icon_apple_touch_remove' ) );
             }
 
-            if( $GLOBALS['pagenow'] === 'wp-login.php' ){
-                add_action( 'init',  array($this,'load_scripts' ));
+            if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
+                add_action( 'init',  array($this,'load_scripts' ) );
             }
         }
         
-        public function load_scripts($hooks){
+        public function load_scripts( $hooks ) {
             wp_enqueue_script( 'pwa-cache-clear-js', PWAFORWP_PLUGIN_URL . '/assets/js/clear-cache.js',array(),PWAFORWP_PLUGIN_VERSION, true );
         }
 
-        public static function loadalernative_script_load_method(){
+        public static function loadalernative_script_load_method() {
             add_action( 'wp_ajax_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
             add_action( 'wp_ajax_nopriv_pwaforwp_sw_files', array('PWAFORWP_Service_Worker', 'pwaforwp_load_service_worker_ajax') );
         }
 		
-		public function pwaforwp_onesignal_rewrite(){
+		public function pwaforwp_onesignal_rewrite() {
 
 			add_rewrite_rule("onesignal_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("onesignal_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_onesignal'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
 
 		}
 
-        public function pwaforwp_pushnami_rewrite(){
+        public function pwaforwp_pushnami_rewrite() {
             add_rewrite_rule("pushnami_js/([0-9]{1,})?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=$matches[1]', 'top');
             add_rewrite_rule("pushnami_js/?$", 'index.php?'.pwaforwp_query_var('sw_query_var').'=1&'.pwaforwp_query_var('sw_file_var').'='.'dynamic_pushnami'."&".pwaforwp_query_var('site_id_var').'=normal', 'top');
         }
@@ -95,7 +95,7 @@ class PWAFORWP_Service_Worker{
         * This function will work similar as "pwaforwp_load_service_worker" 
         * Only for Ajax time
         */
-        public static function pwaforwp_load_service_worker_ajax(){
+        public static function pwaforwp_load_service_worker_ajax() {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
             $returnFile = ( ( isset($_GET[pwaforwp_query_var('sw_query_var')]) && isset($_GET[pwaforwp_query_var('sw_file_var')]) ) || isset($_GET[pwaforwp_query_var('site_id_var')]) );
             if ( $returnFile ) {
@@ -153,11 +153,11 @@ class PWAFORWP_Service_Worker{
                     return;
                 }
                 $file_data_escaped = '';
-                if( file_exists($filename) ){
+                if ( file_exists( $filename ) ) {
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
-                    $file_data_escaped = file_get_contents( $filename );
-                }else{
+                    $file_data_escaped = pwaforwp_local_file_get_contents( $filename );
+                } else {
                     $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){
                         $fileRawName = str_replace("-js", ".js", $fileRawName);
@@ -193,7 +193,7 @@ class PWAFORWP_Service_Worker{
             }
         }
 
-        public function pwaforwp_load_service_worker( WP_Query $query ){
+        public function pwaforwp_load_service_worker( WP_Query $query ) {
 
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
                 @ini_set( 'display_errors', 0 );
@@ -245,11 +245,11 @@ class PWAFORWP_Service_Worker{
                     status_header( 304 );
                     return;
                 }
-                 $file_data_escaped = '';
+                $file_data_escaped = '';
                 if( file_exists($filename) ){
                     header("Service-Worker-Allowed: /");
                     header("X-Robots-Tag: none");
-                    $file_data_escaped = file_get_contents( $filename );
+                    $file_data_escaped = pwaforwp_local_file_get_contents( $filename );
                 }else{
                     $fileCreation = new PWAforwp_File_Creation();
                     if( strrpos($fileRawName, '-js', -3) !== false ){

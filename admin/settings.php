@@ -2378,7 +2378,7 @@ function pwaforwp_404_page_callback(){
 	</label>
 	
 	<p class="description">
-		<?
+		<?php
 		/* translators: %s: 404 page */
 		printf(	esc_html__( '404 page is displayed and the requested page is not found. Current 404 page is %s', 'pwa-for-wp' ), esc_url(	get_permalink($settings['404_page']	) ? get_permalink( $settings['404_page'] ) : '' )); ?>
 	</p>
@@ -4420,50 +4420,69 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 	} 	
 } 
 
-if(!function_exists('pwaforwp_splashscreen_uploader')){
-	add_action('wp_ajax_pwaforwp_splashscreen_uploader','pwaforwp_splashscreen_uploader');
+if ( ! function_exists( 'pwaforwp_splashscreen_uploader' ) ) {
+	add_action( 'wp_ajax_pwaforwp_splashscreen_uploader', 'pwaforwp_splashscreen_uploader' );
 
-	function pwaforwp_splashscreen_uploader(){
+	function pwaforwp_splashscreen_uploader() {
 		if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
-            echo wp_json_encode(array("status"=>500, "message"=> esc_html__('Failed! Security check not active','pwa-for-wp')));
+            echo wp_json_encode( array( "status" => 500, "message" => esc_html__( 'Failed! Security check not active', 'pwa-for-wp' ) ) );
             die;
         }
-        if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           echo wp_json_encode(array("status"=>500, "message"=> esc_html__("Failed! Security check",'pwa-for-wp')));
-           die;
+        if ( ! wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ) {
+        	echo wp_json_encode( array( "status" => 500, "message" => esc_html__( "Failed! Security check", 'pwa-for-wp' ) ) );
+        	die;
         }
-        if( !current_user_can('manage_options') ){
-        	echo wp_json_encode(array("status"=>401, "message"=> esc_html__("Failed! you are not autherized to save",'pwa-for-wp')));
+        if( ! current_user_can( 'manage_options' ) ) {
+        	echo wp_json_encode( array( "status" => 401, "message" => esc_html__( "Failed! you are not autherized to save",'pwa-for-wp' ) ) );
         	die;
         }
 		$pwaforwp_settings = pwaforwp_defaultSettings();
-		
+
+		// 
 		$upload = wp_upload_dir();
-		$path = $upload['basedir']."/pwa-splash-screen/";
-		wp_mkdir_p($path);
-		  file_put_contents($path.'/index.html','');
-		  $zipfilename = $path."file.zip";
-	      $input = fopen('php://input', 'rb');
-		  $file = fopen($zipfilename, 'wb'); 
+		$path = $upload['basedir'] . "/pwa-splash-screen/";
+		
+		// Ensure WP_Filesystem is initialized
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
+		
+		global $wp_filesystem;
+		WP_Filesystem();
+		
+		// Create the directory using WP_Filesystem
+		$wp_filesystem->mkdir( $path );
+		
+		// Write the index.html file using WP_Filesystem
+		$wp_filesystem->put_contents( $path . '/index.html', '', FS_CHMOD_FILE );
+		
+		// Define the zip file path
+		$zipfilename = $path . "file.zip";
+		
+		// Open input stream
+		$input = fopen('php://input', 'rb');
+		
+		// Capture the content from the input stream
+		$content = stream_get_contents($input);
+		
+		// Write the content to the ZIP file using WP_Filesystem
+		$wp_filesystem->put_contents( $zipfilename, $content, FS_CHMOD_FILE );
+		
+		// Close the input stream
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- it’s the correct and necessary way to close the resource, it should be accepted.
+		fclose($input);
 
-		  // Note: we don't need open and stream to stream, 
-		  // we could've used file_get_contents and file_put_contents
-		  stream_copy_to_stream($input, $file);
-		  fclose($input);
-		  fclose($file);
-
-		if(function_exists('WP_Filesystem')){ WP_Filesystem(); }
 		unzip_file($zipfilename, $path);
 		$pathURL = $upload['baseurl']."/pwa-splash-screen/splashscreens/";
 		$iosdata = pwaforwp_ios_splashscreen_files_data();
 
 		if ( is_array( $iosdata ) && ! empty( $iosdata ) ) {
-
 			foreach ( $iosdata as $key => $value ) {
-				$pwaforwp_settings['ios_splash_icon'][sanitize_key($key)] = sanitize_text_field($pathURL.$value['file']);
-			}}
+				$pwaforwp_settings['ios_splash_icon'][sanitize_key($key)] = sanitize_text_field( $pathURL.$value['file'] );
+			}
+		}
 
-		$pwaforwp_settings['iosSplashScreenOpt']='generate-auto';
+		$pwaforwp_settings['iosSplashScreenOpt'] = 'generate-auto';
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
 		wp_delete_file( $zipfilename );
@@ -4473,8 +4492,8 @@ if(!function_exists('pwaforwp_splashscreen_uploader')){
 } 
 
 add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_update_force_update', 10, 3); 
-function pwaforwp_update_force_update($value, $old_value, $option){
-	if(!function_exists('wp_get_current_user')){
+function pwaforwp_update_force_update( $value, $old_value, $option) {
+	if( ! function_exists( 'wp_get_current_user' )) {
 		return $value;
 	}
 	$user = wp_get_current_user();

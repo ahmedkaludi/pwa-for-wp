@@ -3,16 +3,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function pwaforwp_loading_icon() {
     
-    if( function_exists('is_amp_endpoint') && is_amp_endpoint() || is_preview() || (function_exists('is_preview_mode') && is_preview_mode()) ){return false;}
+    if( function_exists('is_amp_endpoint') && is_amp_endpoint() || is_preview() || ( function_exists('is_preview_mode') && is_preview_mode() ) ) { return false; }
     $settings = pwaforwp_defaultSettings();
-    if(isset($settings['loading_icon']) && $settings['loading_icon']==1){
-        $color = (isset($settings['loading_icon_color']) && !empty($settings['loading_icon_color']))? $settings['loading_icon_color'] : '';
-        $bgcolor = (isset($settings['loading_icon_bg_color']) && !empty($settings['loading_icon_bg_color']))? $settings['loading_icon_bg_color'] : '';
+    if( isset( $settings['loading_icon'] ) && $settings['loading_icon'] == 1 ) {
+        $color = ( isset($settings['loading_icon_color'] ) && !empty( $settings['loading_icon_color'] ) ) ? $settings['loading_icon_color'] : '';
+        $bgcolor = ( isset($settings['loading_icon_bg_color'] ) && !empty( $settings['loading_icon_bg_color'] ) ) ? $settings['loading_icon_bg_color'] : '';
         $color_style = $bg_color_style = '';
-        if($color){
+        if( $color ) {
             $color_style = 'border-top-color: '.$color;
         }
-        if($bgcolor!=='#ffffff'){ $bg_color_style = 'background-color: '.esc_attr($bgcolor); }
+        if( $bgcolor !== '#ffffff' ) { $bg_color_style = 'background-color: '.esc_attr( $bgcolor ); }
         echo '<div id="pwaforwp_loading_div" style="'.esc_attr($bg_color_style).'"></div>';
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	-- output is already escaped
         echo apply_filters('pwaforwp_loading_contents', '<div class="pwaforwp-loading-wrapper"><div id="pwaforwp_loading_icon"  style="'.esc_attr($color_style).'"></div></div>');
@@ -599,79 +599,82 @@ function pwaforwp_multisite_postfix(){
                         
 }
 
-function pwaforwp_write_a_file($path, $content, $action = null){
-        
+function pwaforwp_write_a_file( $path, $content, $action = null ) {
+
+        global $wp_filesystem;
+
+        // Initialize the WP_Filesystem global
+        if ( ! function_exists( 'WP_Filesystem' ) ) {
+            require_once( ABSPATH . 'wp-admin/includes/file.php' );
+        }
+
+        WP_Filesystem();
+
         $writestatus = '';                        
         
-        if(file_exists($path)){
+        if ( $wp_filesystem->exists( $path ) ) {
             $writestatus =  wp_delete_file( $path );
         }
                 
-        if(!$action){
-            if(!file_exists($path) && !is_writable($path) && $content){
-            $handle      = @fopen($path, 'w');
-            $writestatus = @fwrite($handle, $content);
-            @fclose($handle);
-         }
+        if ( ! $action ) {
+            if ( ! $wp_filesystem->exists( $path ) && $wp_filesystem->is_writable( dirname( $path ) ) && $content ) {
+                $writestatus = $wp_filesystem->put_contents( $path, $content, FS_CHMOD_FILE );
+            }
         }
-                                        
-        if($writestatus){
+
+        if( $writestatus ){
             return true;   
-        }else{
-            return false;   
         }
+        return false;   
                 
 }
 
-function pwaforwp_delete_pwa_files(){
-    pwaforwp_required_file_creation(true);
+function pwaforwp_delete_pwa_files() {
+    pwaforwp_required_file_creation( true );
 }
 
-function pwaforwp_required_file_creation($action = null){
+function pwaforwp_required_file_creation( $action = null) {
     
-                    $settings = pwaforwp_defaultSettings(); 
-                
-                    $server_key = $config = '';       
-                
-                    $fileCreationInit = new PWAFORWP_File_Creation_Init();
+    $settings = pwaforwp_defaultSettings(); 
 
-                    pwaforwp_onesignal_compatiblity($action);
-                    pwaforwp_pushnami()->pushnami_compatiblity($action); 
-                		                    
-                    $status = '';                    
-                    $status = $fileCreationInit->pwaforwp_swjs_init($action);
-                    $status = $fileCreationInit->pwaforwp_manifest_init($action);
-                    $status = $fileCreationInit->pwaforwp_swr_init($action);
-                    $status = $fileCreationInit->pwaforwp_push_notification_js($action);
-                    
-                    
-                    if(function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' )){
-                                    
-                        $status = $fileCreationInit->pwaforwp_swjs_init_amp($action);
-                        $status = $fileCreationInit->pwaforwp_manifest_init_amp($action);
-                        $status = $fileCreationInit->pwaforwp_swhtml_init_amp($action);
-                                            
-                    }                    
-                    if(!$status){
-                        
-                        set_transient( 'pwaforwp_file_change_transient', true );
-                    }
-                    
-                    if(isset($settings['fcm_server_key'])){
-                         $server_key = $settings['fcm_server_key'];    
-                    }
+    $server_key = $config = '';       
 
-                    if(isset($settings['fcm_config'])){
-                        $config     = $settings['fcm_config'];   
-                    }
+    $fileCreationInit = new PWAFORWP_File_Creation_Init();
 
-                    if($server_key !='' && $config !=''){
-                         $fileCreationInit->pwaforwp_swhtml_init_firebase_js($action);  
-                    }
+    pwaforwp_onesignal_compatiblity( $action );
+    pwaforwp_pushnami()->pushnami_compatiblity( $action ); 
+                            
+    $status = '';                    
+    $status = $fileCreationInit->pwaforwp_swjs_init( $action );
+    $status = $fileCreationInit->pwaforwp_manifest_init( $action );
+    $status = $fileCreationInit->pwaforwp_swr_init( $action );
+    $status = $fileCreationInit->pwaforwp_push_notification_js( $action );
+    
+    
+    if ( function_exists( 'ampforwp_is_amp_endpoint' ) || function_exists( 'is_amp_endpoint' ) ) {
+        $status = $fileCreationInit->pwaforwp_swjs_init_amp( $action );
+        $status = $fileCreationInit->pwaforwp_manifest_init_amp( $action );
+        $status = $fileCreationInit->pwaforwp_swhtml_init_amp( $action );
+    }                    
+    if ( ! $status ) {
+        set_transient( 'pwaforwp_file_change_transient', true );
+    }
+    
+    if ( isset( $settings['fcm_server_key'] ) ) {
+            $server_key = $settings['fcm_server_key'];    
+    }
+
+    if ( isset( $settings['fcm_config'] ) ) {
+        $config = $settings['fcm_config'];   
+    }
+
+    if ( $server_key != '' && $config != '' ) {
+        $fileCreationInit->pwaforwp_swhtml_init_firebase_js( $action );  
+    }
     
 }
 
-function pwaforwp_query_var($key=''){
+function pwaforwp_query_var( $key = '' ) {
   $default = array(
               'sw_query_var'=>'pwa_for_wp_script',
               'sw_file_var'=> 'sw',
@@ -725,20 +728,35 @@ function pwaforwp_manifest_json_url($is_amp=false){
 }
 
 add_filter("pwaforwp_file_creation_path", "pwaforwp_check_root_writable", 10, 1);
-function pwaforwp_check_root_writable($wppath){
-  $uploadArray = wp_upload_dir();
-  $uploadBasePath = trailingslashit($uploadArray['basedir']);
-  if(!is_writable($wppath) && is_writable(realpath(WP_CONTENT_DIR."/../"))){
-      return trailingslashit(realpath(WP_CONTENT_DIR."/../"));
-  }
-  if(!is_writable($wppath) && is_writable($uploadBasePath)){
-    $uploadPwaFolder = "pwaforwp";
-    $newpath = $uploadBasePath.$uploadPwaFolder;
-    wp_mkdir_p($newpath);
-    return trailingslashit($newpath);
-  }
-  return trailingslashit($wppath);
+
+function pwaforwp_check_root_writable( $wppath ) {
+    global $wp_filesystem;
+
+    // Initialize the WP_Filesystem global
+    if ( ! function_exists( 'WP_Filesystem' ) ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    }
+
+    WP_Filesystem();
+
+    $uploadArray = wp_upload_dir();
+    $uploadBasePath = trailingslashit($uploadArray['basedir']);
+
+    // Check if the path is writable using WP_Filesystem
+    if ( ! $wp_filesystem->is_writable( $wppath ) && $wp_filesystem->is_writable( realpath(WP_CONTENT_DIR . "/../") ) ) {
+        return trailingslashit( realpath( WP_CONTENT_DIR . "/../" ) );
+    }
+
+    if ( ! $wp_filesystem->is_writable( $wppath ) && $wp_filesystem->is_writable( $uploadBasePath ) ) {
+        $uploadPwaFolder = "pwaforwp";
+        $newpath = $uploadBasePath . $uploadPwaFolder;
+        wp_mkdir_p( $newpath );
+        return trailingslashit( $newpath );
+    }
+
+    return trailingslashit( $wppath );
 }
+
 
 function pwaforwp_service_workerUrls($url, $filename){
   $uploadArray    = wp_upload_dir();
@@ -763,14 +781,23 @@ function pwaforwp_service_workerUrls($url, $filename){
   return $url;
 }
 
-function pwaforwp_is_file_inroot(){
+function pwaforwp_is_file_inroot() {
     $wppath = ABSPATH;
-    $wppath = apply_filters("pwaforwp_file_creation_path", $wppath);
-  if(is_writable($wppath)){
-    return true;
-  }else{
+    $wppath = apply_filters( "pwaforwp_file_creation_path", $wppath );
+
+    global $wp_filesystem;
+
+    // Initialize the WP_Filesystem global
+    if ( ! function_exists( 'WP_Filesystem' ) ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    }
+
+    WP_Filesystem();
+
+    if ( $wp_filesystem->is_writable( $wppath ) ) {
+        return true;
+    }
     return false;
-  }
 }
 
 /**
@@ -1258,4 +1285,23 @@ function pwaforwp_fix_empty_option_update($new_value, $old_value, $option) {
     }
 
     return $new_value;
+}
+
+function pwaforwp_local_file_get_contents( $file_path ) {
+
+    // Include WordPress Filesystem API
+    if ( ! function_exists( 'WP_Filesystem' ) ) {
+        require_once( ABSPATH . 'wp-admin/includes/file.php' );
+    }
+    // Initialize the API
+    global $wp_filesystem;
+    if ( ! WP_Filesystem() ) {
+        WP_Filesystem();
+    }
+    // Check if the file exists
+    if ( $wp_filesystem->exists( $file_path ) ) {
+        return $wp_filesystem->get_contents( $file_path );
+    }
+    return esc_html__( 'File does not exist.', "pwa-for-wp" );
+
 }
