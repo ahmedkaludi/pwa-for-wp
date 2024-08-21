@@ -333,9 +333,17 @@ class PWAforwp_File_Creation {
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
                   $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
                 }
+                if( isset( $settings['app_maskable_icon'] ) ) {
+                  $pre_cache_urls .= "'".esc_url( pwaforwp_https( apply_filters( 'pwaforwp_manifest_images_src',$settings['app_maskable_icon'] ) ) )."',\n";
+                  $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['app_maskable_icon'])))."',\n";
+                }
                 if(isset($settings['splash_icon'])){
                   $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
                   $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
+                }
+                if( isset( $settings['splash_maskable_icon'] ) ){
+                  $pre_cache_urls .= "'".esc_url( pwaforwp_https( apply_filters( 'pwaforwp_manifest_images_src',$settings['splash_maskable_icon'] ) ) )."',\n";
+                  $pre_cache_urls_amp .= "'".esc_url( pwaforwp_https( apply_filters( 'pwaforwp_manifest_images_src',$settings['splash_maskable_icon'] ) ) )."',\n";
                 }
                 if(isset($settings['switch_apple_splash_screen']) && $settings['switch_apple_splash_screen']==1){
                   if(is_array($settings['ios_splash_icon']) && !empty($settings['ios_splash_icon'])){
@@ -666,12 +674,14 @@ class PWAforwp_File_Creation {
                     'type'	=> 'image/png', 
                     'purpose'=> 'any',
                 );
-                $icons[] = array(
-                    'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['icon']))),
-                    'sizes' => '192x192', 
-                    'type'  => 'image/png', 
-                    'purpose'=> 'maskable',
-                );
+                if ( isset($defaults['app_maskable_icon']) && !empty($defaults['app_maskable_icon'] ) ) {
+                  $icons[] = array(
+                      'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['app_maskable_icon']))),
+                      'sizes' => '192x192', 
+                      'type'  => 'image/png', 
+                      'purpose'=> 'maskable',
+                  );
+                }
                 //Splash icon
                 $icons[] = array(
                     'src' 	=> esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['splash_icon']))),
@@ -679,12 +689,14 @@ class PWAforwp_File_Creation {
                     'type'	=> 'image/png', 
                     'purpose'=> 'any',
                 );
-                $icons[] = array(
-                    'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['splash_icon']))),
-                    'sizes' => '512x512', 
-                    'type'  => 'image/png', 
-                    'purpose'=> 'maskable',
-                );
+                if ( isset($defaults['splash_maskable_icon']) && !empty($defaults['splash_maskable_icon'] ) ) {
+                  $icons[] = array(
+                      'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['splash_maskable_icon']))),
+                      'sizes' => '512x512', 
+                      'type'  => 'image/png', 
+                      'purpose'=> 'maskable',
+                  );
+                }
                 if (isset($defaults['monochrome']) && $defaults['monochrome']) {
                   $icons[] = array(
                       'src'   => esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$defaults['monochrome']))),

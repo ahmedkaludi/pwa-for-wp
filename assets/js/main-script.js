@@ -1636,3 +1636,48 @@ function pwa_for_wp_select2_exclude(type){
     }                    
     
 }
+
+jQuery('.pwaforwp-maskable-icon-upload').click(function(e) {	// Application Icon upload
+    e.preventDefault();
+    var t = jQuery(this);
+    var pwaforwp_meda_uploader = wp.media({
+        title: 'Maskable Icon',
+        button: {
+            text: 'Select Icon'
+        },
+        multiple: false  // Set this to true to allow multiple files to be selected
+    })
+    .on('select', function() {
+        var attachment = pwaforwp_meda_uploader.state().get('selection').first().toJSON();
+        t.parents('td').find('.pwaforwp-maskable-input').val(attachment.url);
+        pwaforwp_check_maskable_input();
+    })
+    .open();
+});
+
+jQuery('.pwaforwp_js_remove_maskable').click(function(e) {
+    e.preventDefault();
+    jQuery(this).parents('td').find('.pwaforwp-maskable-input').val("");
+    jQuery(this).hide();
+});
+
+jQuery('.pwaforwp-maskable-input').keyup(function() {
+    if ( jQuery(this).val() == null || jQuery(this).val() == "") {
+        jQuery(this).parents('td').find('.pwaforwp_js_remove_maskable').hide();
+    }else{
+        jQuery(this).parents('td').find('.pwaforwp_js_remove_maskable').show();
+    }
+})
+
+
+function pwaforwp_check_maskable_input() {
+    jQuery('.pwaforwp-maskable-input').each(function() {
+        console.log(jQuery(this).val())
+        if ( jQuery(this).val() == null || jQuery(this).val() == "") {
+            jQuery(this).parents('td').find('.pwaforwp_js_remove_maskable').hide();
+        }else{
+            jQuery(this).parents('td').find('.pwaforwp_js_remove_maskable').show();
+        }
+    });
+}
+pwaforwp_check_maskable_input();
