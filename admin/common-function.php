@@ -1129,9 +1129,19 @@ function pwaforwp_visibility_check(){
         $current_page_type = '';
         if(is_singular() && !is_front_page()){
             $current_page_type = get_post_type();
-        }        
-        // $current_page_title = get_the_title();
+        }
+
         $current_page_title = single_post_title("",false);
+
+        if ( empty($current_page_type) ) {
+            global $wp;
+            $slug = $wp->request;
+            $q = get_page_by_path( $slug, OBJECT, array( 'post', 'page' ) );
+            if ( ! empty($q) && isset($q->post_type) ) {
+                $current_page_type = $q->post_type;
+                $current_page_title = $q->post_title;
+            }
+        }
 
         $is_desplay = 0;
 
