@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 6.5
+Tested up to: 6.6
 
-Stable tag: 1.7.71
+Stable tag: 1.7.74
 
 License: GPLv2 or later
 
@@ -75,6 +75,24 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.74 (02 September 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
+* Improvement  : Connect CTA with add to homescreen in chrome browser. #924
+* Improvement  : Update 'Stable Tag' in readme.md file #908
+
+= 1.7.73 (13 August 2024) =
+* Bug Fixed  : Warning appears in Call to Action extension. #915
+* Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
+* Compatibility  : Tested with WordPress version 6.6 #914.
+* Improvement  : Code improvement.
+
+= 1.7.72 (09 July 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : Navigation bar extension conflict issue #910
+* Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
+* Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
+* Improvement  : Code improvement.
 
 = 1.7.71 (03 July 2024) =
 * Feature Added  : Make an option to select form factor from the option #899

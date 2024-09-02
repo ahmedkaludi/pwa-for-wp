@@ -1,3 +1,9 @@
+= 1.7.74 (02 September 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
+* Improvement  : Connect CTA with add to homescreen in chrome browser. #924
+* Improvement  : Update 'Stable Tag' in readme.md file #908
+
 = 1.7.73 (13 August 2024) =
 * Bug Fixed  : Warning appears in Call to Action extension. #915
 * Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
