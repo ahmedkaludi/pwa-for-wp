@@ -150,9 +150,17 @@ class PWAFORWP_WPwa{
               $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
               $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['icon'])))."',\n";
             }
+            if(isset($settings['app_maskable_icon'])){
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['app_maskable_icon'])))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['app_maskable_icon'])))."',\n";
+            }
             if(isset($settings['splash_icon'])){
               $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
               $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_icon'])))."',\n";
+            }
+            if(isset($settings['splash_maskable_icon'])){
+              $pre_cache_urls .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_maskable_icon'])))."',\n";
+              $pre_cache_urls_amp .= "'".esc_url(pwaforwp_https(apply_filters('pwaforwp_manifest_images_src',$settings['splash_maskable_icon'])))."',\n";
             }
              
             //screenshots cache

@@ -474,6 +474,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_general_section'						// Settings Section ID
 		);
 		
+		// Application Maskable Icon
+		add_settings_field(
+			'pwaforwp_app_maskable_icons',										// ID
+			esc_html__('App Maskable Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_app_maskable_icon_callback',									// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
+		
 		// Monochrome Icon
 		add_settings_field(
 			'pwaforwp_monochrome',										// ID
@@ -488,6 +497,15 @@ function pwaforwp_settings_init(){
 			'pwaforwp_app_splash_icon',									// ID
 			esc_html__('App Splash Screen Icon', 'pwa-for-wp'),	// Title
 			'pwaforwp_splash_icon_callback',								// Callback function
+			'pwaforwp_general_section',						// Page slug
+			'pwaforwp_general_section'						// Settings Section ID
+		);
+		
+		// Splash Screen Icon
+		add_settings_field(
+			'pwaforwp_app_splash_maskable_icon',									// ID
+			esc_html__('App Splash Maskable Icon', 'pwa-for-wp'),	// Title
+			'pwaforwp_splash_maskable_icon_callback',								// Callback function
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		);
@@ -2158,6 +2176,28 @@ function pwaforwp_app_icon_callback(){
 	<?php
 }
 
+function pwaforwp_app_maskable_icon_callback() {
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
+	
+	<!-- Application Icon -->
+    <input type="text" name="pwaforwp_settings[app_maskable_icon]" id="pwaforwp_settings[app_maskable_icon]" class="pwaforwp-icon regular-text pwaforwp-maskable-input" size="50" value="<?php echo isset( $settings['app_maskable_icon'] ) ? esc_attr( pwaforwp_https($settings['app_maskable_icon'])) : ''; ?>">
+	<button type="button" class="button pwaforwp-maskable-icon-upload" data-editor="content">
+		<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?> 
+	</button>
+	<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button pwaforwp_js_remove_maskable" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?></button>
+	
+	<p class="description">
+		<?php echo sprintf('%s <strong>%s</strong><br/> %s',
+			esc_html__('Icon of your application when installed on the phone. Must be a PNG image exactly','pwa-for-wp'),
+			esc_html__('192x192 in size.','pwa-for-wp'),
+			esc_html__('- For Apple mobile exact sizes is necessary','pwa-for-wp')
+				);
+		?>
+	</p>
+	<?php
+}
+
 function pwaforwp_monochrome_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); ?>
@@ -2248,6 +2288,27 @@ function pwaforwp_splash_icon_callback(){
 		
 	</div>
 
+	<?php
+}
+
+function pwaforwp_splash_maskable_icon_callback() {
+	// Get Settings
+	$settings = pwaforwp_defaultSettings(); ?>
+	
+	<!-- Splash  Maskable Screen Icon -->
+    <input type="text" name="pwaforwp_settings[splash_maskable_icon]" id="pwaforwp_settings[splash_maskable_icon]" class="pwaforwp-splash-icon regular-text pwaforwp-maskable-input" size="50" value="<?php echo isset( $settings['splash_maskable_icon'] ) ? esc_attr( pwaforwp_https($settings['splash_maskable_icon'])) : ''; ?>">
+	<button type="button" class="button pwaforwp-maskable-icon-upload" data-editor="content">
+	<span class="dashicons dashicons-format-image" style="margin-top: 4px;"></span> <?php echo esc_html__('Choose Icon', 'pwa-for-wp'); ?>
+	</button>
+	<button type="button" style="background-color: red; border-color: red; color: #fff; display:none;" class="button pwaforwp_js_remove_maskable" > <?php echo esc_html__('Remove', 'pwa-for-wp'); ?></button>
+	
+	<p class="description">
+		<?php echo sprintf('%s <strong>%s</strong>',
+			esc_html__('Icon displayed on the splash screen of your application on supported devices. Must be a PNG image size exactly', 'pwa-for-wp'),
+			esc_html__('512x512 in size.', 'pwa-for-wp')
+				);
+		?>
+	</p>
 	<?php
 }
 

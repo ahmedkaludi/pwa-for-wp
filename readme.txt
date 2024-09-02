@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.6
-Stable tag: 1.7.73
+Stable tag: 1.7.74
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -64,6 +64,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.74 (02 September 2024) =
+* Bug Fixed  : The visibility option is not working for the CTA feature. #905
+* Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
+* Improvement  : Connect CTA with add to homescreen in chrome browser. #924
+* Improvement  : Update 'Stable Tag' in readme.md file #908
+
 = 1.7.73 (13 August 2024) =
 * Bug Fixed  : Warning appears in Call to Action extension. #915
 * Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
@@ -109,8 +115,5 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Feature Added : Option where we can hide the navigation bar on certain pages. #868
 * Compatibility : Tested with  WordPress 6.5 #876
 
-= 1.7.66 (23 January 2024) =
-* Improvement : Visibility improvement #858
-* Bug Fixed  : offline form feature is not working with formidable forms. #862
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

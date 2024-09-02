@@ -288,7 +288,9 @@ function pwaforwp_fields_and_type($data_type = 'value'){
 		'app_blog_short_name'	 => array('type'=>'text','value'=>get_bloginfo( 'name' )),
 		'description'		     => array('type'=>'text','value'=>get_bloginfo( 'description' )),
 		'icon'			         => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo.png'),
+		'app_maskable_icon'			         => array('type'=>'text','value'=>""),
 		'splash_icon'		     => array('type'=>'text','value'=>PWAFORWP_PLUGIN_URL . 'images/logo-512x512.png'),
+		'splash_maskable_icon'		     => array('type'=>'text','value'=>""),
         //Splash icon
         'switch_apple_splash_screen'=>array('type'=>'checkbox','value'=>0),
         'ios_splash_icon'=> array('type'=>'text','value'=>array(
@@ -1129,9 +1131,19 @@ function pwaforwp_visibility_check(){
         $current_page_type = '';
         if(is_singular() && !is_front_page()){
             $current_page_type = get_post_type();
-        }        
-        // $current_page_title = get_the_title();
+        }
+
         $current_page_title = single_post_title("",false);
+
+        if ( empty($current_page_type) ) {
+            global $wp;
+            $slug = $wp->request;
+            $q = get_page_by_path( $slug, OBJECT, array( 'post', 'page' ) );
+            if ( ! empty($q) && isset($q->post_type) ) {
+                $current_page_type = $q->post_type;
+                $current_page_title = $q->post_title;
+            }
+        }
 
         $is_desplay = 0;
 
