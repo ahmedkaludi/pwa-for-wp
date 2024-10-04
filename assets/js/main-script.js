@@ -804,7 +804,7 @@ function PWAforwpreadCookie(name) {
         }else{
             jQuery(this).parents('.card-action').find('.card-action-settings').css({opacity: 0});
         }
-        fields = [];
+        let fields = [];
         var name = jQuery(this).attr('name');
         pwaforwp_dependent_features_section(name, value);
         fields.push({var_name: name, var_value: value});
