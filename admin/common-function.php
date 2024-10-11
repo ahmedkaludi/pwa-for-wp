@@ -395,6 +395,7 @@ function pwaforwp_fields_and_type($data_type = 'value'){
         'related_applications'=>array('type'=>'text','value'=>''),
         'related_applications_ios'=>array('type'=>'text','value'=>''),
         'screenshots_multiple'=>array('type'=>'text','value'=>''),
+        'shortcut'=>array('type'=>'text','value'=>''),
 	);
     $response = [];
     switch ($data_type) {

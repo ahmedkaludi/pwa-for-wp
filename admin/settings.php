@@ -902,13 +902,22 @@ function pwaforwp_settings_init(){
 
 function pwaforwp_sanitize_fields($inputs=array()){
 	$fields_type_data = pwaforwp_fields_and_type('type');
+
 	foreach ($inputs as $key => $value) {
 		if (isset($fields_type_data[$key])) {
 			$fields_type = $fields_type_data[$key];
 			if (is_array($value)) {
-				foreach ($value as $k => $val) {
-					$value[sanitize_key($k)] = sanitize_text_field($val);
-				}		
+				if($key == 'shortcut') {
+					foreach ($value as $k => $vals) {
+						foreach ($vals as $kc => $vc) {
+							$value[sanitize_key($k)][sanitize_key($kc)] = sanitize_text_field($vc);
+						}
+					}
+				}else{
+					foreach ($value as $k => $val) {
+						$value[sanitize_key($k)] = sanitize_text_field($val);
+					}
+				}
 				$inputs[sanitize_key($key)] = $value;
 			}else{
 				switch ($fields_type) {
@@ -4010,6 +4019,7 @@ function pwaforwp_update_features_options(){
 	$actualFields = array();
 	$navigation_bar_data = array();
 	$utm_trackings = array();
+	$quick_action = array();
 	if(is_array($allFields) && !empty($allFields)){
 		foreach ($allFields as $key => $field) {
 			// navigation bar features start			
@@ -4055,6 +4065,26 @@ function pwaforwp_update_features_options(){
 				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
 			}
 			// UTM Tracking features end
+			// quick_action features start
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_source]') {
+				$utm_trackings['utm_details']['utm_source'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_medium]') {
+				$utm_trackings['utm_details']['utm_medium'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_campaign]') {
+				$utm_trackings['utm_details']['utm_campaign'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_term]') {
+				$utm_trackings['utm_details']['utm_term'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_content]') {
+				$utm_trackings['utm_details']['utm_content'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][pwa_utm_change_track]') {
+				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
+			}
+			// quick_action features end
 					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
@@ -4064,16 +4094,25 @@ function pwaforwp_update_features_options(){
 					foreach (array_reverse($varArray) as $key) {
 						$newArr = [$key => $newArr];
 					}
+					
 					$actualFields = pwaforwp_merge_recursive_ex($actualFields, $newArr);
 				}else{
+					
 					if (isset($actualFields[$varArray[0]][$varArray[1]])) {
 						$actualFields[$varArray[0]][$varArray[1]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
+					}
+
+					// for quick action or holding three array index
+					
+					if ( isset($varArray[0] ) && isset( $varArray[1] ) && isset( $varArray[2] ) ) {
+						$quick_action[$varArray[0]][$varArray[1]][$varArray[2]] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 					}
 				}
 				
 			}else{
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
+
 		}
 		if(!empty($navigation_bar_data)){
 			if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
@@ -4081,9 +4120,13 @@ function pwaforwp_update_features_options(){
 				$actualFields = wp_parse_args($navigation_bar_data, $pre_settings);
 			}
 		}
+		if(!empty($quick_action)){
+			$pre_settings = pwaforwp_defaultSettings();
+			$actualFields = wp_parse_args($quick_action, $pre_settings);
+		}
 		if(!empty($utm_trackings) && isset($utm_trackings['utm_details'])){
-				$pre_settings = pwaforwp_defaultSettings();
-				$actualFields = wp_parse_args($utm_trackings, $pre_settings);
+			$pre_settings = pwaforwp_defaultSettings();
+			$actualFields = wp_parse_args($utm_trackings, $pre_settings);
 		}
 
 		if(isset($actualFields['precaching_feature'])){
@@ -4166,6 +4209,7 @@ function pwaforwp_update_features_options(){
 		
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
+		
 
 		//dependent settings
 		if(isset($actualFields['utm_setting']) && $actualFields['utm_setting']==0){
@@ -4182,6 +4226,8 @@ function pwaforwp_update_features_options(){
 		
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
+
+		// print_r($actualFields);die;
 
 		update_option( 'pwaforwp_settings', $actualFields ) ;
 		global $pwaforwp_settings;
