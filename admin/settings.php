@@ -4065,26 +4065,6 @@ function pwaforwp_update_features_options(){
 				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
 			}
 			// UTM Tracking features end
-			// quick_action features start
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_source]') {
-				$utm_trackings['utm_details']['utm_source'] = sanitize_text_field($field['var_value']);
-			}
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_medium]') {
-				$utm_trackings['utm_details']['utm_medium'] = sanitize_text_field($field['var_value']);
-			}
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_campaign]') {
-				$utm_trackings['utm_details']['utm_campaign'] = sanitize_text_field($field['var_value']);
-			}
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_term]') {
-				$utm_trackings['utm_details']['utm_term'] = sanitize_text_field($field['var_value']);
-			}
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][utm_content]') {
-				$utm_trackings['utm_details']['utm_content'] = sanitize_text_field($field['var_value']);
-			}
-			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[utm_details][pwa_utm_change_track]') {
-				$utm_trackings['utm_details']['pwa_utm_change_track'] = sanitize_text_field($field['var_value']);
-			}
-			// quick_action features end
 					
 			$variable = str_replace(array('pwaforwp_settings[', ']'), array('',''), $field['var_name']);
 			if(strpos($variable, '[')!==false){
@@ -4226,8 +4206,6 @@ function pwaforwp_update_features_options(){
 		
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
-
-		// print_r($actualFields);die;
 
 		update_option( 'pwaforwp_settings', $actualFields ) ;
 		global $pwaforwp_settings;
