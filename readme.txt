@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.6
-Stable tag: 1.7.74
+Stable tag: 1.7.75
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -64,6 +64,14 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.75 (28 October 2024) =
+* Improvement  : Added an option to edit the text in the iOS QR code #926
+* Improvement  : Added an option to edit browser banner content. #934
+* Bug Fixed  : Extensions not activating #929
+* Improvement  : Added an option so that only the Steps to install the PWA on IOS should be visible directly without clicking on Install banner in CTA #922
+* Bug Fixed   : The feature Quick Action is not working #931
+* Improvement   : Minify JS files for production #933
+
 = 1.7.74 (02 September 2024) =
 * Bug Fixed  : The visibility option is not working for the CTA feature. #905
 * Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
@@ -108,12 +116,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
 * Bug Fixed  : CTA delayed feature is not working properly in IOS chrome mobile version. #879
 * Bug Fixed  : Conflict issue with Polylang plugin #880
-
-= 1.7.67 (26 March 2024) =
-* Feature Added : New option so that category pages can be configured as the start page in PWA #861
-* Improvement: Compatibility with WP-Hide plugin. #732
-* Feature Added : Option where we can hide the navigation bar on certain pages. #868
-* Compatibility : Tested with  WordPress 6.5 #876
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
