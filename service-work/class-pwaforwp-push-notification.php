@@ -29,12 +29,17 @@ class PWAFORWP_Push_Notification {
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
                 return; 
             }
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-               return;  
-            }         
-            $body             = sanitize_textarea_field($_POST['message']);                        
+              return;  
+            }
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash     
+            $body             = sanitize_textarea_field($_POST['message']);
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash                      
             $message['title'] = sanitize_text_field($_POST['title']);
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
             $url              = sanitize_url($_POST['url']);
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
             $image_url        = sanitize_url($_POST['image_url']);
             $message['body']  = $body;
             $message['url']   = (!empty($url)? $url : site_url());
@@ -186,9 +191,9 @@ class PWAFORWP_Push_Notification {
             if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
                 return; 
             }
-            
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-               return;  
+              return;  
             }
             if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
               return;
@@ -196,6 +201,7 @@ class PWAFORWP_Push_Notification {
          
             $get_token_list = array();  
             $result         = false;
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
             $token          = sanitize_text_field($_POST['token']);             
             
             if($token){

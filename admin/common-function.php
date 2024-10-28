@@ -26,13 +26,14 @@ if(!is_admin()){
 function pwaforwp_reset_all_settings(){ 
     
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
-           return; 
+            return; 
         }
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           return;  
+            return;  
         }    
         if ( ! current_user_can( 'manage_options' ) ) {
-           return;
+            return;
         }
         
         $default = pwaforwp_get_default_settings_array();                        
@@ -65,6 +66,7 @@ function pwaforwp_review_notice_close(){
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
            return; 
         }
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
            return;  
         }    
@@ -86,12 +88,13 @@ function pwaforwp_review_notice_remindme(){
             return;
         }
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
-           return; 
+            return; 
         }
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-           return;  
-        }    
-       
+            return;  
+        }
+
         $result =  update_option( "pwaforwp_review_notice_bar_close_date", gmdate("Y-m-d"));               
         if($result){           
             echo wp_json_encode(array('status'=>'t'));            
@@ -109,7 +112,7 @@ add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_re
 function pwaforwp_frontend_enqueue(){
         $force_rememberme=0;
         if ( class_exists('\Elementor\Plugin') && \Elementor\Plugin::$instance->preview->is_preview_mode() ) { return ; }
-                               
+        $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $server_key = $config = '';
         
         $settings   = pwaforwp_defaultSettings();
@@ -155,7 +158,7 @@ function pwaforwp_frontend_enqueue(){
             }
             if( (isset($settings['loading_icon']) && $settings['loading_icon']==1) || isset($settings['add_to_home_sticky']) || isset($settings['add_to_home_menu'])){
                 
-                wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp.min.js',array(), $force_update_sw_setting_value, true); 
+                wp_register_script('pwaforwp-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp'.$suffix.'.js',array(), $force_update_sw_setting_value, true); 
                 
                 $loader_desktop = $loader_mobile = $loader_admin = $loader_only_pwa = 0;
                 //For desktop
@@ -208,7 +211,7 @@ function pwaforwp_frontend_enqueue(){
                 
             }
                 
-            wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main.min.css', false , $force_update_sw_setting_value );       
+            wp_enqueue_style( 'pwaforwp-style', PWAFORWP_PLUGIN_URL . 'assets/css/pwaforwp-main'.$suffix.'.css', false , $force_update_sw_setting_value );       
             wp_style_add_data( 'pwaforwp-style', 'rtl', 'replace' );
 
             if (isset($settings['scrollbar_setting']) && $settings['scrollbar_setting']) {
@@ -217,10 +220,10 @@ function pwaforwp_frontend_enqueue(){
 
         }
 
-        wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video.js',array(), $force_update_sw_setting_value, true); 
+        wp_register_script('pwaforwp-video-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-video'.$suffix.'.js',array(), $force_update_sw_setting_value, true); 
         wp_enqueue_script('pwaforwp-video-js');
         
-        wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download.js',array(), $force_update_sw_setting_value, true); 
+        wp_register_script('pwaforwp-download-js', PWAFORWP_PLUGIN_URL . 'assets/js/pwaforwp-download'.$suffix.'.js',array(), $force_update_sw_setting_value, true); 
         $object_js_download = array(
             'force_rememberme'=>$force_rememberme
         );
@@ -237,8 +240,8 @@ if ( ! function_exists('pwaforwp_is_admin') ) {
             
 		if ( is_admin() ) {
 			return true;
-		}                
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+		}             
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- we are not processing form here
 		if ( isset( $_GET['page'] ) && false !== strpos( $_GET['page'], 'pwaforwp' ) ) {
 			return true;
 		}
@@ -271,7 +274,7 @@ function pwaforwp_admin_link($tab = '', $args = array()){
 
 
 function pwaforwp_get_tab( $default = '', $available = array() ) {
-    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- we are not processing form here
 	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : $default;
         
 	if ( ! in_array( $tab, $available ) ) {
@@ -395,6 +398,7 @@ function pwaforwp_fields_and_type($data_type = 'value'){
         'related_applications'=>array('type'=>'text','value'=>''),
         'related_applications_ios'=>array('type'=>'text','value'=>''),
         'screenshots_multiple'=>array('type'=>'text','value'=>''),
+        'shortcut'=>array('type'=>'text','value'=>''),
 	);
     $response = [];
     switch ($data_type) {

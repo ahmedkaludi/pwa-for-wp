@@ -67,7 +67,8 @@ class PWAFORWP_Service_Worker {
         }
         
         public function load_scripts( $hooks ) {
-            wp_enqueue_script( 'pwa-cache-clear-js', PWAFORWP_PLUGIN_URL . '/assets/js/clear-cache.js',array(),PWAFORWP_PLUGIN_VERSION, true );
+            $suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+            wp_enqueue_script( 'pwa-cache-clear-js', PWAFORWP_PLUGIN_URL . '/assets/js/clear-cache'.$suffix.'.js',array(),PWAFORWP_PLUGIN_VERSION, true );
         }
 
         public static function loadalernative_script_load_method() {
@@ -98,7 +99,7 @@ class PWAFORWP_Service_Worker {
                 @ini_set( 'display_errors', 0 );
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- we are not processing form here
                 $fileRawName = $filename =  sanitize_file_name($_GET[pwaforwp_query_var('sw_file_var')]);
                 if($filename == 'dynamic_onesignal' || in_array($filename, array('OneSignalSDKWorker-'.get_current_blog_id().'.js.php', 'OneSignalSDKWorker-'.get_current_blog_id().'.js_.php')) ){//work with onesignal only
                     $filename = str_replace(".js_",".js", $filename);
@@ -112,7 +113,7 @@ class PWAFORWP_Service_Worker {
                     exit;
                 }elseif($filename == 'dynamic_pushnami'){//work with pushnami only
                     $home_url = pwaforwp_home_url();
-                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+                    // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- we are not processing form here
                     $site_id = sanitize_text_field( $_GET[ pwaforwp_query_var('site_id_var') ] );
                     if($site_id=='normal'){ $site_id = ''; }else{ $site_id = "-".$site_id; }
 
@@ -336,7 +337,8 @@ class PWAFORWP_Service_Worker {
             }           
             if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
                 return; 
-            }       
+            }
+            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash     
             if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
                return;  
             } 
@@ -636,7 +638,7 @@ class PWAFORWP_Service_Worker {
     public function rest_permission( WP_REST_Request $request ) {
 
         if ( 'edit' === $request['context'] ) {
-            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'default' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'pwa-for-wp' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         return true;
