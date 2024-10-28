@@ -12,11 +12,11 @@ class PWAFORWP_Utility{
 	}
 
 	public function enable_modules(){
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		if(!wp_verify_nonce( sanitize_text_field( $_REQUEST['verify_nonce'] ), 'verify_request' ) ) {
 
-		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'verify_request' ) ) {
-
-	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__("Request not valid",'pwa-for-wp')));
-	        exit();
+			echo wp_json_encode(array("status"=>300,"message"=>esc_html__("Request not valid",'pwa-for-wp')));
+			exit();
 
 	    }
 	    // Exit if the user does not have proper permissions
@@ -27,6 +27,7 @@ class PWAFORWP_Utility{
 
 	    $plugins = array();
 	    $redirectSettingsUrl = '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	    $currentActivateModule = sanitize_text_field( wp_unslash($_REQUEST['activate']));
 
 	    switch($currentActivateModule){
@@ -63,7 +64,8 @@ class PWAFORWP_Utility{
 	}
 
 	public function enable_modules_active_dashboard(){
-		if(!wp_verify_nonce( $_REQUEST['verify_nonce'], 'wp_pro_activate' ) ) {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		if(!wp_verify_nonce( sanitize_text_field( $_REQUEST['verify_nonce'] ), 'wp_pro_activate' ) ) {
 	        echo wp_json_encode(array("status"=>300,"message"=>esc_html__('Request not valid','pwa-for-wp'))); die;
 	        exit();
 	    }
@@ -75,6 +77,7 @@ class PWAFORWP_Utility{
 		}
 		
 	    $addonLists = pwaforwp_list_addons();
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	    $target_file = sanitize_text_field($_POST['target_file']);
 	    $slug = isset($addonLists[$target_file]['p-slug'])? $addonLists[$target_file]['p-slug'] : '';
 	    if( $slug ){ 

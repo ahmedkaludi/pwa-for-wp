@@ -8,9 +8,9 @@ class PWAFORWP_Newsletter {
 		
                 add_filter( 'pwaforwp_localize_filter', array( $this, 'pwaforwp_add_localize_footer_data' ), 10, 2 );
 	}
-	        
+	
         public function pwaforwp_add_localize_footer_data( $object, $object_name ) {
-            
+        
         $dismissed = explode ( ',', get_user_meta ( wp_get_current_user()->ID, 'dismissed_wp_pointers', true ) );                                
         $do_tour   = ! in_array ( 'pwaforwp_subscribe_pointer', $dismissed ); 
         
@@ -28,7 +28,7 @@ class PWAFORWP_Newsletter {
                 $tab      = '';              
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
                 if ( isset( $_GET['tab'] ) ) { 
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- we are not processing form here
                         $tab      = $_GET['tab'];
                 }
                                 

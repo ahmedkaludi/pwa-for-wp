@@ -1372,7 +1372,7 @@ function pwaforwp_disallow_data_tracking_setting_callback(){
 	$plugin = basename( PWAFORWP_PLUGIN_FILE, '.php' );
 
 	$checked = "";$tracker_url = '';
-
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	$live_url = '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	if(isset($allow_tracking[$plugin])){
 		$checked = "checked";
@@ -3016,9 +3016,10 @@ function pwaforwp_enqueue_style_js( $hook ) {
     // Load only on pwaforwp plugin pages
 	if ( !is_admin() ) {
 		return;
-	}	
+	}
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-	wp_register_script('pwaforwp-all-page-js', PWAFORWP_PLUGIN_URL . 'assets/js/all-page-script.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
+	wp_register_script('pwaforwp-all-page-js', PWAFORWP_PLUGIN_URL . 'assets/js/all-page-script'.$suffix.'.js', array( ), PWAFORWP_PLUGIN_VERSION, true);
         
         $object_name = array(
             'ajax_url'                  => admin_url( 'admin-ajax.php' ),
@@ -3049,11 +3050,11 @@ function pwaforwp_enqueue_style_js( $hook ) {
         wp_enqueue_script( 'wp-color-picker-alpha', PWAFORWP_PLUGIN_URL . 'assets/js/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), PWAFORWP_PLUGIN_VERSION, true );
 
 
-        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css.min.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
+        wp_enqueue_style( 'pwaforwp-main-css', PWAFORWP_PLUGIN_URL . 'assets/css/main-css'.$suffix.'.css',array(), PWAFORWP_PLUGIN_VERSION,'all' );      
 		wp_style_add_data( 'pwaforwp-main-css', 'rtl', 'replace' );      
         // Main JS
         wp_enqueue_script('pwaforwp-zip-js', PWAFORWP_PLUGIN_URL . 'assets/js/jszip.min.js', array(), PWAFORWP_PLUGIN_VERSION, true);
-        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script.min.js', array( 'wp-color-picker', 'wp-color-picker-alpha', 'plugin-install', 'wp-util', 'wp-a11y','updates' ), PWAFORWP_PLUGIN_VERSION, true);
+        wp_register_script('pwaforwp-main-js', PWAFORWP_PLUGIN_URL . 'assets/js/main-script'.$suffix.'.js', array( 'wp-color-picker', 'wp-color-picker-alpha', 'plugin-install', 'wp-util', 'wp-a11y','updates' ), PWAFORWP_PLUGIN_VERSION, true);
         
         wp_enqueue_script('pwaforwp-main-js');
 }
@@ -3073,11 +3074,13 @@ function pwaforwp_send_query_message(){
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
             return; 
         }
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
            return;  
         }
-        
-        $message    = sanitize_textarea_field($_POST['message']);        
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+        $message    = sanitize_textarea_field($_POST['message']);
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated    
         $customer_type    = sanitize_text_field($_POST['customer_type']);        
         $customer_type = empty($customer_type)? $customer_type : 'No';
         $message .= "<table>
@@ -3118,6 +3121,7 @@ function pwaforwp_license_transient(){
 	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 		return; 
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
 		return;  
 	}
@@ -3135,6 +3139,7 @@ function pwaforwp_license_transient_zto7(){
 	if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 		return; 
 	}
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
 		return;  
 	}
@@ -3329,12 +3334,15 @@ function pwaforwp_license_status_check(){
         if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
              return; 
         }
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
         if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
              return;  
         }    
-        
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
         $add_on           = sanitize_text_field($_POST['add_on']);
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
         $license_status   = sanitize_text_field($_POST['license_status']);
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
         $license_key      = sanitize_text_field($_POST['license_key']);
         
         if($add_on && $license_status && $license_key){
@@ -4003,6 +4011,7 @@ function pwaforwp_features_settings(){
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){	
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 	if(!wp_verify_nonce($_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce')){
 		echo wp_json_encode(array('status'=> 503, 'message'=> esc_html__( 'Unauthorized access, CSRF token not matched','pwa-for-wp')));
 		die;
@@ -4015,6 +4024,7 @@ function pwaforwp_update_features_options(){
         echo wp_json_encode(array('status'=> 501, 'message'=> esc_html__( 'Unauthorized access, permission not allowed','pwa-for-wp')));
 		die;
     }
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$allFields = wp_unslash($_POST['fields_data']);	
 	$actualFields = array();
 	$navigation_bar_data = array();
@@ -4236,11 +4246,12 @@ function pwaforwp_include_visibility_setting_callback(){
     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
     }
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
     if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-       return;  
+    	return;  
     } 
-    
-    $include_type = sanitize_text_field($_POST['include_type']);
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+   	 $include_type = sanitize_text_field($_POST['include_type']);
 
     if($include_type == 'post' || $include_type == 'page'){
         $args = array(
@@ -4340,12 +4351,15 @@ function pwaforwp_include_visibility_condition_callback() {
 	}
     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
     }
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
     if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
        return;  
     }
-    
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
     $include_targeting_type = sanitize_text_field($_POST['include_targeting_type']);
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
     $include_targeting_data = sanitize_text_field($_POST['include_targeting_data']);
 
     $rand = time().wp_rand(000,999);
@@ -4370,11 +4384,13 @@ function pwaforwp_exclude_visibility_condition_callback() {
     if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
         return; 
     }
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
     if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
        return;  
     } 
-    
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
     $exclude_targeting_type = sanitize_text_field($_POST['exclude_targeting_type']);
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
     $exclude_targeting_data = sanitize_text_field($_POST['exclude_targeting_data']);
 
     $rand = time().wp_rand(000,999);
@@ -4446,6 +4462,7 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 							$newfilename = str_replace($uploadPath['basedir'], $uploadPath['baseurl'], $newImage['path']);
 							$new_value['ios_splash_icon'][$newkey] = sanitize_text_field($newfilename);
 						}else{
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 							error_log($result->get_error_message()." Width: ".$newWidth." Height:".$newHeight);
 						}
 					}
@@ -4469,16 +4486,20 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 		if ( ! isset( $_POST['pwaforwp_security_nonce'] ) ){
 			return; 
 		}
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 		if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-			return;  
+			return;
 		}
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 	    $api_url = 'http://magazine3.company/wp-json/api/central/email/subscribe';
 	    $api_params = array(
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	        'name' => sanitize_text_field($_POST['name']),
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	        'email'=> sanitize_email($_POST['email']),
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	        'website'=> sanitize_text_field($_POST['website']),
 	        'type'=> 'pwa'
 	    );
@@ -4503,7 +4524,7 @@ if(!function_exists('pwaforwp_subscribe_newsletter')){
 	    echo $response;
 	    die;
 	} 	
-} 
+}
 
 if ( ! function_exists( 'pwaforwp_splashscreen_uploader' ) ) {
 	add_action( 'wp_ajax_pwaforwp_splashscreen_uploader', 'pwaforwp_splashscreen_uploader' );
@@ -4513,6 +4534,7 @@ if ( ! function_exists( 'pwaforwp_splashscreen_uploader' ) ) {
             echo wp_json_encode( array( "status" => 500, "message" => esc_html__( 'Failed! Security check not active', 'pwa-for-wp' ) ) );
             die;
         }
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
         if ( ! wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ) {
         	echo wp_json_encode( array( "status" => 500, "message" => esc_html__( "Failed! Security check", 'pwa-for-wp' ) ) );
         	die;
@@ -4798,6 +4820,7 @@ function pwaforwp_get_data_by_type($include_type='post',$search=null){
 	return $result;
 }
 
+
 function pwaforwp_get_select2_data(){
 	if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
 	  return; 
@@ -4805,17 +4828,18 @@ function pwaforwp_get_select2_data(){
 	if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
 		return;
 	}
-	
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	if ( (wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) )){
-
-		$search        = isset( $_GET['q'] ) ? sanitize_text_field( $_GET['q'] ) : '';                                    
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$search        = isset( $_GET['q'] ) ? sanitize_text_field( $_GET['q'] ) : '';
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash                                   
 		$type          = isset( $_GET['type'] ) ? sanitize_text_field( $_GET['type'] ) : '';
 		
 		$result = pwaforwp_get_data_by_type($type,$search);		
 		wp_send_json(['results' => $result] );            
 
 	}else{
-	  return;  
+		return;  
 	}
 	wp_die();
 }

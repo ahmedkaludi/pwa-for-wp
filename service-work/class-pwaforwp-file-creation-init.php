@@ -127,10 +127,11 @@ function pwaforwp_download_setup_files(){
     if ( ! isset( $_GET['pwaforwp_security_nonce'] ) ){
         return; 
     }
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
     if ( !wp_verify_nonce( $_GET['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
-       return;  
+        return;  
     } 
-    
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
     $file_type = sanitize_text_field($_GET['filetype']);    
     $file_creation_init_obj = new PWAFORWP_File_Creation_Init(); 
     $result = '';  

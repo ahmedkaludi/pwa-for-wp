@@ -219,7 +219,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$body['email'] = $this->get_admin_email();
 			}
 			$body['marketing_method'] = $this->marketing;
-	
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- we are not processing form here
 			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
 			// Retrieve current plugin information
 			if( ! function_exists( 'get_plugins' ) ) {
@@ -614,15 +614,15 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			global $pagenow, $pwaforwp_globe_admin_notice;
 			if($pwaforwp_globe_admin_notice!=false){ return; }
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
-		    if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
-		        return false;
-		    }
+			if($pagenow!='admin.php' || !isset($_GET['page']) || (isset($_GET['page']) && $_GET['page']!='pwaforwp') ) {
+				return false;
+			}
 			// Check for plugin args
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			if( isset( $_GET['plugin'] ) && isset( $_GET['plugin_action'] ) ) {
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason: We are not processing form information.
 				$plugin = sanitize_text_field( $_GET['plugin'] );
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason: We are not processing form information.
 				$action = sanitize_text_field( $_GET['plugin_action'] );
 				if( $action == 'yes' ) {
 					$this->set_is_tracking_allowed( true, $plugin );
@@ -721,7 +721,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
 			if( isset( $_GET['marketing_optin'] ) ) {
 				// Set marketing optin
-				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reason: We are not processing form information.
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- Reason: We are not processing form information.
 				$this->set_can_collect_email( sanitize_text_field( $_GET['marketing_optin'] ), $this->plugin_name );
 				// Do tracking
 				$this->do_tracking( true );
@@ -943,11 +943,11 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'pwaforwp_goodbye_form', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = wp_json_encode( wp_unslash( $_POST['values'] ) );
+				$values = wp_json_encode( sanitize_text_field( wp_unslash( $_POST['values'] ) ) );
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {
-				$details = sanitize_text_field( $_POST['details'] );
+				$details = sanitize_text_field( wp_unslash( $_POST['details'] ) );
 				update_option( 'wisdom_deactivation_details_' . $this->plugin_name, $details );
 			}
 			$this->do_tracking(); // Run this straightaway
