@@ -638,7 +638,7 @@ class PWAFORWP_Service_Worker {
     public function rest_permission( WP_REST_Request $request ) {
 
         if ( 'edit' === $request['context'] ) {
-            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'default' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'rest_forbidden_context', __( 'Sorry, you are not allowed to edit the manifest.', 'pwa-for-wp' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         return true;

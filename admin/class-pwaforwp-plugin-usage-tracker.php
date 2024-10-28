@@ -678,7 +678,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				if( $this->marketing != 1 ) {
 					// Standard notice text
 					/* translators: %1$s: what_am_i */
-					$notice_text = sprintf( __( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.'),
+					$notice_text = sprintf( __( 'Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected.', 'pwa-for-wp'),
 						$this->what_am_i
 					);
 				} else {

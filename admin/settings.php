@@ -3445,49 +3445,46 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                 $license[strtolower($add_on).'_addon_name'] = $addon_name; 
                 if ($license_data) { 
               // Get UserName 
-              $fname = $license_data->customer_name;
-               $fname = substr($fname, 0, strpos($fname, ' ')); 
-               $check_for_Caps = ctype_upper($fname); 
-               if ( $check_for_Caps == 1 ) {
-                $fname =  strtolower($fname);
-                 $fname =  ucwords($fname);
-                  }
-                   else
-                    {
-                     $fname =  ucwords($fname);
-                      } 
+				$fname = $license_data->customer_name;
+				$fname = substr($fname, 0, strpos($fname, ' ')); 
+				$check_for_Caps = ctype_upper($fname); 
+				if ( $check_for_Caps == 1 ) {
+					$fname =  strtolower($fname);
+					$fname =  ucwords($fname);
+				} else {
+					$fname =  ucwords($fname);
+				} 
               // Get Expiring Date 
-              $license_exp = gmdate('Y-m-d', strtotime($license_data->expires)); 
-              $license_info_lifetime = $license_data->expires; 
-              $today = gmdate('Y-m-d');
-               $exp_date =$license_exp; 
-               $date1 = date_create($today);
+				$license_exp = gmdate('Y-m-d', strtotime($license_data->expires)); 
+				$license_info_lifetime = $license_data->expires; 
+				$today = gmdate('Y-m-d');
+				$exp_date =$license_exp; 
+				$date1 = date_create($today);
                 $date2 = date_create($exp_date);
-                 $diff = date_diff($date1,$date2);
-                  $days = $diff->format("%a");
-                   if( $license_info_lifetime == 'lifetime' ){
+				$diff = date_diff($date1,$date2);
+				$days = $diff->format("%a");
+				if( $license_info_lifetime == 'lifetime' ){
                     $days = 'Lifetime';
-                     if ($days == 'Lifetime') {
-                      $expire_msg = esc_html__(" Your License is Valid for Lifetime ",'pwa-for-wp');
-                       }
-                        }
-                         elseif($today > $exp_date){
-                          $days = -$days;
-                           } 
+					if ($days == 'Lifetime') {
+						$expire_msg = esc_html__(" Your License is Valid for Lifetime ",'pwa-for-wp');
+					}
+				} elseif($today > $exp_date){
+					$days = -$days;
+				} 
               // Get Download_ID 
-              $download_id = $license_data->payment_id;
-               } 
+				$download_id = $license_data->payment_id;
+			} 
 
-               $license[strtolower($add_on).'_addon_license_key_user_name'] = $fname; 
-               $license[strtolower($add_on).'_addon_license_key_expires'] = $days;
-               $license[strtolower($add_on).'_addon_license_key_expires_normal'] = $license_exp;  
-               $license[strtolower($add_on).'_addon_license_key_download_id'] = $download_id; 
-               $current_status = 'active'; 
-               $message = esc_html__( 'Activated', 'pwa-for-wp'	); 
-               $days_remaining = $days; 
-               $username = $fname;
+				$license[strtolower($add_on).'_addon_license_key_user_name'] = $fname; 
+				$license[strtolower($add_on).'_addon_license_key_expires'] = $days;
+				$license[strtolower($add_on).'_addon_license_key_expires_normal'] = $license_exp;  
+				$license[strtolower($add_on).'_addon_license_key_download_id'] = $download_id; 
+				$current_status = 'active'; 
+				$message = esc_html__( 'Activated', 'pwa-for-wp'); 
+				$days_remaining = $days; 
+				$username = $fname;
 			   			/* translators: %s: date */
-						$message = sprintf(	__( 'Your license key expired on %s.' ),
+						$message = sprintf(	__( 'Your license key expired on %s.', 'pwa-for-wp' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 						);
 						break;
