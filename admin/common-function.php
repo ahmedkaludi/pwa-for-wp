@@ -1111,7 +1111,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
 function pwaforwp_visibility_check(){
     global $pwaforwp_settings;
     $settings = $pwaforwp_settings;
-    if((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
+    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] ==1 && (isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
         $expo_include_type = array();
         $expo_include_data = array();
 
