@@ -4,7 +4,7 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 6.6
+Tested up to: 6.7
 
 Stable tag: 1.7.74
 
