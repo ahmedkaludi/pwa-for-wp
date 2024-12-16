@@ -1,6 +1,6 @@
 <?php
-/**
-Plugin Name: PWA for WP
+/*
+Plugin Name: PWA for WP & AMP
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 

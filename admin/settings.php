@@ -974,7 +974,7 @@ function pwaforwp_addon_html(){
 
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic" style="background: '.esc_attr($plugin['p-background-color']).'">
-                        <img src="'.esc_url($plugin['p-icon-img']).'">
+                        <img src="'.esc_url($plugin['p-icon-img']) /*  phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage */ .'">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html($plugin['p-title']).'</h3>
@@ -2261,6 +2261,7 @@ function pwaforwp_splash_icon_callback(){
 		$currentpic = $splashIcons = pwaforwp_ios_splashscreen_files_data();
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
+					//phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
            			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.wp_rand(00,99).'" width="60" height="40">';
 		}
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html.
