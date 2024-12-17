@@ -248,9 +248,9 @@ function pwaforwp_admin_interface_render(){
 
 					echo '<a href="' . esc_url(pwaforwp_admin_link('features')) . '" class="nav-tab ' . esc_attr( $tab == 'features' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-generic"></span> ' . esc_html__('Features','pwa-for-wp') . '</a>';
 		            
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-tools"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-settings"></span> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
 
                     $license_alert = '';
                     if ( function_exists('call_to_action_for_pwa_updater')
@@ -267,7 +267,7 @@ function pwaforwp_admin_interface_render(){
                         $license_alert = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warningpwaforwp_pro_alert' ></span>": ''  ;
                 }
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all data already escapped.
-		        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.' ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.'<span class="dashicons dashicons-admin-plugins"></span> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 				echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
