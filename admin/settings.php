@@ -1069,6 +1069,18 @@ function pwaforwp_list_addons(){
                     'p-desc' => esc_html__('PWA to APK Plugin for PWA extension to create apk for your website', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
+         'ptifp'  => array(
+                    'p-slug' => 'pwa-to-ios-plugin/pwa-to-ios-plugin.php',
+                    'p-name' => 'PWA to iOS Plugin',
+                    'p-short-prefix'=> 'PTIFP',
+                    'p-smallcaps-prefix'=> 'ptifp',
+                    'p-title' => 'PWA to iOS Plugin',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-ios-plugin/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-ios-plugin.png',
+                    'p-background-color'=> '#afa173',
+                    'p-desc' => esc_html__('PWA to iOS Plugin for PWA extension to create ios package for your website', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
          'ofpwa'  => array(
                     'p-slug' => 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php',
                     'p-name' => 'Offline Forms for PWA for WP',
@@ -3806,6 +3818,18 @@ function pwaforwp_features_settings(){
                                     'slug' => $addonLists['ptafp']['p-slug'],
                                     'tooltip_option'=> esc_html__('Generate APK for website', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
+                                    ),
+				'pwatoiosplugin' => array(
+                                    'enable_field' => esc_html__('pwa_to_ios_plugin', 'pwa-for-wp'),
+                                    'section_name' => esc_html__('pwaforwp_pwa_to_ios_plugin_setting_section', 'pwa-for-wp'),
+                                    'setting_title' => esc_html__('PWA to iOS APP Package Generator', 'pwa-for-wp'),
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptifp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptifp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptifp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptifp']['p-slug'])? 1: 0),
+                                    'slug' => $addonLists['ptifp']['p-slug'],
+                                    'tooltip_option'=> esc_html__('iOS App Package Generator', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-ios-plugin/'
                                     ),
 				'offlineforms' => array(
                                     'enable_field' => esc_html__('offline_forms', 'pwa-for-wp'),
