@@ -3822,13 +3822,13 @@ function pwaforwp_features_settings(){
 				'pwatoiosplugin' => array(
                                     'enable_field' => esc_html__('pwa_to_ios_plugin', 'pwa-for-wp'),
                                     'section_name' => esc_html__('pwaforwp_pwa_to_ios_plugin_setting_section', 'pwa-for-wp'),
-                                    'setting_title' => esc_html__('PWA to iOS APP Package Generator', 'pwa-for-wp'),
+                                    'setting_title' => esc_html__('PWA to iOS APP Package', 'pwa-for-wp'),
                                     'is_premium'    => true,
                                     'pro_link'      => $addonLists['ptifp']['p-url'],
                                     'pro_active'    => (is_plugin_active($addonLists['ptifp']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptifp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptifp']['p-slug'])? 1: 0),
                                     'slug' => $addonLists['ptifp']['p-slug'],
-                                    'tooltip_option'=> esc_html__('iOS App Package Generator', 'pwa-for-wp'),
+                                    'tooltip_option'=> esc_html__('iOS App Package', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-ios-plugin/'
                                     ),
 				'offlineforms' => array(
