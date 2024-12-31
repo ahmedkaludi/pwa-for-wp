@@ -3829,7 +3829,7 @@ function pwaforwp_features_settings(){
                                     'pro_deactive'    => (!is_plugin_active($addonLists['ptifp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptifp']['p-slug'])? 1: 0),
                                     'slug' => $addonLists['ptifp']['p-slug'],
                                     'tooltip_option'=> esc_html__('iOS App Package', 'pwa-for-wp'),
-									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-ios-plugin/'
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs'
                                     ),
 				'offlineforms' => array(
                                     'enable_field' => esc_html__('offline_forms', 'pwa-for-wp'),

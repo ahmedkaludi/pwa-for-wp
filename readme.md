@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.7
 
-Stable tag: 1.7.74
+Stable tag: 1.7.76
 
 License: GPLv2 or later
 
@@ -75,6 +75,22 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.76 (31 December 2024) =
+* Added  : PWA to ios as a service (pro extension)#693
+* Improvement  : Make a feature to force load the "pwa-non-amp-install" specific parameter URL. #932
+* Bug Fixed  : Offline form feature not working in IOS. #937
+* Improvement  : Scroll Progress Bar is not showing when PWA display mode is fullscreen #943
+* Compatibility  : Need to add compatibility with Eform in offline forms #940
+* Test   : Test with WordPress version 6.7 #936
+
+= 1.7.75 (28 October 2024) =
+* Improvement  : Added an option to edit the text in the iOS QR code #926
+* Improvement  : Added an option to edit browser banner content. #934
+* Bug Fixed  : Extensions not activating #929
+* Improvement  : Added an option so that only the Steps to install the PWA on IOS should be visible directly without clicking on Install banner in CTA #922
+* Bug Fixed   : The feature Quick Action is not working #931
+* Improvement   : Minify JS files for production #933
+
 = 1.7.74 (02 September 2024) =
 * Bug Fixed  : The visibility option is not working for the CTA feature. #905
 * Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
