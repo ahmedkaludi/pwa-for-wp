@@ -248,9 +248,9 @@ function pwaforwp_admin_interface_render(){
 
 					echo '<a href="' . esc_url(pwaforwp_admin_link('features')) . '" class="nav-tab ' . esc_attr( $tab == 'features' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-generic"></span> ' . esc_html__('Features','pwa-for-wp') . '</a>';
 		            
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('tools')) . '" class="nav-tab ' . esc_attr( $tab == 'tools' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-tools"></span> ' . esc_html__('Tools','pwa-for-wp') . '</a>';
 
-		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
+		            echo '<a href="' . esc_url(pwaforwp_admin_link('other_setting')) . '" class="nav-tab ' . esc_attr( $tab == 'other_setting' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-admin-settings"></span> ' . esc_html__('Advance','pwa-for-wp') . '</a>';
 
                     $license_alert = '';
                     if ( function_exists('call_to_action_for_pwa_updater')
@@ -267,7 +267,7 @@ function pwaforwp_admin_interface_render(){
                         $license_alert = isset($days) && $days<=30 && $days!=='Lifetime' ? "<span class='pwaforwp_addon_icon dashicons dashicons-warningpwaforwp_pro_alert' ></span>": ''  ;
                 }
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- all data already escapped.
-		        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.' ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
+		        echo '<a href="' . esc_url(pwaforwp_admin_link('premium_features')) . '" class="nav-tab ' . esc_attr( $tab == 'premium_features' ? 'nav-tab-active' : '') . '" data-extmgr="'. ( class_exists('PWAFORWPPROExtensionManager')? "yes": "no" ).'"> '.$license_alert.'<span class="dashicons dashicons-admin-plugins"></span> ' . esc_html__('Premium Features','pwa-for-wp') . '</a>';
 
 				echo '<a href="' . esc_url(pwaforwp_admin_link('help')) . '" class="nav-tab ' . esc_attr( $tab == 'help' ? 'nav-tab-active' : '') . '"><span class="dashicons dashicons-editor-help"></span> ' . esc_html__('Help','pwa-for-wp') . '</a>';
 					?>
@@ -974,7 +974,7 @@ function pwaforwp_addon_html(){
 
 				<div class="pwaforwp-features-ele">
 					<div class="pwaforwp-ele-ic" style="background: '.esc_attr($plugin['p-background-color']).'">
-                        <img src="'.esc_url($plugin['p-icon-img']).'">
+                        <img src="'.esc_url($plugin['p-icon-img']) /*  phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage */ .'">
 					</div>
 					<div class="pwaforwp-ele-tlt">
 						<h3>'.esc_html($plugin['p-title']).'</h3>
@@ -1067,6 +1067,18 @@ function pwaforwp_list_addons(){
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-apk-plugin.png',
                     'p-background-color'=> '#afa173',
                     'p-desc' => esc_html__('PWA to APK Plugin for PWA extension to create apk for your website', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'ptifp'  => array(
+                    'p-slug' => 'pwa-to-ios-plugin/pwa-to-ios-plugin.php',
+                    'p-name' => 'PWA to iOS Plugin',
+                    'p-short-prefix'=> 'PTIFP',
+                    'p-smallcaps-prefix'=> 'ptifp',
+                    'p-title' => 'PWA to iOS Plugin',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pwa-to-ios-plugin/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwa-to-ios-plugin.png',
+                    'p-background-color'=> '#afa173',
+                    'p-desc' => esc_html__('PWA to iOS Plugin for PWA extension to create ios package for your website', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
          'ofpwa'  => array(
@@ -2261,6 +2273,7 @@ function pwaforwp_splash_icon_callback(){
 		$currentpic = $splashIcons = pwaforwp_ios_splashscreen_files_data();
 		$previewImg = '';
 		if( isset( $settings['ios_splash_icon'][key($currentpic)] ) ){
+					//phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage
            			$previewImg = '<img src="'.pwaforwp_https($settings['ios_splash_icon'][key($currentpic)]) .'?test='.wp_rand(00,99).'" width="60" height="40">';
 		}
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using custom html.
@@ -3805,6 +3818,18 @@ function pwaforwp_features_settings(){
                                     'slug' => $addonLists['ptafp']['p-slug'],
                                     'tooltip_option'=> esc_html__('Generate APK for website', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-pwa-to-apk-plugin/'
+                                    ),
+				'pwatoiosplugin' => array(
+                                    'enable_field' => esc_html__('pwa_to_ios_plugin', 'pwa-for-wp'),
+                                    'section_name' => esc_html__('pwaforwp_pwa_to_ios_plugin_setting_section', 'pwa-for-wp'),
+                                    'setting_title' => esc_html__('PWA to iOS APP Package', 'pwa-for-wp'),
+                                    'is_premium'    => true,
+                                    'pro_link'      => $addonLists['ptifp']['p-url'],
+                                    'pro_active'    => (is_plugin_active($addonLists['ptifp']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['ptifp']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ptifp']['p-slug'])? 1: 0),
+                                    'slug' => $addonLists['ptifp']['p-slug'],
+                                    'tooltip_option'=> esc_html__('iOS App Package', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs'
                                     ),
 				'offlineforms' => array(
                                     'enable_field' => esc_html__('offline_forms', 'pwa-for-wp'),

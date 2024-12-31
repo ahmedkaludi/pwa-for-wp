@@ -96,7 +96,7 @@ class PWAFORWP_Service_Worker {
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- we are not processing form here
             $returnFile = ( ( isset($_GET[pwaforwp_query_var('sw_query_var')]) && isset($_GET[pwaforwp_query_var('sw_file_var')]) ) || isset($_GET[pwaforwp_query_var('site_id_var')]) );
             if ( $returnFile ) {
-                @ini_set( 'display_errors', 0 );
+                                
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- we are not processing form here
@@ -193,7 +193,7 @@ class PWAFORWP_Service_Worker {
         public function pwaforwp_load_service_worker( WP_Query $query ) {
 
             if ( $query->is_main_query() && $query->get( pwaforwp_query_var('sw_query_var') )) {
-                @ini_set( 'display_errors', 0 );
+                
                 @header( 'Cache-Control: no-cache' );
                 @header( 'Content-Type: application/javascript; charset=utf-8' );
                 $fileRawName = $filename = sanitize_file_name( $query->get( pwaforwp_query_var('sw_file_var') ) );

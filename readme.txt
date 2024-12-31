@@ -1,8 +1,8 @@
 === PWA for WP & AMP ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.6
-Stable tag: 1.7.75
+Tested up to: 6.7
+Stable tag: 1.7.76
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -64,6 +64,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.76 (31 December 2024) =
+* Added  : PWA to ios as a service (pro extension)#693
+* Improvement  : Make a feature to force load the "pwa-non-amp-install" specific parameter URL. #932
+* Bug Fixed  : Offline form feature not working in IOS. #937
+* Improvement  : Scroll Progress Bar is not showing when PWA display mode is fullscreen #943
+* Bug Fixed  : PWA not working when visibility condition is set but visibility option is disabled #938
+* Compatibility  : Need to add compatibility with Eform in offline forms #940
+* Test   : Test with WordPress version 6.7 #936
+
 = 1.7.75 (28 October 2024) =
 * Improvement  : Added an option to edit the text in the iOS QR code #926
 * Improvement  : Added an option to edit browser banner content. #934
@@ -110,12 +119,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 = 1.7.69 (22 April 2024) =
 * Feature Added : added a new feature so that users can be able to upload their own images to use as an icon in the Navigation Bar #869
 * Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
-
-= 1.7.68 (05 April 2024) =
-* Feature Added : added the navigation bar backgound feature. #874
-* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
-* Bug Fixed  : CTA delayed feature is not working properly in IOS chrome mobile version. #879
-* Bug Fixed  : Conflict issue with Polylang plugin #880
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

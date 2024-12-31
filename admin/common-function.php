@@ -1111,7 +1111,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
 function pwaforwp_visibility_check(){
     global $pwaforwp_settings;
     $settings = $pwaforwp_settings;
-    if((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
+    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] ==1 && (isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
         $expo_include_type = array();
         $expo_include_data = array();
 
@@ -1320,4 +1320,23 @@ function pwaforwp_local_file_get_contents( $file_path ) {
     }
     return esc_html__( 'File does not exist.', "pwa-for-wp" );
 
+}
+
+add_filter('pwaforwp_sw_register_template', 'pwaforwp_sw_register_apk_detect', 10, 1);
+
+function pwaforwp_sw_register_apk_detect($sw_template){
+
+    $pwaSettings = pwaforwp_defaultSettings();
+        if( $pwaSettings['notification_feature']==1 && isset($pwaSettings['notification_options']) && $pwaSettings['notification_options']=='pushnotifications_io'){
+            $sw_template .="	document.addEventListener('DOMContentLoaded', function () {
+                if (typeof pnScriptSetting !== 'undefined' && pnScriptSetting.pwaforwp_apk_only !== undefined && pnScriptSetting.pwaforwp_apk_only == 1) {
+                    const reffer = document.referrer; 
+                    if (reffer && reffer.includes('android-app://')) {
+                        sessionStorage.setItem('pwaforwp_mode', 'apk');
+                    }
+                }
+            });"; 
+        }
+    
+    return $sw_template;
 }
