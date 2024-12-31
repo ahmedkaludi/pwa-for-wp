@@ -69,6 +69,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Improvement  : Make a feature to force load the "pwa-non-amp-install" specific parameter URL. #932
 * Bug Fixed  : Offline form feature not working in IOS. #937
 * Improvement  : Scroll Progress Bar is not showing when PWA display mode is fullscreen #943
+* Bug Fixed  : PWA not working when visibility condition is set but visibility option is disabled #938
 * Compatibility  : Need to add compatibility with Eform in offline forms #940
 * Test   : Test with WordPress version 6.7 #936
 
