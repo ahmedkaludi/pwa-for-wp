@@ -1,4 +1,4 @@
-# PWA for WP & AMP
+# PWA for WP - Progressive Web Apps Made Simple
 
 Contributors: magazine3
 

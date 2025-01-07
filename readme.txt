@@ -1,4 +1,4 @@
-=== PWA for WP & AMP ===
+=== PWA for WP - Progressive Web Apps Made Simple ===
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.7
