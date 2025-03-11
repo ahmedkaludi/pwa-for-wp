@@ -1072,7 +1072,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
         $expo_include_data = array();
 
         if (!empty($settings['include_targeting_type'])) {
-            $expo_include_type = explode(',', $settings['include_targeting_type']);
+            $expo_include_type = explode(',', $settings['']);
         }
         if (!empty($settings['include_targeting_value'])) {
             $expo_include_data = explode(',', $settings['include_targeting_value']);
@@ -1340,3 +1340,40 @@ function pwaforwp_sw_register_apk_detect($sw_template){
     
     return $sw_template;
 }
+
+function custom_pwaforwp_whitelabel_title($title) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_TITLE')) {
+            return esc_html__(PWA_TITLE, 'pwa-for-wp');
+        }
+    }
+    return esc_html__( $title, 'pwa-for-wp' );
+}
+add_filter('pwaforwp_whitelabel_title', 'custom_pwaforwp_whitelabel_title');
+
+function custom_pwaforwp_whitelabel_logo($logo) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_LOGO')) {
+            return esc_html__(PWA_LOGO, 'pwa-for-wp');
+        }
+    }
+    return $logo;
+}
+add_filter('pwaforwp_whitelabel_logo', 'custom_pwaforwp_whitelabel_logo');
+
+function custom_pwaforwp_whitelabel_longtext($longtext) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_DESCRIPTION')) {
+            return esc_html__(PWA_DESCRIPTION, 'pwa-for-wp');
+        }
+    }
+    return $longtext;
+}
+add_filter('pwaforwp_whitelabel_longtext', 'custom_pwaforwp_whitelabel_longtext');
+

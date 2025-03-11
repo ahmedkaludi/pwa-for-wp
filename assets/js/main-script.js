@@ -58,6 +58,22 @@ jQuery(document).ready(function($){
          })
         .open();
     });
+    jQuery(".pwaforwp_whitelable_logo").click(function(e) {  // Application Icon upload
+        e.preventDefault();
+        var pwaforwpMediaUploader = wp.media({
+            title: pwaforwp_obj.uploader_title,
+            button: {
+                text: pwaforwp_obj.uploader_button
+            },
+            multiple: false,  // Set this to true to allow multiple files to be selected
+                        library:{type : 'image'}
+        })
+        .on("select", function() {
+            var attachment = pwaforwpMediaUploader.state().get("selection").first().toJSON();
+            jQuery(".pwaforwp_whitelable_logo").val(attachment.url);
+         })
+        .open();
+    });
     jQuery(".pwaforwp-monochrome-upload").click(function(e) {  // monochrome upload
         e.preventDefault();
         var pwaforwpMediaUploader = wp.media({

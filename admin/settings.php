@@ -29,8 +29,10 @@ function pwaforpw_add_menu_links() {
     }
 
 	// Main menu page
+	$pwa_title = apply_filters('pwaforwp_whitelabel_title', __( 'PWA', 'pwa-for-wp' ));
+	$pwa_logo = apply_filters('pwaforwp_whitelabel_logo', PWAFORWP_PLUGIN_URL.'images/menu-icon.svg');
 	add_menu_page( __( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
-                __( 'PWA', 'pwa-for-wp' ).$license_alert_icon, 
+                __( $pwa_title, 'pwa-for-wp' ).$license_alert_icon, 
 				pwaforwp_current_user_can(),                
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
@@ -235,9 +237,9 @@ function pwaforwp_admin_interface_render(){
 
             }
         }
-    
+		$pwa_longtext = apply_filters('pwaforwp_whitelabel_longtext', __( 'Progressive Web Apps For WP', 'pwa-for-wp' ));
     ?>
-    <h1><?php echo esc_html__('Progressive Web Apps For WP', 'pwa-for-wp'); ?></h1>
+    <h1><?php echo esc_html($pwa_longtext, 'pwa-for-wp'); ?></h1>
 
 			<div class="pwaforwp-main-wrapper">
 				<h2 class="nav-tab-wrapper pwaforwp-tabs">
@@ -1151,6 +1153,18 @@ function pwaforwp_list_addons(){
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/rewards-on-pwa-install.png',
                     'p-background-color'=> '#cddae2',
                     'p-desc' => esc_html__('Rewards to the most loyal base of customers', 'pwa-for-wp'),
+                    'p-tab'	 => false
+         ),
+         'pwl'  => array(
+                    'p-slug' => 'pwaforwp-white-label/pwaforwp-white-label.php',
+                    'p-name' => 'Pwaforwp White Label',
+                    'p-short-prefix'=> 'PWL',
+                    'p-smallcaps-prefix'=> 'pwl',
+                    'p-title' => 'Pwaforwp White Label',
+                    'p-url'	 => 'https://pwa-for-wp.com/extensions/pwaforwp-white-label/',
+                    'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwaforwp-white-label.png',
+                    'p-background-color'=> '#cddae2',
+                    'p-desc' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
 		 
@@ -3771,6 +3785,18 @@ function pwaforwp_features_settings(){
 									'tooltip_option' => esc_html__('Give Rewards to the customers', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
 									),
+				'pwaforwp_white_label' => array(
+									'enable_field' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'section_name' => esc_html__('pwaforwp_white_label_setting_section', 'pwa-for-wp'),
+									'setting_title' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'is_premium'    => true,
+									'pro_link'      => $addonLists['pwl']['p-url'],
+									'pro_active'    => (is_plugin_active($addonLists['pwl']['p-slug'])? 1: 0),
+                                    'pro_deactive'    => (!is_plugin_active($addonLists['pwl']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ropi']['p-slug'])? 1: 0),
+                                    'slug' => 'mcfp',
+									'tooltip_option' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/'
+									),
 				'dataAnalytics' => array(
 									'enable_field' => esc_html__('data_analytics', 'pwa-for-wp'),
 									'section_name' => esc_html__('pwaforwp_data_analytics_setting_section', 'pwa-for-wp'),
@@ -4031,6 +4057,33 @@ function pwaforwp_features_settings(){
 		';
 }
 
+function whitelable_for_pwa_custom_config_file($data) {
+	$file_path = ABSPATH . 'pwa-config.php';
+	if (file_exists($file_path)) {
+		unlink($file_path);
+	}
+	$file = fopen($file_path, 'w');
+	if ($file) {
+		$content = "<?php\n";
+		$content .= "// Custom configuration for PWA for wp\n";
+		if(isset($data['pwaforwp_whitelable_title'])){
+			$whitelabel_title = addslashes(sanitize_text_field($data['pwaforwp_whitelable_title']));
+			$content .= "define('PWA_TITLE', '$whitelabel_title');\n";
+		}
+		if(isset($data['pwaforwp_whitelable_description'])){
+			$whitelable_description = addslashes(sanitize_text_field($data['pwaforwp_whitelable_description']));
+			$content .= "define('PWA_DESCRIPTION', '$whitelable_description');\n";
+		}
+		if(isset($data['pwaforwp_whitelable_logo'])){
+			$whitelable_logo = addslashes(sanitize_text_field($data['pwaforwp_whitelable_logo']));
+			$content .= "define('PWA_LOGO', '$whitelable_logo');\n";
+		}
+		$content .= "?>";
+		fwrite($file, $content);
+		fclose($file);
+	}
+}
+
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){	
 	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
@@ -4050,10 +4103,24 @@ function pwaforwp_update_features_options(){
 	$allFields = wp_unslash($_POST['fields_data']);	
 	$actualFields = array();
 	$navigation_bar_data = array();
+	$whitelabel_data = array();
 	$utm_trackings = array();
 	$quick_action = array();
+	
 	if(is_array($allFields) && !empty($allFields)){
 		foreach ($allFields as $key => $field) {
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[pwaforwp_whitelable_title]') {
+				$whitelabel_data['pwaforwp_whitelable_title'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[pwaforwp_whitelable_logo]') {
+				$whitelabel_data['pwaforwp_whitelable_logo'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[pwaforwp_whitelable_logo]') {
+				$whitelabel_data['pwaforwp_whitelable_logo'] = sanitize_text_field($field['var_value']);
+			}
+			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[pwaforwp_whitelable_description]') {
+				$whitelabel_data['pwaforwp_whitelable_description'] = sanitize_text_field($field['var_value']);
+			}
 			// navigation bar features start			
 			if (isset($field['var_name']) && $field['var_name'] == 'pwaforwp_settings[navigation][text_font_size]') {
 				$navigation_bar_data['navigation']['text_font_size'] = sanitize_text_field($field['var_value']);
@@ -4125,6 +4192,9 @@ function pwaforwp_update_features_options(){
 				$actualFields[$variable] = preg_replace('/\\\\/', '', sanitize_textarea_field($field['var_value']));
 			}
 
+		}
+		if(!empty($whitelabel_data)){
+			whitelable_for_pwa_custom_config_file($whitelabel_data);
 		}
 		if(!empty($navigation_bar_data)){
 			if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
