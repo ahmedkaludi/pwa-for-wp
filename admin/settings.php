@@ -1178,14 +1178,14 @@ function pwaforwp_list_addons(){
          ),
          'pwl'  => array(
                     'p-slug' => 'pwaforwp-white-label/pwaforwp-white-label.php',
-                    'p-name' => 'Pwaforwp White Label',
+                    'p-name' => 'White Label for PWA',
                     'p-short-prefix'=> 'PWL',
                     'p-smallcaps-prefix'=> 'pwl',
-                    'p-title' => 'Pwaforwp White Label',
+                    'p-title' => 'White Label for PWA',
                     'p-url'	 => 'https://pwa-for-wp.com/extensions/pwaforwp-white-label/',
                     'p-icon-img' => PWAFORWP_PLUGIN_URL.'images/pwaforwp-white-label.png',
                     'p-background-color'=> '#cddae2',
-                    'p-desc' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+                    'p-desc' => esc_html__('White Label for PWA allows businesses to deploy a fully branded PWAforWP without the need for custom development.  ', 'pwa-for-wp'),
                     'p-tab'	 => false
          ),
 		 
