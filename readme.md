@@ -21,6 +21,9 @@ PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to 
 You can give the APP-like experience to your audience which will get your website to their home screen and works instantly like an APP with offline support.
 
 ## Features: 
+* <strong>Swipe Navigation in PWA :</strong> Adds swipe left / right feature to load next and previous articles.
+* <strong>WP Hide & Security Enhancer Compatibility </strong>
+* <strong>Disable Scrollbar</strong>: Hide scrollbar in PWA app.
 * <strong>AMP Support</strong>: Full PWA compatibility for AMP.  It works well with AMPforWP & AMP for WordPress by Automattic.
 * NEW: Multi site support
 * NEW: UTM Tracking
@@ -44,7 +47,7 @@ You can give the APP-like experience to your audience which will get your websit
 * Tested with Google Lighthouse
 * More PWA Features Coming soon.
 
-* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/), [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/), [Navigation Bar for PWA](https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/), [Quick Action for PWA](https://pwa-for-wp.com/extensions/quick-action-for-pwa/) and [Multilingual Compatibility for PWA](https://pwa-for-wp.com/extensions/multilingual-compatibility-for-pwa/) extensions
+* **[Premium]** the ability to expand PWA for WP with [Call to Action](https://pwa-for-wp.com/extensions/call-to-action-for-pwa/), [Loading Icon Library](https://pwa-for-wp.com/extensions/loading-icon-library-for-pwa/), [Data Analytics](https://pwa-for-wp.com/extensions/data-analytics-for-pwa/), [Pull to Refresh](https://pwa-for-wp.com/extensions/pull-to-refresh-for-pwa/), [Scroll Progress Bar](https://pwa-for-wp.com/extensions/scroll-progress-bar-for-pwa/), [PWA to APK Plugin](https://pwa-for-wp.com/extensions/pwa-to-apk-plugin/), [Offline Forms for PWA for WP](https://pwa-for-wp.com/extensions/offline-forms-for-pwa-for-wp/), [Navigation Bar for PWA](https://pwa-for-wp.com/extensions/navigation-bar-for-pwa/), [Quick Action for PWA](https://pwa-for-wp.com/extensions/quick-action-for-pwa/), [Multilingual Compatibility for PWA](https://pwa-for-wp.com/extensions/multilingual-compatibility-for-pwa/), [BuddyPress for PWA for WP](https://pwa-for-wp.com/extensions/buddypress-for-pwa-for-wp/), [Rewards on PWA Install](https://pwa-for-wp.com/extensions/rewards-on-pwa-install/), [QR Code for PWA](https://pwa-for-wp.com/extensions/qr-code-for-pwa/), [PWA to iOS Plugin](https://pwa-for-wp.com/extensions/pwa-to-ios-plugin/), and [Whitelabel for PWA ](https://pwa-for-wp.com/extensions/pwaforwp-white-label/) extensions
 
 **We Act Fast on Feedback!**
 
