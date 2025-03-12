@@ -203,7 +203,8 @@ select {
 }
 
 .pwaforwp-sub-tab-headings {
-  margin-top: 10px
+	margin-top: 10px;
+	font-weight: bold;
 }
 
 .pwaforwp-sub-tab-headings span {
@@ -961,4 +962,10 @@ input:checked+.slider:before {
 
 .pwaforwp-feedback-notice .dashicons-thumbs-up {
   padding-left: 5px;
+}
+.pwaforwp-main-wrapper .nav-tab{
+  color:#111;
+}
+.pwaforwp-main-wrapper .nav-tab:focus{
+  box-shadow: none;
 }

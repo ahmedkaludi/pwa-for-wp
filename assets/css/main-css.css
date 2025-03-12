@@ -209,7 +209,8 @@ label.pwaforwp-sts-txt-inactive {
 }
 
 .pwaforwp-sub-tab-headings {
-	margin-top: 10px
+	margin-top: 10px;
+	font-weight: bold;
 }
 
 .pwaforwp-sub-tab-headings span {
@@ -227,7 +228,7 @@ label.pwaforwp-sts-txt-inactive {
 
 .pwaforwp-main-wrapper {
 	width: 75%;
-	float: left
+	float: left;
 }
 
 .pwaforwp-settings-second-div {
@@ -1356,4 +1357,10 @@ span.pwaforwp-addon-active {
 }
 .pwaforwp-tools label{
 	cursor: pointer;
+}
+.pwaforwp-main-wrapper .nav-tab{
+ 	color:#111;
+}
+.pwaforwp-main-wrapper .nav-tab:focus{
+   box-shadow: none;
 }

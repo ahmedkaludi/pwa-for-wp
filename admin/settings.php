@@ -52,6 +52,20 @@ function pwaforpw_add_menu_links() {
 	}
 }
 add_action( 'admin_menu', 'pwaforpw_add_menu_links');
+add_action( 'admin_head', 'pwaforwp_add_menu_styles');
+
+/**
+ * Add styles for the menu img
+ */
+function pwaforwp_add_menu_styles() {
+	?>
+	<style>
+		#toplevel_page_pwaforwp .wp-menu-image img {
+			padding : 15% 0 0;
+		}
+	</style>
+	<?php
+}
 
 function pwaforwp_admin_interface_render(){
     if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
