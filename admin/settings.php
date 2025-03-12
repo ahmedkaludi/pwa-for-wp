@@ -1332,8 +1332,12 @@ function pwaforwp_cache_time_setting_callback(){
 function pwaforwp_avoid_default_banner_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
+	$avoid_default_banner_checked = '';
+	if(isset( $settings['avoid_default_banner'] ) &&  $settings['avoid_default_banner'] == 1 ){
+		$avoid_default_banner_checked = 'checked';
+	}
 	?>
-	<input type="checkbox" name="pwaforwp_settings[avoid_default_banner]" id="pwaforwp_settings[avoid_default_banner]" class=""  <?php echo (isset( $settings['avoid_default_banner'] ) && ($settings['avoid_default_banner']=='true' || $settings['avoid_default_banner']=='1')? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
+	<input type="checkbox" name="pwaforwp_settings[avoid_default_banner]" id="pwaforwp_settings[avoid_default_banner]" class="" <?php echo esc_attr( $avoid_default_banner_checked ); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Enable(check) it when you don\'t want to load default PWA Banner','pwa-for-wp'); ?></p>
 	<?php
 }
@@ -1341,8 +1345,12 @@ function pwaforwp_avoid_default_banner_setting_callback(){
 function pwaforwp_avoid_pwa_loggedin_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
+	$avoid_loggedin_users_checked = '';
+	if(isset( $settings['avoid_loggedin_users'] ) && $settings['avoid_loggedin_users'] == 1 ){
+		$avoid_loggedin_users_checked = 'checked';
+	}
 	?>
-	<input type="checkbox" name="pwaforwp_settings[avoid_loggedin_users]" id="pwaforwp_settings[avoid_loggedin_users]" class=""  <?php echo (isset( $settings['avoid_loggedin_users'] ) && ($settings['avoid_loggedin_users']=='true' || $settings['avoid_loggedin_users']=='1')? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="1">
+	<input type="checkbox" name="pwaforwp_settings[avoid_loggedin_users]" id="pwaforwp_settings[avoid_loggedin_users]" class=""  <?php echo esc_attr( $avoid_loggedin_users_checked ); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('(check) it, if you want disable PWA for loggedin users','pwa-for-wp'); ?></p>
 	<?php
 }
