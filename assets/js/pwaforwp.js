@@ -168,3 +168,97 @@ function is_valid_url(urlString) {
         '(\\#[-a-z\\d_]*)?$', 'i'); // validate fragment locator
     return !!urlPattern.test(urlString);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Only run if touch is supported, swipe_navigation is enabled, and on mobile devices
+    if (!('ontouchstart' in window) || pwaforwp_js_obj.swipe_navigation != '1' || window.innerWidth > 768) return;
+  
+    let touchstartX = 0;
+    let touchendX = 0;
+    const threshold = 100; // Minimum px distance to trigger swipe
+  
+    // Create gradient overlay elements
+    const leftGradient = document.createElement('div');
+    leftGradient.id = 'swipe-gradient-left';
+    Object.assign(leftGradient.style, {
+      position: 'fixed',
+      top: '0',
+      bottom: '0',
+      left: '0',
+      width: '50%',
+      pointerEvents: 'none',
+      zIndex: '9999',
+      background: 'linear-gradient(to right, rgba(0,0,0,0.5), transparent)',
+      opacity: '0',
+      transition: 'opacity 0.1s'
+    });
+  
+    const rightGradient = document.createElement('div');
+    rightGradient.id = 'swipe-gradient-right';
+    Object.assign(rightGradient.style, {
+      position: 'fixed',
+      top: '0',
+      bottom: '0',
+      right: '0',
+      width: '50%',
+      pointerEvents: 'none',
+      zIndex: '9999',
+      background: 'linear-gradient(to left, rgba(0,0,0,0.5), transparent)',
+      opacity: '0',
+      transition: 'opacity 0.1s'
+    });
+  
+    document.body.appendChild(leftGradient);
+    document.body.appendChild(rightGradient);
+  
+    // Hide both gradients
+    function hideGradients() {
+      leftGradient.style.opacity = '0';
+      rightGradient.style.opacity = '0';
+    }
+  
+  
+    document.addEventListener('touchstart', function(event) {
+      touchstartX = event.changedTouches[0].screenX;
+      hideGradients(); // Reset gradients on new touch
+    });
+  
+
+    document.addEventListener('touchmove', function(event) {
+      const currentX = event.changedTouches[0].screenX;
+      const deltaX = currentX - touchstartX;
+      const fraction = Math.min(Math.abs(deltaX) / threshold, 1); // fraction: 0 to 1
+  
+      if (deltaX > 0) {
+        // Swipe right: update left gradient
+        leftGradient.style.opacity = fraction.toString();
+        rightGradient.style.opacity = '0';
+      } else if (deltaX < 0) {
+        // Swipe left: update right gradient
+        rightGradient.style.opacity = fraction.toString();
+        leftGradient.style.opacity = '0';
+      }
+    });
+  
+    document.addEventListener('touchend', function(event) {
+      touchendX = event.changedTouches[0].screenX;
+      const deltaX = touchendX - touchstartX;
+      const fraction = Math.min(Math.abs(deltaX) / threshold, 1);
+  
+      if (fraction < 1) {
+        hideGradients();
+      } else {
+        if (deltaX > 0 && pwaforwp_js_obj.prev_post_url) {
+          leftGradient.style.opacity = '1';
+          setTimeout(function() {
+            window.location.href = pwaforwp_js_obj.prev_post_url;
+          }, 300);
+        } else if (deltaX < 0 && pwaforwp_js_obj.next_post_url) {
+          rightGradient.style.opacity = '1';
+          setTimeout(function() {
+            window.location.href = pwaforwp_js_obj.next_post_url;
+          }, 300);
+        }
+      }
+    });
+  });

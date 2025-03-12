@@ -718,6 +718,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_other_setting_section'						// Settings Section ID
 		);
 		add_settings_field(
+			'pwaforwp_swipe_navigation',							// ID
+			'<label for="pwaforwp_settings[swipe_navigation]"><b>'.esc_html__('Swipe Navigation in PWA', 'pwa-for-wp').'</b></label>',	// Title
+			'pwaforwp_swipe_navigation_setting_callback',							// CB
+			'pwaforwp_other_setting_section',						// Page slug
+			'pwaforwp_other_setting_section'						// Settings Section ID
+		);
+		add_settings_field(
 			'pwaforwp_serve_cache_method_setting',							// ID
 			'<label for="pwaforwp_settings[serve_js_cache_menthod]"><b>'.esc_html__('PWA alternative method', 'pwa-for-wp').'</b></label>',	// Title
 			'pwaforwp_serve_cache_method_setting_callback',							// CB
@@ -1352,6 +1359,20 @@ function pwaforwp_avoid_pwa_loggedin_setting_callback(){
 	?>
 	<input type="checkbox" name="pwaforwp_settings[avoid_loggedin_users]" id="pwaforwp_settings[avoid_loggedin_users]" class=""  <?php echo esc_attr( $avoid_loggedin_users_checked ); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('(check) it, if you want disable PWA for loggedin users','pwa-for-wp'); ?></p>
+	<?php
+}
+
+function pwaforwp_swipe_navigation_setting_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	$swipe_navigation_checked = '';
+	if( isset( $settings['swipe_navigation'] ) || $settings['swipe_navigation'] == 1 ){
+		$swipe_navigation_checked = 'checked';
+	}
+	?>
+        
+	<input type="checkbox" name="pwaforwp_settings[swipe_navigation]" id="pwaforwp_settings[swipe_navigation]" class="" <?php echo esc_attr( $swipe_navigation_checked ); ?> data-uncheck-val="0" value="1">
+	<p><?php echo esc_html__( 'This option adds swipe left / right feature to load next and previous articles.' , 'pwa-for-wp' ); ?></p>
 	<?php
 }
 

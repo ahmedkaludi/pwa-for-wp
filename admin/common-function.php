@@ -191,6 +191,11 @@ function pwaforwp_frontend_enqueue(){
                 if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
                     $reset_cookies=1;
                 }
+
+                $swipe_navigation = 0;
+                if( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == 1 ){
+                    $swipe_navigation = 1;
+                }
             
                 $object_js_name = array(
                 'ajax_url'       => admin_url( 'admin-ajax.php' ),
@@ -202,8 +207,15 @@ function pwaforwp_frontend_enqueue(){
                 'user_admin'  => is_user_logged_in(),
                 'loader_only_pwa'  => $loader_only_pwa,
                 'reset_cookies'  => $reset_cookies,
-                'force_rememberme'=>$force_rememberme
+                'force_rememberme'=>$force_rememberme,
+                'swipe_navigation' => $swipe_navigation,
                 );
+
+                if( $swipe_navigation == 1 && is_single()){
+                    $object_js_name['next_post_url'] = esc_url(get_permalink(get_adjacent_post(false, '', true)));
+                    $object_js_name['prev_post_url'] = esc_url(get_permalink(get_adjacent_post(false, '', false)));
+                }
+
                 
                 wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
                 
@@ -1111,7 +1123,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
 function pwaforwp_visibility_check(){
     global $pwaforwp_settings;
     $settings = $pwaforwp_settings;
-    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] ==1 && (isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
+    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] == 1 && ((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type']) && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type'])))){
         $expo_include_type = array();
         $expo_include_data = array();
 
