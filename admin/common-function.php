@@ -191,6 +191,11 @@ function pwaforwp_frontend_enqueue(){
                 if(isset($settings['reset_cookies']) && $settings['reset_cookies']==1){
                     $reset_cookies=1;
                 }
+
+                $swipe_navigation = 0;
+                if( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == 1 ){
+                    $swipe_navigation = 1;
+                }
             
                 $object_js_name = array(
                 'ajax_url'       => admin_url( 'admin-ajax.php' ),
@@ -202,8 +207,15 @@ function pwaforwp_frontend_enqueue(){
                 'user_admin'  => is_user_logged_in(),
                 'loader_only_pwa'  => $loader_only_pwa,
                 'reset_cookies'  => $reset_cookies,
-                'force_rememberme'=>$force_rememberme
+                'force_rememberme'=>$force_rememberme,
+                'swipe_navigation' => $swipe_navigation,
                 );
+
+                if( $swipe_navigation == 1 && is_single()){
+                    $object_js_name['next_post_url'] = esc_url(get_permalink(get_adjacent_post(false, '', true)));
+                    $object_js_name['prev_post_url'] = esc_url(get_permalink(get_adjacent_post(false, '', false)));
+                }
+
                 
                 wp_localize_script('pwaforwp-js', 'pwaforwp_js_obj', $object_js_name);
                 
@@ -1072,7 +1084,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
         $expo_include_data = array();
 
         if (!empty($settings['include_targeting_type'])) {
-            $expo_include_type = explode(',', $settings['include_targeting_type']);
+            $expo_include_type = explode(',', $settings['']);
         }
         if (!empty($settings['include_targeting_value'])) {
             $expo_include_data = explode(',', $settings['include_targeting_value']);
@@ -1111,7 +1123,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
 function pwaforwp_visibility_check(){
     global $pwaforwp_settings;
     $settings = $pwaforwp_settings;
-    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] ==1 && (isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])  && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type']))){
+    if(isset($settings['visibility_feature']) && $settings['visibility_feature'] == 1 && ((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type']) && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type'])))){
         $expo_include_type = array();
         $expo_include_data = array();
 
@@ -1340,3 +1352,40 @@ function pwaforwp_sw_register_apk_detect($sw_template){
     
     return $sw_template;
 }
+
+function custom_pwaforwp_whitelabel_title($title) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_TITLE')) {
+            return esc_html__(PWA_TITLE, 'pwa-for-wp');
+        }
+    }
+    return esc_html__( $title, 'pwa-for-wp' );
+}
+add_filter('pwaforwp_whitelabel_title', 'custom_pwaforwp_whitelabel_title');
+
+function custom_pwaforwp_whitelabel_logo($logo) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_LOGO')) {
+            return esc_html__(PWA_LOGO, 'pwa-for-wp');
+        }
+    }
+    return $logo;
+}
+add_filter('pwaforwp_whitelabel_logo', 'custom_pwaforwp_whitelabel_logo');
+
+function custom_pwaforwp_whitelabel_longtext($longtext) {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if (file_exists($config_file_path)) {
+        require_once($config_file_path);
+        if (defined('PWA_DESCRIPTION')) {
+            return esc_html__(PWA_DESCRIPTION, 'pwa-for-wp');
+        }
+    }
+    return $longtext;
+}
+add_filter('pwaforwp_whitelabel_longtext', 'custom_pwaforwp_whitelabel_longtext');
+
