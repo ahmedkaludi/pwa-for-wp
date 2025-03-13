@@ -3829,15 +3829,15 @@ function pwaforwp_features_settings(){
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
 									),
 				'pwaforwp_white_label' => array(
-									'enable_field' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'enable_field' => esc_html__('White Label for PWA', 'pwa-for-wp'),
 									'section_name' => esc_html__('pwaforwp_white_label_setting_section', 'pwa-for-wp'),
-									'setting_title' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'setting_title' => esc_html__('White Label for PWA', 'pwa-for-wp'),
 									'is_premium'    => true,
 									'pro_link'      => $addonLists['pwl']['p-url'],
 									'pro_active'    => (is_plugin_active($addonLists['pwl']['p-slug'])? 1: 0),
                                     'pro_deactive'    => (!is_plugin_active($addonLists['pwl']['p-slug']) && file_exists(PWAFORWP_PLUGIN_DIR."/../".$addonLists['ropi']['p-slug'])? 1: 0),
                                     'slug' => 'mcfp',
-									'tooltip_option' => esc_html__('Pwaforwp White Label', 'pwa-for-wp'),
+									'tooltip_option' => esc_html__('White Label for PWA', 'pwa-for-wp'),
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/'
 									),
 				'dataAnalytics' => array(
