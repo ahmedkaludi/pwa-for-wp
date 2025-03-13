@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.7
-Stable tag: 1.7.76
+Stable tag: 1.7.77
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -67,6 +67,15 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.77 (13 March 2025) =
+* Added  : Whitelabel For PWA (pro extension) #693
+* Feature : Swipe left / right to load next and previous article #567
+* Improvement  : update setting UI #697
+* Improvement  : Readme update with new feature list #945
+* Bug Fixed : CTA banner is showing incorrect Add to Home Steps in Chrome on an IOS device #946
+* Bug Fixed  : Remove default banner and Remove PWA for logged-in users Both options are always checked by default. #941
+* Bug Fixed  : PWA Installation Instructions Persist After Install & Cancel CTA Still Triggers Installation #951
+
 = 1.7.76 (31 December 2024) =
 * Added  : PWA to ios as a service (pro extension)#693
 * Improvement  : Make a feature to force load the "pwa-non-amp-install" specific parameter URL. #932
@@ -118,10 +127,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 = 1.7.69.1 (09 May 2024) =
 * Bug Fixed  : PWA: Activation Failed error with wordpress latest update. #886
-
-= 1.7.69 (22 April 2024) =
-* Feature Added : added a new feature so that users can be able to upload their own images to use as an icon in the Navigation Bar #869
-* Bug Fixed  : Latest Version 1.7.67 Gives Warning: Undefined Variable $force_rememberme #878
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
