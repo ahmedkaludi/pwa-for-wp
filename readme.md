@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.8
 
-Stable tag: 1.7.77
+Stable tag: 1.7.78
 
 License: GPLv2 or later
 
@@ -78,6 +78,12 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.78 (21 April 2025) =
+* Bug Fixed : Undefined array key "HTTP_USER_AGENT" /plugins/call-to-action-for-pwa/service/service.php #955
+* Bug Fixed : Undefined array key "swipe_navigation" in PWA for WP 1.7.77
+* Bug Fixed : Pull to refresh feature creating issue with Elementor page scroll option #952
+* Test   : Test with WordPress version 6.8 #956
+
 = 1.7.77 (13 March 2025) =
 * Added  : Whitelabel For PWA (pro extension) #693
 * Feature : Swipe left / right to load next and previous article #567

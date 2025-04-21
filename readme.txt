@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.8
-Stable tag: 1.7.77
+Stable tag: 1.7.78
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -67,6 +67,12 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.78 (21 April 2025) =
+* Bug Fixed : Undefined array key "HTTP_USER_AGENT" /plugins/call-to-action-for-pwa/service/service.php #955
+* Bug Fixed : Undefined array key "swipe_navigation" in PWA for WP 1.7.77
+* Bug Fixed : Pull to refresh feature creating issue with Elementor page scroll option #952
+* Test   : Test with WordPress version 6.8 #956
+
 = 1.7.77 (13 March 2025) =
 * Added  : Whitelabel For PWA (pro extension) #693
 * Feature : Swipe left / right to load next and previous article #567
@@ -125,8 +131,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Add to home on element click is not working when adding button via elementor #891
 * Bug Fixed  : While clicking the close button on the CTA banner it shows the pop-up to install #893
 
-= 1.7.69.1 (09 May 2024) =
-* Bug Fixed  : PWA: Activation Failed error with wordpress latest update. #886
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
