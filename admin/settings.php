@@ -1379,10 +1379,7 @@ function pwaforwp_avoid_pwa_loggedin_setting_callback(){
 function pwaforwp_swipe_navigation_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings();
-	$swipe_navigation_checked = '';
-	if( isset( $settings['swipe_navigation'] ) || $settings['swipe_navigation'] == 1 ){
-		$swipe_navigation_checked = 'checked';
-	}
+	$swipe_navigation_checked = ( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == '1' ) ? '' : 'checked';
 	?>
         
 	<input type="checkbox" name="pwaforwp_settings[swipe_navigation]" id="pwaforwp_settings[swipe_navigation]" class="" <?php echo esc_attr( $swipe_navigation_checked ); ?> data-uncheck-val="0" value="1">
