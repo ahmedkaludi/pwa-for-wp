@@ -32,7 +32,7 @@ function pwaforpw_add_menu_links() {
 	$pwa_title = apply_filters('pwaforwp_whitelabel_title', __( 'PWA', 'pwa-for-wp' ));
 	$pwa_logo = apply_filters('pwaforwp_whitelabel_logo', PWAFORWP_PLUGIN_URL.'images/menu-icon.svg');
 	add_menu_page( __( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
-                __( $pwa_title, 'pwa-for-wp' ).$license_alert_icon, 
+                esc_html( $pwa_title ).$license_alert_icon, 
 				pwaforwp_current_user_can(),                
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
@@ -3834,7 +3834,7 @@ function pwaforwp_features_settings(){
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
 									),
 				'pwaforwp_white_label' => array(
-									'enable_field' => esc_html__('White Label for PWA', 'pwa-for-wp'),
+									'enable_field' => esc_html__('pwaforwp-white-label', 'pwa-for-wp'),
 									'section_name' => esc_html__('pwaforwp_white_label_setting_section', 'pwa-for-wp'),
 									'setting_title' => esc_html__('White Label for PWA', 'pwa-for-wp'),
 									'is_premium'    => true,
@@ -4106,31 +4106,53 @@ function pwaforwp_features_settings(){
 }
 
 function whitelable_for_pwa_custom_config_file($data) {
-	$file_path = ABSPATH . 'pwa-config.php';
-	if (file_exists($file_path)) {
-		unlink($file_path);
-	}
-	$file = fopen($file_path, 'w');
-	if ($file) {
-		$content = "<?php\n";
-		$content .= "// Custom configuration for PWA for wp\n";
-		if(isset($data['pwaforwp_whitelable_title'])){
-			$whitelabel_title = addslashes(sanitize_text_field($data['pwaforwp_whitelable_title']));
-			$content .= "define('PWA_TITLE', '$whitelabel_title');\n";
-		}
-		if(isset($data['pwaforwp_whitelable_description'])){
-			$whitelable_description = addslashes(sanitize_text_field($data['pwaforwp_whitelable_description']));
-			$content .= "define('PWA_DESCRIPTION', '$whitelable_description');\n";
-		}
-		if(isset($data['pwaforwp_whitelable_logo'])){
-			$whitelable_logo = addslashes(sanitize_text_field($data['pwaforwp_whitelable_logo']));
-			$content .= "define('PWA_LOGO', '$whitelable_logo');\n";
-		}
-		$content .= "?>";
-		fwrite($file, $content);
-		fclose($file);
-	}
+    if ( ! function_exists( 'request_filesystem_credentials' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+    }
+
+    $creds = request_filesystem_credentials( site_url() );
+    if ( ! WP_Filesystem($creds) ) {
+        return false;
+    }
+
+    global $wp_filesystem;
+
+    $file_path = ABSPATH . 'pwa-config.php';
+
+    // Delete if it already exists
+    if ( $wp_filesystem->exists($file_path) ) {
+        $wp_filesystem->delete($file_path);
+    }
+
+    // Prepare file content
+    $content = "<?php\n";
+    $content .= "// Custom configuration for PWA for WP\n";
+
+    if (isset($data['pwaforwp_whitelable_title'])) {
+        $whitelabel_title = addslashes(sanitize_text_field($data['pwaforwp_whitelable_title']));
+        $content .= "define('PWA_TITLE', '$whitelabel_title');\n";
+    }
+
+    if (isset($data['pwaforwp_whitelable_description'])) {
+        $whitelabel_description = addslashes(sanitize_text_field($data['pwaforwp_whitelable_description']));
+        $content .= "define('PWA_DESCRIPTION', '$whitelabel_description');\n";
+    }
+
+    if (isset($data['pwaforwp_whitelable_logo'])) {
+        $whitelabel_logo = addslashes(sanitize_text_field($data['pwaforwp_whitelable_logo']));
+        $content .= "define('PWA_LOGO', '$whitelabel_logo');\n";
+    }
+
+    $content .= "?>";
+
+    // Write the file using WP_Filesystem
+    return $wp_filesystem->put_contents(
+        $file_path,
+        $content,
+        FS_CHMOD_FILE
+    );
 }
+
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){	
