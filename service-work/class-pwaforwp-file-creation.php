@@ -238,9 +238,13 @@ class PWAforwp_File_Creation {
                 if(isset($swHtmlContentbody) && $swHtmlContentbody){
                     
                  $swHtmlContent         = $swHtmlContentbody;
-                    
                  if($server_key !='' && $config !=''){
-                 $firebaseconfig   = 'var config ='.esc_js($config).';'
+                  $config_array = json_decode($config, true);
+
+                  if (!is_array($config_array)) {
+                      $config_array = []; // fallback
+                  }
+                 $firebaseconfig   = 'var config ='.wp_json_encode( $config_array ).';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
                  $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
