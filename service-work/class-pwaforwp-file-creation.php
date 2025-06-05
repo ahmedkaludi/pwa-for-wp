@@ -239,12 +239,7 @@ class PWAforwp_File_Creation {
                     
                  $swHtmlContent         = $swHtmlContentbody;
                  if($server_key !='' && $config !=''){
-                  $config_array = json_decode($config, true);
-
-                  if (!is_array($config_array)) {
-                      $config_array = []; // fallback
-                  }
-                 $firebaseconfig   = 'var config ='.wp_json_encode( $config_array ).';'
+                 $firebaseconfig   = 'var config ='. $config .';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
                  $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
