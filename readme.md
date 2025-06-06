@@ -6,7 +6,7 @@ Requires at least: 3.0
 
 Tested up to: 6.8
 
-Stable tag: 1.7.78
+Stable tag: 1.7.79
 
 License: GPLv2 or later
 
@@ -78,6 +78,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
+= 1.7.79 (06 June 2026) =
+* Enhancement : The firebase has changed the PN configurations, need to review #947
+* Bug Fixed : File download filename shows [Object Attr] as filename #958
+* Bug Fixed : White Label for PWA settings not showing #959
+
 = 1.7.78 (21 April 2025) =
 * Bug Fixed : Undefined array key "HTTP_USER_AGENT" /plugins/call-to-action-for-pwa/service/service.php #955
 * Bug Fixed : Undefined array key "swipe_navigation" in PWA for WP 1.7.77
