@@ -238,9 +238,8 @@ class PWAforwp_File_Creation {
                 if(isset($swHtmlContentbody) && $swHtmlContentbody){
                     
                  $swHtmlContent         = $swHtmlContentbody;
-                    
                  if($server_key !='' && $config !=''){
-                 $firebaseconfig   = 'var config ='.esc_js($config).';'
+                 $firebaseconfig   = 'var config ='. $config .';'
                                      .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
                                      const firebaseMessaging = firebase.messaging();';
                  $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';

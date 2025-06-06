@@ -1,38 +1,57 @@
-(function(){
-	setTimeout(()=>{
-		if( window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: minimal-ui)').matches) { 
-		document.addEventListener("click", function(event){
-			if(event.target.tagName === "A"){	
-			var pwaforwp_download_text = event.target.attributes["download"];		
-			var pwaforwp_isdownload = pwaforwp_download_text ? "1" : "0";
-			if(pwaforwp_isdownload == 1){
-				event.preventDefault();
-				var url = event.target.attributes["href"].value;
-				event.target.removeAttribute("href");
-				event.target.setAttribute("link",url);
-				var xhr = new XMLHttpRequest();
-			    xhr.open('GET', url, true);
-			    xhr.responseType = 'blob';
-			    xhr.onload = function(e) {
-			      if (this.status == 200) {
-			        var myBlob = this.response;
-			        var link = document.createElement('a');
-			        link.href = window.URL.createObjectURL(myBlob);
-			        link.download = pwaforwp_download_text;
-			        link.click();
-			      }
-			    };
-			    xhr.send();
-			}
-			}
-		})
-		}
-	},1000)
-})()
+(function () {
+  setTimeout(() => {
+    const isPWA =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      window.matchMedia('(display-mode: minimal-ui)').matches;
+
+    if (!isPWA) return;
+
+    document.addEventListener('click', function (event) {
+      const target = event.target.closest('a'); // supports nested elements
+      if (!target) return;
+
+      const downloadAttr = target.getAttribute('download');
+      const href = target.getAttribute('href');
+
+      if (!downloadAttr || !href) return;
+
+      event.preventDefault(); // Prevent navigation
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', href, true);
+      xhr.responseType = 'blob';
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          const blob = xhr.response;
+          const blobUrl = URL.createObjectURL(blob);
+
+          const tempLink = document.createElement('a');
+          tempLink.href = blobUrl;
+          tempLink.download = downloadAttr;
+          document.body.appendChild(tempLink);
+          tempLink.click();
+          document.body.removeChild(tempLink);
+
+          URL.revokeObjectURL(blobUrl); // Clean up
+        } else {
+          console.error(`Failed to download file. Status: ${xhr.status}`);
+        }
+      };
+
+      xhr.onerror = function () {
+        console.error('Download failed due to a network error.');
+      };
+
+      xhr.send();
+    });
+  }, 1000);
+})();
 
 /*
 ** Forcing rememberme option for the login. **
-Otherwise user will get logged out after sometime or after reopening the PWA app. 
+Otherwise user will get logged out after sometime or after reopening the PWA app.
 By rememberme wordpress keeps the login session valid for 14 days (As of now we can not change that) instead of current session
 */
 document.addEventListener('DOMContentLoaded', function() {

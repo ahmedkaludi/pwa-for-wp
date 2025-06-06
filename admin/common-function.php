@@ -1358,10 +1358,10 @@ function custom_pwaforwp_whitelabel_title($title) {
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
         if (defined('PWA_TITLE')) {
-            return esc_html__(PWA_TITLE, 'pwa-for-wp');
+            return esc_html( PWA_TITLE );
         }
     }
-    return esc_html__( $title, 'pwa-for-wp' );
+    return esc_html( $title );
 }
 add_filter('pwaforwp_whitelabel_title', 'custom_pwaforwp_whitelabel_title');
 
@@ -1370,7 +1370,7 @@ function custom_pwaforwp_whitelabel_logo($logo) {
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
         if (defined('PWA_LOGO')) {
-            return esc_html__(PWA_LOGO, 'pwa-for-wp');
+            return esc_html( PWA_LOGO );
         }
     }
     return $logo;
@@ -1382,7 +1382,7 @@ function custom_pwaforwp_whitelabel_longtext($longtext) {
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
         if (defined('PWA_DESCRIPTION')) {
-            return esc_html__(PWA_DESCRIPTION, 'pwa-for-wp');
+            return esc_html( PWA_DESCRIPTION );
         }
     }
     return $longtext;

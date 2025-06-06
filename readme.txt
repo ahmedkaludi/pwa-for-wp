@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.8
-Stable tag: 1.7.78
+Stable tag: 1.7.79
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -67,6 +67,11 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.79 (06 June 2025) =
+* Enhancement : The firebase has changed the PN configurations, need to review #947
+* Bug Fixed : File download filename shows [Object Attr] as filename #958
+* Bug Fixed : White Label for PWA settings not showing #959
+
 = 1.7.78 (21 April 2025) =
 * Bug Fixed : Undefined array key "HTTP_USER_AGENT" /plugins/call-to-action-for-pwa/service/service.php #955
 * Bug Fixed : Undefined array key "swipe_navigation" in PWA for WP 1.7.77
@@ -125,12 +130,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
 * Bug Fixed  : Offline form radio group validation not working #900
 * Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
-
-= 1.7.70 (15 May 2024) =
-* Bug Fixed  : Uncaught TypeError: fwrite(): Argument #1 ($stream) must be of type resource, bool given in #888
-* Bug Fixed  : Add to home on element click is not working when adding button via elementor #891
-* Bug Fixed  : While clicking the close button on the CTA banner it shows the pop-up to install #893
-
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

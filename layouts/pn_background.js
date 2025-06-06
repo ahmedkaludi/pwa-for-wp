@@ -3,7 +3,7 @@
                                  
                                  var config ={{config}};
                                  if (!firebase.apps.length) {firebase.initializeApp(config);}
-                                 if(!messaging)	{const messaging = firebase.messaging();}
+                                 const messaging = firebase.messaging()
                                  messaging.setBackgroundMessageHandler(function(payload) {  
                                  const notificationTitle = payload.data.title;
                                  const notificationOptions = {

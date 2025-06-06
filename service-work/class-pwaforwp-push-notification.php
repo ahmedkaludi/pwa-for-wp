@@ -51,7 +51,7 @@ class PWAFORWP_Push_Notification {
 
             if ( ! empty( $result ) && isset( $result['success'] ) && $result['success'] != 0 ) {             
 
-            echo wp_json_encode( array( 'status'=>'t', 'success'=> $result['success'], 'failure'=> $result['failure'] ) );    
+            echo wp_json_encode( array( 'status'=>'t', 'success'=> $result['message'], 'failure'=> $result['failure'] ) );    
 
             } else {
 
@@ -195,10 +195,6 @@ class PWAFORWP_Push_Notification {
             if ( !wp_verify_nonce( $_POST['pwaforwp_security_nonce'], 'pwaforwp_ajax_check_nonce' ) ){
               return;  
             }
-            if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
-              return;
-            }
-         
             $get_token_list = array();  
             $result         = false;
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
@@ -219,60 +215,170 @@ class PWAFORWP_Push_Notification {
             }
              wp_die();
       }
-      protected function pwaforwp_send_push_notification($message){
-          
-            $settings   = pwaforwp_defaultSettings();                        
-            $server_key = $settings['fcm_server_key'];           
-            $tokens     = (array)json_decode(get_option('pwa_token_list'), true); 
-            
-            if(empty($tokens) || $server_key ==''){
-                return false;
-            }            
-            $header = [
-                    'Authorization: Key='. $server_key,
-                    'Content-Type: Application/json'
-            ];
-            $msg = [
-                    'title' => $message['title'],
-                    'body'  => $message['body'],
-                    'icon'  => (isset($settings['fcm_push_icon'])? esc_attr( $settings['fcm_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
-                    'budge'  => (isset($settings['fcm_budge_push_icon'])? esc_attr( $settings['fcm_budge_push_icon']) : PWAFORWP_PLUGIN_URL.'/images/notification_icon.jpg'),
-                    'url'  => $message['url'],
-                    'primarykey'  => uniqid(),
-                    'image' => isset($message['image_url'])? $message['image_url'] : '',
-            ];             
-            $payload = [
-                    'registration_ids' => $tokens,
-                    'data'             => $msg  
-            ];
+protected function pwaforwp_send_push_notification($message) {
+    $settings   = pwaforwp_defaultSettings();
+    $service_account_key = json_decode($settings['fcm_server_key'], true);
+    $firebase_config = $settings['fcm_config'];
 
-            $args = array(
-              'body'        => wp_json_encode($payload),
-              'timeout'     => '15',
-              'headers'     => $header,
-              'sslverify'   => false,
-            );
+    // Fix unquoted keys in firebase_config JSON string
+    $firebase_config = preg_replace_callback( '/([{,]\s*)([a-zA-Z0-9_]+)\s*:/', function ( $matches ) {
+        return $matches[1] . '"' . $matches[2] . '":';
+    }, $firebase_config );
 
-            $response = wp_remote_post( 'https://fcm.googleapis.com/fcm/send', $args);
-            if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-              if(!empty($response->get_error_message())){
-                $error_message = strtolower($response->get_error_message());
-                $error_pos = strpos($error_message, 'operation timed out');
-                if($error_pos !== false){
-                  $message = esc_html__('Request timed out, please try again', 'pwa-for-wp');
-                }else{
-                  $message = esc_html($response->get_error_message());
-                }
-              }
-              if(empty($message)){ 
-                   $message =   esc_html__( 'An error occurred, please try again.', 'pwa-for-wp');
-              }
-              $response = array('success'=>0,'message'=>$message);
-            }else{
-              $response = wp_remote_retrieve_body( $response );
+    $firebase_config = json_decode($firebase_config, true);
+
+    if ( empty( $service_account_key ) || empty( $firebase_config ) ) {
+        return json_encode([
+            'success' => 0,
+            'message' => esc_html__('Service Account Key or Firebase Config is missing', 'pwa-for-wp')
+        ]);
+    }
+
+    $project_id = $firebase_config['projectId'];
+    $tokens     = (array) json_decode(get_option('pwa_token_list'), true);
+
+    if ( empty( $tokens ) || empty( $service_account_key ) ) {
+        return json_encode([
+            'success' => 0,
+            'message' => esc_html__('Tokens or Service Account Key are missing', 'pwa-for-wp')
+        ]);
+    }
+
+    if ( empty( $project_id ) ) {
+        return json_encode([
+            'success' => 0,
+            'message' => esc_html__('Project ID is missing', 'pwa-for-wp')
+        ]);
+    }
+
+    // Get access token using service account key
+    $access_token = $this->pwaforwp_get_access_token( $service_account_key );
+
+    if ( empty( $access_token ) ) {
+        return json_encode([
+            'success' => 0,
+            'message' => esc_html__('Access token could not be generated', 'pwa-for-wp')
+        ]);
+    }
+
+   $header = [
+    'Authorization' => 'Bearer ' . $access_token,
+    'Content-Type'  => 'application/json'
+  ];
+
+    $msg = [
+        'title'        => $message['title'],
+        'body'         => $message['body'],
+        'image'        => isset($message['image_url']) ? $message['image_url'] : '',
+    ];
+
+       $data = [
+        'title'        => $message['title'],
+        'body'         => $message['body'],
+        'icon'         => isset( $settings['fcm_push_icon'] ) ? esc_attr($settings['fcm_push_icon']) : PWAFORWP_PLUGIN_URL . '/images/notification_icon.jpg',
+        'badge'        => isset( $settings['fcm_budge_push_icon'] ) ? esc_attr($settings['fcm_budge_push_icon']) : PWAFORWP_PLUGIN_URL . '/images/notification_icon.jpg',
+        'url' => $message['url'],
+        'image'        => isset( $message['image_url'] ) ? $message['image_url'] : '',
+    ];
+    $successCount = 0;
+    $errors = [];
+
+    foreach ( $tokens as $token ) {
+        $payload = [
+            'message' => [
+                'token'        => $token,
+                'notification' => $msg,
+                'data'         => $data,
+                'webpush'      => [
+                    'fcm_options' => [
+                        'link' => $message['url'],
+                    ],
+                ],
+            ]
+        ];
+
+        $args = [
+            'body'      => wp_json_encode( $payload ),
+            'timeout'   => 15,
+            'headers'   => $header,
+            'sslverify' => false,
+        ];
+
+        $response = wp_remote_post( 'https://fcm.googleapis.com/v1/projects/' . $project_id . '/messages:send', $args);
+
+
+        if (is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+            if (  is_wp_error( $response ) ) {
+                $errors[] = $response->get_error_message();
+            } else {
+                $errors[] = 'HTTP error code: ' . wp_remote_retrieve_response_code( $response );
             }
-            return $response;          
-      }
+            continue;
+        }
+
+        $body = json_decode(wp_remote_retrieve_body( $response ), true );
+        if ( isset( $body['name'] ) ) {
+            $successCount++;
+        } else {
+            $errors[] = 'Unknown error sending to token: ' . $token;
+        }
+    }
+
+    if ( $successCount > 0 ) {
+        return json_encode([
+            'success' => 1,
+            'message' => esc_html__("Notifications sent successfully to ", 'pwa-for-wp') . esc_html( $successCount ) . esc_html__(" device(s).", 'pwa-for-wp'),
+            'errors'  => $errors,
+        ]);
+    } else {
+        return json_encode([
+            'success' => 0,
+            'message' => esc_html__('Failed to send notifications.', 'pwa-for-wp'),
+            'errors'  => $errors,
+        ]);
+    }
+}
+
+// Helper function for URL-safe Base64 encoding used in JWT
+private function base64url_encode( $data ) {
+    return rtrim(strtr(base64_encode($data ), '+/', '-_'), '=');
+}
+
+private function pwaforwp_get_access_token( $service_account_key ) {
+    $client_email = $service_account_key['client_email'];
+    $private_key  = $service_account_key['private_key'];
+
+    $header = ['alg' => 'RS256', 'typ' => 'JWT'];
+    $payload = [
+        'iss'   => $client_email,
+        'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+        'aud'   => 'https://oauth2.googleapis.com/token',
+        'exp'   => time() + 3600,
+        'iat'   => time(),
+    ];
+
+    $jwtHeader  = $this->base64url_encode( json_encode( $header ) );
+    $jwtPayload = $this->base64url_encode( json_encode( $payload ) );
+    $data       = $jwtHeader . '.' . $jwtPayload;
+
+    openssl_sign($data, $signature, $private_key, OPENSSL_ALGO_SHA256);
+    $jwtSignature = $this->base64url_encode( $signature );
+
+    $jwt = $data . '.' . $jwtSignature;
+
+    $args = [
+        'body' => [
+            'grant_type' => 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            'assertion'  => $jwt,
+        ],
+    ];
+
+    $response = wp_remote_post( 'https://oauth2.googleapis.com/token', $args );
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+
+    return $body['access_token'] ?? '';
+}
+
                  
 }
 if ( class_exists( 'PWAFORWP_Push_Notification' ) ) {

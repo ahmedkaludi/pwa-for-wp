@@ -32,7 +32,7 @@ function pwaforpw_add_menu_links() {
 	$pwa_title = apply_filters('pwaforwp_whitelabel_title', __( 'PWA', 'pwa-for-wp' ));
 	$pwa_logo = apply_filters('pwaforwp_whitelabel_logo', PWAFORWP_PLUGIN_URL.'images/menu-icon.svg');
 	add_menu_page( __( 'Progressive Web Apps For WP', 'pwa-for-wp' ), 
-                __( $pwa_title, 'pwa-for-wp' ).$license_alert_icon, 
+                esc_html( $pwa_title ).$license_alert_icon, 
 				pwaforwp_current_user_can(),                
                 'pwaforwp',
                 'pwaforwp_admin_interface_render',
@@ -1990,18 +1990,26 @@ function pwaforwp_push_notification_callback(){
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- using style in variable no need to esc.
 			echo $fcm_service_style; ?>>
                 <tbody>
+                   
                     <tr>
-                        <th><?php echo esc_html__('FCM Server API Key', 'pwa-for-wp') ?></th>  
-                        <td><input class="regular-text" type="text" name="pwaforwp_settings[fcm_server_key]" id="pwaforwp_settings[fcm_server_key]" value="<?php echo (isset($settings['fcm_server_key'])? esc_attr($settings['fcm_server_key']):'') ; ?>"></td>
-                    </tr>
-                    <tr>
-                        <th><?php echo esc_html__('Config', 'pwa-for-wp') ?></th>  
+                        <th><?php echo esc_html__('Firebase Config', 'pwa-for-wp') ?></th>  
                         <td>
+							<p><?php echo esc_html__('Note: You need to Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations.', 'pwa-for-wp') ?></p>
                             <textarea class="regular-text" placeholder="{ <?php echo "\n"; ?>apiKey: '<Your Api Key>', <?php echo "\n"; ?>authDomain: '<Your Auth Domain>',<?php echo "\n"; ?>databaseURL: '<Your Database URL>',<?php echo "\n"; ?>projectId: '<Your Project Id>',<?php echo "\n"; ?>storageBucket: '<Your Storage Bucket>', <?php echo "\n"; ?>messagingSenderId: '<Your Messaging Sender Id>' <?php echo "\n"; ?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_config]" name="pwaforwp_settings[fcm_config]"><?php echo isset($settings['fcm_config']) ? esc_attr($settings['fcm_config']) : ''; ?></textarea>
-                            <p><?php echo esc_html__('Note: Create a new firebase project on ', 'pwa-for-wp') ?> <a href="https://firebase.google.com/" target="_blank"><?php echo esc_html__('firebase', 'pwa-for-wp') ?></a> <?php echo esc_html__('console, its completly free by google with some limitations. After creating the project you will find FCM Key and json in project details section.', 'pwa-for-wp') ?></p>
-                            <p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
+
+							<p><?php echo esc_html__('Go to Firebase Console → Project Settings → Your Apps. Create a web app. You will get the config under SDK setup and configuration.', 'pwa-for-wp') ?></p>
+                           
                         </td>
-                    </tr>
+                    </tr> 
+					<tr>
+						<th><?php echo esc_html__('FCM Service Account', 'pwa-for-wp'); ?></th>
+						<td>
+							<textarea class="regular-text" placeholder="{<?php echo "\n"; ?>&quot;type&quot;: &quot;service_account&quot;,<?php echo "\n"; ?>&quot;project_id&quot;: &quot;[PROJECT_ID]&quot;,<?php echo "\n"; ?>&quot;private_key_id&quot;: &quot;[PRIVATE_KEY_ID]&quot;,<?php echo "\n"; ?>&quot;private_key&quot;: &quot;[PRIVATE_KEY]&quot;,<?php echo "\n"; ?>&quot;client_email&quot;: &quot;[CLIENT_EMAIL]&quot;,<?php echo "\n"; ?>&quot;client_id&quot;: &quot;[CLIENT_ID]&quot;,<?php echo "\n"; ?>&quot;auth_uri&quot;: &quot;https://accounts.google.com/o/oauth2/auth&quot;,<?php echo "\n"; ?>&quot;token_uri&quot;: &quot;https://oauth2.googleapis.com/token&quot;,<?php echo "\n"; ?>&quot;auth_provider_x509_cert_url&quot;: &quot;https://www.googleapis.com/oauth2/v1/certs&quot;,<?php echo "\n"; ?>&quot;client_x509_cert_url&quot;: &quot;[CLIENT_X509_CERT_URL]&quot;,<?php echo "\n"; ?>&quot;universe_domain&quot;: &quot;googleapis.com&quot;<?php echo "\n"; ?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_server_key]" name="pwaforwp_settings[fcm_server_key]"><?php echo isset($settings['fcm_server_key']) ? esc_attr($settings['fcm_server_key']) : ''; ?></textarea>
+
+							<p><?php echo esc_html__('Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically', 'pwa-for-wp') ?></p>
+							<p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
+						</td>
+					</tr>
                     <tr>
                         <th><?php echo esc_html__('FCM Push Notification Icon', 'pwa-for-wp') ?></th>  
                         <td>
@@ -3826,7 +3834,7 @@ function pwaforwp_features_settings(){
 									'tooltip_link'	=> 'https://pwa-for-wp.com/docs/article/how-to-use-rewards-on-pwa-install/'
 									),
 				'pwaforwp_white_label' => array(
-									'enable_field' => esc_html__('White Label for PWA', 'pwa-for-wp'),
+									'enable_field' => esc_html__('pwaforwp-white-label', 'pwa-for-wp'),
 									'section_name' => esc_html__('pwaforwp_white_label_setting_section', 'pwa-for-wp'),
 									'setting_title' => esc_html__('White Label for PWA', 'pwa-for-wp'),
 									'is_premium'    => true,
@@ -4098,31 +4106,53 @@ function pwaforwp_features_settings(){
 }
 
 function whitelable_for_pwa_custom_config_file($data) {
-	$file_path = ABSPATH . 'pwa-config.php';
-	if (file_exists($file_path)) {
-		unlink($file_path);
-	}
-	$file = fopen($file_path, 'w');
-	if ($file) {
-		$content = "<?php\n";
-		$content .= "// Custom configuration for PWA for wp\n";
-		if(isset($data['pwaforwp_whitelable_title'])){
-			$whitelabel_title = addslashes(sanitize_text_field($data['pwaforwp_whitelable_title']));
-			$content .= "define('PWA_TITLE', '$whitelabel_title');\n";
-		}
-		if(isset($data['pwaforwp_whitelable_description'])){
-			$whitelable_description = addslashes(sanitize_text_field($data['pwaforwp_whitelable_description']));
-			$content .= "define('PWA_DESCRIPTION', '$whitelable_description');\n";
-		}
-		if(isset($data['pwaforwp_whitelable_logo'])){
-			$whitelable_logo = addslashes(sanitize_text_field($data['pwaforwp_whitelable_logo']));
-			$content .= "define('PWA_LOGO', '$whitelable_logo');\n";
-		}
-		$content .= "?>";
-		fwrite($file, $content);
-		fclose($file);
-	}
+    if ( ! function_exists( 'request_filesystem_credentials' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+    }
+
+    $creds = request_filesystem_credentials( site_url() );
+    if ( ! WP_Filesystem($creds) ) {
+        return false;
+    }
+
+    global $wp_filesystem;
+
+    $file_path = ABSPATH . 'pwa-config.php';
+
+    // Delete if it already exists
+    if ( $wp_filesystem->exists($file_path) ) {
+        $wp_filesystem->delete($file_path);
+    }
+
+    // Prepare file content
+    $content = "<?php\n";
+    $content .= "// Custom configuration for PWA for WP\n";
+
+    if (isset($data['pwaforwp_whitelable_title'])) {
+        $whitelabel_title = addslashes(sanitize_text_field($data['pwaforwp_whitelable_title']));
+        $content .= "define('PWA_TITLE', '$whitelabel_title');\n";
+    }
+
+    if (isset($data['pwaforwp_whitelable_description'])) {
+        $whitelabel_description = addslashes(sanitize_text_field($data['pwaforwp_whitelable_description']));
+        $content .= "define('PWA_DESCRIPTION', '$whitelabel_description');\n";
+    }
+
+    if (isset($data['pwaforwp_whitelable_logo'])) {
+        $whitelabel_logo = addslashes(sanitize_text_field($data['pwaforwp_whitelable_logo']));
+        $content .= "define('PWA_LOGO', '$whitelabel_logo');\n";
+    }
+
+    $content .= "?>";
+
+    // Write the file using WP_Filesystem
+    return $wp_filesystem->put_contents(
+        $file_path,
+        $content,
+        FS_CHMOD_FILE
+    );
 }
+
 
 add_action("wp_ajax_pwaforwp_update_features_options", 'pwaforwp_update_features_options');
 function pwaforwp_update_features_options(){	
