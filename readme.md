@@ -78,7 +78,7 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 ## Changelog
 == Changelog ==
-= 1.7.79 (06 June 2026) =
+= 1.7.79 (06 June 2025) =
 * Enhancement : The firebase has changed the PN configurations, need to review #947
 * Bug Fixed : File download filename shows [Object Attr] as filename #958
 * Bug Fixed : White Label for PWA settings not showing #959
