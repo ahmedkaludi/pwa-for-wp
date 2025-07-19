@@ -434,6 +434,7 @@ class PWAforwp_File_Creation {
                   $config     = $settings['fcm_config'];
                   if( $server_key !='' && $config !=''){
                     $firebasejs = $this->pwaforwp_firebase_js();  
+                    $firebasejs .= $this->pwaforwp_pnjs(); 
                   }
                 }
                                 

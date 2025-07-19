@@ -2004,10 +2004,12 @@ function pwaforwp_push_notification_callback(){
 					<tr>
 						<th><?php echo esc_html__('FCM Service Account', 'pwa-for-wp'); ?></th>
 						<td>
-							<textarea class="regular-text" placeholder="{<?php echo "\n"; ?>&quot;type&quot;: &quot;service_account&quot;,<?php echo "\n"; ?>&quot;project_id&quot;: &quot;[PROJECT_ID]&quot;,<?php echo "\n"; ?>&quot;private_key_id&quot;: &quot;[PRIVATE_KEY_ID]&quot;,<?php echo "\n"; ?>&quot;private_key&quot;: &quot;[PRIVATE_KEY]&quot;,<?php echo "\n"; ?>&quot;client_email&quot;: &quot;[CLIENT_EMAIL]&quot;,<?php echo "\n"; ?>&quot;client_id&quot;: &quot;[CLIENT_ID]&quot;,<?php echo "\n"; ?>&quot;auth_uri&quot;: &quot;https://accounts.google.com/o/oauth2/auth&quot;,<?php echo "\n"; ?>&quot;token_uri&quot;: &quot;https://oauth2.googleapis.com/token&quot;,<?php echo "\n"; ?>&quot;auth_provider_x509_cert_url&quot;: &quot;https://www.googleapis.com/oauth2/v1/certs&quot;,<?php echo "\n"; ?>&quot;client_x509_cert_url&quot;: &quot;[CLIENT_X509_CERT_URL]&quot;,<?php echo "\n"; ?>&quot;universe_domain&quot;: &quot;googleapis.com&quot;<?php echo "\n"; ?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_server_key]" name="pwaforwp_settings[fcm_server_key]"><?php echo isset($settings['fcm_server_key']) ? esc_attr($settings['fcm_server_key']) : ''; ?></textarea>
-
-							<p><?php echo esc_html__('Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically', 'pwa-for-wp') ?></p>
-							<p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
+							<input type="file" id="fcm_service_account_json" accept=".json">
+							<?php if (!empty($settings['fcm_server_key'])): ?>
+								<p class="description"><b><?php echo esc_html__('File uploaded:', 'pwa-for-wp') . ' <span id="fcm_server_key_url" style="color:#000;">' . esc_html(basename($settings['fcm_server_key'])); ?></span></b></p>
+							<?php endif; ?>
+							<p class="description"><?php echo esc_html__('Upload your Firebase service account JSON file. It will be stored securely.', 'pwa-for-wp'); ?></p>
+							<p class="description"><?php echo esc_html__('Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically', 'pwa-for-wp'); ?></p>
 						</td>
 					</tr>
                     <tr>

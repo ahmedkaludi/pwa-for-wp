@@ -16,6 +16,7 @@ class PWAFORWP_Push_Notification {
             add_action('wp_ajax_nopriv_pwaforwp_store_token', array($this,'pwaforwp_store_token')); 
             add_action('wp_ajax_pwaforwp_store_token', array($this, 'pwaforwp_store_token'));             
             add_action('wp_ajax_pwaforwp_send_notification_manually', array($this, 'pwaforwp_send_notification_manually'));
+            add_action('wp_ajax_pwaforwp_upload_fcm_json', array($this, 'pwaforwp_upload_fcm_json'));
         }
                            
      }
@@ -217,7 +218,7 @@ class PWAFORWP_Push_Notification {
       }
 protected function pwaforwp_send_push_notification($message) {
     $settings   = pwaforwp_defaultSettings();
-    $service_account_key = json_decode($settings['fcm_server_key'], true);
+    $service_account_key = $this->pwaforwp_read_json_file($settings['fcm_server_key']);
     $firebase_config = $settings['fcm_config'];
 
     // Fix unquoted keys in firebase_config JSON string
@@ -225,7 +226,7 @@ protected function pwaforwp_send_push_notification($message) {
         return $matches[1] . '"' . $matches[2] . '":';
     }, $firebase_config );
 
-    $firebase_config = json_decode($firebase_config, true);
+    $firebase_config =  json_decode($firebase_config, true);
 
     if ( empty( $service_account_key ) || empty( $firebase_config ) ) {
         return json_encode([
@@ -377,6 +378,110 @@ private function pwaforwp_get_access_token( $service_account_key ) {
     $body = json_decode(wp_remote_retrieve_body($response), true);
 
     return $body['access_token'] ?? '';
+}
+
+/**
+ * Reads a JSON file and returns its content as an associative array.
+ *
+ * @param string $file_path The path to the JSON file.
+ * @return array|null Returns the decoded JSON data as an associative array, or null if the file does not exist, is not readable, or contains invalid JSON.
+ */
+public function pwaforwp_read_json_file( $file_path ) {
+	if ( empty( $file_path ) ) {
+		return null;
+	}
+
+	$file_path = wp_normalize_path( $file_path );
+
+	if ( ! file_exists( $file_path ) || ! is_readable( $file_path ) ) {
+		return null;
+	}
+
+	// Load WordPress Filesystem API
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	global $wp_filesystem;
+
+	// Initialize the filesystem if not already initialized
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+
+	// Double-check if filesystem initialized correctly
+	if ( ! $wp_filesystem || ! $wp_filesystem->exists( $file_path ) ) {
+		return null;
+	}
+
+	// Read and decode the JSON content
+	$contents = $wp_filesystem->get_contents( $file_path );
+
+	if ( empty( $contents ) ) {
+		return null;
+	}
+
+	$data = json_decode( $contents, true );
+
+	return is_array( $data ) ? $data : null;
+}
+
+/**
+ * Safely sets file permissions using the WordPress Filesystem API.
+ *
+ * @param string $file_path Absolute path to the file.
+ * @param int    $permission File permission in octal format (e.g., 0600).
+ * @return bool True on success, false on failure.
+ */
+public function pwaforwp_set_file_permission( $file_path, $permission = 0600 ) {
+	if ( empty( $file_path ) || ! file_exists( $file_path ) ) {
+		return false;
+	}
+
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	global $wp_filesystem;
+
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+
+	if ( ! $wp_filesystem || ! $wp_filesystem->exists( $file_path ) ) {
+		return false;
+	}
+
+	return $wp_filesystem->chmod( $file_path, $permission_str, false );
+}
+
+public function pwaforwp_upload_fcm_json() {
+    check_ajax_referer('pwaforwp_ajax_check_nonce', 'pwaforwp_security_nonce');
+    if (!current_user_can('manage_options')) {
+        wp_send_json(['status'=>0, 'message'=>'Permission denied']);
+    }
+    if (empty($_FILES['fcm_service_account_json']['tmp_name'])) {
+        wp_send_json(['status'=>0, 'message'=>'No file uploaded']);
+    }
+    $uploaded_file = $_FILES['fcm_service_account_json'];
+    $upload_dir = wp_upload_dir();
+    $private_dir = trailingslashit($upload_dir['basedir']) . 'pwaforwp-private/';
+    if (!file_exists($private_dir)) {
+        wp_mkdir_p($private_dir);
+    }
+    $filename = 'service-account-' . time() . '.json';
+    $destination = $private_dir . $filename;
+    if (move_uploaded_file($uploaded_file['tmp_name'], $destination)) {
+        // Restrict permissions
+        $this->pwaforwp_set_file_permission($destination, 0600);
+        // Update the settings with the new file path
+        $settings =  get_option('pwaforwp_settings', pwaforwp_defaultSettings());
+        $settings['fcm_server_key'] = $destination;
+        update_option('pwaforwp_settings', $settings);
+        wp_send_json(['status'=>1, 'path'=>$destination]);
+    } else {
+        wp_send_json(['status'=>0, 'message'=>'Upload failed']);
+    }
 }
 
                  

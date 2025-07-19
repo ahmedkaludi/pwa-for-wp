@@ -1697,3 +1697,39 @@ function pwaforwp_check_maskable_input() {
     });
 }
 pwaforwp_check_maskable_input();
+
+jQuery(document).ready(function($){
+    $('#fcm_service_account_json').on('change', function(e){
+        var file = this.files[0];
+        if (!file) return;
+
+        var formData = new FormData();
+        formData.append('action', 'pwaforwp_upload_fcm_json');
+        formData.append('pwaforwp_security_nonce', pwaforwp_obj.pwaforwp_security_nonce);
+        formData.append('fcm_service_account_json', file);
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(resp){
+                try {
+                    if(resp.status === 1){
+                        $('#fcm_server_key').val(resp.path);
+                        $('#fcm_server_key_url').val(resp.path);
+                        alert('File uploaded successfully!');
+                    } else {
+                        alert(resp.message || 'Upload failed');
+                    }
+                } catch(e){
+                    alert('Upload failed');
+                }
+            },
+            error: function(){
+                alert('Upload failed');
+            }
+        });
+    });
+});
