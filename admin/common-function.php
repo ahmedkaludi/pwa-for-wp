@@ -209,6 +209,7 @@ function pwaforwp_frontend_enqueue(){
                 'reset_cookies'  => $reset_cookies,
                 'force_rememberme'=>$force_rememberme,
                 'swipe_navigation' => $swipe_navigation,
+                'pwa_manifest_name' => apply_filters('pwaforwp_manifest_file_name', "pwa-manifest".pwaforwp_multisite_postfix().".json"),
                 );
 
                 if( $swipe_navigation == 1 && is_single()){

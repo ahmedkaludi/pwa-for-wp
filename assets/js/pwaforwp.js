@@ -262,3 +262,18 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  // make sure only pwaforwp manifest is loaded
+  window.addEventListener('load', function() {
+    let manifest_name = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_manifest_name) 
+                        ? pwaforwp_js_obj.pwa_manifest_name 
+                        : 'pwa-manifest.json';
+
+    // Remove all existing manifest link tags
+    document.querySelectorAll('link[rel="manifest"]').forEach(link => link.remove());
+
+    // Add new manifest link
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/' + manifest_name;
+    document.head.appendChild(link);
+});
