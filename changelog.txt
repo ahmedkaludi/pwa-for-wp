@@ -1,3 +1,13 @@
+= 1.7.80 (24 July 2025) =
+* Compatibility : Need to make it compatible with the EventChamp theme. #961
+* Bug Fixed : Issue with Swipe Navigation in PWA #963
+* Bug Fixed : Some of the navigation icons are not displaying correctly or are missing #962
+* Improvement : PWA Installation Instructions Persist After Install & Cancel CTA Still Triggers Installation #951
+* Bug Fixed : PWAtoIOS Extension is not activating #965
+* Improvement : Pull to Refresh for PWA, despite being active, does not work. #966
+* Bug Fixed : Exclude option was not saved in visiblity extension. #968
+* Improvement : FCM push notification is not working #969
+
 = 1.7.79 (06 June 2025) =
 * Enhancement : The firebase has changed the PN configurations, need to review #947
 * Bug Fixed : File download filename shows [Object Attr] as filename #958

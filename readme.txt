@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.8
-Stable tag: 1.7.79
+Stable tag: 1.7.80
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -67,6 +67,16 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
 == Changelog ==
+= 1.7.80 (24 July 2025) =
+* Compatibility : Need to make it compatible with the EventChamp theme. #961
+* Bug Fixed : Issue with Swipe Navigation in PWA #963
+* Bug Fixed : Some of the navigation icons are not displaying correctly or are missing #962
+* Improvement : PWA Installation Instructions Persist After Install & Cancel CTA Still Triggers Installation #951
+* Bug Fixed : PWAtoIOS Extension is not activating #965
+* Improvement : Pull to Refresh for PWA, despite being active, does not work. #966
+* Bug Fixed : Exclude option was not saved in visiblity extension. #968
+* Improvement : FCM push notification is not working #969
+
 = 1.7.79 (06 June 2025) =
 * Enhancement : The firebase has changed the PN configurations, need to review #947
 * Bug Fixed : File download filename shows [Object Attr] as filename #958
@@ -122,14 +132,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
 * Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
 * Improvement  : Code improvement.
-
-= 1.7.71 (03 July 2024) =
-* Feature Added  : Make an option to select form factor from the option #899
-* Feature Added  : Sharing Media in Progressive Web Apps in BuddyPress #1591
-* Bug Fixed  : Creation of dynamic property is deprecated #903
-* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
-* Bug Fixed  : Offline form radio group validation not working #900
-* Bug Fixed  : Deprecation : $is_amp is defined before require parameter #911
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
