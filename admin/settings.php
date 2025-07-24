@@ -1638,6 +1638,7 @@ function pwaforwp_visibility_setting_callback(){
                 </select>
                 <div class="include_type_error">&nbsp;</div>
             </td>
+			<input type="hidden" name="pwaforwp_visibility_flag" id="pwaforwp_visibility_flag" value="1">
             <td class="include-btn-box"><a class="pwaforwp-include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr> 
 
@@ -4294,27 +4295,38 @@ function pwaforwp_update_features_options(){
 		}
 		$include_targeting_type_array = array();
         $include_targeting_value_array = array();
+		$visibility_flag = false;
+		$visibility_data = false;
         
         if(!empty($allFields) && is_array($allFields)){
                 foreach ($allFields as $key => $value) {
 					$key = sanitize_key($key);
                     if($value['var_name']=="include_targeting_type"){
                         $include_targeting_type_array[] = sanitize_text_field($value['var_value']);
+						$visibility_data = true;
                     }
                     if($value['var_name']=="include_targeting_data"){
                             $include_targeting_value_array[] = sanitize_text_field($value['var_value']);
                     }
+
+					if($value['var_name']=="pwaforwp_visibility_flag"){
+						$visibility_flag = true;
+					}
                 }
         }
         
         if (!empty($include_targeting_type_array) && is_array($include_targeting_type_array)) {
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
-        } 
+        }else{
+			$actualFields['include_targeting_type'] = '';
+		} 
         if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
-        }
+        }else{
+			$actualFields['include_targeting_value'] = '';
+		}
         
         $exclude_targeting_type_array = array();
         $exclude_targeting_value_array = array();
@@ -4322,20 +4334,28 @@ function pwaforwp_update_features_options(){
 			foreach ($allFields as $key => $value) {
 				if($value['var_name']=="exclude_targeting_type"){
 					$exclude_targeting_type_array[] = sanitize_text_field($value['var_value']);
+					$visibility_data = true;
 				}
 				if($value['var_name']=="exclude_targeting_data"){
 						$exclude_targeting_value_array[] = sanitize_text_field($value['var_value']);
+				}
+				if($value['var_name']=="pwaforwp_visibility_flag"){
+						$visibility_flag = true;
 				}
 			}
         }
         if (!empty($exclude_targeting_type_array) && is_array($exclude_targeting_type_array)) {
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
-        }  
+        }else{
+			$actualFields['exclude_targeting_type'] = '';
+		}
         if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
-        }
+        }else{
+			$actualFields['exclude_targeting_value'] = '';
+		}
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
 				$actualFields['custom_add_to_home_setting'] = 1;
@@ -4364,6 +4384,16 @@ function pwaforwp_update_features_options(){
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
 		
+		if($visibility_flag === true && $visibility_data === false ){
+			
+			$actualFields['include_targeting_type'] = '';
+			$actualFields['include_targeting_value'] = '';
+			$actualFields['include_targeting_data'] = '';
+			$actualFields['exclude_targeting_type'] = '';
+			$actualFields['exclude_targeting_value'] = '';
+			$actualFields['exclude_targeting_data'] = '';
+		}
+
 
 		//dependent settings
 		if(isset($actualFields['utm_setting']) && $actualFields['utm_setting']==0){
