@@ -1379,7 +1379,7 @@ function pwaforwp_avoid_pwa_loggedin_setting_callback(){
 function pwaforwp_swipe_navigation_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings();
-	$swipe_navigation_checked = ( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == '1' ) ? '' : 'checked';
+	$swipe_navigation_checked = ( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == '1' ) ? 'checked' : '';
 	?>
         
 	<input type="checkbox" name="pwaforwp_settings[swipe_navigation]" id="pwaforwp_settings[swipe_navigation]" class="" <?php echo esc_attr( $swipe_navigation_checked ); ?> data-uncheck-val="0" value="1">
@@ -1638,6 +1638,7 @@ function pwaforwp_visibility_setting_callback(){
                 </select>
                 <div class="include_type_error">&nbsp;</div>
             </td>
+			<input type="hidden" name="pwaforwp_visibility_flag" id="pwaforwp_visibility_flag" value="1">
             <td class="include-btn-box"><a class="pwaforwp-include-btn button-primary" onclick="add_included_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
         </tr> 
 
@@ -2004,10 +2005,12 @@ function pwaforwp_push_notification_callback(){
 					<tr>
 						<th><?php echo esc_html__('FCM Service Account', 'pwa-for-wp'); ?></th>
 						<td>
-							<textarea class="regular-text" placeholder="{<?php echo "\n"; ?>&quot;type&quot;: &quot;service_account&quot;,<?php echo "\n"; ?>&quot;project_id&quot;: &quot;[PROJECT_ID]&quot;,<?php echo "\n"; ?>&quot;private_key_id&quot;: &quot;[PRIVATE_KEY_ID]&quot;,<?php echo "\n"; ?>&quot;private_key&quot;: &quot;[PRIVATE_KEY]&quot;,<?php echo "\n"; ?>&quot;client_email&quot;: &quot;[CLIENT_EMAIL]&quot;,<?php echo "\n"; ?>&quot;client_id&quot;: &quot;[CLIENT_ID]&quot;,<?php echo "\n"; ?>&quot;auth_uri&quot;: &quot;https://accounts.google.com/o/oauth2/auth&quot;,<?php echo "\n"; ?>&quot;token_uri&quot;: &quot;https://oauth2.googleapis.com/token&quot;,<?php echo "\n"; ?>&quot;auth_provider_x509_cert_url&quot;: &quot;https://www.googleapis.com/oauth2/v1/certs&quot;,<?php echo "\n"; ?>&quot;client_x509_cert_url&quot;: &quot;[CLIENT_X509_CERT_URL]&quot;,<?php echo "\n"; ?>&quot;universe_domain&quot;: &quot;googleapis.com&quot;<?php echo "\n"; ?>}" rows="8" cols="60" id="pwaforwp_settings[fcm_server_key]" name="pwaforwp_settings[fcm_server_key]"><?php echo isset($settings['fcm_server_key']) ? esc_attr($settings['fcm_server_key']) : ''; ?></textarea>
-
-							<p><?php echo esc_html__('Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically', 'pwa-for-wp') ?></p>
-							<p><?php echo esc_html__('Note: Firebase push notification does not support on AMP. It will support in future', 'pwa-for-wp') ?> </p>
+							<input type="file" id="fcm_service_account_json" accept=".json">
+							<?php if (!empty($settings['fcm_server_key'])): ?>
+								<p class="description"><b><?php echo esc_html__('File uploaded:', 'pwa-for-wp') . ' <span id="fcm_server_key_url" style="color:#000;">' . esc_html(basename($settings['fcm_server_key'])); ?></span></b></p>
+							<?php endif; ?>
+							<p class="description"><?php echo esc_html__('Upload your Firebase service account JSON file. It will be stored securely.', 'pwa-for-wp'); ?></p>
+							<p class="description"><?php echo esc_html__('Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically', 'pwa-for-wp'); ?></p>
 						</td>
 					</tr>
                     <tr>
@@ -4292,27 +4295,38 @@ function pwaforwp_update_features_options(){
 		}
 		$include_targeting_type_array = array();
         $include_targeting_value_array = array();
+		$visibility_flag = false;
+		$visibility_data = false;
         
         if(!empty($allFields) && is_array($allFields)){
                 foreach ($allFields as $key => $value) {
 					$key = sanitize_key($key);
                     if($value['var_name']=="include_targeting_type"){
                         $include_targeting_type_array[] = sanitize_text_field($value['var_value']);
+						$visibility_data = true;
                     }
                     if($value['var_name']=="include_targeting_data"){
                             $include_targeting_value_array[] = sanitize_text_field($value['var_value']);
                     }
+
+					if($value['var_name']=="pwaforwp_visibility_flag"){
+						$visibility_flag = true;
+					}
                 }
         }
         
         if (!empty($include_targeting_type_array) && is_array($include_targeting_type_array)) {
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
-        } 
+        }else{
+			$actualFields['include_targeting_type'] = '';
+		} 
         if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
-        }
+        }else{
+			$actualFields['include_targeting_value'] = '';
+		}
         
         $exclude_targeting_type_array = array();
         $exclude_targeting_value_array = array();
@@ -4320,20 +4334,28 @@ function pwaforwp_update_features_options(){
 			foreach ($allFields as $key => $value) {
 				if($value['var_name']=="exclude_targeting_type"){
 					$exclude_targeting_type_array[] = sanitize_text_field($value['var_value']);
+					$visibility_data = true;
 				}
 				if($value['var_name']=="exclude_targeting_data"){
 						$exclude_targeting_value_array[] = sanitize_text_field($value['var_value']);
+				}
+				if($value['var_name']=="pwaforwp_visibility_flag"){
+						$visibility_flag = true;
 				}
 			}
         }
         if (!empty($exclude_targeting_type_array) && is_array($exclude_targeting_type_array)) {
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
-        }  
+        }else{
+			$actualFields['exclude_targeting_type'] = '';
+		}
         if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
-        }
+        }else{
+			$actualFields['exclude_targeting_value'] = '';
+		}
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
 				$actualFields['custom_add_to_home_setting'] = 1;
@@ -4362,6 +4384,16 @@ function pwaforwp_update_features_options(){
 		$pre_settings = pwaforwp_defaultSettings();
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
 		
+		if($visibility_flag === true && $visibility_data === false ){
+			
+			$actualFields['include_targeting_type'] = '';
+			$actualFields['include_targeting_value'] = '';
+			$actualFields['include_targeting_data'] = '';
+			$actualFields['exclude_targeting_type'] = '';
+			$actualFields['exclude_targeting_value'] = '';
+			$actualFields['exclude_targeting_data'] = '';
+		}
+
 
 		//dependent settings
 		if(isset($actualFields['utm_setting']) && $actualFields['utm_setting']==0){

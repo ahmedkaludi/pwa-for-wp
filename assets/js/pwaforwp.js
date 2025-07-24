@@ -171,8 +171,8 @@ function is_valid_url(urlString) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Only run if touch is supported, swipe_navigation is enabled, and on mobile devices
-    if (!('ontouchstart' in window) || pwaforwp_js_obj.swipe_navigation != '1' || window.innerWidth > 768) return;
-  
+    if (!('ontouchstart' in window) || pwaforwp_js_obj.swipe_navigation != '1' || window.innerWidth > 768 || !pwaforwp_js_obj.prev_post_url && !pwaforwp_js_obj.next_post_url) return;
+
     let touchstartX = 0;
     let touchendX = 0;
     const threshold = 100; // Minimum px distance to trigger swipe
@@ -225,19 +225,21 @@ document.addEventListener('DOMContentLoaded', function() {
   
 
     document.addEventListener('touchmove', function(event) {
+
       const currentX = event.changedTouches[0].screenX;
       const deltaX = currentX - touchstartX;
       const fraction = Math.min(Math.abs(deltaX) / threshold, 1); // fraction: 0 to 1
-  
-      if (deltaX > 0) {
-        // Swipe right: update left gradient
-        leftGradient.style.opacity = fraction.toString();
-        rightGradient.style.opacity = '0';
-      } else if (deltaX < 0) {
-        // Swipe left: update right gradient
-        rightGradient.style.opacity = fraction.toString();
-        leftGradient.style.opacity = '0';
-      }
+        if(pwaforwp_js_obj.prev_post_url || pwaforwp_js_obj.next_post_url) {
+            if (deltaX > 0) {
+                // Swipe right: update left gradient
+                leftGradient.style.opacity = fraction.toString();
+                rightGradient.style.opacity = '0';
+            } else if (deltaX < 0) {
+                // Swipe left: update right gradient
+                rightGradient.style.opacity = fraction.toString();
+                leftGradient.style.opacity = '0';
+            }
+        }
     });
   
     document.addEventListener('touchend', function(event) {
@@ -262,3 +264,18 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  // make sure only pwaforwp manifest is loaded
+  window.addEventListener('load', function() {
+    let manifest_name = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_manifest_name) 
+                        ? pwaforwp_js_obj.pwa_manifest_name 
+                        : 'pwa-manifest.json';
+
+    // Remove all existing manifest link tags
+    document.querySelectorAll('link[rel="manifest"]').forEach(link => link.remove());
+
+    // Add new manifest link
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/' + manifest_name;
+    document.head.appendChild(link);
+});
