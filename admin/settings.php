@@ -2151,7 +2151,7 @@ function pwaforwp_push_notification_callback(){
                 <tbody>
                     
                     <tr>
-                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="<?php esc_attr__("Title","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo esc_attr(get_bloginfo()); ?>">
+                        <th><?php echo esc_html__('Title', 'pwa-for-wp') ?>:<br/><input style="width: 100%" placeholder="<?php echo esc_attr__("Title","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_title" name="pwaforwp_notification_message_title" value="<?php echo esc_attr(get_bloginfo()); ?>">
                             <br>
 			                   
                         </th>  
@@ -2160,7 +2160,7 @@ function pwaforwp_push_notification_callback(){
                      <tr>
                         <th>
                         	<?php echo esc_html__('Redirection Url Onclick of notification', 'pwa-for-wp') ?>:<br/>
-                        	<input style="width: 100%" placeholder="<?php esc_attr__("URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo esc_attr(pwaforwp_home_url()); ?>">
+                        	<input style="width: 100%" placeholder="<?php echo esc_attr__("URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_url" name="pwaforwp_notification_message_url" value="<?php echo esc_attr(pwaforwp_home_url()); ?>">
                             <br>
 			                   
                         </th>  
@@ -2169,7 +2169,7 @@ function pwaforwp_push_notification_callback(){
                     <tr>
                         <th>
                         	<?php echo esc_html__('Image Url', 'pwa-for-wp') ?>:<br/>
-                        	<input style="width: 100%" placeholder="<?php esc_attr__("Image URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
+                        	<input style="width: 100%" placeholder="<?php echo esc_attr__("Image URL","pwa-for-wp") ?>" type="text" id="pwaforwp_notification_message_image_url" name="pwaforwp_notification_message_image_url" value="">
                             <br>
 			                   
                         </th>  
@@ -2614,7 +2614,7 @@ function pwaforpw_orientation_callback(){
 	</label>
 	
 	<p class="description">
-		<?php esc_html__( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
+		<?php esc_html_e( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
 	</p>
 
 	<?php
@@ -2647,7 +2647,7 @@ function pwaforpw_display_callback(){
 	</label>
 	
 	<p class="description">
-		<?php esc_html__( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
+		<?php esc_html_e( 'Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated.', 'pwa-for-wp' ); ?>
 	</p>
 
 	<?php
@@ -2671,7 +2671,7 @@ function pwaforwp_apple_status_bar_callback(){
 	</label>
 	
 	<p class="description">
-		<?php esc_html__( 'The status bar at the top of the screen (which usually displays the time and battery status).', 'pwa-for-wp' ); ?>
+		<?php esc_html_e( 'The status bar at the top of the screen (which usually displays the time and battery status).', 'pwa-for-wp' ); ?>
 	</p>
 
 	<?php
@@ -2689,11 +2689,11 @@ function pwaforwp_related_applications_callback(){
 	<div id="related_applications_div" style="display:<?php echo esc_attr($related_applications_div); ?>">
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications]"><?php echo esc_html__( 'PlayStore App ID', 'pwa-for-wp' ); ?></label>&nbsp;
-		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="<?php esc_attr__("com.example.app","pwa-for-wp") ?>" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications]" class="regular-text" placeholder="<?php echo esc_attr__("com.example.app","pwa-for-wp") ?>" value="<?php if ( isset( $settings['related_applications'] ) && ( ! empty($settings['related_applications']) ) ) echo esc_attr($settings['related_applications']); ?>"/>
 	</fieldset>
 	<fieldset>
 		<label for="pwaforwp_settings[related_applications_ios]"><?php echo esc_html__( 'AppStore App ID', 'pwa-for-wp' ); ?></label>&nbsp;
-		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="<?php esc_attr__("id123456789","pwa-for-wp") ?>" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
+		<input type="text" name="pwaforwp_settings[related_applications_ios]" placeholder="<?php echo esc_attr__("id123456789","pwa-for-wp") ?>" class="regular-text" value="<?php if ( isset( $settings['related_applications_ios'] ) && ( ! empty($settings['related_applications_ios']) ) ) echo esc_attr($settings['related_applications_ios']); ?>"/>
 	</fieldset>
 	</div>
 
