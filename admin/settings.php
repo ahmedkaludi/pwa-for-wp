@@ -1462,7 +1462,7 @@ function pwaforwp_url_exclude_from_cache_list_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-        <label><textarea placeholder="<?php esc_attr('https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2') ?>"  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
+        <label><textarea placeholder="<?php echo esc_attr('https://example.com/admin.php?page=newpage, https://example.com/admin.php?page=newpage2') ?>"  rows="4" cols="70" id="pwaforwp_settings[excluded_urls]" name="pwaforwp_settings[excluded_urls]"><?php echo (isset($settings['excluded_urls']) ? esc_attr($settings['excluded_urls']): ''); ?></textarea></label>
         <p><?php echo esc_html__('Note: Put in comma separated, do not add enter in urls', 'pwa-for-wp'); ?></p>
 	<p><?php echo esc_html__('Put the list of urls which you do not want to cache by service worker', 'pwa-for-wp'); ?></p>	
 	
@@ -1564,7 +1564,7 @@ function pwaforwp_precaching_setting_callback(){
                 <tr>    
                     <td> <strong> <?php echo esc_html__('Enter Urls To Be Cached', 'pwa-for-wp'); ?> </strong></td>
                    <td>
-                       <label><textarea placeholder="<?php esc_attr('https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/')?>"  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
+                       <label><textarea placeholder="<?php echo esc_attr('https://example.com/2019/06/06/hello-world/, https://example.com/2019/06/06/hello-world-2/')?>"  rows="4" cols="50" id="pwaforwp_settings_precaching_urls" name="pwaforwp_settings[precaching_urls]"><?php if(isset($settings['precaching_urls'])){ echo esc_attr($settings['precaching_urls']);} ?></textarea></label>
                        <p><?php echo esc_html__('Note: Put in comma separated', 'pwa-for-wp'); ?></p>
                        <p><?php echo esc_html__('Put the list of urls which you want to pre cache by service worker', 'pwa-for-wp'); ?></p>
                    </td>
