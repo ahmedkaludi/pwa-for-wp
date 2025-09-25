@@ -1654,8 +1654,8 @@ function pwaforwp_visibility_setting_callback(){
                     <?php $rand = time().wp_rand(000,999);
                     if(!empty( $settings['exclude_targeting_type']))  {
                         $expo_exclude_type = explode(',', $settings['exclude_targeting_type']);
-                        $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
-                       for ($i=0; $i < count($expo_exclude_type); $i++) {
+                        $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);						
+                       	for ($i=0; $i < count($expo_exclude_type); $i++) {
                            echo '<span class="pwaforwp-visibility-target-icon-'.esc_attr($rand).'"><input type="hidden" name="exclude_targeting_type" value="'.esc_attr($expo_exclude_type[$i]).'">
                                 <input type="hidden" name="exclude_targeting_data" value="'.esc_attr($expo_exclude_data[$i]).'">';
                            $expo_exclude_type_test = pwaforwpRemoveExtraValue($expo_exclude_type[$i]);
@@ -1694,7 +1694,11 @@ function pwaforwp_visibility_setting_callback(){
                  <div class="exclude_type_error">&nbsp;</div>
             </td>
             <td class="include-btn-box"><a class="pwaforwp-exclude-btn button-primary" onclick="add_exclude_condition()"><?php echo esc_html__('ADD', 'pwa-for-wp'); ?></a></td>
-        </tr>   
+        </tr> 
+		<tr>
+			<td colspan="2"><label><input type="checkbox" name="pwaforwp_settings[exclude_url_from_pwa]" id="pwaforwp_settings_exclude_url_from_pwa" class="" <?php echo (isset( $settings['exclude_url_from_pwa'] ) &&  $settings['exclude_url_from_pwa'] == 1 ? 'checked="checked"' : ''); ?> data-uncheck-val="0" value="1"><?php echo esc_html__('Exclude Url from Pwa', 'pwa-for-wp'); ?></label>
+			<p> <?php echo esc_html__('Any excluded page or post will open directly in the system browser, completely bypassing the PWA app.', 'pwa-for-wp'); ?></p></td>
+        </tr>     
     <?php
 }
 
@@ -4319,13 +4323,13 @@ function pwaforwp_update_features_options(){
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
         }else{
-			$actualFields['include_targeting_type'] = '';
+			// $actualFields['include_targeting_type'] = '';
 		} 
         if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
         }else{
-			$actualFields['include_targeting_value'] = '';
+			// $actualFields['include_targeting_value'] = '';
 		}
         
         $exclude_targeting_type_array = array();
@@ -4348,13 +4352,13 @@ function pwaforwp_update_features_options(){
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
         }else{
-			$actualFields['exclude_targeting_type'] = '';
+			// $actualFields['exclude_targeting_type'] = '';
 		}
         if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
         }else{
-			$actualFields['exclude_targeting_value'] = '';
+			// $actualFields['exclude_targeting_value'] = '';
 		}
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
@@ -4386,12 +4390,12 @@ function pwaforwp_update_features_options(){
 		
 		if($visibility_flag === true && $visibility_data === false ){
 			
-			$actualFields['include_targeting_type'] = '';
-			$actualFields['include_targeting_value'] = '';
-			$actualFields['include_targeting_data'] = '';
-			$actualFields['exclude_targeting_type'] = '';
-			$actualFields['exclude_targeting_value'] = '';
-			$actualFields['exclude_targeting_data'] = '';
+			// $actualFields['include_targeting_type'] = '';
+			// $actualFields['include_targeting_value'] = '';
+			// $actualFields['include_targeting_data'] = '';
+			// $actualFields['exclude_targeting_type'] = '';
+			// $actualFields['exclude_targeting_value'] = '';
+			// $actualFields['exclude_targeting_data'] = '';
 		}
 
 
@@ -4408,6 +4412,7 @@ function pwaforwp_update_features_options(){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
 		
+		error_log( 'Settings to be saved: ' . print_r( $actualFields, true ) ); // Debug log
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 
@@ -4588,6 +4593,7 @@ function pwaforwp_exclude_visibility_condition_callback() {
     $exclude_targeting_data = sanitize_text_field($_POST['exclude_targeting_data']);
 
     $rand = time().wp_rand(000,999);
+	$option = '';
     $option .= '<span class="pwaforwp-visibility-target-icon-'.esc_attr($rand).'">
     <input type="hidden" name="exclude_targeting_type" value="'.esc_attr($exclude_targeting_type).'">
     <input type="hidden" name="exclude_targeting_data" value="'.esc_attr($exclude_targeting_data).'">';

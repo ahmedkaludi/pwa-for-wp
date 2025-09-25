@@ -269,13 +269,35 @@ document.addEventListener('DOMContentLoaded', function() {
     let manifest_name = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_manifest_name) 
                         ? pwaforwp_js_obj.pwa_manifest_name 
                         : 'pwa-manifest.json';
-
     // Remove all existing manifest link tags
     document.querySelectorAll('link[rel="manifest"]').forEach(link => link.remove());
 
     // Add new manifest link
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = '/' + manifest_name;
-    document.head.appendChild(link);
+    if (pwaforwp_js_obj.is_desplay == '1') {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = '/' + manifest_name;
+        document.head.appendChild(link);        
+    }
+});
+
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+  const externalPaths = pwaforwp_js_obj.visibility_excludes.map(path => {
+    path = path.trim();
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
+    return path.replace(/\/+$/, "");
+  });
+
+  console.log("Excludes:", externalPaths);
+
+  const url = new URL(link.href);
+  let pathname = url.pathname.replace(/\/+$/, "");
+  if (externalPaths.some(exclude => pathname === exclude || pathname.startsWith(exclude + "/"))) {
+    e.preventDefault();
+    window.open(link.href, "_blank", "noopener,noreferrer");
+  }
 });

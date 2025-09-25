@@ -106,6 +106,31 @@ function pwaforwp_review_notice_remindme(){
 
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 
+function get_post_slugs_by_titles( $titles = array() ) {
+    $slugs = array();
+
+    if ( empty( $titles ) ) {
+        return $slugs;
+    }
+
+    foreach ( $titles as $title ) {
+        $post = get_posts( array(
+            'post_type'      => 'any',       // check posts, pages, CPTs
+            'title'          => $title,      // match given title
+            'post_status'    => 'publish',
+            'numberposts'    => 1,
+        ) );
+
+        if ( ! empty( $post ) ) {
+            $slugs[] = $post[0]->post_name; // collect slug
+        }
+    }
+
+    return $slugs;
+}
+
+
+
 /*
  *	 REGISTER ALL NON-ADMIN SCRIPTS
  */
@@ -196,6 +221,13 @@ function pwaforwp_frontend_enqueue(){
                 if( isset( $settings['swipe_navigation'] ) && $settings['swipe_navigation'] == 1 ){
                     $swipe_navigation = 1;
                 }
+                $is_desplay = pwaforwp_visibility_check();
+                $slugs = array();
+                if (isset($settings['exclude_url_from_pwa']) && $settings['exclude_url_from_pwa'] == 1 && isset($settings['exclude_targeting_value']) && !empty($settings['exclude_targeting_value'])) {
+                    $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
+                    $slugs = get_post_slugs_by_titles( $expo_exclude_data );
+                }
+                
             
                 $object_js_name = array(
                 'ajax_url'       => admin_url( 'admin-ajax.php' ),
@@ -210,6 +242,8 @@ function pwaforwp_frontend_enqueue(){
                 'force_rememberme'=>$force_rememberme,
                 'swipe_navigation' => $swipe_navigation,
                 'pwa_manifest_name' => apply_filters('pwaforwp_manifest_file_name', "pwa-manifest".pwaforwp_multisite_postfix().".json"),
+                'is_desplay' => $is_desplay,
+                'visibility_excludes' => $slugs,
                 );
 
                 if( $swipe_navigation == 1 && is_single()){
@@ -1085,7 +1119,7 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
         $expo_include_data = array();
 
         if (!empty($settings['include_targeting_type'])) {
-            $expo_include_type = explode(',', $settings['']);
+            $expo_include_type = explode(',', $settings['include_targeting_type']);
         }
         if (!empty($settings['include_targeting_value'])) {
             $expo_include_data = explode(',', $settings['include_targeting_value']);
@@ -1277,11 +1311,44 @@ function pwaforwp_visibility_check(){
         if(in_array('globally',$expo_exclude_type)){
             $is_desplay = 0; 
         }
+        error_log('is display '.$is_desplay);
         return $is_desplay;
 
     }else{
         return 1;
     }
+}
+
+add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_fix_empty_option_update', 10, 3);
+
+/**
+ * Prevents empty values from overwriting existing ones in the pwaforwp_settings option.
+ * Special case only for visibility settings.
+ *
+ * @param mixed $new_value The new value of the option.
+ * @param mixed $old_value The old value of the option.
+ * @param string $option The name of the option.
+ * @return mixed The updated option value.
+ */
+function pwaforwp_fix_empty_option_update($new_value, $old_value, $option) {
+
+    if (!empty($old_value['include_targeting_type']) && empty($new_value['include_targeting_type'])) {
+        $new_value['include_targeting_type'] = $old_value['include_targeting_type'];
+    }
+
+    if (!empty($old_value['include_targeting_value']) && empty($new_value['include_targeting_value'])) {
+        $new_value['include_targeting_value'] = $old_value['include_targeting_value'];
+    }
+
+    if (!empty($old_value['exclude_targeting_type']) && empty($new_value['exclude_targeting_type'])) {
+        $new_value['exclude_targeting_type'] = $old_value['exclude_targeting_type'];
+    }
+
+    if (!empty($old_value['exclude_targeting_value']) && empty($new_value['exclude_targeting_value'])) {
+        $new_value['exclude_targeting_value'] = $old_value['exclude_targeting_value'];
+    }
+
+    return $new_value;
 }
 
 
