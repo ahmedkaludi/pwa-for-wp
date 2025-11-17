@@ -244,6 +244,8 @@ function pwaforwp_frontend_enqueue(){
                 'pwa_manifest_name' => apply_filters('pwaforwp_manifest_file_name', "pwa-manifest".pwaforwp_multisite_postfix().".json"),
                 'is_desplay' => $is_desplay,
                 'visibility_excludes' => $slugs,
+                'utm_enabled' => isset($settings['utm_setting']) && $settings['utm_setting'] == 1 ? 1 : 0,
+                'utm_details' => isset($settings['utm_details']) ? array_filter($settings['utm_details']) : array(),
                 );
 
                 if( $swipe_navigation == 1 && is_single()){
