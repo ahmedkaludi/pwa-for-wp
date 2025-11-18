@@ -430,20 +430,11 @@ class PWAFORWP_WPwa{
                 }			
                 $scope_url    = $homeUrl = add_query_arg( AMP_QUERY_VAR, 1, trailingslashit( pwaforwp_home_url() ) );
            	}
-          	if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-            	$homeUrl = add_query_arg( array_filter($defaults['utm_details']), $homeUrl  );
-          	}             
         } else { //Non AMP
                 $homeUrl = pwaforwp_home_url(); 
                 if(isset($defaults['start_page']) && $defaults['start_page'] !=0){ 
                 	$homeUrl = trailingslashit(get_permalink($defaults['start_page']));
                 }
-            
-                if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-                  $homeUrl = add_query_arg( array_filter($defaults['utm_details']),
-                              $homeUrl 
-                            );
-	        }
             $scope_url = pwaforwp_home_url();//Scope Url should be serving url    
         }
 
@@ -469,9 +460,6 @@ class PWAFORWP_WPwa{
         $scope_url      = pwaforwp_https($scope_url);
         $orientation 	= isset($defaults['orientation']) && !empty($defaults['orientation']) ?  $defaults['orientation'] : "portrait";
         $display  = isset($defaults['display']) && !empty($defaults['display']) ?  $defaults['display'] : "standalone";
-		if(isset($defaults['utm_setting']) && $defaults['utm_setting']==1){
-			$homeUrl = rtrim($homeUrl, '/\\');
-		}
                         
         $icons = array();
         //App icon

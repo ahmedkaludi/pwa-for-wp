@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.8
-Stable tag: 1.7.80
+Stable tag: 1.7.81
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -66,7 +66,23 @@ Yes, Absolutely! We would suggest you send your feature request by creating an i
 = How do I get in touch? =
 You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 
+== Screenshots ==
+1. Progressive Web App (PWA) prompt that lets users add your site to their mobile home screen.
+2. Web App Manifest enables a website to be added to a mobile home screen and launched in a standalone app-like experience.
+3. Service Workers enable near-instant repeat visits by caching assets offline.
+4. Dashboard showing installation status for Manifest, Service Worker, and HTTPS across WordPress.
+5. Settings page showing fields for app name, short name, description, icon, splash screen icon, and offline page settings.
+6. Design settings including options for splash screen background color, theme color, and custom add-to-home screen customization.
+7. Compatibility settings page.
+8. Tool settings page.
+9. Advanced settings page.
+
 == Changelog ==
+= 1.7.81 (18 November 2025) =
+* Bug Fixed : Visibility feature is not working properly. #973
+* Bug Fixed : Exclude option was not saved in visiblity extension. #968
+* Bug Fixed : Start URL conflict with utm tracking #974
+
 = 1.7.80 (24 July 2025) =
 * Compatibility : Need to make it compatible with the EventChamp theme. #961
 * Bug Fixed : Issue with Swipe Navigation in PWA #963

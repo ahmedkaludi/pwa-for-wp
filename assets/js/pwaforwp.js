@@ -269,13 +269,127 @@ document.addEventListener('DOMContentLoaded', function() {
     let manifest_name = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_manifest_name) 
                         ? pwaforwp_js_obj.pwa_manifest_name 
                         : 'pwa-manifest.json';
-
     // Remove all existing manifest link tags
     document.querySelectorAll('link[rel="manifest"]').forEach(link => link.remove());
 
     // Add new manifest link
-    const link = document.createElement('link');
-    link.rel = 'manifest';
-    link.href = '/' + manifest_name;
-    document.head.appendChild(link);
+    if (pwaforwp_js_obj.is_desplay == '1') {
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = '/' + manifest_name;
+        document.head.appendChild(link);        
+    }
 });
+
+document.addEventListener("click", function(e) {
+  const link = e.target.closest("a");
+  if (!link || typeof pwaforwp_js_obj.visibility_excludes === 'undefined' || !pwaforwp_js_obj.visibility_excludes.length) return;
+  const externalPaths = pwaforwp_js_obj.visibility_excludes.map(path => {
+    path = path.trim();
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
+    return path.replace(/\/+$/, "");
+  });
+
+  console.log("Excludes:", externalPaths);
+
+  const url = new URL(link.href);
+  let pathname = url.pathname.replace(/\/+$/, "");
+  if (externalPaths.some(exclude => pathname === exclude || pathname.startsWith(exclude + "/"))) {
+    e.preventDefault();
+    window.open(link.href, "_blank", "noopener,noreferrer");
+  }
+});
+
+// UTM Tracking for PWA App - Add UTM parameters to anchor links only when PWA is installed
+(function() {
+
+    if (typeof pwaforwp_js_obj === 'undefined' || !pwaforwp_js_obj.utm_enabled || pwaforwp_js_obj.utm_enabled != 1) {
+        return;
+    }
+
+    const isDisplayModePWA = window.matchMedia('(display-mode: standalone)').matches || 
+                              window.matchMedia('(display-mode: fullscreen)').matches || 
+                              window.matchMedia('(display-mode: minimal-ui)').matches;
+    
+    // Check for Android APK/app detection
+    const reffer = document.referrer;
+    const isAndroidApp = reffer && reffer.includes('android-app://');
+    
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isAndroidPWA = isAndroid && (isDisplayModePWA || isAndroidApp);
+    
+    // Check for iOS app detection
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isIOSApp = isIOS && (navigator.userAgent.indexOf('PWABuilder-iOS') !== -1 || (window.webkit && window.webkit.messageHandlers));
+    const isIOSPWA = isIOS && (navigator.standalone === true || isIOSApp);
+    
+    // Check if PWA is installed (either by display-mode or platform-specific checks)
+    const isPWA = isDisplayModePWA || isIOSPWA || isAndroidPWA;
+
+    if (!isPWA) {
+        return;
+    }
+
+    const utmParams = pwaforwp_js_obj.utm_details || {};
+    
+    function addUTMToURL(url) {
+        if (!url || typeof url !== 'string') return url;
+        
+        try {
+            const urlObj = new URL(url, window.location.origin);
+            let hasUTM = false;
+            
+            for (const key in utmParams) {
+                if (urlObj.searchParams.has(key)) {
+                    hasUTM = true;
+                    break;
+                }
+            }
+            
+            if (!hasUTM) {
+                for (const key in utmParams) {
+                    if (utmParams[key]) {
+                        urlObj.searchParams.set(key, utmParams[key]);
+                    }
+                }
+            }
+            
+            return urlObj.toString();
+        } catch (e) {
+            return url;
+        }
+    }
+
+    // Add UTM parameters to all anchor links
+    function addUTMToAnchorLinks() {
+        document.querySelectorAll('a[href]').forEach(function(link) {
+            const href = link.getAttribute('href');
+            if (!href) return;
+            
+            // Only process internal links
+            try {
+                const linkUrl = new URL(href, window.location.origin);
+                const currentOrigin = new URL(window.location.origin);
+                
+                // Check if it's an internal link
+                if (linkUrl.origin === currentOrigin.origin) {
+                    const newHref = addUTMToURL(href);
+                    if (newHref !== href) {
+                        link.setAttribute('href', newHref);
+                    }
+                }
+            } catch (e) {
+                // Skip invalid URLs
+            }
+        });
+    }
+
+    // Run on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addUTMToAnchorLinks);
+    } else {
+        addUTMToAnchorLinks();
+    }
+})();

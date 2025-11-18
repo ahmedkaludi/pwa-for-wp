@@ -1,3 +1,8 @@
+= 1.7.81 (18 November 2025) =
+* Bug Fixed : Visibility feature is not working properly. #973
+* Bug Fixed : Exclude option was not saved in visiblity extension. #968
+* Bug Fixed : Start URL conflict with utm tracking #974
+
 = 1.7.80 (24 July 2025) =
 * Compatibility : Need to make it compatible with the EventChamp theme. #961
 * Bug Fixed : Issue with Swipe Navigation in PWA #963
