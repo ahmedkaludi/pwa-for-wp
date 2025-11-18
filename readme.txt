@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.8
-Stable tag: 1.7.80
+Stable tag: 1.7.81
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -78,6 +78,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.81 (18 November 2025) =
+* Bug Fixed : Visibility feature is not working properly. #973
+* Bug Fixed : Exclude option was not saved in visiblity extension. #968
+* Bug Fixed : Start URL conflict with utm tracking #974
+
 = 1.7.80 (24 July 2025) =
 * Compatibility : Need to make it compatible with the EventChamp theme. #961
 * Bug Fixed : Issue with Swipe Navigation in PWA #963
