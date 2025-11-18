@@ -222,9 +222,10 @@ function pwaforwp_frontend_enqueue(){
                     $swipe_navigation = 1;
                 }
                 $is_desplay = pwaforwp_visibility_check();
+                $visibility_settings = pwaforwp_get_visibility_settings();
                 $slugs = array();
-                if (isset($settings['exclude_url_from_pwa']) && $settings['exclude_url_from_pwa'] == 1 && isset($settings['exclude_targeting_value']) && !empty($settings['exclude_targeting_value'])) {
-                    $expo_exclude_data = explode(',', $settings['exclude_targeting_value']);
+                if (isset($visibility_settings['exclude_url_from_pwa']) && $visibility_settings['exclude_url_from_pwa'] == 1 && isset($visibility_settings['exclude_targeting_value']) && !empty($visibility_settings['exclude_targeting_value'])) {
+                    $expo_exclude_data = explode(',', $visibility_settings['exclude_targeting_value']);
                     $slugs = get_post_slugs_by_titles( $expo_exclude_data );
                 }
                 
@@ -1114,8 +1115,7 @@ function pwaforwp_add_manifest_variables($url) {
 
 function pwaforwp_visibility_get_data_by_type($type,$from){
     $response_array = array();
-    global $pwaforwp_settings;
-    $settings = $pwaforwp_settings;
+    $settings = pwaforwp_get_visibility_settings();
     if((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']))){
         $expo_include_type = array();
         $expo_include_data = array();
@@ -1157,9 +1157,45 @@ function pwaforwp_visibility_get_data_by_type($type,$from){
 
 }
 
-function pwaforwp_visibility_check(){
+function pwaforwp_get_visibility_settings(){
+    $visibility_settings = get_option('pwaforwp_visibility_settings', array());
+    
+    if (!empty($visibility_settings)) {
+        return $visibility_settings;
+    }
+    
     global $pwaforwp_settings;
-    $settings = $pwaforwp_settings;
+    $main_settings = $pwaforwp_settings;
+    
+    $merged = array();
+    if (isset($main_settings['visibility_feature'])) {
+        $merged['visibility_feature'] = $main_settings['visibility_feature'];
+    }
+    if (!empty($main_settings['include_targeting_type'])) {
+        $merged['include_targeting_type'] = $main_settings['include_targeting_type'];
+    }
+    if (!empty($main_settings['include_targeting_value'])) {
+        $merged['include_targeting_value'] = $main_settings['include_targeting_value'];
+    }
+    if (!empty($main_settings['exclude_targeting_type'])) {
+        $merged['exclude_targeting_type'] = $main_settings['exclude_targeting_type'];
+    }
+    if (!empty($main_settings['exclude_targeting_value'])) {
+        $merged['exclude_targeting_value'] = $main_settings['exclude_targeting_value'];
+    }
+    if (isset($main_settings['exclude_url_from_pwa'])) {
+        $merged['exclude_url_from_pwa'] = $main_settings['exclude_url_from_pwa'];
+    }
+    
+    if (!empty($merged)) {
+        update_option('pwaforwp_visibility_settings', $merged);
+    }
+    
+    return $merged;
+}
+
+function pwaforwp_visibility_check(){
+    $settings = pwaforwp_get_visibility_settings();
     if(isset($settings['visibility_feature']) && $settings['visibility_feature'] == 1 && ((isset($settings['include_targeting_value']) && isset($settings['include_targeting_type']) && !empty($settings['include_targeting_type'])) || (isset($settings['exclude_targeting_value']) && isset($settings['exclude_targeting_type']) && !empty($settings['exclude_targeting_type'])))){
         $expo_include_type = array();
         $expo_include_data = array();
@@ -1198,7 +1234,8 @@ function pwaforwp_visibility_check(){
             }
         }
 
-        $is_desplay = 0;
+        $has_include_conditions = !empty($expo_include_type);
+        $is_desplay = $has_include_conditions ? 0 : 1;
 
         if(!empty(get_the_category()[0]->cat_name)){
             if(in_array(get_the_category()[0]->cat_name,$expo_include_data)){
@@ -1313,7 +1350,6 @@ function pwaforwp_visibility_check(){
         if(in_array('globally',$expo_exclude_type)){
             $is_desplay = 0; 
         }
-        error_log('is display '.$is_desplay);
         return $is_desplay;
 
     }else{
@@ -1333,21 +1369,32 @@ add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_fix_empty_option_upd
  * @return mixed The updated option value.
  */
 function pwaforwp_fix_empty_option_update($new_value, $old_value, $option) {
-
-    if (!empty($old_value['include_targeting_type']) && empty($new_value['include_targeting_type'])) {
-        $new_value['include_targeting_type'] = $old_value['include_targeting_type'];
-    }
-
-    if (!empty($old_value['include_targeting_value']) && empty($new_value['include_targeting_value'])) {
-        $new_value['include_targeting_value'] = $old_value['include_targeting_value'];
-    }
-
-    if (!empty($old_value['exclude_targeting_type']) && empty($new_value['exclude_targeting_type'])) {
-        $new_value['exclude_targeting_type'] = $old_value['exclude_targeting_type'];
-    }
-
-    if (!empty($old_value['exclude_targeting_value']) && empty($new_value['exclude_targeting_value'])) {
-        $new_value['exclude_targeting_value'] = $old_value['exclude_targeting_value'];
+    $visibility_form_submitted = isset($new_value['include_targeting_type']) || 
+                                  isset($new_value['exclude_targeting_type']) ||
+                                  (isset($_POST['pwaforwp_visibility_flag']) && $_POST['pwaforwp_visibility_flag'] == 1);
+    
+    if (!$visibility_form_submitted) {
+        $visibility_settings = get_option('pwaforwp_visibility_settings', array());
+        if (!empty($visibility_settings)) {
+            if (!isset($new_value['visibility_feature']) && isset($visibility_settings['visibility_feature'])) {
+                $new_value['visibility_feature'] = $visibility_settings['visibility_feature'];
+            }
+            if (!isset($new_value['include_targeting_type']) && !empty($visibility_settings['include_targeting_type'])) {
+                $new_value['include_targeting_type'] = $visibility_settings['include_targeting_type'];
+            }
+            if (!isset($new_value['include_targeting_value']) && !empty($visibility_settings['include_targeting_value'])) {
+                $new_value['include_targeting_value'] = $visibility_settings['include_targeting_value'];
+            }
+            if (!isset($new_value['exclude_targeting_type']) && !empty($visibility_settings['exclude_targeting_type'])) {
+                $new_value['exclude_targeting_type'] = $visibility_settings['exclude_targeting_type'];
+            }
+            if (!isset($new_value['exclude_targeting_value']) && !empty($visibility_settings['exclude_targeting_value'])) {
+                $new_value['exclude_targeting_value'] = $visibility_settings['exclude_targeting_value'];
+            }
+            if (!isset($new_value['exclude_url_from_pwa']) && isset($visibility_settings['exclude_url_from_pwa'])) {
+                $new_value['exclude_url_from_pwa'] = $visibility_settings['exclude_url_from_pwa'];
+            }
+        }
     }
 
     return $new_value;

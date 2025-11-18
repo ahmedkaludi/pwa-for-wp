@@ -1527,7 +1527,7 @@ function apply_or_condition(class_name){
 }
 
 function removeIncluded_visibility(sr){
-    jQuery(".pwaforwp-visibility-target-icon-"+sr).empty();
+    jQuery(".pwaforwp-visibility-target-icon-"+sr).remove();
 }
 
 // after added add more functionality form multiple screenshots

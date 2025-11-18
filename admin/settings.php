@@ -925,6 +925,7 @@ function pwaforwp_settings_init(){
 
 function pwaforwp_sanitize_fields($inputs=array()){
 	$fields_type_data = pwaforwp_fields_and_type('type');
+	$old_settings = get_option('pwaforwp_settings', array());
 
 	foreach ($inputs as $key => $value) {
 		if (isset($fields_type_data[$key])) {
@@ -971,6 +972,29 @@ function pwaforwp_sanitize_fields($inputs=array()){
 			}
 		}
 	}
+	
+	$visibility_settings = get_option('pwaforwp_visibility_settings', array());
+	if (!empty($visibility_settings)) {
+		if (!isset($inputs['visibility_feature']) && isset($visibility_settings['visibility_feature'])) {
+			$inputs['visibility_feature'] = $visibility_settings['visibility_feature'];
+		}
+		if (!isset($inputs['include_targeting_type']) && !empty($visibility_settings['include_targeting_type'])) {
+			$inputs['include_targeting_type'] = $visibility_settings['include_targeting_type'];
+		}
+		if (!isset($inputs['include_targeting_value']) && !empty($visibility_settings['include_targeting_value'])) {
+			$inputs['include_targeting_value'] = $visibility_settings['include_targeting_value'];
+		}
+		if (!isset($inputs['exclude_targeting_type']) && !empty($visibility_settings['exclude_targeting_type'])) {
+			$inputs['exclude_targeting_type'] = $visibility_settings['exclude_targeting_type'];
+		}
+		if (!isset($inputs['exclude_targeting_value']) && !empty($visibility_settings['exclude_targeting_value'])) {
+			$inputs['exclude_targeting_value'] = $visibility_settings['exclude_targeting_value'];
+		}
+		if (!isset($inputs['exclude_url_from_pwa']) && isset($visibility_settings['exclude_url_from_pwa'])) {
+			$inputs['exclude_url_from_pwa'] = $visibility_settings['exclude_url_from_pwa'];
+		}
+	}
+	
 	return $inputs;
 	
 }
@@ -1577,6 +1601,10 @@ function pwaforwp_precaching_setting_callback(){
 function pwaforwp_visibility_setting_callback(){
     
     $settings = pwaforwp_defaultSettings();
+    $visibility_settings = get_option('pwaforwp_visibility_settings', array());
+    if (!empty($visibility_settings)) {
+        $settings = array_merge($settings, $visibility_settings);
+    }
 
     $arrayOPT = array(
                     'post_type'     => 'Post Type',
@@ -3734,6 +3762,10 @@ function pwaforwp_license_status($add_on, $license_status, $license_key){
                 
                 $get_options   = get_option('pwaforwp_settings');
                 $merge_options = array_merge($get_options, $license);
+                $visibility_settings = get_option('pwaforwp_visibility_settings', array());
+                if (!empty($visibility_settings)) {
+                    $merge_options = array_merge($merge_options, $visibility_settings);
+                }
                 update_option('pwaforwp_settings', $merge_options);  
                 
                 return array('status'=> $current_status, 'message'=> $message, 'days_remaining' => $days_remaining, 'username' => $fname ,'addon_name' => $addon_name  );
@@ -4323,13 +4355,13 @@ function pwaforwp_update_features_options(){
             $include_targeting_type = implode(',',$include_targeting_type_array);
             $actualFields['include_targeting_type'] = $include_targeting_type; 
         }else{
-			// $actualFields['include_targeting_type'] = '';
+			$actualFields['include_targeting_type'] = '';
 		} 
         if (!empty($include_targeting_value_array) && is_array($include_targeting_value_array)) {
             $include_targeting_value = implode(',',$include_targeting_value_array);
             $actualFields['include_targeting_value'] = $include_targeting_value; 
         }else{
-			// $actualFields['include_targeting_value'] = '';
+			$actualFields['include_targeting_value'] = '';
 		}
         
         $exclude_targeting_type_array = array();
@@ -4352,13 +4384,13 @@ function pwaforwp_update_features_options(){
             $exclude_targeting_type = implode(',',$exclude_targeting_type_array);
             $actualFields['exclude_targeting_type'] = $exclude_targeting_type; 
         }else{
-			// $actualFields['exclude_targeting_type'] = '';
+			$actualFields['exclude_targeting_type'] = '';
 		}
         if (!empty($exclude_targeting_value_array) && is_array($exclude_targeting_value_array)) {
             $exclude_targeting_value = implode(',',$exclude_targeting_value_array);
             $actualFields['exclude_targeting_value'] = $exclude_targeting_value; 
         }else{
-			// $actualFields['exclude_targeting_value'] = '';
+			$actualFields['exclude_targeting_value'] = '';
 		}
 		if(isset($actualFields['addtohomebanner_feature'])){
 			if($actualFields['addtohomebanner_feature']==1){
@@ -4386,6 +4418,7 @@ function pwaforwp_update_features_options(){
 		}
 		
 		$pre_settings = pwaforwp_defaultSettings();
+		$old_settings = get_option('pwaforwp_settings', array());
 		$actualFields = wp_parse_args($actualFields, $pre_settings);
 		
 		if($visibility_flag === true && $visibility_data === false ){
@@ -4396,6 +4429,35 @@ function pwaforwp_update_features_options(){
 			// $actualFields['exclude_targeting_type'] = '';
 			// $actualFields['exclude_targeting_value'] = '';
 			// $actualFields['exclude_targeting_data'] = '';
+		}
+		
+		if ($visibility_flag === true) {
+			$visibility_data_to_save = array();
+			if (isset($actualFields['visibility_feature'])) {
+				$visibility_data_to_save['visibility_feature'] = $actualFields['visibility_feature'];
+			}
+			if (isset($actualFields['include_targeting_type'])) {
+				$visibility_data_to_save['include_targeting_type'] = $actualFields['include_targeting_type'];
+			}
+			if (isset($actualFields['include_targeting_value'])) {
+				$visibility_data_to_save['include_targeting_value'] = $actualFields['include_targeting_value'];
+			}
+			if (isset($actualFields['exclude_targeting_type'])) {
+				$visibility_data_to_save['exclude_targeting_type'] = $actualFields['exclude_targeting_type'];
+			}
+			if (isset($actualFields['exclude_targeting_value'])) {
+				$visibility_data_to_save['exclude_targeting_value'] = $actualFields['exclude_targeting_value'];
+			}
+			if (isset($actualFields['exclude_url_from_pwa'])) {
+				$visibility_data_to_save['exclude_url_from_pwa'] = $actualFields['exclude_url_from_pwa'];
+			}
+			update_option('pwaforwp_visibility_settings', $visibility_data_to_save);
+			$actualFields = array_merge($actualFields, $visibility_data_to_save);
+		} else {
+			$visibility_settings = get_option('pwaforwp_visibility_settings', array());
+			if (!empty($visibility_settings)) {
+				$actualFields = array_merge($actualFields, $visibility_settings);
+			}
 		}
 
 
@@ -4668,6 +4730,10 @@ function pwaforwp_resize_images( $old_value, $new_value, $option='' ){
 					}
 
 				}}//Foreach closed
+				$visibility_settings = get_option('pwaforwp_visibility_settings', array());
+				if (!empty($visibility_settings)) {
+					$new_value = array_merge($new_value, $visibility_settings);
+				}
 				update_option( 'pwaforwp_settings', $new_value);
 
 			}
@@ -4790,6 +4856,11 @@ if ( ! function_exists( 'pwaforwp_splashscreen_uploader' ) ) {
 		}
 
 		$pwaforwp_settings['iosSplashScreenOpt'] = 'generate-auto';
+		
+		$visibility_settings = get_option('pwaforwp_visibility_settings', array());
+		if (!empty($visibility_settings)) {
+			$pwaforwp_settings = array_merge($pwaforwp_settings, $visibility_settings);
+		}
 
 		update_option( 'pwaforwp_settings', $pwaforwp_settings ) ;
 		wp_delete_file( $zipfilename );
