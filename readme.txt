@@ -1,8 +1,8 @@
 === PWA for WP - Progressive Web Apps Made Simple ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.8
-Stable tag: 1.7.81
+Tested up to: 6.9
+Stable tag: 1.7.82
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -11,6 +11,8 @@ PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to 
 
 == Description ==
 PWA plugin is bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
+
+[Home](https://pwa-for-wp.com/) | [Help & Tech Support](https://pwa-for-wp.com/contact-us/) | [Documentation](https://pwa-for-wp.com/docs/)  | [Pro version Features](https://pwa-for-wp.com/pricing/)
 
 You can give the APP-like experience to your audience which will get your website to their home screen and works instantly like an APP with offline support.
 
@@ -78,6 +80,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.82 (28 November 2025) =
+* Added : Promotion Banner BFCM #983
+* Test: Test with WordPress version 6.9  
+
 = 1.7.81 (18 November 2025) =
 * Bug Fixed : Visibility feature is not working properly. #973
 * Bug Fixed : Exclude option was not saved in visiblity extension. #968
