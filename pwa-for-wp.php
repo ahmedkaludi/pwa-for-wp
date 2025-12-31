@@ -4,7 +4,7 @@ Plugin Name: PWA for WP - Progressive Web Apps Made Simple
 Plugin URI: https://wordpress.org/plugins/pwa-for-wp/
 Description: We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!
 Author: Magazine3 
-Version: 1.7.81
+Version: 1.7.82
 Author URI: http://pwa-for-wp.com
 Text Domain: pwa-for-wp
 Domain Path: /languages
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'PWAFORWP_PLUGIN_FILE',  __FILE__ );
 define( 'PWAFORWP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PWAFORWP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'PWAFORWP_PLUGIN_VERSION', '1.7.81' );
+define( 'PWAFORWP_PLUGIN_VERSION', '1.7.82' );
 define( 'PWAFORWP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'PWAFORWP_EDD_STORE_URL', 'http://pwa-for-wp.com/' );
 
@@ -329,4 +329,53 @@ function pwaforwp_manifest_query_vars($vars) {
     }
     
     return $vars;
+}
+
+/* * BFCM Banner Integration
+ * Loads assets from assets/css and assets/js
+ */
+add_action('admin_enqueue_scripts', 'pwa_for_wp_enqueue_bfcm_assets');
+
+function pwa_for_wp_enqueue_bfcm_assets($hook) { 
+ 
+    //var_dump($hook);
+    if ( $hook !== 'toplevel_page_pwaforwp' ) {
+        return;
+    }
+    
+    /*if ( ! isset($_GET['page']) || $_GET['page'] !== 'setting_page_check-email-dashboard' ) {
+        return;
+    }*/
+
+    // 2. define settings
+    $expiry_date_str = '2025-12-25 23:59:59'; 
+    $offer_link      = 'https://pwa-for-wp.com/bfcm-2025/';
+
+    // 3. Expiry Check (Server Side)
+    if ( current_time('timestamp') > strtotime($expiry_date_str) ) {
+        return; 
+    }
+
+    // 4. Register & Enqueue CSS    
+    wp_enqueue_style(
+        'etoc-bfcm-style', 
+        PWAFORWP_PLUGIN_URL. 'assets/css/bfcm-style.css', 
+        array(), 
+        PWAFORWP_PLUGIN_VERSION
+    );
+
+    // 5. Register & Enqueue JS
+    wp_enqueue_script(
+        'etoc-bfcm-script', 
+        PWAFORWP_PLUGIN_URL. 'assets/js/bfcm-script.js', 
+        array('jquery'), // jQuery dependency
+        PWAFORWP_PLUGIN_VERSION, 
+        true 
+    );
+
+    // 6. Data Pass (PHP to JS)
+    wp_localize_script('etoc-bfcm-script', 'bfcmData', array(
+        'targetDate' => $expiry_date_str,
+        'offerLink'  => $offer_link
+    ));
 }

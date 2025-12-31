@@ -1,3 +1,7 @@
+= 1.7.82 (28 November 2025) =
+* Added : Promotion Banner BFCM #983
+* Test: Test with WordPress version 6.9 
+
 = 1.7.81 (18 November 2025) =
 * Bug Fixed : Visibility feature is not working properly. #973
 * Bug Fixed : Exclude option was not saved in visiblity extension. #968
