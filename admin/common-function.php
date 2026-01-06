@@ -436,6 +436,7 @@ function pwaforwp_fields_and_type($data_type = 'value'){
         'one_signal_support_setting'=>array('type'=>'checkbox','value'=>0),
         'pushnami_support_setting'=>array('type'=>'checkbox','value'=>0),
         'webpusher_support_setting'=>array('type'=>'checkbox','value'=>0),
+        'gravitec_support_setting'=>array('type'=>'checkbox','value'=>0),
         'wphide_support_setting'=>array('type'=>'checkbox','value'=>0),
 
         'pwa_uninstall_data'=>array('type'=>'checkbox','value'=>0),

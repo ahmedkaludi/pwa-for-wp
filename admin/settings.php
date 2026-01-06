@@ -862,6 +862,13 @@ function pwaforwp_settings_init(){
 			'pwaforwp_compatibility_setting_section',				// Page slug
 			'pwaforwp_compatibility_setting_section'				// Settings Section ID
 		);
+		add_settings_field(
+			'pwaforwp_gravitec_support',							// ID
+			'<label for="pwaforwp_settings[gravitec_support_setting]"><b>'.esc_html__('Gravitec', 'pwa-for-wp').'</b></label>',					// Title
+			'pwaforwp_gravitec_support_callback',					// CB
+			'pwaforwp_compatibility_setting_section',				// Page slug
+			'pwaforwp_compatibility_setting_section'				// Settings Section ID
+		);
 
 		add_settings_field(
 			'pwaforwp_wphide_support',							// ID
@@ -2766,6 +2773,15 @@ function pwaforwp_webpushr_support_callback(){
 	$settings = pwaforwp_defaultSettings();
 	?>
 	<input type="checkbox" name="pwaforwp_settings[webpusher_support_setting]" id="pwaforwp_settings[webpusher_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['webpusher_support_setting'] ) &&  $settings['webpusher_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
+
+	<?php
+}
+
+function pwaforwp_gravitec_support_callback(){
+	// Get Settings
+	$settings = pwaforwp_defaultSettings();
+	?>
+	<input type="checkbox" name="pwaforwp_settings[gravitec_support_setting]" id="pwaforwp_settings[gravitec_support_setting]" class="pwaforwp-pushnami-support" <?php echo (isset( $settings['gravitec_support_setting'] ) &&  $settings['gravitec_support_setting'] == 1 ? 'checked="checked"' : ''); ?> value="1">
 
 	<?php
 }
