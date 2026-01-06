@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 6.9
-Stable tag: 1.7.82
+Stable tag: 1.7.83
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.83 (06 January 2026) =
+* Added : Compatibility with Gravitec Pushnotification #972
+* Enhancement :  Removed Promotion Banner BFCM
+
 = 1.7.82 (28 November 2025) =
 * Added : Promotion Banner BFCM #983
 * Test: Test with WordPress version 6.9  

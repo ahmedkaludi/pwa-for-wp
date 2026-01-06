@@ -1,3 +1,7 @@
+= 1.7.83 (06 January 2026) =
+* Added : Compatibility with Gravitec Pushnotification #972
+* Enhancement :  Removed Promotion Banner BFCM
+
 = 1.7.82 (28 November 2025) =
 * Added : Promotion Banner BFCM #983
 * Test: Test with WordPress version 6.9 
