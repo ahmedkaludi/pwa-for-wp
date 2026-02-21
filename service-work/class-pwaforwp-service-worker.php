@@ -759,7 +759,7 @@ class PWAFORWP_Service_Worker {
 
 if ( class_exists( 'PWAFORWP_Service_Worker' ) ) {
 
-	$pwaServiceWorker = new PWAFORWP_Service_Worker;
+	$pwaforwpServiceWorker = new PWAFORWP_Service_Worker;
 
     if ( wp_doing_ajax() ) {
 

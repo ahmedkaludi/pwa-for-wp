@@ -689,7 +689,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 					);
 				}
 				// And we allow you to filter the text anyway
-				$notice_text = apply_filters( 'wisdom_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
+				$notice_text = apply_filters( 'pwaforwp_notice_text_' . esc_attr( $this->plugin_name ), $notice_text ); ?>
 
 				<div class="notice notice-info updated put-dismiss-notice">
 					<p><?php echo "<strong>".esc_html__( 'Love using PWA for WP & AMP?', 'pwa-for-wp' )."</strong>"; ?></p>
@@ -745,7 +745,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 				$marketing_text = sprintf(	__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'pwa-for-wp' ),
 					$this->what_am_i
 				);
-				$marketing_text = apply_filters( 'wisdom_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>
+				$marketing_text = apply_filters( 'pwaforwp_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>
 
 				<div class="notice notice-info updated put-dismiss-notice">
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
@@ -806,7 +806,7 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 */
 		public function form_filterable_text() {
 			$form = $this->form_default_text();
-			return apply_filters( 'wisdom_form_text_' . esc_attr( $this->plugin_name ), $form );
+			return apply_filters( 'pwaforwp_form_text_' . esc_attr( $this->plugin_name ), $form );
 		}
 		
 		/**

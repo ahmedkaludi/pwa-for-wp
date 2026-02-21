@@ -93,5 +93,5 @@ class PWAFORWP_Utility{
 	}
 }
 
-$PWA_UtilityObj = new PWAFORWP_Utility();
-$PWA_UtilityObj->init();
+$PWAFORWP_UtilityObj = new PWAFORWP_Utility();
+$PWAFORWP_UtilityObj->init();

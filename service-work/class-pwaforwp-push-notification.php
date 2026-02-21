@@ -452,7 +452,7 @@ public function pwaforwp_set_file_permission( $file_path, $permission = 0600 ) {
 		return false;
 	}
 
-	return $wp_filesystem->chmod( $file_path, $permission_str, false );
+	return $wp_filesystem->chmod( $file_path, $permission, false );
 }
 
 public function pwaforwp_upload_fcm_json() {
@@ -460,10 +460,11 @@ public function pwaforwp_upload_fcm_json() {
     if (!current_user_can('manage_options')) {
         wp_send_json(['status'=>0, 'message'=>'Permission denied']);
     }
-    if (empty($_FILES['fcm_service_account_json']['tmp_name'])) {
+    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated with is_uploaded_file() below.
+    $tmp_name = isset($_FILES['fcm_service_account_json']['tmp_name']) ? $_FILES['fcm_service_account_json']['tmp_name'] : '';
+    if (empty($tmp_name) || !is_uploaded_file($tmp_name)) {
         wp_send_json(['status'=>0, 'message'=>'No file uploaded']);
     }
-    $uploaded_file = $_FILES['fcm_service_account_json'];
     $upload_dir = wp_upload_dir();
     $private_dir = trailingslashit($upload_dir['basedir']) . 'pwaforwp-private/';
     if (!file_exists($private_dir)) {
@@ -471,22 +472,33 @@ public function pwaforwp_upload_fcm_json() {
     }
     $filename = 'service-account-' . time() . '.json';
     $destination = $private_dir . $filename;
-    if (move_uploaded_file($uploaded_file['tmp_name'], $destination)) {
-        // Restrict permissions
-        $this->pwaforwp_set_file_permission($destination, 0600);
-        // Update the settings with the new file path
-        $settings =  get_option('pwaforwp_settings', pwaforwp_defaultSettings());
-        $settings['fcm_server_key'] = $destination;
-        update_option('pwaforwp_settings', $settings);
-        wp_send_json(['status'=>1, 'path'=>$destination]);
-    } else {
+
+    if (!function_exists('WP_Filesystem')) {
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+    }
+    global $wp_filesystem;
+    if (!is_a($wp_filesystem, 'WP_Filesystem_Base')) {
+        WP_Filesystem();
+    }
+    if (!$wp_filesystem) {
         wp_send_json(['status'=>0, 'message'=>'Upload failed']);
     }
+    $content = file_get_contents($tmp_name);
+    if ($content === false || $wp_filesystem->put_contents($destination, $content) === false) {
+        wp_send_json(['status'=>0, 'message'=>'Upload failed']);
+    }
+    // Restrict permissions
+    $this->pwaforwp_set_file_permission($destination, 0600);
+    // Update the settings with the new file path
+    $settings = get_option('pwaforwp_settings', pwaforwp_defaultSettings());
+    $settings['fcm_server_key'] = $destination;
+    update_option('pwaforwp_settings', $settings);
+    wp_send_json(['status'=>1, 'path'=>$destination]);
 }
 
                  
 }
 if ( class_exists( 'PWAFORWP_Push_Notification' ) ) {
-	      $object = new PWAFORWP_Push_Notification;
-        $object->pwaforwp_push_notification_hooks();
+	      $pwaforwp_push_object = new PWAFORWP_Push_Notification;
+        $pwaforwp_push_object->pwaforwp_push_notification_hooks();
 };
