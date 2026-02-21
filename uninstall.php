@@ -9,9 +9,9 @@ if ( ! defined('WP_UNINSTALL_PLUGIN') ) {
 
 }
 
-$options = get_option( 'pwaforwp_settings' );  
+$pwaforwp_options = get_option( 'pwaforwp_settings' );  
 
-if ( isset( $options['pwa_uninstall_data'] ) && 1 == $options['pwa_uninstall_data'] ) {
+if ( isset( $pwaforwp_options['pwa_uninstall_data'] ) && 1 == $pwaforwp_options['pwa_uninstall_data'] ) {
 
 	if ( is_multisite() ) {
 

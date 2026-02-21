@@ -106,7 +106,7 @@ function pwaforwp_review_notice_remindme(){
 
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 
-function get_post_slugs_by_titles( $titles = array() ) {
+function pwaforwp_get_post_slugs_by_titles( $titles = array() ) {
     $slugs = array();
 
     if ( empty( $titles ) ) {
@@ -226,7 +226,7 @@ function pwaforwp_frontend_enqueue(){
                 $slugs = array();
                 if (isset($visibility_settings['exclude_url_from_pwa']) && $visibility_settings['exclude_url_from_pwa'] == 1 && isset($visibility_settings['exclude_targeting_value']) && !empty($visibility_settings['exclude_targeting_value'])) {
                     $expo_exclude_data = explode(',', $visibility_settings['exclude_targeting_value']);
-                    $slugs = get_post_slugs_by_titles( $expo_exclude_data );
+                    $slugs = pwaforwp_get_post_slugs_by_titles( $expo_exclude_data );
                 }
                 
             
@@ -999,7 +999,7 @@ function pwaforwp_current_user_can(){
 // Function to check if any plugin from the extension is active
 function pwaforwp_is_any_extension_active() {
     $addons_list = array('call-to-action-for-pwa/call-to-action-for-pwa.php', 'buddypress-for-pwaforwp/buddypress-for-pwaforwp.php', 'data-analytics-for-pwa/data-analytics-for-pwa.php', 'loading-icon-library-for-pwa/loading-icon-library-for-pwa.php', 'multilingual-compatibility-for-pwa/multilingual-compatibility-for-pwa.php', 'navigation-bar-for-pwa/navigation-bar-for-pwa.php', 'offline-forms-for-pwa-for-wp/offline-forms-for-pwa-for-wp.php', 'pull-to-refresh-for-pwa/pull-to-refresh-for-pwa.php', 'pwa-to-apk-plugin/pwa-to-apk-plugin.php', 'qr-code-for-pwa/qr-code-for-pwa.php','quick-action-for-pwa/quick-action-for-pwa.php','scroll-progress-bar-for-pwa/scroll-progress-bar-for-pwa.php','rewards-on-pwa-install/rewards-on-pwa-install.php');
-    $active_list = apply_filters('active_plugins', get_option('active_plugins'));
+    $active_list = apply_filters('active_plugins', get_option('active_plugins')); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- using WP core filter to get active plugins list
     $addons_active_list = array_intersect($addons_list, $active_list);
 
     if(!empty($addons_active_list)){
@@ -1372,8 +1372,8 @@ add_filter('pre_update_option_pwaforwp_settings', 'pwaforwp_fix_empty_option_upd
 function pwaforwp_fix_empty_option_update($new_value, $old_value, $option) {
     $visibility_form_submitted = isset($new_value['include_targeting_type']) || 
                                   isset($new_value['exclude_targeting_type']) ||
-                                  (isset($_POST['pwaforwp_visibility_flag']) && $_POST['pwaforwp_visibility_flag'] == 1);
-    
+                                    (isset($_POST['pwaforwp_visibility_flag']) && $_POST['pwaforwp_visibility_flag'] == 1); //phpcs:ignore WordPress.Security.NonceVerification --  This is a special case for visibility settings, we are checking if any of the visibility fields are set in the new value or if the visibility form is submitted.
+        
     if (!$visibility_form_submitted) {
         $visibility_settings = get_option('pwaforwp_visibility_settings', array());
         if (!empty($visibility_settings)) {
@@ -1440,7 +1440,7 @@ function pwaforwp_sw_register_apk_detect($sw_template){
     return $sw_template;
 }
 
-function custom_pwaforwp_whitelabel_title($title) {
+function pwaforwp_whitelabel_title_cb($title) {
     $config_file_path = ABSPATH . 'pwa-config.php';
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
@@ -1450,9 +1450,9 @@ function custom_pwaforwp_whitelabel_title($title) {
     }
     return esc_html( $title );
 }
-add_filter('pwaforwp_whitelabel_title', 'custom_pwaforwp_whitelabel_title');
+add_filter('pwaforwp_whitelabel_title', 'pwaforwp_whitelabel_title_cb');
 
-function custom_pwaforwp_whitelabel_logo($logo) {
+function pwaforwp_whitelabel_logo_cb($logo) {
     $config_file_path = ABSPATH . 'pwa-config.php';
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
@@ -1462,9 +1462,9 @@ function custom_pwaforwp_whitelabel_logo($logo) {
     }
     return $logo;
 }
-add_filter('pwaforwp_whitelabel_logo', 'custom_pwaforwp_whitelabel_logo');
+add_filter('pwaforwp_whitelabel_logo', 'pwaforwp_whitelabel_logo_cb');
 
-function custom_pwaforwp_whitelabel_longtext($longtext) {
+function pwaforwp_whitelabel_longtext_cb($longtext) {
     $config_file_path = ABSPATH . 'pwa-config.php';
     if (file_exists($config_file_path)) {
         require_once($config_file_path);
@@ -1474,5 +1474,5 @@ function custom_pwaforwp_whitelabel_longtext($longtext) {
     }
     return $longtext;
 }
-add_filter('pwaforwp_whitelabel_longtext', 'custom_pwaforwp_whitelabel_longtext');
+add_filter('pwaforwp_whitelabel_longtext', 'pwaforwp_whitelabel_longtext_cb');
 

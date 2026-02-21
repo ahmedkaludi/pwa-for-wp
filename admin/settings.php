@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 require_once PWAFORWP_PLUGIN_DIR.'/admin/class-pwaforwp-utility.php';
 
-function pwaforpw_add_menu_links() {
+function pwaforwp_add_menu_links() {
 
     $license_alert_icon = '';
     $days = '';
@@ -51,7 +51,7 @@ function pwaforpw_add_menu_links() {
 		$submenu['pwaforwp'][] = array( '<div style="color:#fff176;" onclick="window.open(\'https://pwa-for-wp.com/pricing/\')">'.esc_html__( 'Upgrade To Premium', 'pwa-for-wp' ).'</div>', 'manage_options', $permalink);
 	}
 }
-add_action( 'admin_menu', 'pwaforpw_add_menu_links');
+add_action( 'admin_menu', 'pwaforwp_add_menu_links');
 add_action( 'admin_head', 'pwaforwp_add_menu_styles');
 
 /**
@@ -566,7 +566,7 @@ function pwaforwp_settings_init(){
 		add_settings_field(
 			'pwaforwp_orientation',									// ID
 			esc_html__('Orientation', 'pwa-for-wp'),		// Title
-			'pwaforpw_orientation_callback',								// CB
+			'pwaforwp_orientation_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		); 
@@ -575,7 +575,7 @@ function pwaforwp_settings_init(){
 		add_settings_field(
 			'pwaforwp_display',									// ID
 			esc_html__('Display', 'pwa-for-wp'),		// Title
-			'pwaforpw_display_callback',								// CB
+			'pwaforwp_display_callback',								// CB
 			'pwaforwp_general_section',						// Page slug
 			'pwaforwp_general_section'						// Settings Section ID
 		);
@@ -2617,7 +2617,7 @@ function pwaforwp_start_page_callback(){
 	<?php
 }
 
-function pwaforpw_orientation_callback(){
+function pwaforwp_orientation_callback(){
 	
 	$settings = pwaforwp_defaultSettings();         
         ?>
@@ -2659,7 +2659,7 @@ function pwaforpw_orientation_callback(){
 	<?php
 }
 
-function pwaforpw_display_callback(){
+function pwaforwp_display_callback(){
 	
 	$settings = pwaforwp_defaultSettings();         
         ?>
@@ -4160,7 +4160,7 @@ function pwaforwp_features_settings(){
 		';
 }
 
-function whitelable_for_pwa_custom_config_file($data) {
+function pwaforwp_whitelable_custom_config_file($data) {
     if ( ! function_exists( 'request_filesystem_credentials' ) ) {
         require_once ABSPATH . 'wp-admin/includes/file.php';
     }
@@ -4319,7 +4319,7 @@ function pwaforwp_update_features_options(){
 
 		}
 		if(!empty($whitelabel_data)){
-			whitelable_for_pwa_custom_config_file($whitelabel_data);
+			pwaforwp_whitelable_custom_config_file($whitelabel_data);
 		}
 		if(!empty($navigation_bar_data)){
 			if(isset($navigation_bar_data['navigation']) && count($navigation_bar_data['navigation']) >= 3){
@@ -4490,7 +4490,6 @@ function pwaforwp_update_features_options(){
 			$actualFields['addtohomebanner_feature'] = $actualFields['custom_add_to_home_setting'];
 		}
 		
-		error_log( 'Settings to be saved: ' . print_r( $actualFields, true ) ); // Debug log
 
 		$actualFields = apply_filters('pwaforwp_features_update_data_save', $actualFields);
 

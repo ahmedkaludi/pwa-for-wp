@@ -1,10 +1,10 @@
-		    var config=;                     
+		    var config={ apiKey: 'sddgdfgdgd', authDomain: 'tttrytrytry', databaseURL: 'ytutrtrur', projectId: 'rutrutrurturtutyu', storageBucket: 'dtyuytutru', messagingSenderId: 'rutrueru' };                     
                      if (!firebase.apps.length) {
 		                      firebase.initializeApp(config);	
 		                    }                    		  		  		  
-        
+                    
                     var messaging = firebase.messaging();
-
+                    
                     messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
                     if(pwaForWpisTokenSentToServer()){
