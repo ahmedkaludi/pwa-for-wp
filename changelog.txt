@@ -1,3 +1,7 @@
+= 1.7.84 (21 February 2026) =
+* Added : option to customize width and height of CTA banner #975
+* Enhancement : Multiple Warnings and Errors Detected in PCP Check #989
+
 = 1.7.83 (06 January 2026) =
 * Added : Compatibility with Gravitec Pushnotification #972
 * Enhancement :  Removed Promotion Banner BFCM
