@@ -30,8 +30,13 @@ class PWAforwp_File_Creation {
           $swHtmlContent = '';
           /*Default Bar will be disabled if custom add to home banners are enabled*/
           $showPwaDefaultbar = apply_filters("pwaforwp_service_showdefault_addtohomebar", $settings['addtohomebanner_feature']);
+          
+          // Check if a custom banner will actually be displayed
+          $has_custom_banner = isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1;
+          
           $swdefaultaddtohomebar = '';
-          if($showPwaDefaultbar==1){
+          // Only prevent default if we have a custom banner to show
+          if($showPwaDefaultbar==1 && $has_custom_banner){
             $swdefaultaddtohomebar = "e.preventDefault();";
           }
           if( isset($swHtmlContentbody) && $swHtmlContentbody){
@@ -225,8 +230,15 @@ class PWAforwp_File_Creation {
     if(isset($settings['avoid_default_banner']) && ($settings['avoid_default_banner']==1 || $settings['avoid_default_banner']==true) ){
       $avoid_default_banner = 1;
     }
+    
+    // Check if a custom banner will actually be displayed
+    $has_custom_banner = isset($settings['custom_add_to_home_setting']) && $settings['custom_add_to_home_setting']==1;
+    
     $swdefaultaddtohomebar = '';
-    if($showPwaDefaultbar==1 || ($showPwaDefaultbar==0 && $avoid_default_banner==1)){
+    // Only prevent default if we have a custom banner to show
+    if($showPwaDefaultbar==1 && $has_custom_banner){
+      $swdefaultaddtohomebar = "e.preventDefault();";
+    } else if($showPwaDefaultbar==0 && $avoid_default_banner==1 && $has_custom_banner){
       $swdefaultaddtohomebar = "e.preventDefault();";
     }
        
@@ -566,6 +578,8 @@ class PWAforwp_File_Creation {
                                       "",
                                       "return caches.open(CACHE_VERSIONS.offline).then(function(cache) {
                                         return cache.match(OFFLINE_PAGE);
+                                      }).then(function(res) {
+                                        return res || new Response('', { status: 503, statusText: 'Service Unavailable' });
                                       });"
                                     ), $swJsContent); 		
 	        return $swJsContent;
