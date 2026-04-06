@@ -399,20 +399,14 @@ let cachingStrategy = {
                                                     }
                                                 )
                                                 .then((response) => {
-                                                    if(response) {
+                                                    if (response) {
                                                         return response;
                                                     }
+                                                    return cachingStrategy.Offlinepage();
                                                 })
                                                 .catch(
                                                     () => {
-
-                                                        return caches.open(CACHE_VERSIONS.offline)
-                                                            .then(
-                                                                (offlineCache) => {
-                                                                    return offlineCache.match(OFFLINE_PAGE)
-                                                                }
-                                                            )
-
+                                                        return cachingStrategy.Offlinepage();
                                                     }
                                                 );
                                         }
@@ -421,7 +415,7 @@ let cachingStrategy = {
                                 .catch(
                                     (error) => {
                                         console.error('  Error in fetch handler:', error);
-                                        throw error;
+                                        return cachingStrategy.Offlinepage();
                                     }
                                 );
                         }
@@ -442,20 +436,17 @@ let cachingStrategy = {
                                         return response;
                                 }else if(response.status==404){
                                     return cachingStrategy.Notfoundpage();
-                                } else if( cache.match(event.request) ){
-                                    return cache.match(event.request);
-                                }else {
-                                    return cachingStrategy.Offlinepage();
                                 }
+                                return cache.match(event.request).then(function (cached) {
+                                    return cached || cachingStrategy.Offlinepage();
+                                });
                               }).catch(
-                                   (err) => {
-                                        return cache.match(event.request)
+                                   function () {
+                                        return cache.match(event.request).then(function (cached) {
+                                            return cached || cachingStrategy.Offlinepage();
+                                        });
                                     }
-                              ).catch(
-                                (err) => {
-                                        return cachingStrategy.Offlinepage();
-                                    }
-                              )
+                              );
                         }
                     ).catch(
                            (err) => {
@@ -468,14 +459,39 @@ let cachingStrategy = {
              resolve(updatedResponse);
         },
         Offlinepage: function(){
-            return caches.open(CACHE_VERSIONS.offline).then((cache) => {
-                return cache.match(OFFLINE_PAGE);
-            })
+            var fallbackHtml = '<html><head><title>Offline</title></head><body><h1>You are offline</h1><p>Please check your internet connection.</p></body></html>';
+            var fallback = new Response(fallbackHtml, {
+                status: 503,
+                statusText: 'Service Unavailable',
+                headers: new Headers({
+                    'Content-Type': 'text/html; charset=UTF-8'
+                })
+            });
+            return caches.open(CACHE_VERSIONS.offline).then(function (cache) {
+                return cache.match(OFFLINE_PAGE).then(function (r) {
+                    return r || cache.match(OFFLINE_PAGE, { ignoreSearch: true });
+                });
+            }).then(function (response) {
+                return response || fallback;
+            }).catch(function () {
+                return fallback;
+            });
         },
         Notfoundpage: function(){
             return caches.open(CACHE_VERSIONS.notFound).then((cache) => {
                 return cache.match(NOT_FOUND_PAGE);
-            })
+            }).then(function (response) {
+                if (response) {
+                    return response;
+                }
+                return new Response('<html><head><title>Page Not Found</title></head><body><h1>404 - Page Not Found</h1></body></html>', {
+                    status: 404,
+                    statusText: 'Not Found',
+                    headers: new Headers({
+                        'Content-Type': 'text/html; charset=UTF-8'
+                    })
+                });
+            });
         },
         /*Strategies*/
         networkOnlyStrategy: function(event){
@@ -490,11 +506,10 @@ let cachingStrategy = {
                                     return response;
                                 }else if(response.status==404){
                                     return cachingStrategy.Notfoundpage();
-                                } else if(cache.match(event.request)){
-                                    return cache.match(event.request)
-                                } else {
-                                    return cachingStrategy.Offlinepage();
                                 }
+                                return cache.match(event.request).then(function (cached) {
+                                    return cached || cachingStrategy.Offlinepage();
+                                });
                               }).catch(
                                 (err) => {
                                         return cachingStrategy.Offlinepage();
@@ -527,6 +542,21 @@ let cachingStrategy = {
         }
 
 
+}
+
+/**
+ * Guarantees event.respondWith() always receives a Promise<Response>.
+ * Fixes networkFirst when a branch resolves with undefined (e.g. missing 404/offline cache).
+ */
+function pwaForWpEnsureResponse(promise) {
+    return Promise.resolve(promise).then(function (res) {
+        if (res && res instanceof Response) {
+            return res;
+        }
+        return cachingStrategy.Offlinepage();
+    }).catch(function () {
+        return cachingStrategy.Offlinepage();
+    });
 }
 
 
@@ -695,7 +725,7 @@ self.addEventListener(
                cache = cachingStrategy.cacheFirstStrategy(event)
             break;
         }
-        event.respondWith(cache);
+        event.respondWith(pwaForWpEnsureResponse(cache));
 
     }
 );
