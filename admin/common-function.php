@@ -838,6 +838,22 @@ function pwaforwp_service_workerUrls($url, $filename){
   return $url;
 }
 
+/**
+ * Absolute URL used for service worker registration (same logic as pwaforwp_swr()).
+ *
+ * @return string
+ */
+function pwaforwp_get_main_service_worker_url() {
+	$url      = pwaforwp_site_url();
+	$home_url = pwaforwp_home_url();
+	$sw_filename = apply_filters( 'pwaforwp_sw_name_modify', 'pwa-sw' . pwaforwp_multisite_postfix() . '.js' );
+	$sw_url      = $url . $sw_filename;
+	if ( trim( $url ) !== trim( $home_url ) || ! pwaforwp_is_file_inroot() ) {
+		$sw_url = pwaforwp_service_workerUrls( $sw_url, $sw_filename );
+	}
+	return $sw_url;
+}
+
 function pwaforwp_is_file_inroot() {
     $wppath = ABSPATH;
     $wppath = apply_filters( "pwaforwp_file_creation_path", $wppath );
