@@ -1,8 +1,8 @@
 === PWA for WP - Progressive Web Apps Made Simple ===
 Contributors: magazine3
 Requires at least: 3.0
-Tested up to: 6.9
-Stable tag: 1.7.84
+Tested up to: 7.0
+Stable tag: 1.7.85
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,12 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.85 (08 April 2026) =
+* BugFixed : Uncaught TypeError on Website – Offline Page Not Working as Expected #992
+* BugFixed : OneSignal Integration Fails: Service Worker Not Updated and SecurityError in Console #991
+* BugFixed : Prevent default add-to-homebar only if custom banner is set #994
+* BugFixed : JS Error: querySelector Returns Null but Code Assumes NodeList (length issue) #993
+
 = 1.7.84 (21 February 2026) =
 * Added : option to customize width and height of CTA banner #975
 * Enhancement : Multiple Warnings and Errors Detected in PCP Check #989
@@ -154,13 +160,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : Warning appears in Call to Action extension. #915
 * Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
 * Compatibility  : Tested with WordPress version 6.6 #914.
-* Improvement  : Code improvement.
-
-= 1.7.72 (09 July 2024) =
-* Bug Fixed  : The visibility option is not working for the CTA feature. #905
-* Bug Fixed  : Navigation bar extension conflict issue #910
-* Bug Fixed  : When we click on saving button on Nav bar data was not saved. #913
-* Bug Fixed  : Fixed vulnerability issues discovered by CleanTalk inc.
 * Improvement  : Code improvement.
 
 
