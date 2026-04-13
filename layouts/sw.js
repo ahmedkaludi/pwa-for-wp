@@ -46,6 +46,29 @@ const CACHE_BLACKLIST =  [
 ];
 const neverCacheUrls = [/\/wp-admin/,/\/wp-login/,/preview=true/,/\/cart/,/ajax/,/login/,{{EXCLUDE_FROM_CACHE}}];
 
+const PWA_VISIBILITY_BYPASS_PATHS = {{VISIBILITY_SW_BYPASS_PATHS}};
+
+/**
+ * Same path rules as frontend visibility_excludes: exact path or subpaths.
+ * @param {string} pathname request URL pathname
+ * @returns {boolean}
+ */
+function pwaForWpVisibilityBypassPath(pathname) {
+    if (!PWA_VISIBILITY_BYPASS_PATHS.length) {
+        return false;
+    }
+    var norm = pathname.replace(/\/+$/, '');
+    if (norm === '') {
+        norm = '/';
+    }
+    for (var i = 0; i < PWA_VISIBILITY_BYPASS_PATHS.length; i++) {
+        var prefix = String(PWA_VISIBILITY_BYPASS_PATHS[i]).replace(/\/+$/, '');
+        if (norm === prefix || norm.indexOf(prefix + '/') === 0) {
+            return true;
+        }
+    }
+    return false;
+}
 
 const SUPPORTED_METHODS = [
     'GET',
@@ -637,8 +660,11 @@ self.addEventListener(
         }
 
         const url = new URL(event.request.url);
-        
-        
+
+        if (pwaForWpVisibilityBypassPath(url.pathname)) {
+            return;
+        }
+
         path_array = url.pathname.split('/')
         if (event.request.method === 'POST' && path_array.includes('activity')) {
             return event.respondWith((async () => {

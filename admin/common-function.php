@@ -114,6 +114,7 @@ function pwaforwp_get_post_slugs_by_titles( $titles = array() ) {
     }
 
     foreach ( $titles as $title ) {
+        $title = str_replace(array('–'),array('-'), $title);
         $post = get_posts( array(
             'post_type'      => 'any',       // check posts, pages, CPTs
             'title'          => $title,      // match given title
@@ -1209,6 +1210,33 @@ function pwaforwp_get_visibility_settings(){
     }
     
     return $merged;
+}
+
+/**
+ * Path prefixes where the service worker should not intercept requests (aligned with visibility "exclude URL from PWA").
+ *
+ * @return string[] e.g. array( '/public', '/some-page' ).
+ */
+function pwaforwp_get_visibility_sw_bypass_paths() {
+    $paths = array();
+    $visibility_settings = pwaforwp_get_visibility_settings();
+    if (
+        isset( $visibility_settings['exclude_url_from_pwa'] ) && (int) $visibility_settings['exclude_url_from_pwa'] === 1 &&
+        ! empty( $visibility_settings['exclude_targeting_value'] )
+    ) {
+        $expo_exclude_data = array_map( 'trim', explode( ',', $visibility_settings['exclude_targeting_value'] ) );
+        $expo_exclude_data = array_filter( $expo_exclude_data );
+        $slugs             = pwaforwp_get_post_slugs_by_titles( $expo_exclude_data );
+        foreach ( $slugs as $slug ) {
+            $slug = trim( (string) $slug );
+            if ( '' === $slug ) {
+                continue;
+            }
+            $paths[] = '/' . ltrim( $slug, '/' );
+        }
+    }
+
+    return apply_filters( 'pwaforwp_visibility_sw_bypass_paths', array_values( array_unique( $paths ) ) );
 }
 
 function pwaforwp_visibility_check(){

@@ -476,8 +476,9 @@ class PWAforwp_File_Creation {
     $cssjsStrategy    = $settings['default_caching_js_css'];
     $imageStrategy    = $settings['default_caching_images'];
     $fontStrategy     = $settings['default_caching_fonts'];
-    
-    
+
+    $visibility_sw_bypass_paths = wp_json_encode( pwaforwp_get_visibility_sw_bypass_paths() );
+
 		if( $is_amp ){
                         $firebasejs ='';
       if(pwaforwp_is_automattic_amp('amp_support') && function_exists('amp_get_permalink')){
@@ -504,7 +505,8 @@ class PWAforwp_File_Creation {
                                                         "{{DEFAULT_CACHE_STRATEGY}}",
                                                         "{{CSS_JS_CACHE_STRATEGY}}",
                                                         "{{IMAGES_CACHE_STRATEGY}}",
-                                                        "{{FONTS_CACHE_STRATEGY}}"
+                                                        "{{FONTS_CACHE_STRATEGY}}",
+                                                        "{{VISIBILITY_SW_BYPASS_PATHS}}"
                                                             ), 
                                                      array(
                                                          $pre_cache_urls_amp,
@@ -522,7 +524,8 @@ class PWAforwp_File_Creation {
                                                          $defaultStrategy,
                                                          $cssjsStrategy,
                                                          $imageStrategy,
-                                                         $fontStrategy
+                                                         $fontStrategy,
+                                                         $visibility_sw_bypass_paths
                                                         ),
 							 $swJsContent
                                                         );                		
@@ -545,7 +548,8 @@ class PWAforwp_File_Creation {
                                                             "{{DEFAULT_CACHE_STRATEGY}}",
                                                             "{{CSS_JS_CACHE_STRATEGY}}",
                                                             "{{IMAGES_CACHE_STRATEGY}}",
-                                                            "{{FONTS_CACHE_STRATEGY}}"
+                                                            "{{FONTS_CACHE_STRATEGY}}",
+                                                            "{{VISIBILITY_SW_BYPASS_PATHS}}"
                                                             ),
                                                       array(
                                                             $pre_cache_urls,
@@ -563,7 +567,8 @@ class PWAforwp_File_Creation {
                                                             $defaultStrategy,
                                                             $cssjsStrategy,
                                                             $imageStrategy,
-                                                            $fontStrategy
+                                                            $fontStrategy,
+                                                            $visibility_sw_bypass_paths
                                                             ), 
                                                             $swJsContent);                		
 		} 
