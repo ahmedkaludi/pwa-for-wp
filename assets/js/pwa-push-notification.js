@@ -4,8 +4,15 @@
 		                    }                    		  		  		  
                     
                     var messaging = firebase.messaging();
-                    
-                    messaging.requestPermission().then(function() {
+
+                    function pwaforwpStartForegroundMessaging() {
+                      if (!('serviceWorker' in navigator)) {
+                        console.log('Service workers are not supported in this browser.');
+                        return;
+                      }
+                      var swPromise = window.pwaforwpFirebaseSwReady || navigator.serviceWorker.ready;
+                      swPromise.then(function () {
+                        messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
                     if(pwaForWpisTokenSentToServer()){
                         pwaForWpgetRegToken();
@@ -17,9 +24,15 @@
                     }).catch(function(err) {
                       console.log("Unable to get permission to notify.", err);
                     });
+                      }).catch(function (err) {
+                        console.log('Service worker is not ready yet. ', err);
+                      });
+                    }
+
+                    pwaforwpStartForegroundMessaging();
                 
                 function pwaForWpgetRegToken(argument){
-                     
+                    // Firebase SDK v7: useServiceWorker() already bound the registration; getToken() takes no args.
                     messaging.getToken().then(function(currentToken) {
                       if (currentToken) {                      
                        pwaForWpsaveToken(currentToken);
@@ -56,8 +69,8 @@
                  messaging.onMessage(function(payload) {
                  console.log('Message received. ', payload);
                  
-                 notificationTitle = payload.data.title;
-                    notificationOptions = {
+                 var notificationTitle = payload.data.title;
+                    var notificationOptions = {
                     body: payload.data.body,
                     icon: payload.data.icon,
                     image: payload.data.image,
@@ -68,11 +81,17 @@
                         primarykey: payload.data.primarykey,
                         url : payload.data.url
                       },
-                    }
-                    var notification = new Notification(notificationTitle, notificationOptions); 
+                    };
+                    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.ready.then(function(reg) {
+                            reg.showNotification(notificationTitle, notificationOptions);
+                        });
+                    } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+                        var notification = new Notification(notificationTitle, notificationOptions);
                         notification.onclick = function(event) {
-                        event.preventDefault();
-                        window.open(payload.data.url, '_blank');
-                        notification.close();
-                        }
+                            event.preventDefault();
+                            window.open(payload.data.url, '_blank');
+                            notification.close();
+                        };
+                    }
                 });

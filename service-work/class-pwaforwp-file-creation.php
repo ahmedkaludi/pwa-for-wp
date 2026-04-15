@@ -252,9 +252,11 @@ class PWAforwp_File_Creation {
                  $swHtmlContent         = $swHtmlContentbody;
                  if($server_key !='' && $config !=''){
                  $firebaseconfig   = 'var config ='. $config .';'
-                                     .'if (!firebase.apps.length) {firebase.initializeApp(config);}		  		  		                                   							
-                                     const firebaseMessaging = firebase.messaging();';
-                 $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);';
+                                     .'if (!firebase.apps.length) {firebase.initializeApp(config);}'
+                                     .'const firebaseMessaging = firebase.messaging();'
+                                     // Coordination promise: resolves after useServiceWorker() so pwa-push-notification.js waits correctly.
+                                     .'window.pwaforwpFirebaseSwReady=new Promise(function(rs){window.pwaforwpFirebaseSwReadyResolve=rs;});';
+                 $useserviceworker = 'firebaseMessaging.useServiceWorker(reg);if(window.pwaforwpFirebaseSwReadyResolve){window.pwaforwpFirebaseSwReadyResolve(reg);}';;
                 }else{
                  $firebaseconfig   = '';  
                  $useserviceworker = '';
@@ -445,8 +447,8 @@ class PWAforwp_File_Creation {
                   $server_key = $settings['fcm_server_key'];
                   $config     = $settings['fcm_config'];
                   if( $server_key !='' && $config !=''){
-                    $firebasejs = $this->pwaforwp_firebase_js();  
-                    $firebasejs .= $this->pwaforwp_pnjs(); 
+                    // Only pn_background.js belongs in the SW; pn-template.js is for the page (pwa-push-notification.js).
+                    $firebasejs = $this->pwaforwp_firebase_js();
                   }
                 }
                                 
