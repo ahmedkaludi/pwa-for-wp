@@ -290,7 +290,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pwaforwp_js_obj.is_desplay == '1') {
         const link = document.createElement('link');
         link.rel = 'manifest';
-        link.href = '/' + manifest_name;
+        // Use the full home URL to support subdirectory installations
+        let base_url = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_home_url) 
+                       ? pwaforwp_js_obj.pwa_home_url 
+                       : '/';
+        link.href = base_url + manifest_name;
         document.head.appendChild(link);        
     }
 });
