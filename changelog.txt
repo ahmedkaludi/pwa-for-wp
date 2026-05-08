@@ -1,3 +1,8 @@
+= 1.7.86 (08 May 2026) =
+* Enhancement : Introduced visibility-based service worker bypass paths and OptimizePress compatibility. #996
+* BugFixed : FCM push notification not working properly #997
+* BugFixed : PWA conflict with Directorist - Business Directory Solution plugin #998
+
 = 1.7.85 (08 April 2026) =
 * BugFixed : Uncaught TypeError on Website – Offline Page Not Working as Expected #992
 * BugFixed : OneSignal Integration Fails: Service Worker Not Updated and SecurityError in Console #991

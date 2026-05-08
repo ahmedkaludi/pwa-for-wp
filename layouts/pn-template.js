@@ -4,8 +4,18 @@
 		                    }                    		  		  		  
                     
                     var messaging = firebase.messaging();
-                    
-                    messaging.requestPermission().then(function() {
+
+                    // Wait for pwa-register-sw.js to call useServiceWorker() before triggering getToken().
+                    // Firebase SDK v7 requires useServiceWorker() to run exactly once, before getToken().
+                    function pwaforwpStartForegroundMessaging() {
+                      if (!('serviceWorker' in navigator)) {
+                        console.log('Service workers are not supported in this browser.');
+                        return;
+                      }
+                      // pwaforwpFirebaseSwReady is set in pwa-register-sw.js and resolves after useServiceWorker().
+                      var swPromise = window.pwaforwpFirebaseSwReady || navigator.serviceWorker.ready;
+                      swPromise.then(function () {
+                        messaging.requestPermission().then(function() {
                     console.log("Notification permission granted.");                                    
                     if(pwaForWpisTokenSentToServer()){
                         pwaForWpgetRegToken();
@@ -17,9 +27,15 @@
                     }).catch(function(err) {
                       console.log("Unable to get permission to notify.", err);
                     });
+                      }).catch(function (err) {
+                        console.log('Service worker is not ready yet. ', err);
+                      });
+                    }
+
+                    pwaforwpStartForegroundMessaging();
                 
                 function pwaForWpgetRegToken(argument){
-                     
+                    // Firebase SDK v7: getToken() needs no arguments; useServiceWorker() already bound the registration.
                     messaging.getToken().then(function(currentToken) {
                       if (currentToken) {                      
                        pwaForWpsaveToken(currentToken);
@@ -56,8 +72,8 @@
                  messaging.onMessage(function(payload) {
                  console.log('Message received. ', payload);
                  
-                 notificationTitle = payload.data.title;
-                    notificationOptions = {
+                 var notificationTitle = payload.data.title;
+                    var notificationOptions = {
                     body: payload.data.body,
                     icon: payload.data.icon,
                     image: payload.data.image,
@@ -68,11 +84,18 @@
                         primarykey: payload.data.primarykey,
                         url : payload.data.url
                       },
-                    }
-                    var notification = new Notification(notificationTitle, notificationOptions); 
+                    };
+                    // Browsers with a SW controller require showNotification() instead of new Notification().
+                    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.ready.then(function(reg) {
+                            reg.showNotification(notificationTitle, notificationOptions);
+                        });
+                    } else if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+                        var notification = new Notification(notificationTitle, notificationOptions);
                         notification.onclick = function(event) {
-                        event.preventDefault();
-                        window.open(payload.data.url, '_blank');
-                        notification.close();
-                        }
+                            event.preventDefault();
+                            window.open(payload.data.url, '_blank');
+                            notification.close();
+                        };
+                    }
                 });

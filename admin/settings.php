@@ -1001,6 +1001,11 @@ function pwaforwp_sanitize_fields($inputs=array()){
 			$inputs['exclude_url_from_pwa'] = $visibility_settings['exclude_url_from_pwa'];
 		}
 	}
+
+	// FCM service account path is set via AJAX upload; keep previous value when the field is absent from POST.
+	if ( ( ! isset( $inputs['fcm_server_key'] ) || '' === $inputs['fcm_server_key'] ) && ! empty( $old_settings['fcm_server_key'] ) ) {
+		$inputs['fcm_server_key'] = $old_settings['fcm_server_key'];
+	}
 	
 	return $inputs;
 	
@@ -1422,7 +1427,7 @@ function pwaforwp_serve_cache_method_setting_callback(){
 	// Get Settings
 	$settings = pwaforwp_defaultSettings(); 
 	?>
-	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="true">
+	<input type="checkbox" name="pwaforwp_settings[serve_js_cache_menthod]" id="pwaforwp_settings[serve_js_cache_menthod]" class=""  <?php echo (isset( $settings['serve_js_cache_menthod'] ) && $settings['serve_js_cache_menthod']=='true'? esc_attr('checked') : ''); ?> data-uncheck-val="0" value="1">
 	<p><?php echo esc_html__('Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache','pwa-for-wp'); ?></p>
 	<?php
 }
@@ -2040,10 +2045,20 @@ function pwaforwp_push_notification_callback(){
 							<p><?php echo esc_html__('Go to Firebase Console → Project Settings → Your Apps. Create a web app. You will get the config under SDK setup and configuration.', 'pwa-for-wp') ?></p>
                            
                         </td>
-                    </tr> 
+                    </tr>
+					<tr>
+						<th><?php echo esc_html__('Web Push certificate (VAPID key)', 'pwa-for-wp'); ?></th>
+						<td>
+							<input type="text" name="pwaforwp_settings[fcm_vapid_key]" id="pwaforwp_settings[fcm_vapid_key]" class="large-text code" value="<?php echo isset( $settings['fcm_vapid_key'] ) ? esc_attr( $settings['fcm_vapid_key'] ) : ''; ?>" autocomplete="off">
+							<p class="description"><?php echo esc_html__('Required for browser push tokens. In Firebase Console go to Project Settings → Cloud Messaging → Web Push certificates. If none exist, click Generate key pair and paste the public key here.', 'pwa-for-wp'); ?></p>
+						</td>
+					</tr> 
 					<tr>
 						<th><?php echo esc_html__('FCM Service Account', 'pwa-for-wp'); ?></th>
 						<td>
+							<?php if ( ! empty( $settings['fcm_server_key'] ) ) : ?>
+								<input type="hidden" name="pwaforwp_settings[fcm_server_key]" id="fcm_server_key" value="<?php echo esc_attr( $settings['fcm_server_key'] ); ?>">
+							<?php endif; ?>
 							<input type="file" id="fcm_service_account_json" accept=".json">
 							<?php if (!empty($settings['fcm_server_key'])): ?>
 								<p class="description"><b><?php echo esc_html__('File uploaded:', 'pwa-for-wp') . ' <span id="fcm_server_key_url" style="color:#000;">' . esc_html(basename($settings['fcm_server_key'])); ?></span></b></p>

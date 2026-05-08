@@ -169,6 +169,20 @@ function is_valid_url(urlString) {
     return !!urlPattern.test(urlString);
 }
 
+function pwaforwp_is_standalone_pwa() {
+    var isDisplayModePWA = window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.matchMedia('(display-mode: minimal-ui)').matches;
+    var reffer = document.referrer;
+    var isAndroidApp = reffer && reffer.indexOf('android-app://') !== -1;
+    var isAndroid = /Android/.test(navigator.userAgent);
+    var isAndroidPWA = isAndroid && (isDisplayModePWA || isAndroidApp);
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    var isIOSApp = isIOS && (navigator.userAgent.indexOf('PWABuilder-iOS') !== -1 || (window.webkit && window.webkit.messageHandlers));
+    var isIOSPWA = isIOS && (window.navigator.standalone === true || isIOSApp);
+    return isDisplayModePWA || isIOSPWA || isAndroidPWA;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Only run if touch is supported, swipe_navigation is enabled, and on mobile devices
     if (!('ontouchstart' in window) || pwaforwp_js_obj.swipe_navigation != '1' || window.innerWidth > 768 || !pwaforwp_js_obj.prev_post_url && !pwaforwp_js_obj.next_post_url) return;
@@ -276,7 +290,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pwaforwp_js_obj.is_desplay == '1') {
         const link = document.createElement('link');
         link.rel = 'manifest';
-        link.href = '/' + manifest_name;
+        // Use the full home URL to support subdirectory installations
+        let base_url = (typeof pwaforwp_js_obj !== 'undefined' && pwaforwp_js_obj.pwa_home_url) 
+                       ? pwaforwp_js_obj.pwa_home_url 
+                       : '/';
+        link.href = base_url + manifest_name;
         document.head.appendChild(link);        
     }
 });
@@ -284,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener("click", function(e) {
   const link = e.target.closest("a");
   if (!link || typeof pwaforwp_js_obj.visibility_excludes === 'undefined' || !pwaforwp_js_obj.visibility_excludes.length) return;
+  if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+
   const externalPaths = pwaforwp_js_obj.visibility_excludes.map(path => {
     path = path.trim();
     if (!path.startsWith("/")) {
@@ -292,11 +312,20 @@ document.addEventListener("click", function(e) {
     return path.replace(/\/+$/, "");
   });
 
-  console.log("Excludes:", externalPaths);
+  let url;
+  try {
+    url = new URL(link.href, window.location.href);
+  } catch (err) {
+    return;
+  }
 
-  const url = new URL(link.href);
-  let pathname = url.pathname.replace(/\/+$/, "");
-  if (externalPaths.some(exclude => pathname === exclude || pathname.startsWith(exclude + "/"))) {
+  const pathname = url.pathname.replace(/\/+$/, "");
+  const isExcluded = externalPaths.some(exclude => pathname === exclude || pathname.startsWith(exclude + "/"));
+  const inPWA = pwaforwp_is_standalone_pwa();
+  // Browser: new tab when not excluded, same tab when excluded. PWA: new tab when excluded, same tab when not excluded.
+  const openInNewTab = inPWA ? isExcluded : !isExcluded;
+
+  if (openInNewTab) {
     e.preventDefault();
     window.open(link.href, "_blank", "noopener,noreferrer");
   }
@@ -309,26 +338,7 @@ document.addEventListener("click", function(e) {
         return;
     }
 
-    const isDisplayModePWA = window.matchMedia('(display-mode: standalone)').matches || 
-                              window.matchMedia('(display-mode: fullscreen)').matches || 
-                              window.matchMedia('(display-mode: minimal-ui)').matches;
-    
-    // Check for Android APK/app detection
-    const reffer = document.referrer;
-    const isAndroidApp = reffer && reffer.includes('android-app://');
-    
-    const isAndroid = /Android/.test(navigator.userAgent);
-    const isAndroidPWA = isAndroid && (isDisplayModePWA || isAndroidApp);
-    
-    // Check for iOS app detection
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isIOSApp = isIOS && (navigator.userAgent.indexOf('PWABuilder-iOS') !== -1 || (window.webkit && window.webkit.messageHandlers));
-    const isIOSPWA = isIOS && (navigator.standalone === true || isIOSApp);
-    
-    // Check if PWA is installed (either by display-mode or platform-specific checks)
-    const isPWA = isDisplayModePWA || isIOSPWA || isAndroidPWA;
-
-    if (!isPWA) {
+    if (!pwaforwp_is_standalone_pwa()) {
         return;
     }
 

@@ -1717,8 +1717,14 @@ jQuery(document).ready(function($){
             success: function(resp){
                 try {
                     if(resp.status === 1){
-                        $('#fcm_server_key').val(resp.path);
-                        $('#fcm_server_key_url').val(resp.path);
+                        var $hidden = $('#fcm_server_key');
+                        if ($hidden.length) {
+                            $hidden.val(resp.path);
+                        } else {
+                            $('<input>', { type: 'hidden', name: 'pwaforwp_settings[fcm_server_key]', id: 'fcm_server_key', value: resp.path }).insertBefore('#fcm_service_account_json');
+                        }
+                        var base = resp.path.split(/[/\\\\]/).pop();
+                        $('#fcm_server_key_url').text(base);
                         alert('File uploaded successfully!');
                     } else {
                         alert(resp.message || 'Upload failed');

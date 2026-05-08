@@ -259,6 +259,7 @@ class PWAFORWP_WPwa{
 		    $imageStrategy    = $settings['default_caching_images'];
 		    $fontStrategy     = $settings['default_caching_fonts'];
 
+		    $visibility_sw_bypass_paths = wp_json_encode( pwaforwp_get_visibility_sw_bypass_paths() );
 
 		    if( ( function_exists('ampforwp_is_amp_endpoint') && ampforwp_is_amp_endpoint() ) || ( function_exists('is_amp_endpoint') && is_amp_endpoint() ) ){
                         $firebasejs ='';
@@ -285,7 +286,8 @@ class PWAFORWP_WPwa{
 				                                                "{{DEFAULT_CACHE_STRATEGY}}",
 				                                                "{{CSS_JS_CACHE_STRATEGY}}",
 				                                                "{{IMAGES_CACHE_STRATEGY}}",
-				                                                "{{FONTS_CACHE_STRATEGY}}"
+				                                                "{{FONTS_CACHE_STRATEGY}}",
+				                                                "{{VISIBILITY_SW_BYPASS_PATHS}}"
 				                                                    ), 
 				                                             array(
 				                                                 $pre_cache_urls_amp,
@@ -303,7 +305,8 @@ class PWAFORWP_WPwa{
 				                                                 $defaultStrategy,
 				                                                 $cssjsStrategy,
 				                                                 $imageStrategy,
-				                                                 $fontStrategy
+				                                                 $fontStrategy,
+				                                                 $visibility_sw_bypass_paths
 				                                                ),
 									 $swJsContent
 				                                                );                		
@@ -327,7 +330,8 @@ class PWAFORWP_WPwa{
 		                                            "{{DEFAULT_CACHE_STRATEGY}}",
 		                                            "{{CSS_JS_CACHE_STRATEGY}}",
 		                                            "{{IMAGES_CACHE_STRATEGY}}",
-		                                            "{{FONTS_CACHE_STRATEGY}}"
+		                                            "{{FONTS_CACHE_STRATEGY}}",
+		                                            "{{VISIBILITY_SW_BYPASS_PATHS}}"
 		                                            ),
 		                                      array(
 		                                            $pre_cache_urls,
@@ -345,7 +349,8 @@ class PWAFORWP_WPwa{
 		                                            $defaultStrategy,
 		                                            $cssjsStrategy,
 		                                            $imageStrategy,
-		                                            $fontStrategy
+		                                            $fontStrategy,
+		                                            $visibility_sw_bypass_paths
 		                                            ), 
 		                                            $swJsContent
 		                                        );         
