@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 7.0
-Stable tag: 1.7.85
+Stable tag: 1.7.86
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.86 (08 May 2026) =
+* Enhancement : Introduced visibility-based service worker bypass paths and OptimizePress compatibility. #996
+* BugFixed : FCM push notification not working properly #997
+* BugFixed : PWA conflict with Directorist - Business Directory Solution plugin #998
+
 = 1.7.85 (08 April 2026) =
 * BugFixed : Uncaught TypeError on Website – Offline Page Not Working as Expected #992
 * BugFixed : OneSignal Integration Fails: Service Worker Not Updated and SecurityError in Console #991
@@ -155,12 +160,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
 * Improvement  : Connect CTA with add to homescreen in chrome browser. #924
 * Improvement  : Update 'Stable Tag' in readme.md file #908
-
-= 1.7.73 (13 August 2024) =
-* Bug Fixed  : Warning appears in Call to Action extension. #915
-* Bug Fixed  : Fixed vulnerability issues discovered by Darius Sveikauskas.
-* Compatibility  : Tested with WordPress version 6.6 #914.
-* Improvement  : Code improvement.
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
