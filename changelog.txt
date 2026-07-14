@@ -1,3 +1,8 @@
+= 1.7.87 (14 July 2026) =
+* BugFixed : Change loading icon does not work #1004
+* BugFixed : Double slash (//) in asset URL for Navigation Bar for PWA #1003
+* BugFixed : Every non excluded link opening in new tab on browser #1002
+
 = 1.7.86 (08 May 2026) =
 * Enhancement : Introduced visibility-based service worker bypass paths and OptimizePress compatibility. #996
 * BugFixed : FCM push notification not working properly #997

@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 3.0
 Tested up to: 7.0
-Stable tag: 1.7.86
+Stable tag: 1.7.87
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.87 (14 July 2026) =
+* BugFixed : Change loading icon does not work #1004
+* BugFixed : Double slash (//) in asset URL for Navigation Bar for PWA #1003
+* BugFixed : Every non excluded link opening in new tab on browser #1002
+
 = 1.7.86 (08 May 2026) =
 * Enhancement : Introduced visibility-based service worker bypass paths and OptimizePress compatibility. #996
 * BugFixed : FCM push notification not working properly #997
@@ -154,12 +159,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Improvement  : Added an option so that only the Steps to install the PWA on IOS should be visible directly without clicking on Install banner in CTA #922
 * Bug Fixed   : The feature Quick Action is not working #931
 * Improvement   : Minify JS files for production #933
-
-= 1.7.74 (02 September 2024) =
-* Bug Fixed  : The visibility option is not working for the CTA feature. #905
-* Bug Fixed  : App Icon is getting replaced by Splash screen Icon on some Android devices #923
-* Improvement  : Connect CTA with add to homescreen in chrome browser. #924
-* Improvement  : Update 'Stable Tag' in readme.md file #908
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)
