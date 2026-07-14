@@ -319,13 +319,14 @@ document.addEventListener("click", function(e) {
     return;
   }
 
+  if (!pwaforwp_is_standalone_pwa()) {
+    return;
+  }
+
   const pathname = url.pathname.replace(/\/+$/, "");
   const isExcluded = externalPaths.some(exclude => pathname === exclude || pathname.startsWith(exclude + "/"));
-  const inPWA = pwaforwp_is_standalone_pwa();
-  // Browser: new tab when not excluded, same tab when excluded. PWA: new tab when excluded, same tab when not excluded.
-  const openInNewTab = inPWA ? isExcluded : !isExcluded;
 
-  if (openInNewTab) {
+  if (isExcluded) {
     e.preventDefault();
     window.open(link.href, "_blank", "noopener,noreferrer");
   }
