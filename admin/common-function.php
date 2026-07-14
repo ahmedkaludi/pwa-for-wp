@@ -1098,7 +1098,7 @@ function pwaforwp_add_manifest_variables($url) {
     
 
     if ($pro_extension_exists && isset( $settings['start_page'] ) && $settings['start_page'] == 'active_url') {
-        $parsedUrl = parse_url( $url );
+        $parsedUrl = wp_parse_url( $url );
         global $post;
         $cache_version = PWAFORWP_PLUGIN_VERSION;
         if(isset($settings['force_update_sw_setting']) && $settings['force_update_sw_setting'] !=''){
@@ -1130,7 +1130,7 @@ function pwaforwp_add_manifest_variables($url) {
         }	
         return $newUrl;
     }
-    return parse_url( $url, PHP_URL_PATH ) ;
+    return wp_parse_url( $url, PHP_URL_PATH ) ;
 }
 
 function pwaforwp_visibility_get_data_by_type($type,$from){

@@ -1,6 +1,6 @@
 === PWA for WP - Progressive Web Apps Made Simple ===
 Contributors: magazine3
-Requires at least: 3.0
+Requires at least: 4.7
 Tested up to: 7.0
 Stable tag: 1.7.87
 License: GPLv2 or later
