@@ -1,3 +1,7 @@
+= 1.7.88 (21 August 2026) =
+* Tested : Test with WordPress 7.1 and update readme.txt #1006
+* Improvement : PCP Code Improvements
+
 = 1.7.87 (14 July 2026) =
 * BugFixed : Change loading icon does not work #1004
 * BugFixed : Double slash (//) in asset URL for Navigation Bar for PWA #1003
