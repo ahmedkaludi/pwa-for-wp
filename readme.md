@@ -4,9 +4,9 @@ Contributors: magazine3
 
 Requires at least: 3.0
 
-Tested up to: 6.8
+Tested up to: 7.1
 
-Stable tag: 1.7.79
+Stable tag: 1.7.88
 
 License: GPLv2 or later
 

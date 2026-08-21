@@ -54,10 +54,6 @@ function pwaforwp_reset_all_settings(){
 
 add_action('wp_ajax_pwaforwp_reset_all_settings', 'pwaforwp_reset_all_settings');
 
-function pwaforwp_load_plugin_textdomain() {
-    load_plugin_textdomain( 'pwa-for-wp', false, basename( dirname( __FILE__ ) ) . '/languages/' );
-}
-add_action( 'plugins_loaded', 'pwaforwp_load_plugin_textdomain' );
 
 function pwaforwp_review_notice_close(){    
         if ( ! current_user_can( pwaforwp_current_user_can() ) ) {
