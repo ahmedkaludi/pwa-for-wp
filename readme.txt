@@ -1,8 +1,8 @@
 === PWA for WP - Progressive Web Apps Made Simple ===
 Contributors: magazine3
 Requires at least: 4.7
-Tested up to: 7.0
-Stable tag: 1.7.87
+Tested up to: 7.1
+Stable tag: 1.7.88
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.88 (21 August 2026) =
+* Tested : Test with WordPress 7.1 and update readme.txt #1006
+* Improvement : PCP Code Improvements
+
 = 1.7.87 (14 July 2026) =
 * BugFixed : Change loading icon does not work #1004
 * BugFixed : Double slash (//) in asset URL for Navigation Bar for PWA #1003
