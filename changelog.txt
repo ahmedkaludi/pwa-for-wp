@@ -1,3 +1,6 @@
+= 1.7.88.1 (18 September 2026) =
+* Improvement : Feedback Form improvement
+
 = 1.7.88 (21 August 2026) =
 * Tested : Test with WordPress 7.1 and update readme.txt #1006
 * Improvement : PCP Code Improvements

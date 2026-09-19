@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 4.7
 Tested up to: 7.1
-Stable tag: 1.7.88
+Stable tag: 1.7.88.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,9 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.88.1 (18 September 2026) =
+* Improvement : Feedback Form improvement
+
 = 1.7.88 (21 August 2026) =
 * Tested : Test with WordPress 7.1 and update readme.txt #1006
 * Improvement : PCP Code Improvements
