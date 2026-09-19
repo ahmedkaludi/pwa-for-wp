@@ -942,15 +942,46 @@ if( ! class_exists( 'PWAFORWP_Plugin_Usage_Tracker') ) {
 		 */
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'pwaforwp_goodbye_form', 'security' );
-			if( isset( $_POST['values'] ) ) {
-				$values = wp_json_encode( sanitize_text_field( wp_unslash( $_POST['values'] ) ) );
-				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
+
+			$values = array();
+			if ( isset( $_POST['values'] ) ) {
+				$raw_values = wp_unslash( $_POST['values'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+				if ( is_array( $raw_values ) ) {
+					$values = array_map( 'sanitize_text_field', $raw_values );
+				} else {
+					$values = array( sanitize_text_field( $raw_values ) );
+				}
 			}
-			if( isset( $_POST['details'] ) ) {
+
+			$details = '';
+			if ( isset( $_POST['details'] ) ) {
 				$details = sanitize_text_field( wp_unslash( $_POST['details'] ) );
-				update_option( 'wisdom_deactivation_details_' . $this->plugin_name, $details );
 			}
-			$this->do_tracking(); // Run this straightaway
+
+			$allowed_reasons = array_unique(
+				array(
+					'Set up is too difficult',
+					'Lack of documentation',
+					"Didn't work",
+					__( 'Set up is too difficult', 'pwa-for-wp' ),
+					__( 'Lack of documentation', 'pwa-for-wp' ),
+					__( 'Didn\'t work', 'pwa-for-wp' ),
+				)
+			);
+			$has_allowed_reason = ! empty( array_intersect( $allowed_reasons, $values ) );	
+			$word_count         = count( preg_split( '/\s+/', trim( $details ), -1, PREG_SPLIT_NO_EMPTY ) );
+
+
+			// Only send deactivation feedback when a relevant reason is selected and details has at least 3 words.
+			if ( $has_allowed_reason && $word_count >= 3 ) {
+				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, wp_json_encode( $values ) );
+				update_option( 'wisdom_deactivation_details_' . $this->plugin_name, $details );
+				$this->do_tracking(); // Run this straightaway
+			} else {
+				delete_option( 'wisdom_deactivation_reason_' . $this->plugin_name );
+				delete_option( 'wisdom_deactivation_details_' . $this->plugin_name );
+			}
+
 			echo 'success';
 			wp_die();
 		}
