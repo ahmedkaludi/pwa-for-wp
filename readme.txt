@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 4.7
 Tested up to: 7.1
-Stable tag: 1.7.88.1
+Stable tag: 1.7.88.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,10 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+
+= 1.7.88.2 (13 October 2026) =
+* BugFixed : Unauthenticated sensitive information exposure of FCM service-account JSON via publicly accessible uploads path
+
 = 1.7.88.1 (18 September 2026) =
 * Improvement : Feedback Form improvement
 

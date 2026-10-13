@@ -4,6 +4,9 @@ class PWAFORWP_Push_Notification {
             
      public function pwaforwp_push_notification_hooks() {
 
+        // Always harden/migrate FCM credentials even if push is currently disabled.
+        add_action( 'admin_init', array( $this, 'pwaforwp_maybe_secure_fcm_credentials' ) );
+
         $pwaSettings = pwaforwp_defaultSettings();
         $showFirebase = true;
         $showFirebase = apply_filters("pwaforwp_show_pwa_firebase", $showFirebase);        
@@ -381,6 +384,250 @@ private function pwaforwp_get_access_token( $service_account_key ) {
 }
 
 /**
+ * Returns the non-public directory used for FCM service-account JSON.
+ *
+ * Stored under WP_CONTENT_DIR (outside uploads) so it is not treated as a
+ * media file and can be blocked from HTTP access.
+ *
+ * @return string Absolute path with trailing slash.
+ */
+public function pwaforwp_get_fcm_private_dir() {
+	return trailingslashit( wp_normalize_path( WP_CONTENT_DIR ) ) . 'pwaforwp-private/';
+}
+
+/**
+ * Legacy publicly served directory used before the security fix.
+ *
+ * @return string Absolute path with trailing slash.
+ */
+public function pwaforwp_get_legacy_fcm_private_dir() {
+	$upload_dir = wp_upload_dir();
+	return trailingslashit( wp_normalize_path( $upload_dir['basedir'] ) ) . 'pwaforwp-private/';
+}
+
+/**
+ * Ensures the private directory exists and cannot be served over HTTP.
+ *
+ * @param string $dir Absolute directory path.
+ * @return bool True when the directory is ready.
+ */
+public function pwaforwp_ensure_protected_private_dir( $dir ) {
+	$dir = trailingslashit( wp_normalize_path( $dir ) );
+
+	if ( ! file_exists( $dir ) && ! wp_mkdir_p( $dir ) ) {
+		return false;
+	}
+
+	$this->pwaforwp_protect_private_dir( $dir );
+	return true;
+}
+
+/**
+ * Writes deny-all web server rules and an index stub for a private directory.
+ *
+ * @param string $dir Absolute directory path.
+ * @return void
+ */
+public function pwaforwp_protect_private_dir( $dir ) {
+	$dir = trailingslashit( wp_normalize_path( $dir ) );
+
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	global $wp_filesystem;
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+	if ( ! $wp_filesystem ) {
+		return;
+	}
+
+	$htaccess = $dir . '.htaccess';
+	if ( ! $wp_filesystem->exists( $htaccess ) ) {
+		$rules  = "# Deny all HTTP access to FCM credentials\n";
+		$rules .= "<IfModule mod_authz_core.c>\n";
+		$rules .= "\tRequire all denied\n";
+		$rules .= "</IfModule>\n";
+		$rules .= "<IfModule !mod_authz_core.c>\n";
+		$rules .= "\tOrder deny,allow\n";
+		$rules .= "\tDeny from all\n";
+		$rules .= "</IfModule>\n";
+		$wp_filesystem->put_contents( $htaccess, $rules );
+	}
+
+	$web_config = $dir . 'web.config';
+	if ( ! $wp_filesystem->exists( $web_config ) ) {
+		$iis  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		$iis .= "<configuration>\n";
+		$iis .= "\t<system.webServer>\n";
+		$iis .= "\t\t<authorization>\n";
+		$iis .= "\t\t\t<deny users=\"*\" />\n";
+		$iis .= "\t\t</authorization>\n";
+		$iis .= "\t</system.webServer>\n";
+		$iis .= "</configuration>\n";
+		$wp_filesystem->put_contents( $web_config, $iis );
+	}
+
+	$index = $dir . 'index.php';
+	if ( ! $wp_filesystem->exists( $index ) ) {
+		$wp_filesystem->put_contents( $index, "<?php\n// Silence is golden.\n" );
+	}
+}
+
+/**
+ * Whether a path is inside an allowed FCM private directory.
+ *
+ * @param string $file_path Absolute file path.
+ * @return bool
+ */
+public function pwaforwp_is_allowed_fcm_key_path( $file_path ) {
+	$file_path = wp_normalize_path( $file_path );
+	$real_file = realpath( $file_path );
+	if ( false === $real_file ) {
+		return false;
+	}
+	$real_file = wp_normalize_path( $real_file );
+
+	$allowed_dirs = array(
+		$this->pwaforwp_get_fcm_private_dir(),
+		$this->pwaforwp_get_legacy_fcm_private_dir(),
+	);
+
+	foreach ( $allowed_dirs as $dir ) {
+		$real_dir = realpath( $dir );
+		if ( false === $real_dir ) {
+			continue;
+		}
+		$real_dir = trailingslashit( wp_normalize_path( $real_dir ) );
+		if ( 0 === strpos( $real_file, $real_dir ) && substr( $real_file, -5 ) === '.json' ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * One-time migration: move credentials out of publicly served uploads and harden directories.
+ *
+ * @return void
+ */
+public function pwaforwp_maybe_secure_fcm_credentials() {
+	if ( get_option( 'pwaforwp_fcm_credentials_secured' ) === PWAFORWP_PLUGIN_VERSION ) {
+		return;
+	}
+
+	$settings   = get_option( 'pwaforwp_settings', array() );
+	$legacy_dir = $this->pwaforwp_get_legacy_fcm_private_dir();
+	$secure_dir = $this->pwaforwp_get_fcm_private_dir();
+
+	$this->pwaforwp_ensure_protected_private_dir( $secure_dir );
+
+	if ( file_exists( $legacy_dir ) ) {
+		$this->pwaforwp_protect_private_dir( $legacy_dir );
+	}
+
+	if ( ! empty( $settings['fcm_server_key'] ) ) {
+		$current = wp_normalize_path( $settings['fcm_server_key'] );
+		$legacy  = wp_normalize_path( $legacy_dir );
+
+		if ( 0 === strpos( $current, $legacy ) && file_exists( $current ) ) {
+			$new_path = $this->pwaforwp_relocate_fcm_json( $current, $secure_dir );
+			if ( $new_path ) {
+				$settings['fcm_server_key'] = $new_path;
+				update_option( 'pwaforwp_settings', $settings );
+			}
+		} elseif ( file_exists( $current ) ) {
+			// Ensure existing secure-dir files also have restrictive permissions.
+			$this->pwaforwp_set_file_permission( $current, 0600 );
+		}
+	}
+
+	// Remove leftover guessable service-account-*.json files from the public uploads dir.
+	$this->pwaforwp_cleanup_legacy_fcm_json_files( $legacy_dir, isset( $settings['fcm_server_key'] ) ? $settings['fcm_server_key'] : '' );
+
+	update_option( 'pwaforwp_fcm_credentials_secured', PWAFORWP_PLUGIN_VERSION, false );
+}
+
+/**
+ * Copies a service-account JSON into the secure private directory with a random name.
+ *
+ * @param string $source     Absolute source path.
+ * @param string $secure_dir Absolute destination directory.
+ * @return string|false New absolute path or false on failure.
+ */
+public function pwaforwp_relocate_fcm_json( $source, $secure_dir ) {
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	global $wp_filesystem;
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+	if ( ! $wp_filesystem || ! $wp_filesystem->exists( $source ) ) {
+		return false;
+	}
+
+	$content = $wp_filesystem->get_contents( $source );
+	if ( false === $content || '' === $content ) {
+		return false;
+	}
+
+	$filename    = 'service-account-' . wp_generate_password( 32, false, false ) . '.json';
+	$destination = trailingslashit( $secure_dir ) . $filename;
+
+	if ( false === $wp_filesystem->put_contents( $destination, $content ) ) {
+		return false;
+	}
+
+	$this->pwaforwp_set_file_permission( $destination, 0600 );
+	$wp_filesystem->delete( $source );
+
+	return $destination;
+}
+
+/**
+ * Deletes orphaned service-account JSON files from the legacy public directory.
+ *
+ * @param string $legacy_dir      Absolute legacy directory.
+ * @param string $keep_file_path  Absolute path that must not be deleted.
+ * @return void
+ */
+public function pwaforwp_cleanup_legacy_fcm_json_files( $legacy_dir, $keep_file_path = '' ) {
+	$legacy_dir = trailingslashit( wp_normalize_path( $legacy_dir ) );
+	if ( ! is_dir( $legacy_dir ) ) {
+		return;
+	}
+
+	$keep_file_path = wp_normalize_path( (string) $keep_file_path );
+	$files          = glob( $legacy_dir . 'service-account-*.json' );
+	if ( empty( $files ) ) {
+		return;
+	}
+
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	global $wp_filesystem;
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+	if ( ! $wp_filesystem ) {
+		return;
+	}
+
+	foreach ( $files as $file ) {
+		$file = wp_normalize_path( $file );
+		if ( $keep_file_path && $file === $keep_file_path ) {
+			continue;
+		}
+		$wp_filesystem->delete( $file );
+	}
+}
+
+/**
  * Reads a JSON file and returns its content as an associative array.
  *
  * @param string $file_path The path to the JSON file.
@@ -392,6 +639,10 @@ public function pwaforwp_read_json_file( $file_path ) {
 	}
 
 	$file_path = wp_normalize_path( $file_path );
+
+	if ( ! $this->pwaforwp_is_allowed_fcm_key_path( $file_path ) ) {
+		return null;
+	}
 
 	if ( ! file_exists( $file_path ) || ! is_readable( $file_path ) ) {
 		return null;
@@ -456,44 +707,79 @@ public function pwaforwp_set_file_permission( $file_path, $permission = 0600 ) {
 }
 
 public function pwaforwp_upload_fcm_json() {
-    check_ajax_referer('pwaforwp_ajax_check_nonce', 'pwaforwp_security_nonce');
-    if (!current_user_can('manage_options')) {
-        wp_send_json(['status'=>0, 'message'=>'Permission denied']);
-    }
-    // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated with is_uploaded_file() below.
-    $tmp_name = isset($_FILES['fcm_service_account_json']['tmp_name']) ? $_FILES['fcm_service_account_json']['tmp_name'] : '';
-    if (empty($tmp_name) || !is_uploaded_file($tmp_name)) {
-        wp_send_json(['status'=>0, 'message'=>'No file uploaded']);
-    }
-    $upload_dir = wp_upload_dir();
-    $private_dir = trailingslashit($upload_dir['basedir']) . 'pwaforwp-private/';
-    if (!file_exists($private_dir)) {
-        wp_mkdir_p($private_dir);
-    }
-    $filename = 'service-account-' . time() . '.json';
-    $destination = $private_dir . $filename;
+	check_ajax_referer( 'pwaforwp_ajax_check_nonce', 'pwaforwp_security_nonce' );
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Permission denied' ) );
+	}
 
-    if (!function_exists('WP_Filesystem')) {
-        require_once ABSPATH . 'wp-admin/includes/file.php';
-    }
-    global $wp_filesystem;
-    if (!is_a($wp_filesystem, 'WP_Filesystem_Base')) {
-        WP_Filesystem();
-    }
-    if (!$wp_filesystem) {
-        wp_send_json(['status'=>0, 'message'=>'Upload failed']);
-    }
-    $content = file_get_contents($tmp_name);
-    if ($content === false || $wp_filesystem->put_contents($destination, $content) === false) {
-        wp_send_json(['status'=>0, 'message'=>'Upload failed']);
-    }
-    // Restrict permissions
-    $this->pwaforwp_set_file_permission($destination, 0600);
-    // Update the settings with the new file path
-    $settings = get_option('pwaforwp_settings', pwaforwp_defaultSettings());
-    $settings['fcm_server_key'] = $destination;
-    update_option('pwaforwp_settings', $settings);
-    wp_send_json(['status'=>1, 'path'=>$destination]);
+	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated with is_uploaded_file() below.
+	$tmp_name = isset( $_FILES['fcm_service_account_json']['tmp_name'] ) ? $_FILES['fcm_service_account_json']['tmp_name'] : '';
+	if ( empty( $tmp_name ) || ! is_uploaded_file( $tmp_name ) ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'No file uploaded' ) );
+	}
+
+	$content = file_get_contents( $tmp_name );
+	if ( false === $content ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Upload failed' ) );
+	}
+
+	$decoded = json_decode( $content, true );
+	if (
+		! is_array( $decoded )
+		|| empty( $decoded['type'] )
+		|| 'service_account' !== $decoded['type']
+		|| empty( $decoded['private_key'] )
+		|| empty( $decoded['client_email'] )
+		|| empty( $decoded['project_id'] )
+	) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Invalid service account JSON' ) );
+	}
+
+	$private_dir = $this->pwaforwp_get_fcm_private_dir();
+	if ( ! $this->pwaforwp_ensure_protected_private_dir( $private_dir ) ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Upload failed' ) );
+	}
+
+	// Also harden the legacy uploads path if it still exists.
+	$legacy_dir = $this->pwaforwp_get_legacy_fcm_private_dir();
+	if ( file_exists( $legacy_dir ) ) {
+		$this->pwaforwp_protect_private_dir( $legacy_dir );
+	}
+
+	$filename    = 'service-account-' . wp_generate_password( 32, false, false ) . '.json';
+	$destination = $private_dir . $filename;
+
+	if ( ! function_exists( 'WP_Filesystem' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	global $wp_filesystem;
+	if ( ! is_a( $wp_filesystem, 'WP_Filesystem_Base' ) ) {
+		WP_Filesystem();
+	}
+	if ( ! $wp_filesystem ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Upload failed' ) );
+	}
+
+	if ( false === $wp_filesystem->put_contents( $destination, $content ) ) {
+		wp_send_json( array( 'status' => 0, 'message' => 'Upload failed' ) );
+	}
+
+	$this->pwaforwp_set_file_permission( $destination, 0600 );
+
+	$settings = get_option( 'pwaforwp_settings', pwaforwp_defaultSettings() );
+	$previous = ! empty( $settings['fcm_server_key'] ) ? wp_normalize_path( $settings['fcm_server_key'] ) : '';
+
+	// Replace previous credential file so old copies are not left behind.
+	if ( $previous && $previous !== $destination && $this->pwaforwp_is_allowed_fcm_key_path( $previous ) && $wp_filesystem->exists( $previous ) ) {
+		$wp_filesystem->delete( $previous );
+	}
+	$this->pwaforwp_cleanup_legacy_fcm_json_files( $legacy_dir, $destination );
+
+	$settings['fcm_server_key'] = $destination;
+	update_option( 'pwaforwp_settings', $settings );
+	update_option( 'pwaforwp_fcm_credentials_secured', PWAFORWP_PLUGIN_VERSION, false );
+
+	wp_send_json( array( 'status' => 1, 'path' => $destination ) );
 }
 
                  
