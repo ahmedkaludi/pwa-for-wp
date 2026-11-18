@@ -73,7 +73,13 @@ class PWAforwp_File_Creation {
             if(isset($swHtmlContentbody) && $swHtmlContentbody){
                 
                 $swHtmlContent       = $swHtmlContentbody;
-                $firebase_config     = 'var config='.$config.';';
+                $config              = is_string( $config ) ? trim( $config ) : '';
+                // Empty or non-object config must stay valid JS. "var config=;" is a syntax error.
+                if ( $config === '' || strpos( $config, '{' ) !== 0 ) {
+                    $firebase_config = 'var config=null;';
+                } else {
+                    $firebase_config = 'var config='.$config.';';
+                }
                 $swHtmlContent       = str_replace("{{firebaseconfig}}", $firebase_config, $swHtmlContent);  
                                 
             }

@@ -1,4 +1,5 @@
-		    {{firebaseconfig}}                     
+		    {{firebaseconfig}}
+                     if (config && typeof firebase !== 'undefined' && firebase.messaging) {
                      if (!firebase.apps.length) {
 		                      firebase.initializeApp(config);	
 		                    }                    		  		  		  
@@ -99,3 +100,4 @@
                         };
                     }
                 });
+                     }
