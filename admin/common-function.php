@@ -102,6 +102,244 @@ function pwaforwp_review_notice_remindme(){
 
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 
+if ( ! defined( 'PWAFORWP_BFCM_OFFER_URL' ) ) {
+    define( 'PWAFORWP_BFCM_OFFER_URL', 'https://pwa-for-wp.com/bfcm-2026/' );
+}
+
+function pwaforwp_bfcm_banner_timezone() {
+    if ( function_exists( 'wp_timezone' ) ) {
+        return wp_timezone();
+    }
+
+    $tz_string = get_option( 'timezone_string' );
+    if ( is_string( $tz_string ) && $tz_string !== '' ) {
+        return new DateTimeZone( $tz_string );
+    }
+
+    $offset  = (float) get_option( 'gmt_offset', 0 );
+    $hours   = (int) $offset;
+    $minutes = (int) abs( ( $offset - $hours ) * 60 );
+    $sign    = ( $offset < 0 ) ? '-' : '+';
+
+    return new DateTimeZone( sprintf( '%s%02d:%02d', $sign, abs( $hours ), $minutes ) );
+}
+
+function pwaforwp_bfcm_banner_end_timestamp() {
+    $end = new DateTime( '2026-12-31 23:59:59', pwaforwp_bfcm_banner_timezone() );
+    return $end->getTimestamp();
+}
+
+function pwaforwp_bfcm_banner_is_whitelabel() {
+    $config_file_path = ABSPATH . 'pwa-config.php';
+    if ( ! file_exists( $config_file_path ) ) {
+        return false;
+    }
+
+    require_once $config_file_path;
+    return defined( 'PWA_TITLE' );
+}
+
+function pwaforwp_bfcm_banner_should_show() {
+    if ( pwaforwp_bfcm_banner_is_whitelabel() ) {
+        return false;
+    }
+
+    $user_id = get_current_user_id();
+    if ( ! $user_id ) {
+        return false;
+    }
+
+    if ( time() > pwaforwp_bfcm_banner_end_timestamp() ) {
+        return false;
+    }
+
+    $dismissed = isset( $_COOKIE['pwaforwp_bfcm_banner_dismissed'] ) ? absint( wp_unslash( $_COOKIE['pwaforwp_bfcm_banner_dismissed'] ) ) : 0;
+    if ( $dismissed && time() < ( $dismissed + ( 7 * DAY_IN_SECONDS ) ) ) {
+        return false;
+    }
+
+    return true;
+}
+
+function pwaforwp_render_bfcm_banner() {
+    if ( ! pwaforwp_bfcm_banner_should_show() ) {
+        return;
+    }
+
+    $end       = pwaforwp_bfcm_banner_end_timestamp();
+    $remaining = max( 0, $end - time() );
+    $days      = (int) floor( $remaining / DAY_IN_SECONDS );
+    $hours     = (int) floor( ( $remaining % DAY_IN_SECONDS ) / HOUR_IN_SECONDS );
+    $mins      = (int) floor( ( $remaining % HOUR_IN_SECONDS ) / MINUTE_IN_SECONDS );
+    $secs      = (int) ( $remaining % MINUTE_IN_SECONDS );
+    $offer_url = PWAFORWP_BFCM_OFFER_URL;
+    ?>
+    <style id="pwaforwp-bfcm-banner-css">
+    .pwaforwp-bfcm-banner,.pwaforwp-bfcm-banner *{box-sizing:border-box}
+    .pwaforwp-bfcm-banner{position:relative;margin:8px 0 16px;padding:14px 40px 14px 16px;border-radius:6px;border:1px solid rgba(255,61,140,.9);background:radial-gradient(90% 160% at 0% 50%,rgba(130,24,90,.42),transparent 46%),radial-gradient(70% 180% at 100% 40%,rgba(120,30,80,.38),transparent 42%),linear-gradient(90deg,#16061f 0%,#0b0612 52%,#1a0816 100%);box-shadow:0 0 0 1px rgba(255,45,130,.18),0 10px 28px rgba(0,0,0,.22);color:#fff;font-family:"Segoe UI",Roboto,Arial,sans-serif}
+    .pwaforwp-bfcm-inner{display:flex;align-items:center;justify-content:flex-start;gap:18px}
+    .pwaforwp-bfcm-lead{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:8px;min-width:0;flex:0 1 auto}
+    .pwaforwp-bfcm-offer{display:flex;align-items:center;gap:12px;min-width:0}
+    .pwaforwp-bfcm-pill{display:inline-flex;align-items:center;gap:6px;flex:0 0 auto;padding:5px 12px;border:1px solid #ff4d93;border-radius:999px;background:rgba(255,45,140,.08);color:#ff5aa3;font-size:10px;font-weight:800;letter-spacing:.06em;line-height:1.2;white-space:nowrap}
+    .pwaforwp-bfcm-pill svg,.pwaforwp-bfcm-cta svg,.pwaforwp-bfcm-expires svg,.pwaforwp-bfcm-guarantee svg,.pwaforwp-bfcm-code svg{display:block;flex:0 0 auto}
+    .pwaforwp-bfcm-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:74px;padding:10px 12px;border-radius:12px;background:linear-gradient(180deg,#ff5b9d 0%,#ff2d78 100%);box-shadow:0 8px 18px rgba(255,45,120,.35);color:#fff;font-size:15px;font-weight:800;letter-spacing:.02em;line-height:1.05;text-align:center}
+    .pwaforwp-bfcm-copy{min-width:0}
+    .pwaforwp-bfcm-copy strong{display:block;color:#fff;font-size:15px;font-weight:800;letter-spacing:.01em;line-height:1.25}
+    .pwaforwp-bfcm-copy p{margin:4px 0 0;color:#ffffff;font-size:12px;line-height:1.3}
+    .pwaforwp-wrap .pwaforwp-bfcm-code{display:inline-flex;align-items:center;align-self:center;flex:0 0 auto;gap:8px;height:auto;min-height:0;margin:0;padding:6px 10px;border:1px solid #d4a84b;border-radius:8px;background:rgba(12,8,6,.45);box-shadow:none;color:#f3d48a;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1;cursor:pointer;white-space:nowrap}
+    .pwaforwp-wrap .pwaforwp-bfcm-code:hover,.pwaforwp-wrap .pwaforwp-bfcm-code:focus{color:#ffe7a8;border-color:#efc56a;background:rgba(12,8,6,.45);box-shadow:none}
+    .pwaforwp-wrap .pwaforwp-bfcm-code.is-copied{color:#c8ffd8;border-color:#7dffa1}
+    .pwaforwp-bfcm-aside{display:flex;align-items:center;gap:16px;flex:0 0 auto;margin-left:auto}
+    .pwaforwp-bfcm-clock{display:flex;flex-direction:column;align-items:center;gap:4px}
+    .pwaforwp-bfcm-expires{display:inline-flex;align-items:center;gap:6px;color:#fff;font-size:11px;font-weight:800;letter-spacing:.08em}
+    .pwaforwp-bfcm-timer{display:flex;align-items:flex-start;gap:8px}
+    .pwaforwp-bfcm-unit{display:flex;flex-direction:column;align-items:center;min-width:40px}
+    .pwaforwp-bfcm-unit b{color:#fff;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+    .pwaforwp-bfcm-unit span{margin-top:4px;color:#ff4d93;font-size:10px;font-weight:800;letter-spacing:.08em}
+    .pwaforwp-bfcm-sep{width:4px;height:4px;margin-top:12px;border-radius:50%;background:rgba(255,255,255,.7)}
+    .pwaforwp-bfcm-action{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .pwaforwp-wrap a.pwaforwp-bfcm-cta,.pwaforwp-wrap a.pwaforwp-bfcm-cta:hover,.pwaforwp-wrap a.pwaforwp-bfcm-cta:focus{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:999px;background:linear-gradient(90deg,#ff3b86 0%,#ff7a2a 100%);box-shadow:0 8px 18px rgba(255,80,50,.35);color:#fff;font-size:14px;font-weight:800;line-height:1;text-decoration:none;white-space:nowrap}
+    .pwaforwp-wrap a.pwaforwp-bfcm-cta:hover{filter:brightness(1.06);color:#fff}
+    .pwaforwp-bfcm-guarantee{display:inline-flex;align-items:center;gap:5px;color:#f0e4f6;font-size:11px;font-weight:600;white-space:nowrap}
+    .pwaforwp-wrap .pwaforwp-bfcm-dismiss{position:absolute;top:8px;right:8px;display:flex;align-items:center;justify-content:center;width:22px;height:22px;min-height:0;margin:0;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;color:rgba(255,255,255,.78);font-size:20px;line-height:1;cursor:pointer}
+    .pwaforwp-wrap .pwaforwp-bfcm-dismiss:hover,.pwaforwp-wrap .pwaforwp-bfcm-dismiss:focus{color:#fff;background:rgba(255,255,255,.08);box-shadow:none}
+    .pwaforwp-bfcm-banner button:focus-visible,.pwaforwp-bfcm-banner a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+    @media (max-width:1280px){
+        .pwaforwp-bfcm-inner{flex-wrap:wrap}
+        .pwaforwp-bfcm-aside{flex:1 0 100%;width:100%;margin-left:0;justify-content:flex-start}
+    }
+    @media (max-width:782px){
+        .pwaforwp-bfcm-inner,.pwaforwp-bfcm-lead,.pwaforwp-bfcm-aside,.pwaforwp-bfcm-action{flex-direction:column;align-items:flex-start}
+        .pwaforwp-bfcm-pill{white-space:normal}
+        .pwaforwp-bfcm-aside{align-items:flex-start;gap:12px}
+    }
+    </style>
+    <div class="pwaforwp-bfcm-banner" data-end="<?php echo esc_attr( $end ); ?>">
+        <button type="button" class="pwaforwp-bfcm-dismiss" aria-label="<?php echo esc_attr__( 'Dismiss for 7 days', 'pwa-for-wp' ); ?>">&times;</button>
+        <div class="pwaforwp-bfcm-inner">
+            <div class="pwaforwp-bfcm-lead">
+                <span class="pwaforwp-bfcm-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13 2 4 14h7l-1 8 10-14h-7l0-6z"/></svg>
+                    <?php echo esc_html__( 'BLACK FRIDAY / CYBER MONDAY / CHRISTMAS SALE', 'pwa-for-wp' ); ?>
+                </span>
+                <div class="pwaforwp-bfcm-offer">
+                    <span class="pwaforwp-bfcm-badge"><?php echo esc_html__( '60% OFF', 'pwa-for-wp' ); ?></span>
+                    <div class="pwaforwp-bfcm-copy">
+                        <strong><?php echo esc_html__( 'BIGGEST SALE IN OUR HISTORY — NEVER BEFORE SEEN!', 'pwa-for-wp' ); ?></strong>
+                        <p><?php echo esc_html__( 'Sale is here! 60% off on Everything for a very limited time!!!', 'pwa-for-wp' ); ?></p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="pwaforwp-bfcm-code" data-code="BFCM2026" data-label="<?php echo esc_attr__( 'CODE: BFCM2026', 'pwa-for-wp' ); ?>" data-copied="<?php echo esc_attr__( 'COPIED', 'pwa-for-wp' ); ?>" aria-label="<?php echo esc_attr__( 'Copy coupon code', 'pwa-for-wp' ); ?>">
+                <span class="pwaforwp-bfcm-code-label"><?php echo esc_html__( 'CODE: BFCM2026', 'pwa-for-wp' ); ?></span>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 1H6a2 2 0 0 0-2 2v12h2V3h10V1zm3 4H10a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H10V7h9v14z"/></svg>
+            </button>
+            <div class="pwaforwp-bfcm-aside">
+                <div class="pwaforwp-bfcm-clock">
+                    <div class="pwaforwp-bfcm-expires">
+                        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6 2h12v2l-4.2 5.2L18 14.5V22H6v-7.5l4.2-5.3L6 4V2zm2.2 2 3.2 4h1.2l3.2-4H8.2zM8 20h8v-4.2l-4-5-4 5V20z"/></svg>
+                        <?php echo esc_html__( 'OFFER EXPIRES IN:', 'pwa-for-wp' ); ?>
+                    </div>
+                    <div class="pwaforwp-bfcm-timer" aria-hidden="true">
+                        <div class="pwaforwp-bfcm-unit"><b class="pwaforwp-bfcm-days"><?php echo esc_html( sprintf( '%02d', $days ) ); ?></b><span><?php echo esc_html__( 'DAYS', 'pwa-for-wp' ); ?></span></div>
+                        <span class="pwaforwp-bfcm-sep"></span>
+                        <div class="pwaforwp-bfcm-unit"><b class="pwaforwp-bfcm-hours"><?php echo esc_html( sprintf( '%02d', $hours ) ); ?></b><span><?php echo esc_html__( 'HOURS', 'pwa-for-wp' ); ?></span></div>
+                        <span class="pwaforwp-bfcm-sep"></span>
+                        <div class="pwaforwp-bfcm-unit"><b class="pwaforwp-bfcm-mins"><?php echo esc_html( sprintf( '%02d', $mins ) ); ?></b><span><?php echo esc_html__( 'MINS', 'pwa-for-wp' ); ?></span></div>
+                        <span class="pwaforwp-bfcm-sep"></span>
+                        <div class="pwaforwp-bfcm-unit"><b class="pwaforwp-bfcm-secs"><?php echo esc_html( sprintf( '%02d', $secs ) ); ?></b><span><?php echo esc_html__( 'SECS', 'pwa-for-wp' ); ?></span></div>
+                    </div>
+                </div>
+                <div class="pwaforwp-bfcm-action">
+                    <a class="pwaforwp-bfcm-cta" href="<?php echo esc_url( $offer_url ); ?>" target="_blank" rel="noopener noreferrer">
+                        <?php echo esc_html__( 'Claim The Offer Now', 'pwa-for-wp' ); ?>
+                        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13 2 4 14h7l-1 8 10-14h-7l0-6z"/></svg>
+                    </a>
+                    <span class="pwaforwp-bfcm-guarantee">
+                        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-7-2a2 2 0 1 1 4 0v2h-4V7zm7 12H7v-8h10v8z"/></svg>
+                        <?php echo esc_html__( '30-Day Money Back Guarantee', 'pwa-for-wp' ); ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function(){
+        function pwaforwpBfcmBoot(){
+            if (window.pwaforwpBfcmBound || !window.jQuery) {
+                return;
+            }
+            var $ = window.jQuery;
+            var $banner = $('.pwaforwp-bfcm-banner');
+            if (!$banner.length) {
+                return;
+            }
+            window.pwaforwpBfcmBound = true;
+            var end = parseInt($banner.attr('data-end'), 10) * 1000;
+            function pad(n){ return (n < 10 ? '0' : '') + n; }
+            function tick(){
+                var diff = end - Date.now();
+                if (diff <= 0) {
+                    $banner.remove();
+                    return;
+                }
+                var total = Math.floor(diff / 1000);
+                $banner.find('.pwaforwp-bfcm-days').text(pad(Math.floor(total / 86400)));
+                $banner.find('.pwaforwp-bfcm-hours').text(pad(Math.floor((total % 86400) / 3600)));
+                $banner.find('.pwaforwp-bfcm-mins').text(pad(Math.floor((total % 3600) / 60)));
+                $banner.find('.pwaforwp-bfcm-secs').text(pad(total % 60));
+            }
+            tick();
+            window.setInterval(tick, 1000);
+            $banner.on('click', '.pwaforwp-bfcm-code', function(e){
+                e.preventDefault();
+                var $btn = $(this);
+                var code = $btn.attr('data-code') || '';
+                var done = function(){
+                    var $label = $btn.find('.pwaforwp-bfcm-code-label');
+                    var copied = $btn.attr('data-copied') || 'COPIED';
+                    var original = $btn.attr('data-label') || $label.text();
+                    $btn.addClass('is-copied');
+                    $label.text(copied);
+                    window.setTimeout(function(){
+                        $btn.removeClass('is-copied');
+                        $label.text(original);
+                    }, 1500);
+                };
+                var fallbackCopy = function(){
+                    var input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = code;
+                    document.body.appendChild(input);
+                    input.select();
+                    try { document.execCommand('copy'); } catch (err) {}
+                    document.body.removeChild(input);
+                    done();
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code).then(done).catch(fallbackCopy);
+                } else {
+                    fallbackCopy();
+                }
+            });
+            $banner.on('click', '.pwaforwp-bfcm-dismiss', function(e){
+                e.preventDefault();
+                var maxAge = 7 * 24 * 60 * 60;
+                var secure = window.location.protocol === 'https:' ? '; Secure' : '';
+                document.cookie = 'pwaforwp_bfcm_banner_dismissed=' + Math.floor(Date.now() / 1000) + '; Max-Age=' + maxAge + '; Path=/; SameSite=Lax' + secure;
+                $banner.slideUp(180, function(){ $banner.remove(); });
+            });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', pwaforwpBfcmBoot);
+        } else {
+            pwaforwpBfcmBoot();
+        }
+    })();
+    </script>
+    <?php
+}
+
 function pwaforwp_get_post_slugs_by_titles( $titles = array() ) {
     $slugs = array();
 
@@ -168,6 +406,7 @@ function pwaforwp_frontend_enqueue(){
                     'pwa_home_url'              => pwaforwp_home_url(), 
                     'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce' ),
                     'fcm_vapid_key'             => isset( $settings['fcm_vapid_key'] ) ? $settings['fcm_vapid_key'] : '',
+                    'push_show_only_pwa'        => ( isset( $settings['push_show_only_pwa'] ) && $settings['push_show_only_pwa'] == 1 ) ? '1' : '0',
                 );
 
                 wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
@@ -391,6 +630,7 @@ function pwaforwp_fields_and_type($data_type = 'value'){
 
     /*Push notification services*/
         'notification_options'  => array('type'=>'text','value'=>''),
+        'push_show_only_pwa'    => array('type'=>'checkbox','value'=>0),
     /*Features settings*/
         'notification_feature'  => array('type'=>'checkbox','value'=>0),
         'precaching_feature'    => array('type'=>'checkbox','value'=>0),

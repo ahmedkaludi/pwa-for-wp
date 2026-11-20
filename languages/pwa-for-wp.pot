@@ -1,627 +1,2202 @@
-#, fuzzy
+# Copyright (C) 2026 Magazine3
+# This file is distributed under the GPL2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: PWA for WP\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-03 07:27+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Project-Id-Version: PWA for WP - Progressive Web Apps Made Simple 1.7.88.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/pwa-for-wp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.2.0; wp-4.9.8"
-
-#: pwa-for-wp.php:143
-msgid " PWA for WP plugin! "
-msgstr ""
-
-#: admin/newsletter.php:36
-msgid ""
-"\">\n"
-"                                                        \n"
-"                                                    <input type=\"hidden\" "
-"name=\"ml-submit\" value=\"1\" />\n"
-"                                    </div>\n"
-"                                    <div id=\"mce-responses\">\n"
-"                                            <div class=\"response\" id=\"mce-"
-"error-response\" style=\"display:none\"></div>\n"
-"                                            <div class=\"response\" id=\"mce-"
-"success-response\" style=\"display:none\"></div>\n"
-"                                    </div>\n"
-"                                        <!-- real people should not fill "
-"this in and expect good things - do not remove this or risk form bot signups-"
-"->\n"
-"                                        <div style=\"position: absolute; "
-"left: -5000px;\" aria-hidden=\"true\"><input type=\"text\" "
-"name=\"b_a631df13442f19caede5a5baf_c9a71edce6\" tabindex=\"-1\" value=\"\">"
-"</div>\n"
-"                                            <input type=\"submit\" "
-"value=\"Subscribe\" name=\"subscribe\" id=\"pointer-close\" class=\"button "
-"mc-newsletter-sent\" style=\" background: #0085ba; border-color: #006799; "
-"padding: 0px 16px; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px "
-"1px #006799,-1px 0 1px #006799; height: 30px; margin-top: 1px; color: #fff; "
-"box-shadow: 0 1px 0 #006799;\">\n"
-"                                    </div>\n"
-"                            </form>\n"
-"                        </div>"
-msgstr ""
-
-#: admin/settings.php:787
-msgid "\"Use my own manifest.json\""
-msgstr ""
-
-#: admin/settings.php:785
-msgid "1."
-msgstr ""
-
-#: admin/settings.php:786
-msgid "2."
-msgstr ""
-
-#: admin/settings.php:787
-msgid "3."
-msgstr ""
-
-#. ID
-#: admin/settings.php:252
-msgid "404 Page"
-msgstr ""
-
-#: admin/settings.php:741
-#, php-format
-msgid ""
-"404 page is displayed and the requested page is not found. Current 404 page "
-"is %s"
-msgstr ""
-
-#: admin/newsletter.php:35
-msgid ""
-"<p>Do you want the latest on <b>PWA update</b> before others and some best "
-"resources on monetization in a single email? - Free just for users of PWA!"
-"</p>"
-msgstr ""
-
-#: service-work/class-service-worker.php:49
-msgid "Add"
-msgstr ""
-
-#: admin/settings.php:594
-msgid "Add New Page"
-msgstr ""
-
-#: admin/settings.php:586
-msgid "Add New Post"
-msgstr ""
-
-#. ID
-#: admin/settings.php:311
-msgid "Add To Home On Element Click"
-msgstr ""
-
-#: admin/settings.php:90
-msgid "Advanced"
-msgstr ""
-
-#: admin/settings.php:786
-msgid "Advanced Settings"
-msgstr ""
-
-#. Author of the plugin
-msgid "Ahmed Kaludi, Mohammed Kaludi"
-msgstr ""
-
-#: admin/settings.php:832
-msgid "AMP"
-msgstr ""
-
-#: admin/settings.php:787
-msgid "and add PWA For WP manifest URL into the field and Save Settings."
-msgstr ""
-
-#. ID
-#: admin/settings.php:216
-msgid "App Description"
-msgstr ""
-
-#. ID
-#: admin/settings.php:225
-msgid "App Icon"
-msgstr ""
-
-#. ID
-#: admin/settings.php:198
-msgid "App Name"
-msgstr ""
-
-#. ID
-#: admin/settings.php:207
-msgid "App Short Name"
-msgstr ""
-
-#. ID
-#: admin/settings.php:234
-msgid "App Splash Screen Icon"
-msgstr ""
-
-#: admin/settings.php:786
-msgid "at the bottom of the page."
-msgstr ""
-
-#. ID
-#: admin/settings.php:271
-msgid "Background Color"
-msgstr ""
-
-#. ID
-#: admin/settings.php:346
-msgid "Cached time"
-msgstr ""
-
-#. ID
-#: admin/settings.php:354
-msgid "Caching Strategies"
-msgstr ""
-
-#: admin/settings.php:399
-msgid "Caching strategy for CSS and JS Files"
-msgstr ""
-
-#: admin/settings.php:425
-msgid "Caching strategy for fonts"
-msgstr ""
-
-#: admin/settings.php:412
-msgid "Caching strategy for images"
-msgstr ""
-
-#. ID
-#: admin/settings.php:290
-msgid "CDN Compatibility"
-msgstr ""
-
-#: admin/settings.php:534
-msgid ""
-"Change the version. It will automatically update the service worker for all "
-"the users"
-msgstr ""
-
-#: service-work/class-push-notification.php:70
-msgid "Check out our new page"
-msgstr ""
-
-#: service-work/class-push-notification.php:49
-msgid "Check out our new post"
-msgstr ""
-
-#: service-work/class-push-notification.php:78
-msgid "Check out our updated page"
-msgstr ""
-
-#: service-work/class-push-notification.php:57
-msgid "Check out our updated post"
-msgstr ""
-
-#: admin/settings.php:52 service-work/class-init.php:235
-msgid "Check permission or download from manual"
-msgstr ""
-
-#: admin/settings.php:675 admin/settings.php:691
-msgid "Choose Icon"
-msgstr ""
-
-#: pwa-for-wp.php:143
-msgid "Click here"
-msgstr ""
-
-#: admin/settings.php:855 admin/settings.php:867 admin/settings.php:886
-#: admin/settings.php:898
-msgid "Click here to setup"
-msgstr ""
-
-#: admin/settings.php:570
-msgid "Config"
-msgstr ""
-
-#: admin/settings.php:573
-msgid ""
-"console, its completly free by google with some limitations. After creating "
-"the project you will find FCM Key and json in project details section."
-msgstr ""
-
-#. ID
-#: admin/settings.php:318
-msgid "Custom Add To Home Banner"
-msgstr ""
-
-#: admin/settings.php:82
-msgid "Dashboard"
-msgstr ""
-
-#: admin/settings.php:385
-msgid "Default caching strategy"
-msgstr ""
-
-#: admin/settings.php:86
-msgid "Design"
-msgstr ""
-
-#: admin/settings.php:787
-msgid "Enable"
-msgstr ""
-
-#: admin/settings.php:800 admin/settings.php:802
-msgid "Enable On Desktop"
-msgstr ""
-
-#: admin/settings.php:489
-msgid "Enable UTM Tracking"
-msgstr ""
-
-#: admin/settings.php:566
-msgid "FCM Server API Key"
-msgstr ""
-
-#: service-work/class-init.php:233
-msgid "File has been created"
-msgstr ""
-
-#: admin/settings.php:573
-msgid "firebase"
-msgstr ""
-
-#: admin/settings.php:756
-msgid "Follow Device Orientation"
-msgstr ""
-
-#. ID
-#: admin/settings.php:304
-msgid "Force Update Service Worker"
-msgstr ""
-
-#: admin/settings.php:84
-msgid "General"
-msgstr ""
-
-#: admin/settings.php:785
-msgid "Go to OneSignal Settings"
-msgstr ""
-
-#: admin/settings.php:92
-msgid "Help"
-msgstr ""
-
-#. Author URI of the plugin
-msgid "http://pwa-for-wp.com"
-msgstr ""
-
-#: admin/settings.php:910
-msgid "HTTPS"
-msgstr ""
-
-#: admin/settings.php:695
-msgid ""
-"Icon displayed on the splash screen of your APPLICATION on supported devices."
-" Must be a PNG image size exactly 512x512."
-msgstr ""
-
-#: admin/settings.php:679
-msgid ""
-"Icon of your application when installed on the phone. Must be a PNG image "
-"exactly 192x192 in size."
-msgstr ""
-
-#: admin/settings.php:130
-msgid ""
-"If you have any query, please write the query in below box or email us at"
-msgstr ""
-
-#: admin/settings.php:444 admin/settings.php:446
-msgid "in seconds;"
-msgstr ""
-
-#: admin/settings.php:181
-msgid "Installation Status"
-msgstr ""
-
-#: admin/settings.php:811
-msgid "jQuery selector (.element) or (#element)"
-msgstr ""
-
-#: admin/settings.php:762
-msgid "Landscape"
-msgstr ""
-
-#: admin/settings.php:848
-msgid "Manifest"
-msgstr ""
-
-#: admin/settings.php:133
-msgid "Message"
-msgstr ""
-
-#: admin/settings.php:137
-msgid "Message not sent. please check your network connection"
-msgstr ""
-
-#: admin/settings.php:136
-msgid "Message sent successfully, Please wait we will get back to you shortly"
-msgstr ""
-
-#: service-work/class-push-notification.php:69
-msgid "New Page"
-msgstr ""
-
-#: service-work/class-push-notification.php:48
-msgid "New Post"
-msgstr ""
-
-#: admin/newsletter.php:69
-msgid "No Thanks"
-msgstr ""
-
-#: admin/settings.php:573
-msgid "Note: Create a new firebase project on "
-msgstr ""
-
-#: admin/settings.php:574
-msgid ""
-"Note: Firebase push notification does not support on AMP. It will support in "
-"future"
-msgstr ""
-
-#: admin/settings.php:812
-msgid "Note: It is currently available in non AMP"
-msgstr ""
-
-#: admin/settings.php:456
-msgid "Note: Put in comma separated"
-msgstr ""
-
-#: admin/settings.php:783
-msgid ""
-"Note: To work PWA For WP with OneSignal you need to enable settings given "
-"below"
-msgstr ""
-
-#: service-work/class-push-notification.php:33
-msgid "Notification not sent. Something went wrong"
-msgstr ""
-
-#: admin/settings.php:526
-msgid ""
-"Offline analytics is a module that will use background sync to ensure that "
-"requests to Google Analytics are made regardless of the current network "
-"condition"
-msgstr ""
-
-#. ID
-#: admin/settings.php:297
-msgid "Offline Google Analytics"
-msgstr ""
-
-#. ID
-#: admin/settings.php:243
-msgid "Offline Page"
-msgstr ""
-
-#: admin/settings.php:718
-#, php-format
-msgid ""
-"Offline page is displayed, when the device is offline and the requested page "
-"is not already cached. Current offline page is %s"
-msgstr ""
-
-#. ID
-#: admin/settings.php:325
-msgid "OneSignal Compatibility"
-msgstr ""
-
-#. ID
-#: admin/settings.php:261
-msgid "Orientation"
-msgstr ""
-
-#: admin/settings.php:768
-msgid ""
-"Orientation of application on devices. When set to Follow Device Orientation "
-"your application will rotate as the device is rotated."
-msgstr ""
-
-#: service-work/class-push-notification.php:77
-msgid "Page Updated"
-msgstr ""
-
-#: pwa-for-wp.php:167
-msgid "please write us a review"
-msgstr ""
-
-#: admin/settings.php:759
-msgid "Portrait"
-msgstr ""
-
-#: service-work/class-push-notification.php:56
-msgid "Post Updated"
-msgstr ""
-
-#: admin/settings.php:4 admin/settings.php:13 admin/settings.php:78
-msgid "Progressive Web Apps For WP"
-msgstr ""
-
-#: admin/settings.php:88
-msgid "Push Notification"
-msgstr ""
-
-#: admin/settings.php:457
-msgid "Put the list of urls which you do not want to cache by service worker"
-msgstr ""
-
-#: admin/settings.php:5
-msgid "PWA"
-msgstr ""
-
-#. Name of the plugin
-msgid "PWA for WP"
-msgstr ""
-
-#: admin/settings.php:154
-msgid "Save Settings"
-msgstr ""
-
-#: admin/settings.php:786
-msgid "See"
-msgstr ""
-
-#: admin/settings.php:605
-msgid "Send Manual Notification"
-msgstr ""
-
-#: admin/settings.php:139
-msgid "Send Message"
-msgstr ""
-
-#: admin/settings.php:582
-msgid "Send Notification On"
-msgstr ""
-
-#: admin/settings.php:879
-msgid "Service Worker"
-msgstr ""
-
-#: admin/settings.php:444
-msgid "Set max cache time for Html Default:"
-msgstr ""
-
-#: admin/settings.php:446
-msgid "Set max cache time for JS, CSS, JSON Default:"
-msgstr ""
-
-#: pwa-for-wp.php:33 admin/settings.php:14 admin/settings.php:562
-msgid "Settings"
-msgstr ""
-
-#: pwa-for-wp.php:143
-msgid "Setup the plugin."
-msgstr ""
-
-#: admin/settings.php:797
-msgid "Show custom responsive add to home banner popup"
-msgstr ""
-
-#: admin/settings.php:267
-msgid "Splash Screen"
-msgstr ""
-
-#: admin/settings.php:163 admin/settings.php:167
-msgid "Start the PWA Setup"
-msgstr ""
-
-#: admin/settings.php:837
-msgid "Status"
-msgstr ""
-
-#: pwa-for-wp.php:143
-msgid "Thank you for using this"
-msgstr ""
-
-#. ID
-#: admin/settings.php:280
-msgid "Theme Color"
-msgstr ""
-
-#: admin/settings.php:543
-msgid "This helps you remove conflict with the CDN"
-msgstr ""
-
-#: admin/settings.php:915
-msgid "This site is configure with https"
-msgstr ""
-
-#: admin/settings.php:917
-msgid "This site is not configure with https"
-msgstr ""
-
-#: admin/settings.php:490
-msgid "To identify users are coming from your App"
-msgstr ""
-
-#: service-work/class-push-notification.php:120
-msgid "Token Not Saved"
-msgstr ""
-
-#: service-work/class-push-notification.php:118
-msgid "Token Saved Successfully"
-msgstr ""
-
-#: admin/settings.php:598
-msgid "Update Page"
-msgstr ""
-
-#: admin/settings.php:590
-msgid "Update Post"
-msgstr ""
-
-#. ID
-#: admin/settings.php:339
-msgid "Urls Exclude From Cache List"
-msgstr ""
-
-#: admin/settings.php:513
-msgid "UTM amp Url"
-msgstr ""
-
-#: admin/settings.php:505
-msgid "UTM Content"
-msgstr ""
-
-#: admin/settings.php:497
-msgid "UTM Medium"
-msgstr ""
-
-#: admin/settings.php:509
-msgid "UTM Non-amp Url"
-msgstr ""
-
-#: admin/settings.php:493
-msgid "UTM Source"
-msgstr ""
-
-#: admin/settings.php:501
-msgid "UTM Term"
-msgstr ""
-
-#. ID
-#: admin/settings.php:332
-msgid "UTM Tracking"
+"POT-Creation-Date: 2026-11-19T07:21:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: pwa-for-wp\n"
+
+#. Plugin Name of the plugin
+#: pwa-for-wp.php
+msgid "PWA for WP - Progressive Web Apps Made Simple"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: pwa-for-wp.php
+msgid "https://wordpress.org/plugins/pwa-for-wp/"
 msgstr ""
 
 #. Description of the plugin
-msgid ""
-"We are bringing the power of the Progressive Web Apps to the WP & AMP to "
-"take the user experience to the next level!"
+#: pwa-for-wp.php
+msgid "We are bringing the power of the Progressive Web Apps to the WP & AMP to take the user experience to the next level!"
 msgstr ""
 
-#: admin/settings.php:130
-msgid "We will reply to your email address shortly"
+#. Author of the plugin
+#: pwa-for-wp.php
+msgid "Magazine3"
 msgstr ""
 
-#: admin/settings.php:831
-msgid "Wordpress (Non-AMP)"
+#. Author URI of the plugin
+#: pwa-for-wp.php
+msgid "http://pwa-for-wp.com"
 msgstr ""
 
-#: admin/newsletter.php:34
-msgid "You are awesome for using PWA for WP!"
+#: 3rd-party/class-pwaforwp-wpwa.php:84
+msgid "No service workers registered for the requested scope."
 msgstr ""
 
-#: pwa-for-wp.php:165
-msgid ""
-"You have been using the PWA For WP plugin for some time now, do you like it?,"
-" If so,"
+#: 3rd-party/class-pwaforwp-wpwa.php:85
+#: 3rd-party/class-pwaforwp-wpwa.php:97
+msgid "Service Worker Installation"
 msgstr ""
 
-#: admin/settings.php:444 admin/settings.php:446
+#: 3rd-party/class-pwaforwp-wpwa.php:100
+msgid "Installing service worker..."
+msgstr ""
+
+#. translators: %s: WP_Service_Worker_Cache_Registry.
+#: 3rd-party/class-pwaforwp-wpwa.php:128
+msgid "Please update to PWA v0.2. Expected argument to be %s."
+msgstr ""
+
+#: admin/class-pwaforwp-newsletter.php:42
+msgid "No Thanks"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:260
+msgid "We can't detect any product information. This is most probably because you have not included the code snippet."
+msgstr ""
+
+#. translators: %1$s: what_am_i
+#: admin/class-pwaforwp-plugin-usage-tracker.php:681
+msgid "Become a super contributor by opting in to our anonymous %1$s data collection and to our updates. We guarantee no sensitive data is collected."
+msgstr ""
+
+#. translators: %1$s: what_am_i
+#: admin/class-pwaforwp-plugin-usage-tracker.php:687
+msgid "Thank you for installing our %1$s. We'd like your permission to track its usage on your site and subscribe you to our newsletter. We won't record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional."
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:695
+msgid "Love using PWA for WP & AMP?"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:696
+msgid "Learn more."
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:698
+msgid "Sure! I'd love to help"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:699
+msgid "No thanks"
+msgstr ""
+
+#. translators: %s: what_am_i
+#: admin/class-pwaforwp-plugin-usage-tracker.php:745
+msgid "Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:754
+msgid "Yes Please"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:755
+msgid "No Thank You"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:786
+msgid "Sorry to see you go"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:787
+msgid "Before you deactivate the plugin, would you quickly give us your reason for doing so?"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:789
+#: admin/class-pwaforwp-plugin-usage-tracker.php:966
+msgid "Set up is too difficult"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:790
+#: admin/class-pwaforwp-plugin-usage-tracker.php:967
+msgid "Lack of documentation"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:791
+msgid "Not the features I wanted"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:792
+msgid "Found a better plugin"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:793
+msgid "Installed by mistake"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:794
+msgid "Only required temporarily"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:795
+#: admin/class-pwaforwp-plugin-usage-tracker.php:968
+msgid "Didn't work"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:797
+msgid "Details (optional)"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:837
+msgid "Submitting form"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:900
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: admin/class-pwaforwp-plugin-usage-tracker.php:900
+msgid "Just Deactivate"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:18
+#: admin/class-pwaforwp-utility.php:69
+msgid "Request not valid"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:24
+msgid "User Request not valid"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:58
+msgid "Module successfully Added"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:60
+msgid "Modules not Found"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:74
+msgid "User not authorized to access"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:86
+msgid "invalid slug provided"
+msgstr ""
+
+#: admin/class-pwaforwp-utility.php:91
+msgid "Plugin Activating. please wait.."
+msgstr ""
+
+#: admin/common-function.php:1462
+msgid "File does not exist."
+msgstr ""
+
+#: admin/settings.php:32
+msgid "PWA"
+msgstr ""
+
+#: admin/settings.php:34
+#: admin/settings.php:42
+#: admin/settings.php:254
+msgid "Progressive Web Apps For WP"
+msgstr ""
+
+#: admin/settings.php:43
+#: pwa-for-wp.php:89
+msgid "Settings"
+msgstr ""
+
+#: admin/settings.php:51
+msgid "Upgrade To Premium"
+msgstr ""
+
+#: admin/settings.php:151
+#: admin/settings.php:3357
+msgid "Valid for Lifetime"
+msgstr ""
+
+#: admin/settings.php:152
+#: admin/settings.php:216
+msgid "Your License is"
+msgstr ""
+
+#: admin/settings.php:158
+#: admin/settings.php:175
+#: admin/settings.php:185
+#: admin/settings.php:214
+msgid "One of your"
+msgstr ""
+
+#: admin/settings.php:158
+#: admin/settings.php:175
+#: admin/settings.php:185
+#: admin/settings.php:214
+msgid "license key is"
+msgstr ""
+
+#: admin/settings.php:158
+#: admin/settings.php:160
+#: admin/settings.php:175
+#: admin/settings.php:177
+#: admin/settings.php:210
+#: admin/settings.php:221
+#: admin/settings.php:3358
+#: admin/settings.php:3366
+#: admin/settings.php:3373
+#: admin/settings.php:3379
+#: admin/settings.php:3446
+msgid "Renew"
+msgstr ""
+
+#: admin/settings.php:160
+#: admin/settings.php:177
+#: admin/settings.php:187
+#: admin/settings.php:3363
+#: admin/settings.php:3370
+#: admin/settings.php:3377
+#: admin/settings.php:3440
+msgid "Your"
+msgstr ""
+
+#: admin/settings.php:160
+#: admin/settings.php:177
+#: admin/settings.php:3356
+#: admin/settings.php:3363
+#: admin/settings.php:3370
+#: admin/settings.php:3377
+#: admin/settings.php:3440
+msgid "License is"
+msgstr ""
+
+#: admin/settings.php:160
+#: admin/settings.php:177
+#: admin/settings.php:3365
+#: admin/settings.php:3372
+msgid "expiring in"
+msgstr ""
+
+#: admin/settings.php:160
+#: admin/settings.php:177
+#: admin/settings.php:3365
+#: admin/settings.php:3372
+msgid "days"
+msgstr ""
+
+#: admin/settings.php:175
+#: admin/settings.php:189
+#: admin/settings.php:220
+#: admin/settings.php:3340
+#: admin/settings.php:3378
+#: admin/settings.php:3419
+#: admin/settings.php:3441
+msgid "Expired"
+msgstr ""
+
+#: admin/settings.php:187
+msgid "License has been"
+msgstr ""
+
+#: admin/settings.php:223
+msgid " Active "
+msgstr ""
+
+#: admin/settings.php:239
+msgid "Hi"
+msgstr ""
+
+#: admin/settings.php:261
+msgid "Dashboard"
+msgstr ""
+
+#: admin/settings.php:263
+msgid "Setup"
+msgstr ""
+
+#: admin/settings.php:265
+msgid "Features"
+msgstr ""
+
+#: admin/settings.php:267
+#: admin/settings.php:336
+msgid "Tools"
+msgstr ""
+
+#: admin/settings.php:269
+msgid "Advance"
+msgstr ""
+
+#: admin/settings.php:286
+msgid "Premium Features"
+msgstr ""
+
+#: admin/settings.php:288
+msgid "Help"
+msgstr ""
+
+#: admin/settings.php:306
+msgid "General"
+msgstr ""
+
+#: admin/settings.php:307
+msgid "Design"
+msgstr ""
+
+#: admin/settings.php:337
+msgid "Compatibility"
+msgstr ""
+
+#: admin/settings.php:367
+msgid "Documentation"
+msgstr ""
+
+#: admin/settings.php:367
+msgid "View Setup Documentation"
+msgstr ""
+
+#: admin/settings.php:370
+msgid "Ask for Technical Support"
+msgstr ""
+
+#: admin/settings.php:371
+msgid "We are always available to help you with anything"
+msgstr ""
+
+#: admin/settings.php:373
+#: admin/settings.php:3228
+msgid "Are you existing Premium Customer?"
+msgstr ""
+
+#: admin/settings.php:375
+#: admin/settings.php:2027
+#: admin/settings.php:2385
+msgid "Select"
+msgstr ""
+
+#: admin/settings.php:376
+msgid "Yes"
+msgstr ""
+
+#: admin/settings.php:377
+msgid "No"
+msgstr ""
+
+#: admin/settings.php:380
+#: admin/settings.php:2233
+msgid "Message"
+msgstr ""
+
+#: admin/settings.php:383
+msgid "Message sent successfully, Please wait we will get back to you shortly"
+msgstr ""
+
+#: admin/settings.php:384
+msgid "Message not sent. please check your network connection"
+msgstr ""
+
+#: admin/settings.php:386
+msgid "Send Message"
+msgstr ""
+
+#: admin/settings.php:401
+msgid "Save Settings"
+msgstr ""
+
+#: admin/settings.php:411
+msgid "Upgrade to Pro!"
+msgstr ""
+
+#: admin/settings.php:413
+msgid "Premium features"
+msgstr ""
+
+#: admin/settings.php:414
+msgid "Dedicated PWA Support"
+msgstr ""
+
+#: admin/settings.php:415
+msgid "Active Development"
+msgstr ""
+
+#: admin/settings.php:417
+msgid "UPGRADE NOW"
+msgstr ""
+
+#: admin/settings.php:441
+msgid "Installation Status"
+msgstr ""
+
+#: admin/settings.php:442
+msgid "PWA status verification"
+msgstr ""
+
+#: admin/settings.php:442
+#: admin/settings.php:835
+#: admin/settings.php:1493
+#: admin/settings.php:1527
+#: admin/settings.php:2886
+#: admin/settings.php:3041
+#: admin/settings.php:4085
+msgid "Learn more"
+msgstr ""
+
+#: admin/settings.php:460
+msgid "App Name"
+msgstr ""
+
+#: admin/settings.php:469
+msgid "App Short Name"
+msgstr ""
+
+#: admin/settings.php:478
+msgid "App Description"
+msgstr ""
+
+#: admin/settings.php:487
+msgid "App Icon"
+msgstr ""
+
+#: admin/settings.php:496
+msgid "App Maskable Icon"
+msgstr ""
+
+#: admin/settings.php:505
+msgid "Monochrome Icon"
+msgstr ""
+
+#: admin/settings.php:514
+msgid "App Splash Screen Icon"
+msgstr ""
+
+#: admin/settings.php:523
+msgid "App Splash Maskable Icon"
+msgstr ""
+
+#: admin/settings.php:532
+msgid "APP Screenshots"
+msgstr ""
+
+#: admin/settings.php:541
+msgid "Offline Page"
+msgstr ""
+
+#: admin/settings.php:550
+msgid "404 Page"
+msgstr ""
+
+#: admin/settings.php:559
+msgid "Start Page"
+msgstr ""
+
+#: admin/settings.php:568
+msgid "Orientation"
+msgstr ""
+
+#: admin/settings.php:577
+msgid "Display"
+msgstr ""
+
+#: admin/settings.php:585
+msgid "iOS APP Status Bar"
+msgstr ""
+
+#: admin/settings.php:593
+msgid "Prefer Related Application"
+msgstr ""
+
+#: admin/settings.php:600
+msgid "Related Application"
+msgstr ""
+
+#: admin/settings.php:610
+msgid "Background Color"
+msgstr ""
+
+#: admin/settings.php:618
+msgid "Theme Color"
+msgstr ""
+
+#: admin/settings.php:629
+#: admin/settings.php:1907
+msgid "Reset"
+msgstr ""
+
+#: admin/settings.php:637
+msgid "Remove Data on Uninstall?"
+msgstr ""
+
+#: admin/settings.php:648
+msgid "CDN Compatibility"
+msgstr ""
+
+#: admin/settings.php:655
+msgid "Offline Google Analytics"
+msgstr ""
+
+#: admin/settings.php:662
+msgid "Prefetch manifest URL link"
+msgstr ""
+
+#: admin/settings.php:669
+msgid "Force Update Service Worker"
+msgstr ""
+
+#: admin/settings.php:676
+msgid "Add To Home On Element Click"
+msgstr ""
+
+#: admin/settings.php:685
+#: admin/settings.php:3850
+msgid "Custom Add To Home Banner"
+msgstr ""
+
+#: admin/settings.php:693
+msgid "Cache External Links"
+msgstr ""
+
+#: admin/settings.php:701
+#: admin/settings.php:3857
+msgid "UTM Tracking"
+msgstr ""
+
+#: admin/settings.php:708
+msgid "Urls Exclude From Cache List"
+msgstr ""
+
+#: admin/settings.php:715
+msgid "Cached time"
+msgstr ""
+
+#: admin/settings.php:722
+msgid "Remove default banner"
+msgstr ""
+
+#: admin/settings.php:729
+msgid "Remove pwa for logged in users"
+msgstr ""
+
+#: admin/settings.php:736
+msgid "Swipe Navigation in PWA"
+msgstr ""
+
+#: admin/settings.php:743
+msgid "PWA alternative method"
+msgstr ""
+
+#: admin/settings.php:750
+msgid "Reset cookies"
+msgstr ""
+
+#: admin/settings.php:757
+msgid "Share Anonymous data for improving the UX"
+msgstr ""
+
+#: admin/settings.php:765
+msgid "Role Based Access"
+msgstr ""
+
+#: admin/settings.php:773
+msgid "Offline Message"
+msgstr ""
+
+#: admin/settings.php:780
+msgid "Disable Scrollbar"
+msgstr ""
+
+#: admin/settings.php:787
+msgid "Force Remember me"
+msgstr ""
+
+#: admin/settings.php:795
+#: admin/settings.php:3864
+msgid "Loader"
+msgstr ""
+
+#: admin/settings.php:802
+msgid "Loader color"
+msgstr ""
+
+#: admin/settings.php:809
+msgid "Loader background color"
+msgstr ""
+
+#: admin/settings.php:816
+msgid "Show only in PWA"
+msgstr ""
+
+#: admin/settings.php:823
+msgid "Loader enable on"
+msgstr ""
+
+#: admin/settings.php:833
+msgid "Caching Strategies"
+msgstr ""
+
+#: admin/settings.php:846
+msgid "OneSignal"
+msgstr ""
+
+#: admin/settings.php:853
+msgid "Pushnami"
+msgstr ""
+
+#: admin/settings.php:860
+msgid "Webpushr"
+msgstr ""
+
+#: admin/settings.php:867
+msgid "Gravitec"
+msgstr ""
+
+#: admin/settings.php:875
+msgid "WP Hide & Security Enhancer"
+msgstr ""
+
+#: admin/settings.php:901
+msgid "Enter URLs (with similar origin)"
+msgstr ""
+
+#: admin/settings.php:1024
+#: admin/settings.php:2942
+#: admin/settings.php:3401
+msgid "Status"
+msgstr ""
+
+#: admin/settings.php:1024
+#: admin/settings.php:3422
+#: admin/settings.php:3425
+msgid "Inactive"
+msgstr ""
+
+#: admin/settings.php:1026
+msgid "Download"
+msgstr ""
+
+#: admin/settings.php:1068
+msgid "Call to Action extension makes it easy for your users to add the website to the home screen"
+msgstr ""
+
+#: admin/settings.php:1080
+msgid "Loading Icon Library extension multiple icons for PWA app"
+msgstr ""
+
+#: admin/settings.php:1092
+msgid "Data Analytics for PWA installation growth and traffic analysis"
+msgstr ""
+
+#: admin/settings.php:1104
+msgid "Pull to Refresh for PWA extension help users to refresh the page inside PWA app"
+msgstr ""
+
+#: admin/settings.php:1116
+msgid "Scroll Progress Bar for PWA extension indicator to display the current reading position"
+msgstr ""
+
+#: admin/settings.php:1128
+msgid "PWA to APK Plugin for PWA extension to create apk for your website"
+msgstr ""
+
+#: admin/settings.php:1140
+msgid "PWA to iOS Plugin for PWA extension to create ios package for your website"
+msgstr ""
+
+#: admin/settings.php:1152
+msgid "Offline Forms for PWA extension to store forms for your website"
+msgstr ""
+
+#: admin/settings.php:1164
+msgid "Buddypress extension to send push notification while core notification will work ex: A member mentions you in an update / A member replies to an update or comments your post"
+msgstr ""
+
+#: admin/settings.php:1176
+#: admin/settings.php:4023
+msgid "Quick action help users give shortcut link, common or recommended pages with in your web app"
+msgstr ""
+
+#: admin/settings.php:1188
+#: admin/settings.php:4035
+msgid "Top-level pages that need to be accessible from anywhere in the app"
+msgstr ""
+
+#: admin/settings.php:1200
+msgid "Add multilingual support for PWA APP"
+msgstr ""
+
+#: admin/settings.php:1212
+msgid "Rewards to the most loyal base of customers"
+msgstr ""
+
+#: admin/settings.php:1224
+msgid "White Label for PWA allows businesses to deploy a fully branded PWAforWP without the need for custom development.  "
+msgstr ""
+
+#: admin/settings.php:1237
+msgid "QR Code for PWA extension to user can install app using QR Code "
+msgstr ""
+
+#: admin/settings.php:1317
+msgid "Default caching strategy"
+msgstr ""
+
+#: admin/settings.php:1332
+msgid "If you have a login for normal users (it help users to get updates content)"
+msgstr ""
+
+#: admin/settings.php:1337
+msgid "Caching strategy for CSS and JS Files"
+msgstr ""
+
+#: admin/settings.php:1350
+msgid "Caching strategy for images"
+msgstr ""
+
+#: admin/settings.php:1363
+msgid "Caching strategy for fonts"
+msgstr ""
+
+#: admin/settings.php:1382
+msgid "Set max cache time for Html Default:"
+msgstr ""
+
+#: admin/settings.php:1382
+#: admin/settings.php:1384
+msgid "in seconds;"
+msgstr ""
+
+#: admin/settings.php:1382
+#: admin/settings.php:1384
 msgid "You need to enter time in seconds"
+msgstr ""
+
+#: admin/settings.php:1384
+msgid "Set max cache time for JS, CSS, JSON Default:"
+msgstr ""
+
+#: admin/settings.php:1398
+msgid "Enable(check) it when you don't want to load default PWA Banner"
+msgstr ""
+
+#: admin/settings.php:1411
+msgid "(check) it, if you want disable PWA for loggedin users"
+msgstr ""
+
+#: admin/settings.php:1422
+msgid "This option adds swipe left / right feature to load next and previous articles."
+msgstr ""
+
+#: admin/settings.php:1431
+msgid "Enable(check) it when PWA with OneSignal or root permission functionality not working because of Cache"
+msgstr ""
+
+#: admin/settings.php:1440
+msgid "Check this to delete cookies"
+msgstr ""
+
+#: admin/settings.php:1461
+msgid "Choose the users whom you want to allow full access of this plugin"
+msgstr ""
+
+#: admin/settings.php:1493
+msgid "We guarantee no sensitive data is collected"
+msgstr ""
+
+#: admin/settings.php:1502
+msgid "Note: Put in comma separated, do not add enter in urls"
+msgstr ""
+
+#: admin/settings.php:1503
+msgid "Put the list of urls which you do not want to cache by service worker"
+msgstr ""
+
+#: admin/settings.php:1511
+msgid "Note: Put one url in single line"
+msgstr ""
+
+#: admin/settings.php:1527
+msgid ""
+"Create \"web-app-origin-association\" file for the apple and android.  Need to place the web-app-origin-association file in the /.well-known/ folder at the root of the app. \n"
+" example URL https://example.com/.well-known/web-app-origin-association"
+msgstr ""
+
+#: admin/settings.php:1547
+#: admin/settings.php:2386
+msgid "Automatic"
+msgstr ""
+
+#: admin/settings.php:1549
+#: admin/settings.php:1593
+msgid "For details click here"
+msgstr ""
+
+#: admin/settings.php:1562
+msgid "Post"
+msgstr ""
+
+#: admin/settings.php:1568
+msgid "Page"
+msgstr ""
+
+#: admin/settings.php:1574
+msgid "Custom Post"
+msgstr ""
+
+#: admin/settings.php:1585
+msgid "Enter Post Count"
+msgstr ""
+
+#: admin/settings.php:1591
+#: admin/settings.php:2387
+msgid "Manual"
+msgstr ""
+
+#: admin/settings.php:1601
+msgid "Enter Urls To Be Cached"
+msgstr ""
+
+#: admin/settings.php:1604
+msgid "Note: Put in comma separated"
+msgstr ""
+
+#: admin/settings.php:1605
+msgid "Put the list of urls which you want to pre cache by service worker"
+msgstr ""
+
+#: admin/settings.php:1635
+msgid "Which Page Would You Like To Display"
+msgstr ""
+
+#: admin/settings.php:1639
+msgid "Included On"
+msgstr ""
+
+#: admin/settings.php:1666
+#: admin/settings.php:1677
+#: admin/settings.php:1715
+#: admin/settings.php:1730
+msgid "Select Visibility Type"
+msgstr ""
+
+#: admin/settings.php:1682
+#: admin/settings.php:1736
+msgid "ADD"
+msgstr ""
+
+#: admin/settings.php:1687
+msgid "Excluded On"
+msgstr ""
+
+#: admin/settings.php:1739
+msgid "Exclude Url from Pwa"
+msgstr ""
+
+#: admin/settings.php:1740
+msgid "Any excluded page or post will open directly in the system browser, completely bypassing the PWA app."
+msgstr ""
+
+#: admin/settings.php:1782
+msgid "Enable UTM Tracking"
+msgstr ""
+
+#: admin/settings.php:1783
+msgid "To identify users are coming from your App"
+msgstr ""
+
+#: admin/settings.php:1786
+msgid "UTM Source"
+msgstr ""
+
+#: admin/settings.php:1790
+msgid "UTM Medium"
+msgstr ""
+
+#: admin/settings.php:1794
+msgid "UTM Campaign"
+msgstr ""
+
+#: admin/settings.php:1798
+msgid "UTM Term"
+msgstr ""
+
+#: admin/settings.php:1802
+msgid "UTM Content"
+msgstr ""
+
+#: admin/settings.php:1806
+msgid "UTM Non-amp Url"
+msgstr ""
+
+#: admin/settings.php:1810
+msgid "UTM amp Url"
+msgstr ""
+
+#: admin/settings.php:1824
+msgid "Offline analytics is a module that will use background sync to ensure that requests to Google Analytics are made regardless of the current network condition"
+msgstr ""
+
+#: admin/settings.php:1837
+msgid "To check whether user is offline and display message You are offline"
+msgstr ""
+
+#: admin/settings.php:1850
+msgid "To hide scrollbar in pwa"
+msgstr ""
+
+#: admin/settings.php:1864
+msgid "This option forces remember me while log in. Use this option when user is getting logged out while reopening PWA app."
+msgstr ""
+
+#: admin/settings.php:1873
+msgid "Prefetch manifest URLs provides some control over the request priority"
+msgstr ""
+
+#: admin/settings.php:1890
+msgid "Current Version"
+msgstr ""
+
+#: admin/settings.php:1891
+msgid "Change the version. It will automatically update the service worker for all the users"
+msgstr ""
+
+#: admin/settings.php:1900
+msgid "This helps you remove conflict with the CDN"
+msgstr ""
+
+#: admin/settings.php:1918
+msgid "Check this box if you would like to completely remove all of its data when the plugin is deleted."
+msgstr ""
+
+#: admin/settings.php:1929
+msgid "This helps show loading icon on page or post load"
+msgstr ""
+
+#: admin/settings.php:1936
+msgid "Change the icon color of loader"
+msgstr ""
+
+#: admin/settings.php:1941
+msgid "Change the background color of loader"
+msgstr ""
+
+#: admin/settings.php:1946
+msgid "Only on PWA"
+msgstr ""
+
+#: admin/settings.php:1961
+msgid "Desktop"
+msgstr ""
+
+#: admin/settings.php:1962
+msgid "Mobile"
+msgstr ""
+
+#: admin/settings.php:1963
+msgid "Admin"
+msgstr ""
+
+#: admin/settings.php:1972
+msgid "Caches external link's resource which are in html"
+msgstr ""
+
+#: admin/settings.php:2024
+msgid "Push notification integration"
+msgstr ""
+
+#: admin/settings.php:2028
+msgid "PushNotifications.io (Recommended)"
+msgstr ""
+
+#: admin/settings.php:2029
+msgid "FCM push notification"
+msgstr ""
+
+#: admin/settings.php:2040
+msgid "Firebase Config"
+msgstr ""
+
+#: admin/settings.php:2042
+msgid "Note: You need to Create a new firebase project on "
+msgstr ""
+
+#: admin/settings.php:2042
+msgid "firebase"
+msgstr ""
+
+#: admin/settings.php:2042
+msgid "console, its completly free by google with some limitations."
+msgstr ""
+
+#: admin/settings.php:2045
+msgid "Go to Firebase Console → Project Settings → Your Apps. Create a web app. You will get the config under SDK setup and configuration."
+msgstr ""
+
+#: admin/settings.php:2050
+msgid "Web Push certificate (VAPID key)"
+msgstr ""
+
+#: admin/settings.php:2053
+msgid "Required for browser push tokens. In Firebase Console go to Project Settings → Cloud Messaging → Web Push certificates. If none exist, click Generate key pair and paste the public key here."
+msgstr ""
+
+#: admin/settings.php:2057
+msgid "FCM Service Account"
+msgstr ""
+
+#: admin/settings.php:2064
+msgid "File uploaded:"
+msgstr ""
+
+#: admin/settings.php:2066
+msgid "Upload your Firebase service account JSON file. It will be stored securely."
+msgstr ""
+
+#: admin/settings.php:2067
+msgid "Go to Firebase Console → Project Settings → Cloud Messaging → Manage Service Accounts. Select the Service account and click three dots then Manage Keys . Create a new key and project-name.json file will be downloaded automatically"
+msgstr ""
+
+#: admin/settings.php:2071
+msgid "FCM Push Notification Icon"
+msgstr ""
+
+#: admin/settings.php:2075
+#: admin/settings.php:2085
+#: admin/settings.php:2305
+#: admin/settings.php:2326
+#: admin/settings.php:2369
+#: admin/settings.php:2424
+#: admin/settings.php:2442
+msgid "Choose Icon"
+msgstr ""
+
+#: admin/settings.php:2077
+msgid "Change Firebase push notification icon. Default: PWA icon"
+msgstr ""
+
+#: admin/settings.php:2081
+msgid "FCM Notification Budge Icon"
+msgstr ""
+
+#: admin/settings.php:2087
+msgid "Change Firebase push notification budge icon 96x96. Default: Chrome icon"
+msgstr ""
+
+#: admin/settings.php:2099
+msgid "This feature requires to setup Push Notification"
+msgstr ""
+
+#: admin/settings.php:2099
+msgid "Go to setup"
+msgstr ""
+
+#: admin/settings.php:2101
+msgid "Push notifications has it's separate options view"
+msgstr ""
+
+#: admin/settings.php:2101
+msgid " View Settings"
+msgstr ""
+
+#: admin/settings.php:2126
+msgid "This feature requires a Free plugin which integrates with a Free Push Notification service"
+msgstr ""
+
+#: admin/settings.php:2131
+msgid "Install Plugin"
+msgstr ""
+
+#: admin/settings.php:2144
+msgid "Send Notification On"
+msgstr ""
+
+#: admin/settings.php:2148
+msgid "Add New Post"
+msgstr ""
+
+#: admin/settings.php:2153
+#: admin/settings.php:2155
+#: admin/settings.php:2166
+#: admin/settings.php:2168
+#: admin/settings.php:2179
+#: admin/settings.php:2181
+#: admin/settings.php:2192
+#: admin/settings.php:2194
+msgid "Notification Title"
+msgstr ""
+
+#: admin/settings.php:2153
+#: admin/settings.php:2155
+#: service-work/class-pwaforwp-push-notification.php:99
+msgid "New Post"
+msgstr ""
+
+#: admin/settings.php:2162
+#: admin/settings.php:2166
+#: admin/settings.php:2168
+#: admin/settings.php:2192
+#: admin/settings.php:2194
+msgid "Update Post"
+msgstr ""
+
+#: admin/settings.php:2174
+msgid "Add New Page"
+msgstr ""
+
+#: admin/settings.php:2179
+#: admin/settings.php:2181
+#: service-work/class-pwaforwp-push-notification.php:132
+msgid "New Page"
+msgstr ""
+
+#: admin/settings.php:2188
+msgid "Update Page"
+msgstr ""
+
+#: admin/settings.php:2203
+msgid "Send Manual Notification"
+msgstr ""
+
+#: admin/settings.php:2208
+#: admin/settings.php:2255
+msgid "Title"
+msgstr ""
+
+#: admin/settings.php:2216
+msgid "Redirection Url Onclick of notification"
+msgstr ""
+
+#: admin/settings.php:2217
+msgid "URL"
+msgstr ""
+
+#: admin/settings.php:2225
+msgid "Image Url"
+msgstr ""
+
+#: admin/settings.php:2226
+msgid "Image URL"
+msgstr ""
+
+#: admin/settings.php:2234
+msgid "Send"
+msgstr ""
+
+#: admin/settings.php:2253
+msgid "Custom Add To Homescreen Customization"
+msgstr ""
+
+#: admin/settings.php:2256
+msgid "Button Text"
+msgstr ""
+
+#: admin/settings.php:2257
+msgid "Banner Background Color"
+msgstr ""
+
+#: admin/settings.php:2258
+msgid "Banner Title Color"
+msgstr ""
+
+#: admin/settings.php:2259
+msgid "Button Text Color"
+msgstr ""
+
+#: admin/settings.php:2260
+msgid "Button Background Color"
+msgstr ""
+
+#: admin/settings.php:2310
+#: admin/settings.php:2332
+msgid "Icon of your application when installed on the phone. Must be a PNG image exactly"
+msgstr ""
+
+#: admin/settings.php:2311
+#: admin/settings.php:2333
+msgid "192x192 in size."
+msgstr ""
+
+#: admin/settings.php:2312
+#: admin/settings.php:2334
+#: admin/settings.php:2355
+msgid "- For Apple mobile exact sizes is necessary"
+msgstr ""
+
+#: admin/settings.php:2328
+#: admin/settings.php:2444
+#: admin/settings.php:2476
+#: admin/settings.php:2498
+msgid "Remove"
+msgstr ""
+
+#: admin/settings.php:2348
+msgid "Choose Monochrome Icon"
+msgstr ""
+
+#: admin/settings.php:2353
+msgid "Monochrome Icon for the application .Must be PNG having transparent background"
+msgstr ""
+
+#: admin/settings.php:2354
+#: admin/settings.php:2375
+#: admin/settings.php:2449
+#: admin/settings.php:2508
+msgid "512x512 in size."
+msgstr ""
+
+#: admin/settings.php:2374
+msgid "Icon displayed on the splash screen of your APPLICATION on supported devices. Must be a PNG image size exactly"
+msgstr ""
+
+#: admin/settings.php:2380
+msgid "Setup Splash Screen for iOS"
+msgstr ""
+
+#: admin/settings.php:2383
+msgid "iOS Splash Screen Method"
+msgstr ""
+
+#: admin/settings.php:2401
+msgid "Select image (Only PNG)"
+msgstr ""
+
+#: admin/settings.php:2402
+msgid "Background color"
+msgstr ""
+
+#: admin/settings.php:2403
+msgid "Generate"
+msgstr ""
+
+#: admin/settings.php:2448
+msgid "Icon displayed on the splash screen of your application on supported devices. Must be a PNG image size exactly"
+msgstr ""
+
+#: admin/settings.php:2463
+#: admin/settings.php:2486
+msgid "Choose Screenshot"
+msgstr ""
+
+#: admin/settings.php:2466
+#: admin/settings.php:2489
+msgid "Form Factor"
+msgstr ""
+
+#: admin/settings.php:2469
+#: admin/settings.php:2492
+msgid "Narrow"
+msgstr ""
+
+#: admin/settings.php:2472
+#: admin/settings.php:2495
+msgid "Wide"
+msgstr ""
+
+#: admin/settings.php:2475
+#: service-work/class-pwaforwp-service-worker.php:418
+#: service-work/class-pwaforwp-service-worker.php:419
+msgid "Add"
+msgstr ""
+
+#: admin/settings.php:2507
+msgid "Screenshots of your application when installed on the phone. Must be a PNG image exactly"
+msgstr ""
+
+#: admin/settings.php:2509
+msgid "- For all mobiles exact sizes is necessary"
+msgstr ""
+
+#: admin/settings.php:2537
+#: admin/settings.php:2575
+msgid "&mdash; Default &mdash;"
+msgstr ""
+
+#: admin/settings.php:2537
+#: admin/settings.php:2575
+#: admin/settings.php:2619
+msgid "Custom URL"
+msgstr ""
+
+#: admin/settings.php:2537
+#: admin/settings.php:2575
+#: admin/settings.php:2619
+msgid "To use this feature"
+msgstr ""
+
+#: admin/settings.php:2537
+#: admin/settings.php:2575
+#: admin/settings.php:2619
+msgid "Upgrade"
+msgstr ""
+
+#: admin/settings.php:2541
+msgid "Custom offline page (Must be in same origin)"
+msgstr ""
+
+#. translators: %s: offline page
+#: admin/settings.php:2549
+msgid "Offline page is displayed, when the device is offline and the requested page is not already cached. Current offline page is %s"
+msgstr ""
+
+#: admin/settings.php:2578
+msgid "Custom 404 page (Must be in same origin)"
+msgstr ""
+
+#. translators: %s: 404 page
+#: admin/settings.php:2585
+msgid "404 page is displayed and the requested page is not found. Current 404 page is %s"
+msgstr ""
+
+#: admin/settings.php:2619
+msgid "&mdash; Homepage &mdash;"
+msgstr ""
+
+#: admin/settings.php:2619
+msgid "Dynamic URL"
+msgstr ""
+
+#: admin/settings.php:2622
+msgid "Custom Start page (Must be in same origin)"
+msgstr ""
+
+#: admin/settings.php:2628
+msgid "From where you want to launch PWA APP. Current start page is "
+msgstr ""
+
+#: admin/settings.php:2644
+msgid "Follow Device Orientation"
+msgstr ""
+
+#: admin/settings.php:2647
+msgid "Portrait"
+msgstr ""
+
+#: admin/settings.php:2650
+msgid "Landscape"
+msgstr ""
+
+#: admin/settings.php:2653
+msgid "Auto"
+msgstr ""
+
+#: admin/settings.php:2656
+msgid "Landscape-primary"
+msgstr ""
+
+#: admin/settings.php:2659
+msgid "Landscape-secondary"
+msgstr ""
+
+#: admin/settings.php:2662
+msgid "Portrait-primary"
+msgstr ""
+
+#: admin/settings.php:2665
+msgid "Portrait-secondary"
+msgstr ""
+
+#: admin/settings.php:2671
+#: admin/settings.php:2704
+msgid "Orientation of application on devices. When set to Follow Device Orientation your application will rotate as the device is rotated."
+msgstr ""
+
+#: admin/settings.php:2686
+msgid "Device display"
+msgstr ""
+
+#: admin/settings.php:2689
+msgid "Fullscreen"
+msgstr ""
+
+#: admin/settings.php:2692
+msgid "Standalone"
+msgstr ""
+
+#: admin/settings.php:2695
+msgid "Minimal-ui"
+msgstr ""
+
+#: admin/settings.php:2698
+msgid "Browser"
+msgstr ""
+
+#: admin/settings.php:2716
+msgid "Default"
+msgstr ""
+
+#: admin/settings.php:2719
+msgid "Black"
+msgstr ""
+
+#: admin/settings.php:2722
+msgid "Black translucent"
+msgstr ""
+
+#: admin/settings.php:2728
+msgid "The status bar at the top of the screen (which usually displays the time and battery status)."
+msgstr ""
+
+#: admin/settings.php:2745
+msgid "PlayStore App ID"
+msgstr ""
+
+#: admin/settings.php:2746
+msgid "com.example.app"
+msgstr ""
+
+#: admin/settings.php:2749
+msgid "AppStore App ID"
+msgstr ""
+
+#: admin/settings.php:2750
+msgid "id123456789"
+msgstr ""
+
+#: admin/settings.php:2818
+msgid "Show custom responsive add to home banner popup"
+msgstr ""
+
+#: admin/settings.php:2821
+#: admin/settings.php:2825
+msgid "Enable On Desktop"
+msgstr ""
+
+#: admin/settings.php:2822
+#: admin/settings.php:2826
+msgid "Note: By default pop up will appear on mobile device, to appear on desktop check enable on desktop"
+msgstr ""
+
+#: admin/settings.php:2833
+msgid "Show banner without scroll"
+msgstr ""
+
+#: admin/settings.php:2834
+msgid "By default pop up will appear on scroll"
+msgstr ""
+
+#: admin/settings.php:2846
+msgid "jQuery selector (.element) or (#element)"
+msgstr ""
+
+#: admin/settings.php:2847
+msgid "Note: It is currently available in non AMP"
+msgstr ""
+
+#: admin/settings.php:2848
+msgid "Note: In IOS devices this functionality will not work."
+msgstr ""
+
+#: admin/settings.php:2885
+#: admin/settings.php:2923
+msgid "PWA failed to initialized, the site is not HTTPS"
+msgstr ""
+
+#: admin/settings.php:2891
+msgid "PWA is working"
+msgstr ""
+
+#: admin/settings.php:2897
+msgid "PWA is disabled"
+msgstr ""
+
+#: admin/settings.php:2906
+msgid "Manifest not working"
+msgstr ""
+
+#: admin/settings.php:2917
+msgid "Service Worker not working"
+msgstr ""
+
+#: admin/settings.php:2927
+msgid "PWA is working on AMP"
+msgstr ""
+
+#: admin/settings.php:2937
+msgid "WordPress (Non-AMP)"
+msgstr ""
+
+#: admin/settings.php:2938
+msgid "AMP"
+msgstr ""
+
+#: admin/settings.php:2954
+msgid "Enable / Disable"
+msgstr ""
+
+#: admin/settings.php:2972
+msgid "Manifest"
+msgstr ""
+
+#: admin/settings.php:2978
+#: admin/settings.php:2989
+#: admin/settings.php:3008
+#: admin/settings.php:3021
+msgid "Click here to setup"
+msgstr ""
+
+#: admin/settings.php:2979
+#: admin/settings.php:2990
+#: admin/settings.php:3009
+#: admin/settings.php:3022
+msgid "Change the permission or downlad the file"
+msgstr ""
+
+#: admin/settings.php:2979
+#: admin/settings.php:2990
+#: admin/settings.php:3009
+#: admin/settings.php:3022
+msgid "Instruction"
+msgstr ""
+
+#: admin/settings.php:3002
+msgid "Service Worker"
+msgstr ""
+
+#: admin/settings.php:3034
+msgid "HTTPS"
+msgstr ""
+
+#: admin/settings.php:3041
+msgid "This site is not configure with https"
+msgstr ""
+
+#: admin/settings.php:3167
+msgid "Application Icon"
+msgstr ""
+
+#: admin/settings.php:3168
+msgid "Splash Screen Icon"
+msgstr ""
+
+#: admin/settings.php:3169
+msgid "Select Icon"
+msgstr ""
+
+#: admin/settings.php:3170
+#: service-work/class-pwaforwp-file-creation-init.php:161
+msgid "Check permission or download from manual"
+msgstr ""
+
+#: admin/settings.php:3229
+msgid "PWA for wp"
+msgstr ""
+
+#: admin/settings.php:3332
+#: admin/settings.php:3336
+#: admin/settings.php:3344
+msgid "Active"
+msgstr ""
+
+#: admin/settings.php:3352
+#: admin/settings.php:3434
+msgid "Refresh"
+msgstr ""
+
+#: admin/settings.php:3384
+msgid "days remaning"
+msgstr ""
+
+#: admin/settings.php:3386
+msgid "Renew License"
+msgstr ""
+
+#: admin/settings.php:3402
+#: admin/settings.php:3453
+msgid "Enter License Key"
+msgstr ""
+
+#: admin/settings.php:3409
+msgid "Deactivate"
+msgstr ""
+
+#: admin/settings.php:3455
+msgid "Activate"
+msgstr ""
+
+#: admin/settings.php:3533
+#: admin/settings.php:4808
+msgid "Request timed out, please try again"
+msgstr ""
+
+#: admin/settings.php:3539
+#: admin/settings.php:3649
+#: admin/settings.php:4814
+msgid "An error occurred, please try again."
+msgstr ""
+
+#: admin/settings.php:3610
+msgid " Your License is Valid for Lifetime "
+msgstr ""
+
+#: admin/settings.php:3624
+#: admin/settings.php:3744
+msgid "Activated"
+msgstr ""
+
+#. translators: %s: date
+#: admin/settings.php:3628
+msgid "Your license key expired on %s."
+msgstr ""
+
+#: admin/settings.php:3633
+msgid "Your license key has been disabled."
+msgstr ""
+
+#: admin/settings.php:3636
+msgid "Invalid license."
+msgstr ""
+
+#: admin/settings.php:3640
+msgid "Your license is not active for this URL."
+msgstr ""
+
+#: admin/settings.php:3643
+msgid "This appears to be an invalid license key."
+msgstr ""
+
+#: admin/settings.php:3646
+msgid "Your license key has reached its activation limit."
+msgstr ""
+
+#: admin/settings.php:3726
+msgid "Your License is Valid for Lifetime"
+msgstr ""
+
+#: admin/settings.php:3786
+msgid "deactivated"
+msgstr ""
+
+#: admin/settings.php:3810
+msgid "Loader icon selector"
+msgstr ""
+
+#: admin/settings.php:3818
+msgid "This feature requires"
+msgstr ""
+
+#: admin/settings.php:3820
+msgid "Loading Icon Library for PWA extension"
+msgstr ""
+
+#: admin/settings.php:3834
+msgid "notification_feature"
+msgstr ""
+
+#: admin/settings.php:3835
+msgid "pwaforwp_push_notification_section"
+msgstr ""
+
+#: admin/settings.php:3836
+msgid "Push notification"
+msgstr ""
+
+#: admin/settings.php:3837
+msgid "send notification to users"
+msgstr ""
+
+#: admin/settings.php:3841
+msgid "precaching_feature"
+msgstr ""
+
+#: admin/settings.php:3842
+msgid "pwaforwp_precaching_setting_section"
+msgstr ""
+
+#: admin/settings.php:3843
+msgid "Pre Caching"
+msgstr ""
+
+#: admin/settings.php:3844
+msgid "Pre-Cache pages and posts on page load"
+msgstr ""
+
+#: admin/settings.php:3848
+msgid "addtohomebanner_feature"
+msgstr ""
+
+#: admin/settings.php:3849
+msgid "pwaforwp_addtohomescreen_setting_section"
+msgstr ""
+
+#: admin/settings.php:3851
+msgid "Add a banner website for PWA app install"
+msgstr ""
+
+#: admin/settings.php:3855
+msgid "utmtracking_feature"
+msgstr ""
+
+#: admin/settings.php:3856
+msgid "pwaforwp_utmtracking_setting_section"
+msgstr ""
+
+#: admin/settings.php:3858
+msgid "Urchin Traffic Monitor Tracking"
+msgstr ""
+
+#: admin/settings.php:3862
+msgid "loader_feature"
+msgstr ""
+
+#: admin/settings.php:3863
+msgid "pwaforwp_loaders_setting_section"
+msgstr ""
+
+#: admin/settings.php:3865
+msgid "Loader for complete website"
+msgstr ""
+
+#: admin/settings.php:3869
+msgid "urlhandler_feature"
+msgstr ""
+
+#: admin/settings.php:3870
+msgid "pwaforwp_urlhandler_setting_section"
+msgstr ""
+
+#: admin/settings.php:3871
+msgid "URL Handlers"
+msgstr ""
+
+#: admin/settings.php:3872
+msgid "PWA as URL Handlers allows apps like music.example.com to register themselves as URL handlers so that links from outside of the PWA"
+msgstr ""
+
+#: admin/settings.php:3876
+msgid "visibility_feature"
+msgstr ""
+
+#: admin/settings.php:3877
+msgid "pwaforwp_visibility_setting_section"
+msgstr ""
+
+#: admin/settings.php:3878
+msgid "Visibility"
+msgstr ""
+
+#: admin/settings.php:3879
+msgid "PWA visibility allows apps to control the visibility of the APP on specific pages, posts, and post-types"
+msgstr ""
+
+#: admin/settings.php:3883
+msgid "call_to_action"
+msgstr ""
+
+#: admin/settings.php:3884
+msgid "pwaforwp_call_to_action_setting_section"
+msgstr ""
+
+#: admin/settings.php:3885
+msgid "Call To Action"
+msgstr ""
+
+#: admin/settings.php:3891
+msgid "CTA feature for PWA"
+msgstr ""
+
+#: admin/settings.php:3895
+msgid "rewardspwa_feature"
+msgstr ""
+
+#: admin/settings.php:3896
+msgid "pwaforwp_rewardspwa_setting_section"
+msgstr ""
+
+#: admin/settings.php:3897
+msgid "Rewards on APP Install"
+msgstr ""
+
+#: admin/settings.php:3903
+msgid "Give Rewards to the customers"
+msgstr ""
+
+#: admin/settings.php:3907
+msgid "pwaforwp-white-label"
+msgstr ""
+
+#: admin/settings.php:3908
+msgid "pwaforwp_white_label_setting_section"
+msgstr ""
+
+#: admin/settings.php:3909
+#: admin/settings.php:3915
+msgid "White Label for PWA"
+msgstr ""
+
+#: admin/settings.php:3919
+msgid "data_analytics"
+msgstr ""
+
+#: admin/settings.php:3920
+msgid "pwaforwp_data_analytics_setting_section"
+msgstr ""
+
+#: admin/settings.php:3921
+msgid "Data Analytics"
+msgstr ""
+
+#: admin/settings.php:3927
+msgid "Analytics for the number of people who are installing PWA"
+msgstr ""
+
+#: admin/settings.php:3931
+msgid "pull_to_refresh"
+msgstr ""
+
+#: admin/settings.php:3932
+msgid "pwaforwp_pull_to_refresh_setting_section"
+msgstr ""
+
+#: admin/settings.php:3933
+msgid "Pull To Refresh"
+msgstr ""
+
+#: admin/settings.php:3939
+msgid "Refresh the PWA APP page"
+msgstr ""
+
+#: admin/settings.php:3943
+msgid "scroll_progress_bar"
+msgstr ""
+
+#: admin/settings.php:3944
+msgid "pwaforwp_scroll_progress_bar_setting_section"
+msgstr ""
+
+#: admin/settings.php:3945
+msgid "Scroll Progress Bar"
+msgstr ""
+
+#: admin/settings.php:3951
+msgid "Show Scroll progress bar"
+msgstr ""
+
+#: admin/settings.php:3955
+msgid "pwa_to_apk_plugin"
+msgstr ""
+
+#: admin/settings.php:3956
+msgid "pwaforwp_pwa_to_apk_plugin_setting_section"
+msgstr ""
+
+#: admin/settings.php:3957
+msgid "PWA to Android APP (APK)"
+msgstr ""
+
+#: admin/settings.php:3963
+msgid "Generate APK for website"
+msgstr ""
+
+#: admin/settings.php:3967
+msgid "pwa_to_ios_plugin"
+msgstr ""
+
+#: admin/settings.php:3968
+msgid "pwaforwp_pwa_to_ios_plugin_setting_section"
+msgstr ""
+
+#: admin/settings.php:3969
+msgid "PWA to iOS APP Package"
+msgstr ""
+
+#: admin/settings.php:3975
+msgid "iOS App Package"
+msgstr ""
+
+#: admin/settings.php:3979
+msgid "offline_forms"
+msgstr ""
+
+#: admin/settings.php:3980
+msgid "pwaforwp_offline_forms_setting_section"
+msgstr ""
+
+#: admin/settings.php:3981
+msgid "Offline Forms"
+msgstr ""
+
+#: admin/settings.php:3987
+msgid "Support forms to work on offline mode"
+msgstr ""
+
+#: admin/settings.php:3991
+msgid "autosave_forms"
+msgstr ""
+
+#: admin/settings.php:3992
+msgid "pwaforwp_autosave_forms_setting_section"
+msgstr ""
+
+#: admin/settings.php:3993
+msgid "Auto Save Forms"
+msgstr ""
+
+#: admin/settings.php:3999
+msgid "It auto saves the data on the fly"
+msgstr ""
+
+#: admin/settings.php:4003
+msgid "buddypress_notification"
+msgstr ""
+
+#: admin/settings.php:4004
+msgid "pwaforwp_buddypress_setting_section"
+msgstr ""
+
+#: admin/settings.php:4005
+msgid "Buddypress"
+msgstr ""
+
+#: admin/settings.php:4011
+msgid "Support buddypress push notification with PWA and push notification"
+msgstr ""
+
+#: admin/settings.php:4015
+msgid "quick_action"
+msgstr ""
+
+#: admin/settings.php:4016
+msgid "pwaforwp_quick_action_setting_section"
+msgstr ""
+
+#: admin/settings.php:4017
+msgid "Quick Action"
+msgstr ""
+
+#: admin/settings.php:4027
+msgid "navigation_bar"
+msgstr ""
+
+#: admin/settings.php:4028
+msgid "pwaforwp_navigation_bar_setting_section"
+msgstr ""
+
+#: admin/settings.php:4029
+msgid "Navigation Bar"
+msgstr ""
+
+#: admin/settings.php:4039
+msgid "multilingual"
+msgstr ""
+
+#: admin/settings.php:4040
+msgid "pwaforwp_multilingual_setting_section"
+msgstr ""
+
+#: admin/settings.php:4041
+msgid "Multilingual"
+msgstr ""
+
+#: admin/settings.php:4047
+msgid "Show respective language page when Multilingual avilable in PWA"
+msgstr ""
+
+#: admin/settings.php:4051
+msgid "qr_code_for_pwa"
+msgstr ""
+
+#: admin/settings.php:4052
+msgid "pwaforwp_qrcode_setting_section"
+msgstr ""
+
+#: admin/settings.php:4053
+msgid "QR Code For PWA"
+msgstr ""
+
+#: admin/settings.php:4059
+msgid "QR code for PWA"
+msgstr ""
+
+#: admin/settings.php:4070
+msgid "Submit"
+msgstr ""
+
+#: admin/settings.php:4075
+msgid "Need integration"
+msgstr ""
+
+#: admin/settings.php:4108
+msgid "Deactivated"
+msgstr ""
+
+#: admin/settings.php:4112
+msgid "PRO"
+msgstr ""
+
+#: admin/settings.php:4165
+msgid "Save Changes"
+msgstr ""
+
+#: admin/settings.php:4168
+msgid "Close"
+msgstr ""
+
+#: admin/settings.php:4231
+msgid "Unauthorized access, CSRF token not matched"
+msgstr ""
+
+#: admin/settings.php:4235
+msgid "Feature settings not have any fields."
+msgstr ""
+
+#: admin/settings.php:4239
+msgid "Unauthorized access, permission not allowed"
+msgstr ""
+
+#: admin/settings.php:4515
+msgid "Settings Saved."
+msgstr ""
+
+#: admin/settings.php:4518
+msgid "Fields not defined"
+msgstr ""
+
+#: admin/settings.php:4565
+msgid "Select Post Type"
+msgstr ""
+
+#: admin/settings.php:4569
+msgid "Select Global Type"
+msgstr ""
+
+#: admin/settings.php:4581
+msgid "Select Post Category"
+msgstr ""
+
+#: admin/settings.php:4592
+msgid "Select Taxonomy"
+msgstr ""
+
+#: admin/settings.php:4603
+msgid "Select Tag"
+msgstr ""
+
+#: admin/settings.php:4615
+msgid "Select User"
+msgstr ""
+
+#: admin/settings.php:4625
+msgid "Select Page Template"
+msgstr ""
+
+#: admin/settings.php:4632
+#: admin/settings.php:4665
+#: admin/settings.php:4698
+msgid "Success"
+msgstr ""
+
+#: admin/settings.php:4830
+msgid "Failed! Security check not active"
+msgstr ""
+
+#: admin/settings.php:4835
+msgid "Failed! Security check"
+msgstr ""
+
+#: admin/settings.php:4839
+msgid "Failed! you are not autherized to save"
+msgstr ""
+
+#: admin/settings.php:4897
+msgid "Splash screen uploaded successfully"
+msgstr ""
+
+#: pwa-for-wp.php:180
+msgid "Update your pwa pre caching url list by click on button. "
+msgstr ""
+
+#: pwa-for-wp.php:180
+msgid "Click Here To Update"
+msgstr ""
+
+#: pwa-for-wp.php:190
+msgid "Thank you for using"
+msgstr ""
+
+#: pwa-for-wp.php:190
+msgid " PWA for WP plugin! "
+msgstr ""
+
+#: pwa-for-wp.php:232
+msgid ""
+"Excellent! You've been using PWA For WP plugin for over a week. Hope you are enjoying it so far. We have spent countless hours developing this \r\n"
+"\r\n"
+"                 plugin for you, and we would really appreciate it if you could drop us a rating on wp.org to help us spread the word and boost our motivation.,"
+msgstr ""
+
+#: pwa-for-wp.php:235
+msgid "Write us a review"
+msgstr ""
+
+#: pwa-for-wp.php:236
+msgid "Remind Me Later"
+msgstr ""
+
+#: pwa-for-wp.php:237
+msgid "I already did"
+msgstr ""
+
+#: pwa-for-wp.php:238
+msgid "No, not good enough"
+msgstr ""
+
+#: pwa-for-wp.php:254
+msgid "Support Forum"
+msgstr ""
+
+#: service-work/class-pwaforwp-file-creation-init.php:159
+msgid "File has been created"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:62
+msgid "Notification not sent. Something went wrong"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:84
+msgid "Post Updated"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:117
+msgid "Page Updated"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:216
+msgid "Token Saved Successfully"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:218
+msgid "Token Not Saved"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:237
+msgid "Service Account Key or Firebase Config is missing"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:247
+msgid "Tokens or Service Account Key are missing"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:254
+msgid "Project ID is missing"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:264
+msgid "Access token could not be generated"
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:334
+msgid "Notifications sent successfully to "
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:334
+msgid " device(s)."
+msgstr ""
+
+#: service-work/class-pwaforwp-push-notification.php:340
+msgid "Failed to send notifications."
+msgstr ""
+
+#: service-work/class-pwaforwp-service-worker.php:419
+msgid "to your Homescreen!"
+msgstr ""
+
+#: service-work/class-pwaforwp-service-worker.php:641
+msgid "Sorry, you are not allowed to edit the manifest."
 msgstr ""
