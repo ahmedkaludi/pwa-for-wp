@@ -86,6 +86,7 @@ function pwaforwp_admin_interface_render(){
 	?>
 	<div class="wrap pwaforwp-wrap">			
 	<?php
+        pwaforwp_render_bfcm_banner();
         if ( class_exists('PWAFORWPPROExtensionManager') ) {
             $license_info = get_option( 'pwawppro_license_info');
             if ( defined('PWAFORWPPRO_PLUGIN_DIR') && !empty($license_info) ){

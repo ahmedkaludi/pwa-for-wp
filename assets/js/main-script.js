@@ -1739,3 +1739,76 @@ jQuery(document).ready(function($){
         });
     });
 });
+
+(function(){
+    function pwaforwpBfcmBoot(){
+        if (window.pwaforwpBfcmBound || !window.jQuery) {
+            return;
+        }
+        var $ = window.jQuery;
+        var $banner = $('.pwaforwp-bfcm-banner');
+        if (!$banner.length) {
+            return;
+        }
+        window.pwaforwpBfcmBound = true;
+        var end = parseInt($banner.attr('data-end'), 10) * 1000;
+        function pad(n){ return (n < 10 ? '0' : '') + n; }
+        function tick(){
+            var diff = end - Date.now();
+            if (diff <= 0) {
+                $banner.remove();
+                return;
+            }
+            var total = Math.floor(diff / 1000);
+            $banner.find('.pwaforwp-bfcm-days').text(pad(Math.floor(total / 86400)));
+            $banner.find('.pwaforwp-bfcm-hours').text(pad(Math.floor((total % 86400) / 3600)));
+            $banner.find('.pwaforwp-bfcm-mins').text(pad(Math.floor((total % 3600) / 60)));
+            $banner.find('.pwaforwp-bfcm-secs').text(pad(total % 60));
+        }
+        tick();
+        window.setInterval(tick, 1000);
+        $banner.on('click', '.pwaforwp-bfcm-code', function(e){
+            e.preventDefault();
+            var $btn = $(this);
+            var code = $btn.attr('data-code') || '';
+            var done = function(){
+                var $label = $btn.find('.pwaforwp-bfcm-code-label');
+                var copied = $btn.attr('data-copied') || 'COPIED';
+                var original = $btn.attr('data-label') || $label.text();
+                $btn.addClass('is-copied');
+                $label.text(copied);
+                window.setTimeout(function(){
+                    $btn.removeClass('is-copied');
+                    $label.text(original);
+                }, 1500);
+            };
+            var fallbackCopy = function(){
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.value = code;
+                document.body.appendChild(input);
+                input.select();
+                try { document.execCommand('copy'); } catch (err) {}
+                document.body.removeChild(input);
+                done();
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(done).catch(fallbackCopy);
+            } else {
+                fallbackCopy();
+            }
+        });
+        $banner.on('click', '.pwaforwp-bfcm-dismiss', function(e){
+            e.preventDefault();
+            var maxAge = 7 * 24 * 60 * 60;
+            var secure = window.location.protocol === 'https:' ? '; Secure' : '';
+            document.cookie = 'pwaforwp_bfcm_banner_dismissed=' + Math.floor(Date.now() / 1000) + '; Max-Age=' + maxAge + '; Path=/; SameSite=Lax' + secure;
+            $banner.slideUp(180, function(){ $banner.remove(); });
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', pwaforwpBfcmBoot);
+    } else {
+        pwaforwpBfcmBoot();
+    }
+})();

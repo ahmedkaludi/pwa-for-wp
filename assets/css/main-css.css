@@ -1364,3 +1364,284 @@ span.pwaforwp-addon-active {
 .pwaforwp-main-wrapper .nav-tab:focus{
    box-shadow: none;
 }
+
+.pwaforwp-bfcm-banner,
+.pwaforwp-bfcm-banner * {
+	box-sizing: border-box;
+}
+.pwaforwp-bfcm-banner {
+	position: relative;
+	margin: 8px 0 16px;
+	padding: 14px 40px 14px 16px;
+	border-radius: 6px;
+	border: 1px solid rgba(255, 61, 140, 0.9);
+	background:
+		radial-gradient(90% 160% at 0% 50%, rgba(130, 24, 90, 0.42), transparent 46%),
+		radial-gradient(70% 180% at 100% 40%, rgba(120, 30, 80, 0.38), transparent 42%),
+		linear-gradient(90deg, #16061f 0%, #0b0612 52%, #1a0816 100%);
+	box-shadow: 0 0 0 1px rgba(255, 45, 130, 0.18), 0 10px 28px rgba(0, 0, 0, 0.22);
+	color: #fff;
+	font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+.pwaforwp-bfcm-inner {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 18px;
+}
+.pwaforwp-bfcm-lead {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 8px;
+	min-width: 0;
+	flex: 0 1 auto;
+}
+.pwaforwp-bfcm-offer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+}
+.pwaforwp-bfcm-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	flex: 0 0 auto;
+	padding: 5px 12px;
+	border: 1px solid #ff4d93;
+	border-radius: 999px;
+	background: rgba(255, 45, 140, 0.08);
+	color: #ff5aa3;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.06em;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+.pwaforwp-bfcm-pill svg,
+.pwaforwp-bfcm-cta svg,
+.pwaforwp-bfcm-expires svg,
+.pwaforwp-bfcm-guarantee svg,
+.pwaforwp-bfcm-code svg {
+	display: block;
+	flex: 0 0 auto;
+}
+.pwaforwp-bfcm-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	min-width: 74px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: linear-gradient(180deg, #ff5b9d 0%, #ff2d78 100%);
+	box-shadow: 0 8px 18px rgba(255, 45, 120, 0.35);
+	color: #fff;
+	font-size: 15px;
+	font-weight: 800;
+	letter-spacing: 0.02em;
+	line-height: 1.05;
+	text-align: center;
+}
+.pwaforwp-bfcm-copy {
+	min-width: 0;
+}
+.pwaforwp-bfcm-copy strong {
+	display: block;
+	color: #fff;
+	font-size: 15px;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	line-height: 1.25;
+}
+.pwaforwp-bfcm-copy p {
+	margin: 4px 0 0;
+	color: #ffffff;
+	font-size: 12px;
+	line-height: 1.3;
+}
+.pwaforwp-wrap .pwaforwp-bfcm-code {
+	display: inline-flex;
+	align-items: center;
+	align-self: center;
+	flex: 0 0 auto;
+	gap: 8px;
+	height: auto;
+	min-height: 0;
+	margin: 0;
+	padding: 6px 10px;
+	border: 1px solid #d4a84b;
+	border-radius: 8px;
+	background: rgba(12, 8, 6, 0.45);
+	box-shadow: none;
+	color: #f3d48a;
+	font-size: 12px;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	line-height: 1;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.pwaforwp-wrap .pwaforwp-bfcm-code:hover,
+.pwaforwp-wrap .pwaforwp-bfcm-code:focus {
+	color: #ffe7a8;
+	border-color: #efc56a;
+	background: rgba(12, 8, 6, 0.45);
+	box-shadow: none;
+}
+.pwaforwp-wrap .pwaforwp-bfcm-code.is-copied {
+	color: #c8ffd8;
+	border-color: #7dffa1;
+}
+.pwaforwp-bfcm-aside {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex: 0 0 auto;
+	margin-left: auto;
+}
+.pwaforwp-bfcm-clock {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+.pwaforwp-bfcm-expires {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+}
+.pwaforwp-bfcm-timer {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+}
+.pwaforwp-bfcm-unit {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 40px;
+}
+.pwaforwp-bfcm-unit b {
+	color: #fff;
+	font-size: 26px;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	line-height: 1;
+}
+.pwaforwp-bfcm-unit span {
+	margin-top: 4px;
+	color: #ff4d93;
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.08em;
+}
+.pwaforwp-bfcm-sep {
+	width: 4px;
+	height: 4px;
+	margin-top: 12px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.7);
+}
+.pwaforwp-bfcm-action {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+}
+.pwaforwp-wrap a.pwaforwp-bfcm-cta,
+.pwaforwp-wrap a.pwaforwp-bfcm-cta:hover,
+.pwaforwp-wrap a.pwaforwp-bfcm-cta:focus {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 18px;
+	border-radius: 999px;
+	background: linear-gradient(90deg, #ff3b86 0%, #ff7a2a 100%);
+	box-shadow: 0 8px 18px rgba(255, 80, 50, 0.35);
+	color: #fff;
+	font-size: 14px;
+	font-weight: 800;
+	line-height: 1;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.pwaforwp-wrap a.pwaforwp-bfcm-cta:hover {
+	filter: brightness(1.06);
+	color: #fff;
+}
+.pwaforwp-bfcm-guarantee {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: #f0e4f6;
+	font-size: 11px;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.pwaforwp-wrap .pwaforwp-bfcm-dismiss {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	box-shadow: none;
+	color: rgba(255, 255, 255, 0.78);
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+}
+.pwaforwp-wrap .pwaforwp-bfcm-dismiss:hover,
+.pwaforwp-wrap .pwaforwp-bfcm-dismiss:focus {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.08);
+	box-shadow: none;
+}
+.pwaforwp-bfcm-banner button:focus-visible,
+.pwaforwp-bfcm-banner a:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 2px;
+}
+@media (max-width: 1280px) {
+	.pwaforwp-bfcm-inner {
+		flex-wrap: wrap;
+	}
+	.pwaforwp-bfcm-aside {
+		flex: 1 0 100%;
+		width: 100%;
+		margin-left: 0;
+		justify-content: flex-start;
+	}
+}
+@media (max-width: 782px) {
+	.pwaforwp-bfcm-inner,
+	.pwaforwp-bfcm-lead,
+	.pwaforwp-bfcm-aside,
+	.pwaforwp-bfcm-action {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.pwaforwp-bfcm-pill {
+		white-space: normal;
+	}
+	.pwaforwp-bfcm-aside {
+		align-items: flex-start;
+		gap: 12px;
+	}
+}
