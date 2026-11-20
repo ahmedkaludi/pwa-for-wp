@@ -168,6 +168,7 @@ function pwaforwp_frontend_enqueue(){
                     'pwa_home_url'              => pwaforwp_home_url(), 
                     'pwaforwp_security_nonce'   => wp_create_nonce('pwaforwp_ajax_check_nonce' ),
                     'fcm_vapid_key'             => isset( $settings['fcm_vapid_key'] ) ? $settings['fcm_vapid_key'] : '',
+                    'push_show_only_pwa'        => ( isset( $settings['push_show_only_pwa'] ) && $settings['push_show_only_pwa'] == 1 ) ? '1' : '0',
                 );
 
                 wp_localize_script('pwaforwp-push-js', 'pwaforwp_obj', $object_name);
@@ -391,6 +392,7 @@ function pwaforwp_fields_and_type($data_type = 'value'){
 
     /*Push notification services*/
         'notification_options'  => array('type'=>'text','value'=>''),
+        'push_show_only_pwa'    => array('type'=>'checkbox','value'=>0),
     /*Features settings*/
         'notification_feature'  => array('type'=>'checkbox','value'=>0),
         'precaching_feature'    => array('type'=>'checkbox','value'=>0),

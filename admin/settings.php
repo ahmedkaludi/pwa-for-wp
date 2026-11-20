@@ -2021,6 +2021,13 @@ function pwaforwp_push_notification_callback(){
         <div class="pwafowwp-server-key-section">
         	<table class="pwaforwp-pn-options">
         		<tbody>
+        			<tr>
+        				<th><?php echo esc_html__('Show only to PWA users', 'pwa-for-wp');?></th>
+        				<td>
+        					<input type="checkbox" name="pwaforwp_settings[push_show_only_pwa]" id="pwaforwp_settings[push_show_only_pwa]" value="1" data-uncheck-val="0" <?php echo ( isset( $settings['push_show_only_pwa'] ) && $settings['push_show_only_pwa'] == 1 ) ? 'checked="checked"' : ''; ?>>
+        					<p><?php echo esc_html__('The push permission prompt, and the Push Notification plugin popup and bell, appear only when the site is opened as an installed PWA.', 'pwa-for-wp'); ?></p>
+        				</td>
+        			</tr>
         			<th><?php echo esc_html__('Push notification integration', 'pwa-for-wp');?></th>
         			<td>
         				<select name="pwaforwp_settings[notification_options]" id="pwaforwp_settings[notification_options]" class="regular-text pwaforwp-pn-service">

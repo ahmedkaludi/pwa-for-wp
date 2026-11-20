@@ -8,7 +8,24 @@
 
                     // Wait for pwa-register-sw.js to call useServiceWorker() before triggering getToken().
                     // Firebase SDK v7 requires useServiceWorker() to run exactly once, before getToken().
+                    function pwaforwpIsInstalledPwa() {
+                      var isDisplayModePWA = window.matchMedia('(display-mode: standalone)').matches ||
+                        window.matchMedia('(display-mode: fullscreen)').matches ||
+                        window.matchMedia('(display-mode: minimal-ui)').matches;
+                      var reffer = document.referrer;
+                      var isAndroidApp = reffer && reffer.indexOf('android-app://') !== -1;
+                      var isAndroid = /Android/.test(navigator.userAgent);
+                      var isAndroidPWA = isAndroid && (isDisplayModePWA || isAndroidApp);
+                      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                      var isIOSApp = isIOS && (navigator.userAgent.indexOf('PWABuilder-iOS') !== -1 || (window.webkit && window.webkit.messageHandlers));
+                      var isIOSPWA = isIOS && (window.navigator.standalone === true || isIOSApp);
+                      return isDisplayModePWA || isIOSPWA || isAndroidPWA;
+                    }
+
                     function pwaforwpStartForegroundMessaging() {
+                      if (typeof pwaforwp_obj !== 'undefined' && pwaforwp_obj.push_show_only_pwa == '1' && !pwaforwpIsInstalledPwa()) {
+                        return;
+                      }
                       if (!('serviceWorker' in navigator)) {
                         console.log('Service workers are not supported in this browser.');
                         return;
