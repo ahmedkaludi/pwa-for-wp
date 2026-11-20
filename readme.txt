@@ -2,7 +2,7 @@
 Contributors: magazine3
 Requires at least: 4.7
 Tested up to: 7.1
-Stable tag: 1.7.88.2
+Stable tag: 1.7.89
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Tags: PWA, Progressive Web Apps, Manifest, Offline, Cache
@@ -80,6 +80,11 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 9. Advanced settings page.
 
 == Changelog ==
+= 1.7.89 (20 November 2026) =
+* BugFixed : Uncaught SyntaxError in pwa-push-notification.js #1009
+* Improvement : Update POT file for PWA plugins #278
+* Added : option to show notification for PWA users only #883
+* Compatibility : Compatibility with WP User Frontend plugin #628
 
 = 1.7.88.2 (13 October 2026) =
 * BugFixed : Unauthenticated sensitive information exposure of FCM service-account JSON via publicly accessible uploads path
@@ -162,14 +167,6 @@ You can contact us from [here](https://pwa-for-wp.com/contact-us/)
 * Bug Fixed  : PWA not working when visibility condition is set but visibility option is disabled #938
 * Compatibility  : Need to add compatibility with Eform in offline forms #940
 * Test   : Test with WordPress version 6.7 #936
-
-= 1.7.75 (28 October 2024) =
-* Improvement  : Added an option to edit the text in the iOS QR code #926
-* Improvement  : Added an option to edit browser banner content. #934
-* Bug Fixed  : Extensions not activating #929
-* Improvement  : Added an option so that only the Steps to install the PWA on IOS should be visible directly without clicking on Install banner in CTA #922
-* Bug Fixed   : The feature Quick Action is not working #931
-* Improvement   : Minify JS files for production #933
 
 
 Full changelog available [ at changelog.txt](https://plugins.svn.wordpress.org/pwa-for-wp/trunk/changelog.txt)

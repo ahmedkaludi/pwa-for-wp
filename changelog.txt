@@ -1,3 +1,9 @@
+= 1.7.89 (20 November 2026) =
+* BugFixed : Uncaught SyntaxError in pwa-push-notification.js #1009
+* Improvement : Update POT file for PWA plugins #278
+* Added : option to show notification for PWA users only #883
+* Compatibility : Compatibility with WP User Frontend plugin #628
+
 = 1.7.88.2 (13 October 2026) =
 * BugFixed : Unauthenticated sensitive information exposure of FCM service-account JSON via publicly accessible uploads path
 
