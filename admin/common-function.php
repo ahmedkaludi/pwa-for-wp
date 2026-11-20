@@ -103,7 +103,7 @@ function pwaforwp_review_notice_remindme(){
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 
 if ( ! defined( 'PWAFORWP_BFCM_OFFER_URL' ) ) {
-    define( 'PWAFORWP_BFCM_OFFER_URL', 'https://pwa-for-wp.com/pricing/' );
+    define( 'PWAFORWP_BFCM_OFFER_URL', 'https://pwa-for-wp.com/bfcm-2026/' );
 }
 
 function pwaforwp_bfcm_banner_timezone() {
