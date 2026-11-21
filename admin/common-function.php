@@ -103,7 +103,7 @@ function pwaforwp_review_notice_remindme(){
 add_action('wp_ajax_pwaforwp_review_notice_remindme', 'pwaforwp_review_notice_remindme');
 
 if ( ! defined( 'PWAFORWP_BFCM_OFFER_URL' ) ) {
-    define( 'PWAFORWP_BFCM_OFFER_URL', 'https://pwa-for-wp.com/bfcm-2026/' );
+    define( 'PWAFORWP_BFCM_OFFER_URL', 'https://pwa-for-wp.com/pricing/' );
 }
 
 function pwaforwp_bfcm_banner_timezone() {
@@ -185,7 +185,7 @@ function pwaforwp_render_bfcm_banner() {
     .pwaforwp-bfcm-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:74px;padding:10px 12px;border-radius:12px;background:linear-gradient(180deg,#ff5b9d 0%,#ff2d78 100%);box-shadow:0 8px 18px rgba(255,45,120,.35);color:#fff;font-size:15px;font-weight:800;letter-spacing:.02em;line-height:1.05;text-align:center}
     .pwaforwp-bfcm-copy{min-width:0}
     .pwaforwp-bfcm-copy strong{display:block;color:#fff;font-size:15px;font-weight:800;letter-spacing:.01em;line-height:1.25}
-    .pwaforwp-bfcm-copy p{margin:4px 0 0;color:#ffffff;font-size:12px;line-height:1.3}
+    .pwaforwp-bfcm-copy p{margin:4px 0 0;color:#ddd4e6;font-size:12px;line-height:1.3}
     .pwaforwp-wrap .pwaforwp-bfcm-code{display:inline-flex;align-items:center;align-self:center;flex:0 0 auto;gap:8px;height:auto;min-height:0;margin:0;padding:6px 10px;border:1px solid #d4a84b;border-radius:8px;background:rgba(12,8,6,.45);box-shadow:none;color:#f3d48a;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1;cursor:pointer;white-space:nowrap}
     .pwaforwp-wrap .pwaforwp-bfcm-code:hover,.pwaforwp-wrap .pwaforwp-bfcm-code:focus{color:#ffe7a8;border-color:#efc56a;background:rgba(12,8,6,.45);box-shadow:none}
     .pwaforwp-wrap .pwaforwp-bfcm-code.is-copied{color:#c8ffd8;border-color:#7dffa1}
